@@ -19,13 +19,12 @@ class Column(CellHolder):
     def empty(colIndex:int):
         return Column(colIndex,{})
 
-    def setCell(self, pos:CellPosition, cell: Cell):
+    def setCell(self, cell: Cell):
         # test cell position
-        if cell.pos == pos:
-            self.__cellDict[pos.getRowIndex()] = cell
-
-
-
+        if cell.pos.getColIndex() == self.__colIndex:
+            self.__cellDict[cell.pos.getRowIndex()] = cell
+        else:
+            raise ValueError("cell is in col {wrcol}, can't be inserted into col {ccol} ".format(ccol=self.__colIndex, wrcol=cell.pos.getColIndex()))
 
     def removeCell(self, pos:CellPosition):
         del self.__cellDict[pos.getRowIndex()]

@@ -1,10 +1,9 @@
 from com.github.xadkile.bicp.doc.data_structure.cell.Cell import Cell
-from com.github.xadkile.bicp.doc.data_structure.cell.TempCell import TempCell
 from com.github.xadkile.bicp.doc.data_structure.cell.position.CellPosition import CellPosition
 
 
 class CellHolder:
-    def setCell(self, pos:CellPosition, cell: Cell):
+    def setCell(self, cell: Cell):
         pass
 
     def removeCell(self, pos:CellPosition):

@@ -25,9 +25,5 @@ class Cell:
     def pos(self)->CellPosition:
         pass
 
-    @pos.setter
-    def pos(self,newPos):
-        pass
-
     def isValueEqual(self, anotherCell):
         return self.value == anotherCell.value

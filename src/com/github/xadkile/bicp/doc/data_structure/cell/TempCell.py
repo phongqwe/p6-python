@@ -1,7 +1,6 @@
 from com.github.xadkile.bicp.doc.data_structure.cell.Cell import Cell
 from com.github.xadkile.bicp.doc.data_structure.cell.DataCell import DataCell
 from com.github.xadkile.bicp.doc.data_structure.cell.position.CellPosition import CellPosition
-from com.github.xadkile.bicp.doc.data_structure.cell.position.IndexCellPosition import IndexCellPosition
 from com.github.xadkile.bicp.doc.data_structure.cell_holder.CellHolder import CellHolder
 
 
@@ -44,7 +43,11 @@ class TempCell(Cell):
         self.__innerCell.code = newCode
         self.__writeCell()
 
+    @property
+    def pos(self) -> CellPosition:
+        return self.__innerCell.pos
+
     def __writeCell(self):
         if not self.__cellWritten:
-            self.__holder.setCell(self.__pos,self.__innerCell)
+            self.__holder.setCell(self.__innerCell)
             self.__cellWritten = True

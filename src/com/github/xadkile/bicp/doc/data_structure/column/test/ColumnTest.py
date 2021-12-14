@@ -1,5 +1,4 @@
 import unittest
-from collections import defaultdict
 
 from com.github.xadkile.bicp.doc.data_structure.cell.DataCell import DataCell
 from com.github.xadkile.bicp.doc.data_structure.cell.position.IndexCellPosition import IndexCellPosition
@@ -19,11 +18,12 @@ class ColumnTest(unittest.TestCase):
 
     def test_addingCell(self):
         r = Column.empty(2)
-        cell = r.getCell(1)
+        pos = IndexCellPosition(2,1)
+        cell = r.getCell(pos)
         cell.code = "abc"
         cell.value = 123
-        self.assertEqual("abc", r.getCell(1).code)
-        self.assertEqual(123, r.getCell(1).value)
+        self.assertEqual("abc", r.getCell(pos).code)
+        self.assertEqual(123, r.getCell(pos).value)
 
     def test_getCellWithIncorrectTypeKey(self):
         r = Column.empty(3)
@@ -40,9 +40,15 @@ class ColumnTest(unittest.TestCase):
         r = Column.empty(2)
         self.assertTrue(r.isEmpty())
 
-    def test_addCell(self):
+    def test_setCell(self):
         r = Column.empty(5)
-        cell = DataCell(IndexCellPosition(5,1),123,"code 1")
-        r.addCell(1,cell)
-        self.assertEqual(cell, r.getCell(1))
+        cell = DataCell(IndexCellPosition(5+3,1),123,"code 1")
+        r.setCell(cell)
+        self.assertEqual(cell, r.getCell(IndexCellPosition(5,1)))
 
+    def test_setCell_fail(self):
+        with self.assertRaises(ValueError):
+            r = Column.empty(5)
+            cell = DataCell(IndexCellPosition(1,1),123,"code 1")
+            r.setCell(cell)
+            self.assertEqual(cell, r.getCell(IndexCellPosition(5,1)))

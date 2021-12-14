@@ -28,8 +28,11 @@ class DataCell(Cell):
     def code(self, newCode: str):
         self.__code = newCode
 
+    @property
+    def pos(self) -> CellPosition:
+        return self.__pos
+
+
     def isValueEqual(self, anotherCell):
         return self.value == anotherCell.value
 
-    def pos(self) -> CellPosition:
-        return self.__pos

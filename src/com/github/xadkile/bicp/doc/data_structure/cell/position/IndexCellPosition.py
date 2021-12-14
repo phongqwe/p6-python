@@ -14,11 +14,3 @@ class IndexCellPosition(CellPosition):
     @staticmethod
     def zero()->CellPosition:
         return IndexCellPosition(0,0)
-
-    @staticmethod
-    def forCol(rowIndex:int)->CellPosition:
-        """
-        :param rowIndex:
-        :return: a cell position to be used in querying a Column object
-        """
-        return IndexCellPosition(-1,rowIndex)
