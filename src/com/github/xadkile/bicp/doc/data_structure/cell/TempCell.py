@@ -1,7 +1,7 @@
 from com.github.xadkile.bicp.doc.data_structure.cell.Cell import Cell
 from com.github.xadkile.bicp.doc.data_structure.cell.DataCell import DataCell
 from com.github.xadkile.bicp.doc.data_structure.cell.position.CellPosition import CellPosition
-from com.github.xadkile.bicp.doc.data_structure.cell_holder.CellHolder import CellHolder
+from com.github.xadkile.bicp.doc.data_structure.cell_container.CellContainer import CellContainer
 
 
 class TempCell(Cell):
@@ -11,7 +11,7 @@ class TempCell(Cell):
     Only write object to the holder when the content of the temp cell is mutated.
     """
 
-    def __init__(self, holder: CellHolder, position:CellPosition):
+    def __init__(self, holder: CellContainer, position:CellPosition):
         self.__pos = position
         self.__colIndex = position.getColIndex()
         self.__rowIndex = position.getRowIndex()
@@ -49,5 +49,5 @@ class TempCell(Cell):
 
     def __writeCell(self):
         if not self.__cellWritten:
-            self.__holder.setCell(self.__innerCell)
+            self.__holder.addCell(self.__innerCell)
             self.__cellWritten = True

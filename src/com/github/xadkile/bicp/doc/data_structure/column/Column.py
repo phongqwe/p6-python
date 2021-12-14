@@ -1,10 +1,10 @@
 from com.github.xadkile.bicp.doc.data_structure.cell.Cell import Cell
 from com.github.xadkile.bicp.doc.data_structure.cell.TempCell import TempCell
 from com.github.xadkile.bicp.doc.data_structure.cell.position.CellPosition import CellPosition
-from com.github.xadkile.bicp.doc.data_structure.cell_holder.CellHolder import CellHolder
+from com.github.xadkile.bicp.doc.data_structure.cell_container.CellContainer import CellContainer
 
 
-class Column(CellHolder):
+class Column(CellContainer):
     """
     Column is a dictionary of cell: rowIndex -> cell
     """
@@ -19,8 +19,7 @@ class Column(CellHolder):
     def empty(colIndex:int):
         return Column(colIndex,{})
 
-    def setCell(self, cell: Cell):
-        # test cell position
+    def addCell(self, cell: Cell):
         if cell.pos.getColIndex() == self.__colIndex:
             self.__cellDict[cell.pos.getRowIndex()] = cell
         else:
@@ -33,14 +32,15 @@ class Column(CellHolder):
         return pos.getRowIndex() in self.__cellDict.keys()
 
     def getCell(self, pos:CellPosition) -> Cell:
+        """
+        :param pos:
+        :return: either the cell at the input position or a TempCell with the same position
+        """
         if self.hasCellAt(pos):
             return self.__cellDict[pos.getRowIndex()]
         else:
             return TempCell(self,pos)
 
     def isEmpty(self):
-        """
-        :return: true if this row is empty
-        """
         return not bool(self.__cellDict)
 

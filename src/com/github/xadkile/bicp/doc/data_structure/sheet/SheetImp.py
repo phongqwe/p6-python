@@ -1,25 +1,29 @@
+from collections import defaultdict
+
 from com.github.xadkile.bicp.doc.data_structure.cell.Cell import Cell
 from com.github.xadkile.bicp.doc.data_structure.cell.position.CellPosition import CellPosition
-from com.github.xadkile.bicp.doc.data_structure.cell_container.CellContainer import CellContainer
 from com.github.xadkile.bicp.doc.data_structure.range.Range import Range
 
 
-class SheetImp(CellContainer):
+class SheetImp:
     """
-    Sheet is a dict or Col objects
+    Sheet is a dict or Row objects
     """
+    # def __init__(self, colDict):
+    #     if type(colDict) is defaultdict:
+    #         self.__colDict = colDict
+    #     else:
+    #         raise ValueError("rowDict must be a defaultdict")
+
     def cell(self,cellPos:CellPosition)->Cell:
         # return self.__colDict[cellPos.getColIndex()].getCell(cellPos)
         pass
 
-    # TODO this sign has wrong input arg
     def range(self,colIndex:int, rowIndex:int)->Range:
         pass
 
     def col(self,colIndex:int)->Range:
-        """:return a column at an index"""
         pass
 
     def row(self,rowIndex:int)->Range:
-        """:return a row at an index"""
         pass

@@ -10,13 +10,13 @@ class ColumnTest(unittest.TestCase):
         d = {}
         r = Column(1,d)
         try:
-            cell = r.getCell(IndexCellPosition.forCol(1))
+            cell = r.getCell(IndexCellPosition(1,2))
             self.assertIsNotNone(cell)
             self.assertTrue(len(d)==0)
         except:
             self.fail("shouldn't raise any exception")
 
-    def test_addingCell(self):
+    def test_getNonExistingCellThenModify(self):
         r = Column.empty(2)
         pos = IndexCellPosition(2,1)
         cell = r.getCell(pos)
@@ -25,15 +25,10 @@ class ColumnTest(unittest.TestCase):
         self.assertEqual("abc", r.getCell(pos).code)
         self.assertEqual(123, r.getCell(pos).value)
 
-    def test_getCellWithIncorrectTypeKey(self):
-        r = Column.empty(3)
-        with self.assertRaises(ValueError):
-            r.getCell("key")
-
     def test_isEmpty(self):
         r = Column(1,{})
         self.assertTrue(r.isEmpty())
-        r.getCell(IndexCellPosition.forCol(2))
+        r.getCell(IndexCellPosition(1,2))
         self.assertTrue(r.isEmpty())
 
     def test_empty(self):
@@ -42,13 +37,13 @@ class ColumnTest(unittest.TestCase):
 
     def test_setCell(self):
         r = Column.empty(5)
-        cell = DataCell(IndexCellPosition(5+3,1),123,"code 1")
-        r.setCell(cell)
+        cell = DataCell(IndexCellPosition(5,1),123,"code 1")
+        r.addCell(cell)
         self.assertEqual(cell, r.getCell(IndexCellPosition(5,1)))
 
     def test_setCell_fail(self):
         with self.assertRaises(ValueError):
             r = Column.empty(5)
             cell = DataCell(IndexCellPosition(1,1),123,"code 1")
-            r.setCell(cell)
+            r.addCell(cell)
             self.assertEqual(cell, r.getCell(IndexCellPosition(5,1)))
