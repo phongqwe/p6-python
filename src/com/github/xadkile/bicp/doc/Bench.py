@@ -1,9 +1,14 @@
 import unittest
+import ast
+from collections import namedtuple
 
+m1 = -123
 class Bench(unittest.TestCase):
+
     def test_Cell(self):
-        d = dict()
-        d["a"]=123
-        d[2]=456
-        print(d[2])
-        print(d["a"])
+        Point = namedtuple('Point', ['x', 'y'])
+        p = Point(11, y=22)
+        print(p.y)
+
+
+

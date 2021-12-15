@@ -10,6 +10,7 @@ class SheetImp(CellContainer):
     """
     def cell(self,cellPos:CellPosition)->Cell:
         # return self.__colDict[cellPos.getColIndex()].getCell(cellPos)
+        # this should evaluate the content of the cell
         pass
 
     # TODO this sign has wrong input arg
