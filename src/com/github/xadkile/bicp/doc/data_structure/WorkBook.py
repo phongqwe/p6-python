@@ -1,4 +1,4 @@
-from com.github.xadkile.bicp.doc.data_structure.sheet.Sheet import SheetImp
+from com.github.xadkile.bicp.doc.data_structure.sheet.Sheet import Sheet
 
 
 class Workbook:
@@ -17,7 +17,7 @@ class Workbook:
         add a new empty sheet to this workbook
         :param newSheetName: name of the new sheet
         """
-        self.__sheetDict[newSheetName] = SheetImp.empty()
+        self.__sheetDict[newSheetName] = Sheet.empty()
 
     def removeSheet(self,sheetName):
         del self.__sheetDict[sheetName]

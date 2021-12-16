@@ -1,4 +1,4 @@
-from com.github.xadkile.bicp.doc.data_structure.cell.position.CellPosition import CellPosition
+from com.github.xadkile.bicp.doc.data_structure.cell.address.CellAddress import CellAddress
 
 
 class Cell:
@@ -22,8 +22,16 @@ class Cell:
         pass
 
     @property
-    def pos(self)->CellPosition:
+    def address(self)->CellAddress:
         pass
+
+    @property
+    def row(self) -> int:
+        return self.address.rowIndex
+
+    @property
+    def col(self) -> int:
+        return self.address.colIndex
 
     def isValueEqual(self, anotherCell):
         return self.value == anotherCell.value

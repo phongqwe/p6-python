@@ -1,7 +1,7 @@
 from com.github.xadkile.bicp.doc.data_structure.cell.Cell import Cell
 from com.github.xadkile.bicp.doc.data_structure.cell.DataCell import DataCell
-from com.github.xadkile.bicp.doc.data_structure.cell.position.CellPosition import CellPosition
-from com.github.xadkile.bicp.doc.data_structure.cell_container.CellContainer import CellContainer
+from com.github.xadkile.bicp.doc.data_structure.cell.address.CellAddress import CellAddress
+from com.github.xadkile.bicp.doc.data_structure.cell_container.MutableCellContainer import MutableCellContainer
 
 
 class TempCell(Cell):
@@ -11,19 +11,20 @@ class TempCell(Cell):
     Only write object to the holder when the content of the temp cell is mutated.
     """
 
-    def __init__(self, holder: CellContainer, position:CellPosition):
-        self.__pos = position
-        self.__colIndex = position.getColIndex()
-        self.__rowIndex = position.getRowIndex()
+    def __init__(self, holder: MutableCellContainer, address:CellAddress):
+        self.__pos = address
+        self.__colIndex = address.colIndex
+        self.__rowIndex = address.rowIndex
         self.__holder = holder
         self.__innerCell = None
-        self.__cellWritten = False
-        if holder.hasCellAt(position):
-            self.__innerCell = holder.getCell(position)
-            self.__cellWritten = True
+        if holder.hasCellAt(address):
+            self.__innerCell = holder.getCell(address)
         else:
-            self.__innerCell = DataCell(position)
-            self.__cellWritten=False
+            self.__innerCell = DataCell(address)
+
+
+    ### >> Cell << ###
+
 
     @property
     def value(self):
@@ -44,10 +45,12 @@ class TempCell(Cell):
         self.__writeCell()
 
     @property
-    def pos(self) -> CellPosition:
-        return self.__innerCell.pos
+    def address(self) -> CellAddress:
+        return self.__innerCell.address
+
 
     def __writeCell(self):
-        if not self.__cellWritten:
+        cellNotWritten = not self.__holder.hasCellAt(self.__pos)
+        if cellNotWritten:
             self.__holder.addCell(self.__innerCell)
             self.__cellWritten = True

@@ -1,5 +1,5 @@
 from com.github.xadkile.bicp.doc.data_structure.cell.Cell import Cell
-from com.github.xadkile.bicp.doc.data_structure.cell.position.CellPosition import CellPosition
+from com.github.xadkile.bicp.doc.data_structure.cell.address.CellAddress import CellAddress
 
 
 class DataCell(Cell):
@@ -7,10 +7,10 @@ class DataCell(Cell):
     a cell that holds some data
     """
 
-    def __init__(self, position: CellPosition, value=None, code: str = ""):
+    def __init__(self, address: CellAddress, value=None, code: str = ""):
         self.__value = value
         self.__code: str = code
-        self.__pos = position
+        self.__addr = address
 
     @property
     def value(self):
@@ -29,10 +29,8 @@ class DataCell(Cell):
         self.__code = newCode
 
     @property
-    def pos(self) -> CellPosition:
-        return self.__pos
-
+    def address(self) -> CellAddress:
+        return self.__addr
 
     def isValueEqual(self, anotherCell):
         return self.value == anotherCell.value
-
