@@ -12,5 +12,7 @@ class ColumnContainer:
 
 
 class MutableColumnContainer(ColumnContainer):
-    def setCol(self, index: int, col: Column):
+    def setCol(self, col: Column):
+        pass
+    def removeCol(self,index:int):
         pass

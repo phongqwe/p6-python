@@ -68,7 +68,7 @@ class TempColumn(Column):
         self.__innerCol.addCell(cell)
         # write this temp col to the holder when a new cell is added
         if not self.__holder.hasColumn(self.__innerCol.index):
-            self.__holder.setCol(self.__innerCol.index, self.__innerCol)
+            self.__holder.setCol(self.__innerCol)
 
     def removeCell(self, address: CellAddress):
         self.__innerCol.removeCell(address)

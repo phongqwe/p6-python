@@ -42,8 +42,8 @@ class Worksheet(MutableCellContainer, MutableColumnContainer):
     @property
     def cells(self) -> List[Cell]:
         rt = []
-        for k, v in self.__colDict:
-            rt.extend(v.cells())
+        for k, v in (self.__colDict.items()):
+            rt.extend(v.cells)
         return rt
 
     @property
@@ -59,12 +59,21 @@ class Worksheet(MutableCellContainer, MutableColumnContainer):
         self.getCol(cell.col).addCell(cell)
 
     def removeCell(self, address: CellAddress):
-        self.getCol(address.colIndex).removeCell(address)
+        col = self.getCol(address.colIndex)
+        col.removeCell(address)
+        if col.isEmpty():
+            self.removeCol(col.index)
 
     ### >> MutableColumnContainer << ###
 
-    def setCol(self, index: int, col: Column):
-        self.__colDict[index] = col
+    def setCol(self, col: Column):
+        if isinstance(col,Column):
+            self.__colDict[col.index] = col
+        else:
+            raise ValueError("input col is not of type Column")
+
+    def removeCol(self, index: int):
+        del self.__colDict[index]
 
     ### >> ColumnContainer << ###
 
