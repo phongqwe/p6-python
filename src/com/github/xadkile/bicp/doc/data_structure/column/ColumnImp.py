@@ -8,6 +8,7 @@ from com.github.xadkile.bicp.doc.data_structure.column.Column import Column
 from com.github.xadkile.bicp.doc.data_structure.range.Range import Range
 from com.github.xadkile.bicp.doc.data_structure.range.RangeAddress import RangeAddress
 from com.github.xadkile.bicp.doc.data_structure.range.RangeImp import RangeImp
+from com.github.xadkile.bicp.doc.data_structure.sheet.WorksheetConst import WorksheetConst
 
 
 class ColumnImp(Column):
@@ -20,7 +21,7 @@ class ColumnImp(Column):
             self.__cellDict = cellDict
             self.__colIndex = colIndex
             self.__rangeAddress = RangeAddress(CellIndex(self.__colIndex, 1),
-                                               CellIndex(self.__colIndex, Column.elementLimit))
+                                               CellIndex(self.__colIndex, WorksheetConst.rowLimit))
         else:
             raise ValueError("cellDict must be a dict")
 
@@ -29,9 +30,7 @@ class ColumnImp(Column):
         """ create an empty Column """
         return ColumnImp(colIndex, {})
 
-
     ### >> Column << ###
-
 
     @property
     def index(self) -> int:
@@ -46,12 +45,10 @@ class ColumnImp(Column):
         lastCellAddress = CellIndex(self.index, lastRow)
         return RangeImp(firstCellAddress, lastCellAddress, self)
 
-
     ### >> MutableCellContainer << ###
 
-
     def addCell(self, cell: Cell):
-        if cell.address.colIndex == self.__colIndex:
+        if self.containsAddress(cell.address):
             self.__cellDict[cell.address.rowIndex] = cell
         else:
             # can't add cell with col index that does not match this Column's col index
@@ -61,9 +58,7 @@ class ColumnImp(Column):
     def removeCell(self, address: CellAddress):
         del self.__cellDict[address.rowIndex]
 
-
     ### >> CellContainer << ###
-
 
     def hasCellAt(self, address: CellAddress):
         rowIsMatched = address.rowIndex in self.__cellDict.keys()
@@ -84,7 +79,9 @@ class ColumnImp(Column):
         return not bool(self.__cellDict)
 
     def containsAddress(self, cellAddress: CellAddress):
-        return cellAddress.colIndex == self.__colIndex and cellAddress.rowIndex <= Column.elementLimit
+        colOk = cellAddress.colIndex == self.__colIndex
+        rowOk = cellAddress.rowIndex <= WorksheetConst.rowLimit
+        return colOk and rowOk
 
     @property
     def cells(self) -> List[Cell]:
@@ -94,16 +91,12 @@ class ColumnImp(Column):
     def rangeAddress(self) -> RangeAddress:
         return self.__rangeAddress
 
-
     ### >> Range << ###
-
 
     @property
     def firstCellAddress(self) -> CellAddress:
-        return CellIndex(self.index,1)
+        return CellIndex(self.index, 1)
 
     @property
     def lastCellAddress(self) -> CellAddress:
-        return CellIndex(self.index,Column.elementLimit)
-
-
+        return CellIndex(self.index, WorksheetConst.rowLimit)

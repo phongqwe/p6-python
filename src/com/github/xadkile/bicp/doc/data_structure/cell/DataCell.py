@@ -34,3 +34,12 @@ class DataCell(Cell):
 
     def isValueEqual(self, anotherCell):
         return self.value == anotherCell.value
+
+    def __eq__(self, other):
+        if isinstance(other,Cell):
+            sameValue = self.value == other.value
+            sameCode = self.code == other.code
+            sameAddress = self.address == other.address
+            return sameValue and sameCode and sameAddress
+        else:
+            return False

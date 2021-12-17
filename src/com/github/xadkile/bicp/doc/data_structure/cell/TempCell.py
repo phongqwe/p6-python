@@ -53,4 +53,3 @@ class TempCell(Cell):
         cellNotWritten = not self.__holder.hasCellAt(self.__pos)
         if cellNotWritten:
             self.__holder.addCell(self.__innerCell)
-            self.__cellWritten = True

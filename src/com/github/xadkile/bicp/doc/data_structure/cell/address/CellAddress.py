@@ -14,6 +14,9 @@ class CellAddress:
         pass
 
     def __eq__(self, o) -> bool:
-        sameRow = (self.rowIndex == o.rowIndex)
-        sameCol = (self.colIndex == o.colIndex)
-        return sameRow and sameCol
+        if isinstance(o, CellAddress):
+            sameRow = (self.rowIndex == o.rowIndex)
+            sameCol = (self.colIndex == o.colIndex)
+            return sameRow and sameCol
+        else:
+            return False

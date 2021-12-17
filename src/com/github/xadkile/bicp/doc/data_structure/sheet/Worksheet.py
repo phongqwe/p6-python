@@ -2,18 +2,23 @@ from typing import List
 
 from com.github.xadkile.bicp.doc.data_structure.cell.Cell import Cell
 from com.github.xadkile.bicp.doc.data_structure.cell.address.CellAddress import CellAddress
+from com.github.xadkile.bicp.doc.data_structure.cell.address.CellIndex import CellIndex
 from com.github.xadkile.bicp.doc.data_structure.cell_container.MutableCellContainer import MutableCellContainer
+from com.github.xadkile.bicp.doc.data_structure.column.Column import Column
 from com.github.xadkile.bicp.doc.data_structure.column.ColumnContainer import MutableColumnContainer
+from com.github.xadkile.bicp.doc.data_structure.column.TempColumn import TempColumn
 from com.github.xadkile.bicp.doc.data_structure.range.RangeAddress import RangeAddress
+from com.github.xadkile.bicp.doc.data_structure.sheet.WorksheetConst import WorksheetConst
 
 
 class Worksheet(MutableCellContainer, MutableColumnContainer):
-
     def __init__(self, colDict=None):
         if colDict is None:
             colDict = {}
         self.__colDict = colDict
+
     ### >> CellContainer << ###
+
     def hasCellAt(self, address: CellAddress) -> bool:
         if self.hasColumn(address.colIndex):
             return self.getCol(address.colIndex).hasCellAt(address)
@@ -21,7 +26,9 @@ class Worksheet(MutableCellContainer, MutableColumnContainer):
             return False
 
     def getCell(self, address: CellAddress) -> Cell:
-        return self.getCol(address.colIndex).getCell(address)
+        col = self.getCol(address.colIndex)
+        rt = col.getCell(address)
+        return rt
 
     def isEmpty(self) -> bool:
         return not bool(self.__colDict)
@@ -34,15 +41,38 @@ class Worksheet(MutableCellContainer, MutableColumnContainer):
 
     @property
     def cells(self) -> List[Cell]:
-        return super().cells()
+        rt = []
+        for k, v in self.__colDict:
+            rt.extend(v.cells())
+        return rt
 
     @property
     def rangeAddress(self) -> RangeAddress:
-        return super().rangeAddress()
+        return RangeAddress(
+            CellIndex(1, 1),
+            CellIndex(WorksheetConst.colLimit, WorksheetConst.rowLimit)
+        )
 
     ### >> MutableCellContainer << ###
+
     def addCell(self, cell: Cell):
         self.getCol(cell.col).addCell(cell)
 
     def removeCell(self, address: CellAddress):
         self.getCol(address.colIndex).removeCell(address)
+
+    ### >> MutableColumnContainer << ###
+
+    def setCol(self, index: int, col: Column):
+        self.__colDict[index] = col
+
+    ### >> ColumnContainer << ###
+
+    def hasColumn(self, colIndex: int) -> bool:
+        return colIndex in self.__colDict.keys()
+
+    def getCol(self, colIndex: int) -> Column:
+        if self.hasColumn(colIndex):
+            return self.__colDict[colIndex]
+        else:
+            return TempColumn(colIndex, self)

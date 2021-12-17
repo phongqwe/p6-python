@@ -2,8 +2,8 @@ from com.github.xadkile.bicp.doc.data_structure.cell_container.MutableCellContai
 from com.github.xadkile.bicp.doc.data_structure.range.Range import Range
 
 
-class Column(Range,MutableCellContainer):
-    elementLimit = 1_048_576
+class Column(Range, MutableCellContainer):
+
     def range(self, firstRow: int, lastRow: int) -> Range:
         """create a range from this colum"""
         pass

@@ -21,4 +21,4 @@ class CellIndex(CellAddress):
         return CellIndex(0, 0)
 
     def __str__(self):
-        return "CR({col}:{row})".format(col=self.__colIndex, row=self.__rowIndex)
+        return "C({col}:{row})".format(col=self.__colIndex, row=self.__rowIndex)

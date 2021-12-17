@@ -8,7 +8,7 @@ from com.github.xadkile.bicp.doc.data_structure.range.RangeAddress import RangeA
 
 
 class Range(CellContainer):
-    """ an immutable sub container of a bigger cell container"""
+    """ a sub container derived from bigger cell container """
 
     @property
     def firstCellAddress(self) -> CellAddress:
@@ -22,7 +22,3 @@ class Range(CellContainer):
         rowIsInRange = self.firstCellAddress.rowIndex <= address.rowIndex <= self.lastCellAddress.rowIndex
         colIsInRange = self.firstCellAddress.colIndex <= address.colIndex <= self.lastCellAddress.colIndex
         return rowIsInRange and colIsInRange
-
-    @property
-    def cells(self) -> List[Cell]:
-       pass

@@ -35,3 +35,11 @@ class RangeAddress:
     def __str__(self) -> str:
         return "[{fc}:{lc}]".format(fc=str(self.firstAddress), lc=str(self.lastAddress))
 
+    def __eq__(self, o: object) -> bool:
+        if isinstance(o,RangeAddress):
+            sameFirst = self.firstAddress == o.firstAddress
+            sameLast = self.lastAddress == o.lastAddress
+            return sameFirst and sameLast
+        else:
+            return False
+
