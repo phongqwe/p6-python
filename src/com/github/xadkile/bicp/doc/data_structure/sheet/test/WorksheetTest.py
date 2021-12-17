@@ -4,7 +4,7 @@ import unittest
 from com.github.xadkile.bicp.doc.data_structure.cell.DataCell import DataCell
 from com.github.xadkile.bicp.doc.data_structure.cell.address.CellIndex import CellIndex
 from com.github.xadkile.bicp.doc.data_structure.column.ColumnImp import ColumnImp
-from com.github.xadkile.bicp.doc.data_structure.sheet.Worksheet import Worksheet
+from com.github.xadkile.bicp.doc.data_structure.sheet.WorksheetImp import WorksheetImp
 
 
 class WorksheetTest(unittest.TestCase):
@@ -13,20 +13,20 @@ class WorksheetTest(unittest.TestCase):
         cell = DataCell(cellAddr, 123, "code")
         return cell,cellAddr
     def test_hasCellAt(self):
-        s = Worksheet()
+        s = WorksheetImp()
         self.assertFalse(s.hasCellAt(CellIndex(1,1)))
         s.addCell(DataCell(CellIndex(1,1),123,"code"))
         self.assertTrue(s.hasCellAt(CellIndex(1,1)))
 
     def test_getCell(self):
-        s = Worksheet()
+        s = WorksheetImp()
         cellAddr = CellIndex(12, 12)
         cell = DataCell(cellAddr, 123, "code")
         s.addCell(cell)
         self.assertEqual(cell,s.getCell(cellAddr))
 
     def test_isEmpty(self):
-        s = Worksheet()
+        s = WorksheetImp()
         self.assertTrue(s.isEmpty())
         cell,cellAddr = self.makeTestObj()
         s.addCell(cell)
@@ -35,7 +35,7 @@ class WorksheetTest(unittest.TestCase):
         self.assertTrue(s.isEmpty())
 
     def test_containAddress(self):
-        s = Worksheet()
+        s = WorksheetImp()
         cell, cellAddr = self.makeTestObj()
         self.assertFalse(s.containsAddress(cellAddr))
         s.addCell(cell)
@@ -46,7 +46,7 @@ class WorksheetTest(unittest.TestCase):
     def test_cells(self):
         cell1, cellAddr1 = self.makeTestObj()
         cell2, cellAddr2 = self.makeTestObj()
-        s=Worksheet()
+        s=WorksheetImp()
         s.addCell(cell1)
         s.addCell(cell2)
         self.assertEqual([cell1,cell2],s.cells)
@@ -54,7 +54,7 @@ class WorksheetTest(unittest.TestCase):
         self.assertEqual([cell2],s.cells)
 
     def test_columOperation(self):
-        s=Worksheet()
+        s=WorksheetImp()
         c = ColumnImp(1,{1:DataCell(CellIndex(1,1),123,"code")})
         self.assertFalse(s.hasColumn(c.index))
         s.setCol(c)
@@ -62,9 +62,11 @@ class WorksheetTest(unittest.TestCase):
         self.assertEqual(c,s.getCol(1))
         s.removeCol(c.index)
         self.assertTrue(s.isEmpty())
+    def test_range(self):
+        s=WorksheetImp()
 
     def test_getNonExistenceCell(self):
-        s = Worksheet()
+        s = WorksheetImp()
         c = s.getCell(CellIndex(1,1))
         self.assertIsNotNone(c)
         self.assertTrue(s.isEmpty())

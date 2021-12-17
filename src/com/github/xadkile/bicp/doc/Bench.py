@@ -1,6 +1,6 @@
 import unittest
-import ast
-from collections import namedtuple
+from collections import OrderedDict
+
 
 class A:
     def __init__(self,x):
@@ -13,9 +13,10 @@ class A2(A):
 class Bench(unittest.TestCase):
 
     def test_Cell(self):
-        a = A(123)
-        a2 = A2(123,456)
-        print(isinstance(a2,A2))
+        od = OrderedDict()
+        od[1]="1v"
+        od[2]="2v"
+
 
 
 
