@@ -11,7 +11,7 @@ from bicp_document_structure.sheet.WorksheetConst import WorksheetConst
 
 
 class WorksheetImp(Worksheet):
-    def __init__(self, colDict=None, name=""):
+    def __init__(self, name="",colDict=None):
         if colDict is None:
             colDict = {}
         self.__colDict = colDict
