@@ -35,3 +35,6 @@ class Cell:
 
     def isValueEqual(self, anotherCell):
         return self.value == anotherCell.value
+
+    def runCode(self, globalScope=None, localScope=None):
+        pass

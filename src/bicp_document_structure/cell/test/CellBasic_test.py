@@ -23,3 +23,8 @@ class CellBasicTest(unittest.TestCase):
         self.assertTrue(c2.isValueEqual(c2))
         self.assertFalse(c2.isValueEqual(c3))
         self.assertFalse(c3.isValueEqual(c2))
+
+    def test_runCode(self):
+        c1 = DataCell(CellIndex(1, 1), 123, "x=1;y=x*2+3;y")
+        c1.runCode(globals(),None)
+        self.assertEqual(5,c1.value)

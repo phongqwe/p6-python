@@ -1,16 +1,32 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from bicp_document_structure.cell.address.CellIndex import CellIndex
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+class A:
+    def __init__(self):
+        pass
+    def scope(self):
+        return globals()
+
+class B:
+    def __init__(self):
+        pass
+    def scope(self):
+        return globals()
+
+def main():
+    """
+    calling globals from different file produce different objects
+    so it is crucial that I give each cell the correct global scope
+
+    code executor require a global and local scope because: it may access global var (such as app, workbook). It needs to know where to get them.
+    :return:
+    """
+    a = A()
+    b = B()
+    c = CellIndex(1,1)
+    print(a.scope() == c.scope()) #False
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+if __name__ == "__main__":
+    main()
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/

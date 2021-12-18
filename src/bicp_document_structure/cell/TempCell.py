@@ -5,13 +5,12 @@ from bicp_document_structure.cell_container.MutableCellContainer import MutableC
 
 
 class TempCell(Cell):
-
     """
     act as a temporary cell returned by querying non-existing cell from a CellHolder.
     Only write object to the holder when the content of the temp cell is mutated.
     """
 
-    def __init__(self, holder: MutableCellContainer, address:CellAddress):
+    def __init__(self, holder: MutableCellContainer, address: CellAddress):
         self.__pos = address
         self.__colIndex = address.colIndex
         self.__rowIndex = address.rowIndex
@@ -22,9 +21,7 @@ class TempCell(Cell):
         else:
             self.__innerCell = DataCell(address)
 
-
     ### >> Cell << ###
-
 
     @property
     def value(self):
@@ -40,7 +37,7 @@ class TempCell(Cell):
         return self.__innerCell.code
 
     @code.setter
-    def code(self,newCode:str):
+    def code(self, newCode: str):
         self.__innerCell.code = newCode
         self.__writeCell()
 
@@ -48,8 +45,22 @@ class TempCell(Cell):
     def address(self) -> CellAddress:
         return self.__innerCell.address
 
-
     def __writeCell(self):
         cellNotWritten = not self.__holder.hasCellAt(self.__pos)
         if cellNotWritten:
             self.__holder.addCell(self.__innerCell)
+
+    @property
+    def row(self) -> int:
+        return self.__innerCell.row
+
+    @property
+    def col(self) -> int:
+        return self.__innerCell.col
+
+    def isValueEqual(self, anotherCell):
+        return self.__innerCell.isValueEqual(anotherCell)
+
+    def runCode(self, globalScope=None, localScope=None):
+        self.__innerCell.runCode(globalScope, localScope)
+        self.__writeCell()
