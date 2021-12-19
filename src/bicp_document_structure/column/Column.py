@@ -6,9 +6,9 @@ class Column(Range, MutableCellContainer):
 
     def range(self, firstRow: int, lastRow: int) -> Range:
         """create a range from this colum"""
-        pass
+        raise NotImplementedError()
 
     @property
     def index(self) -> int:
         """index of this column"""
-        pass
+        raise NotImplementedError()

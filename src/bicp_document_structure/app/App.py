@@ -7,22 +7,22 @@ class App:
 
     @property
     def activeWorkbook(self)->Optional[Workbook]:
-        pass
+        raise NotImplementedError()
 
     def getWorkbookByIndex(self,index:int)->Optional[Workbook]:
-        pass
+        raise NotImplementedError()
 
     def hasNoWorkbook(self)->bool:
-        pass
+        raise NotImplementedError()
 
     def setActiveWorkbook(self, indexOrName:Union[int,str]):
-        pass
+        raise NotImplementedError()
 
     def createNewWorkBook(self,name:str):
-        pass
+        raise NotImplementedError()
 
     def saveWorkbook(self,nameOrIndex:Union[int,str], filePath:str):
-        pass
+        raise NotImplementedError()
 
     def loadWorkbook(self,filePath:str)->bool:
-        pass
+        raise NotImplementedError()

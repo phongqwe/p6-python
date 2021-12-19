@@ -6,12 +6,12 @@ class CellAddress:
     @property
     def rowIndex(self) -> int:
         """ read-only row index """
-        pass
+        raise NotImplementedError()
 
     @property
     def colIndex(self) -> int:
         """ read-only col index """
-        pass
+        raise NotImplementedError()
 
     def __eq__(self, o) -> bool:
         if isinstance(o, CellAddress):

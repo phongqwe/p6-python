@@ -11,11 +11,11 @@ class WorkbookImp(Workbook):
 
     def __init__(self, name, sheetDict: OrderedDict = None):
         self.__name = name
+
         if sheetDict is None:
             sheetDict = ODict()
         else:
             typeCheck(sheetDict, "sheetDict", OrderedDict)
-
         self.__sheetDict = sheetDict
 
     @staticmethod
@@ -35,6 +35,11 @@ class WorkbookImp(Workbook):
         return rt
 
     ### >> Workbook << ###
+
+    @property
+    def activeSheet(self) -> Optional[Worksheet]:
+        raise NotImplementedError()
+
     def isEmpty(self) -> bool:
         return self.sheetCount == 0
 
@@ -86,13 +91,13 @@ class WorkbookImp(Workbook):
     def removeSheetByName(self, sheetName: str) -> Optional[Worksheet]:
         typeCheck(sheetName, "sheetName", str)
         if sheetName in self.__sheetDict.keys():
-            rt:Worksheet = self.__sheetDict[sheetName]
+            rt: Worksheet = self.__sheetDict[sheetName]
             del self.__sheetDict[sheetName]
             return rt
         else:
             return None
 
-    def removeSheetByIndex(self, index: int)->Optional[Worksheet]:
+    def removeSheetByIndex(self, index: int) -> Optional[Worksheet]:
         typeCheck(index, "index", int)
         if 0 <= index < len(self.__sheetDict):
             name: str = list(self.__sheetDict.items())[index][0]
@@ -100,10 +105,10 @@ class WorkbookImp(Workbook):
         else:
             return None
 
-    def removeSheet(self, nameOrIndex: Union[str, int])->Optional[Worksheet]:
+    def removeSheet(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
         if isinstance(nameOrIndex, str):
             return self.removeSheetByName(nameOrIndex)
-            
+
         if isinstance(nameOrIndex, int):
             return self.removeSheetByIndex(nameOrIndex)
         raise ValueError("nameOrIndex must either be a string or a number")

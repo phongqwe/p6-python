@@ -55,6 +55,8 @@ class DataCell(Cell):
     def col(self) -> int:
         return self.__addr.colIndex
 
-    def runCode(self, globalScope, localScope):
+    def runCode(self, globalScope, localScope=None):
+        if localScope is None:
+            localScope = {}
         codeResult = CodeExecutor.evalCode(self.code, globalScope, localScope)
         self.value = codeResult

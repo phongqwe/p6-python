@@ -5,19 +5,23 @@ from bicp_document_structure.sheet.Worksheet import Worksheet
 
 class Workbook:
 
+    @property
+    def activeSheet(self)->Optional[Worksheet]:
+        raise NotImplementedError()
+
     def getSheetByName(self,name:str)->Optional[Worksheet]:
         """
         :param name: sheet name
         :return: the sheet having that name or None if no such sheet exists
         """
-        pass
+        raise NotImplementedError()
 
     def getSheetByIndex(self,index:int)->Optional[Worksheet]:
         """
         :param index: index of a sheet
         :return: the sheet at that index, or None if no such sheet exists
         """
-        pass
+        raise NotImplementedError()
 
     def getSheet(self,nameOrIndex:Union[str,int])->Optional[Worksheet]:
         """
@@ -25,25 +29,25 @@ class Workbook:
         :param nameOrIndex: name or index
         :return: the sheet at that index/name, or None if no such sheet exists
         """
-        pass
+        raise NotImplementedError()
 
     def isEmpty(self)->bool:
         """
         :return: true if this workbook contains zero sheet
         """
-        pass
+        raise NotImplementedError()
 
     @property
     def sheetCount(self)->int:
-        pass
+        raise NotImplementedError()
 
     @property
     def name(self)->str:
-        pass
+        raise NotImplementedError()
 
     @name.setter
     def name(self,newName:str):
-        pass
+        raise NotImplementedError()
 
     def createNewSheet(self, newSheetName:str)->Worksheet:
         """
@@ -52,16 +56,16 @@ class Workbook:
         :return the new worksheet
         :raise ValueError if the newSheetName already exists
         """
-        pass
+        raise NotImplementedError()
 
     def removeSheetByName(self,sheetName:str)->Optional[Worksheet]:
         """ remove sheet by name. If the target sheet does not exist, simply return"""
-        pass
+        raise NotImplementedError()
 
     def removeSheetByIndex(self,index:int)->Optional[Worksheet]:
         """ remove sheet by index. If the target sheet does not exist, simply return"""
-        pass
+        raise NotImplementedError()
 
     def removeSheet(self,nameOrIndex:Union[str,int])->Optional[Worksheet]:
         """ remove sheet by either index or name. If the target sheet does not exist, simply return"""
-        pass
+        raise NotImplementedError()

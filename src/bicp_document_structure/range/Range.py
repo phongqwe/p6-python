@@ -7,11 +7,11 @@ class Range(CellContainer):
 
     @property
     def firstCellAddress(self) -> CellAddress:
-       pass
+       raise NotImplementedError()
 
     @property
     def lastCellAddress(self) -> CellAddress:
-        pass
+        raise NotImplementedError()
 
     def containsAddress(self, address: CellAddress) -> bool:
         rowIsInRange = self.firstCellAddress.rowIndex <= address.rowIndex <= self.lastCellAddress.rowIndex

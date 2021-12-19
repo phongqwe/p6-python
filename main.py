@@ -1,6 +1,3 @@
-from bicp_document_structure.cell.address.CellIndex import CellIndex
-
-
 class A:
     def __init__(self):
         pass
@@ -21,10 +18,12 @@ def main():
     code executor require a global and local scope because: it may access global var (such as app, workbook). It needs to know where to get them.
     :return:
     """
-    a = A()
-    b = B()
-    c = CellIndex(1,1)
-    print(a.scope() == c.scope()) #False
+    g1 = globals()
+    g2 = g1.copy()
+    g1.update({"p":"pp"})
+    print(g1["p"])
+    # print(g2["p"])
+    print(g1==g2)
 
 
 if __name__ == "__main__":

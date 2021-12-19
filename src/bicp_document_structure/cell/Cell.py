@@ -7,23 +7,23 @@ class Cell:
     """
     @property
     def value(self):
-        pass
+        raise NotImplementedError()
 
     @value.setter
     def value(self,newValue):
-        pass
+        raise NotImplementedError()
 
     @property
     def code(self)->str:
-        pass
+        raise NotImplementedError()
 
     @code.setter
     def code(self,newCode:str):
-        pass
+        raise NotImplementedError()
 
     @property
     def address(self)->CellAddress:
-        pass
+        raise NotImplementedError()
 
     @property
     def row(self) -> int:
@@ -36,5 +36,5 @@ class Cell:
     def isValueEqual(self, anotherCell):
         return self.value == anotherCell.value
 
-    def runCode(self, globalScope=None, localScope=None):
-        pass
+    def runCode(self, globalScope, localScope):
+        raise NotImplementedError()

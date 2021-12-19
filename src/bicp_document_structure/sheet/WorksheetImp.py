@@ -8,6 +8,7 @@ from bicp_document_structure.column.TempColumn import TempColumn
 from bicp_document_structure.range.RangeAddress import RangeAddress
 from bicp_document_structure.sheet.Worksheet import Worksheet
 from bicp_document_structure.sheet.WorksheetConst import WorksheetConst
+from bicp_document_structure.util.Util import typeCheck
 
 
 class WorksheetImp(Worksheet):
@@ -22,9 +23,19 @@ class WorksheetImp(Worksheet):
     def name(self) -> str:
         return self.__name
 
+    def isSameRangeAddress(self, other):
+        """
+        :raise ValueError of other is not a Worksheet
+        :param other: other Worksheet
+        :return: always return True because every worksheet has the same fixed range address
+        """
+        typeCheck(other,"other",Worksheet)
+        return True
+
     ### >> CellContainer << ###
 
     def hasCellAt(self, address: CellAddress) -> bool:
+        typeCheck(address,"address",CellAddress)
         if self.hasColumn(address.colIndex):
             return self.getCol(address.colIndex).hasCellAt(address)
         else:

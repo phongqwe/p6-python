@@ -8,8 +8,8 @@ class MutableCellContainer(CellContainer):
 
     def addCell(self, cell: Cell):
         """add a cell to this container"""
-        pass
+        raise NotImplementedError()
 
     def removeCell(self, address:CellAddress):
         """remove the cell at the specified position"""
-        pass
+        raise NotImplementedError()

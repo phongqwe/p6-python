@@ -7,7 +7,9 @@ from bicp_document_structure.workbook.WorkBook import Workbook
 
 
 class AppImp(App):
-    """app is a collection of workbooks"""
+    """app is a collection of workbooks
+    TODO implement later
+    """
 
     def __init__(self, workbookDict=None):
 
