@@ -123,4 +123,5 @@ class WorkbookImp(Workbook):
 
         if isinstance(nameOrIndex, int):
             return self.removeSheetByIndex(nameOrIndex)
+
         raise ValueError("nameOrIndex must either be a string or a number")
