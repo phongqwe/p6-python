@@ -1,7 +1,9 @@
+from abc import ABC
+
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 
 
-class Cell:
+class Cell(ABC):
     """
     Cell interface
     """

@@ -1,8 +1,10 @@
+from abc import ABC
+
 from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.workbook.WorkBook import Workbook
 
 
-class WorkbookSaver:
+class WorkbookSaver(ABC):
     """save a workbook to a file"""
 
     def save(self,worbook:Workbook, filePath:str)->Result:

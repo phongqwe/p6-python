@@ -1,8 +1,10 @@
+from abc import ABC
+
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell_container.CellContainer import CellContainer
 
 
-class Range(CellContainer):
+class Range(CellContainer,ABC):
     """ a sub container derived from bigger cell container """
 
     @property

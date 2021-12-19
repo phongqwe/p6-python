@@ -20,8 +20,8 @@ class DataCell(Cell):
     @value.setter
     def value(self, newValue):
         self.__value = newValue
-        # x: code must be erase when literal value is set
-        self.__code = ""
+        # # x: code must be erase when literal value is set
+        # self.__code = ""
 
     @property
     def code(self) -> str:

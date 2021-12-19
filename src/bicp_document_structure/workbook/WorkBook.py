@@ -1,12 +1,16 @@
+from abc import ABC
 from typing import Optional, Union
 
 from bicp_document_structure.sheet.Worksheet import Worksheet
 
 
-class Workbook:
+class Workbook(ABC):
 
     @property
     def activeSheet(self)->Optional[Worksheet]:
+        raise NotImplementedError()
+
+    def setActiveSheet(self, indexOrName):
         raise NotImplementedError()
 
     def getSheetByName(self,name:str)->Optional[Worksheet]:

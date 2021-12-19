@@ -1,3 +1,4 @@
+from abc import ABC
 from typing import List
 
 from bicp_document_structure.cell.Cell import Cell
@@ -5,7 +6,7 @@ from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.range.RangeAddress import RangeAddress
 
 
-class CellContainer:
+class CellContainer(ABC):
     """ an immutable cell container. A container support accessing Cells using CellAddress """
 
     def hasCellAt(self, address: CellAddress) -> bool:

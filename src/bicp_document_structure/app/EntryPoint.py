@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 
 from bicp_document_structure.app.App import App
 from bicp_document_structure.app.SingleBookApp import SingleBookApp
@@ -51,27 +51,18 @@ def getGlobals():
         g = {"app": getApp(), }
         gs = globals().copy()
         gs.update(g)
-        # gs["globalsX"] = gs
         __globals = gs
     return __globals
 
-"""
-what I want:
-i want a some function so that I can quickly access:
-    - the current workbook: activeWorkbook.
-    - the current worksheet of the current workbook: activeSheet()
-    - quickly access range from the active sheet like in excel: activeSheet.range(), or range()
-"""
-
-
 def activeWorkbook()->Optional[Workbook]:
-    """for this to work, I need to maintain an object that watch for workbook-change events"""
-    pass
+    return getApp().activeWorkbook
+
+def setActiveWorkbook(indexOrName):
+    getApp().setActiveWorkbook(indexOrName)
 
 def activeSheet()->Optional[Worksheet]:
-    """active sheet of the activeWorkbook"""
-    activeWb = activeWorkbook()
-    if activeWb is not None:
-        return activeWb.activeSheet
-    else:
-        return None
+    return activeWorkbook().activeSheet
+
+def setActiveSheet(indexOrName:Union[str,int]):
+    activeWorkbook().setActiveSheet(indexOrName)
+

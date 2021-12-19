@@ -102,3 +102,13 @@ class WorkbookImp_test(unittest.TestCase):
         with self.assertRaises(ValueError):
             w1.removeSheet(0.0)
 
+    def test_activeSheet(self):
+        s1, s2, s3, w1, sheetDict = self.makeTestObj()
+        self.assertEqual(s1,w1.activeSheet)
+        w1.setActiveSheet(1)
+        self.assertEqual(s2, w1.activeSheet)
+        w1.setActiveSheet(s3.name)
+        self.assertEqual(s3, w1.activeSheet)
+        with self.assertRaises(ValueError):
+            w1.setActiveSheet(100)
+        self.assertEqual(s3, w1.activeSheet)

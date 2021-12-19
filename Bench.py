@@ -6,6 +6,7 @@ def zsd():
     return 10
 class Bench(unittest.TestCase):
     def test_z(self):
-        pass
+        l = ["a","b","c"]
+        print(", ".join(l))
 
 

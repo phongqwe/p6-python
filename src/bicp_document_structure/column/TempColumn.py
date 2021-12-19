@@ -4,8 +4,8 @@ from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.TempCell import TempCell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.column.Column import Column
-from bicp_document_structure.column.ColumnContainer import MutableColumnContainer
 from bicp_document_structure.column.ColumnImp import ColumnImp
+from bicp_document_structure.column.MutableColumnContainer import MutableColumnContainer
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.RangeAddress import RangeAddress
 

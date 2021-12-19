@@ -30,14 +30,19 @@ class ColumnImpTest(unittest.TestCase):
         except:
             self.fail("shouldn't raise any exception")
 
-    def test_getNonExistingCellThenModify(self):
+    def test_getNonExistingCellThenModify_writeCellWhenSettingValue(self):
+        r = ColumnImp.empty(2)
+        pos = CellIndex(2, 1)
+        cell = r.getCell(pos)
+        cell.value = 123
+        self.assertEqual(123, r.getCell(pos).value)
+
+    def test_getNonExistingCellThenModify_writeCellWhenSettingCode(self):
         r = ColumnImp.empty(2)
         pos = CellIndex(2, 1)
         cell = r.getCell(pos)
         cell.code = "abc"
-        cell.value = 123
         self.assertEqual("abc", r.getCell(pos).code)
-        self.assertEqual(123, r.getCell(pos).value)
 
     def test_isEmpty(self):
         r = ColumnImp(1, {})

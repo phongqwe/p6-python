@@ -1,4 +1,7 @@
-class CellAddress:
+from abc import ABC
+
+
+class CellAddress(ABC):
     """
     an interface representing a position of a cell, including row and column index
     """

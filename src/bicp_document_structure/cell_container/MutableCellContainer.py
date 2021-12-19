@@ -1,9 +1,11 @@
+from abc import ABC
+
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell_container.CellContainer import CellContainer
 
 
-class MutableCellContainer(CellContainer):
+class MutableCellContainer(CellContainer,ABC):
     """ container of cells """
 
     def addCell(self, cell: Cell):

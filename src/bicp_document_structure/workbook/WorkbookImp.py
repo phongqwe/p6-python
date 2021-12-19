@@ -18,8 +18,13 @@ class WorkbookImp(Workbook):
             typeCheck(sheetDict, "sheetDict", OrderedDict)
         self.__sheetDict = sheetDict
 
+        self.__activeSheet = None
+        if self.sheetCount != 0:
+            self.__activeSheet = list(self.__sheetDict.values())[0]
+
     @staticmethod
     def fromSheets(wbName: str, sheetList: List[Worksheet]):
+        """create a workbook from a list of sheet"""
         sheetDict = ODict()
         for sheet in sheetList:
             sheetDict[sheet.name] = sheet
@@ -36,9 +41,16 @@ class WorkbookImp(Workbook):
 
     ### >> Workbook << ###
 
+    def setActiveSheet(self, indexOrName):
+        sheet = self.getSheet(indexOrName)
+        if sheet is not None:
+            self.__activeSheet = sheet
+        else:
+            raise ValueError("{n} is invalid workbook index or workbook".format(n=indexOrName))
+
     @property
     def activeSheet(self) -> Optional[Worksheet]:
-        raise NotImplementedError()
+        return self.__activeSheet
 
     def isEmpty(self) -> bool:
         return self.sheetCount == 0

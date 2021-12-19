@@ -9,6 +9,11 @@ class SingleBookApp(App):
 
     def __init__(self):
         self.__book = WorkbookImp("Book1")
+
+    @property
+    def activeSheet(self):
+        return self.activeWorkbook.activeSheet
+
     @property
     def activeWorkbook(self) -> Optional[Workbook]:
         return self.__book
@@ -30,3 +35,4 @@ class SingleBookApp(App):
 
     def loadWorkbook(self, filePath: str) -> bool:
         return False
+

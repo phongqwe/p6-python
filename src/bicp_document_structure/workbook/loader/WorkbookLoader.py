@@ -1,7 +1,9 @@
+from abc import ABC
+
 from bicp_document_structure.util.result.Result import Result
 
 
-class WorkbookLoader:
+class WorkbookLoader(ABC):
     """load a Workbook from a a file"""
     def load(self,filePath:str)->Result:
         """
