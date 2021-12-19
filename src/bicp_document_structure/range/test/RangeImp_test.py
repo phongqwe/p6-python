@@ -14,6 +14,8 @@ class RangeImpTest(unittest.TestCase):
         r = RangeImp(firstCell, lastCell, parent)
         return r, parent
 
+
+
     def test_constructor(self):
         parent = MagicMock()
         firstCell = CellIndex(1, 1)

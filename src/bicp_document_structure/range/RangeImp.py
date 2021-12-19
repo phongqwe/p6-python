@@ -5,7 +5,8 @@ from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell_container.MutableCellContainer import MutableCellContainer
 from bicp_document_structure.range.Range import Range
-from bicp_document_structure.range.RangeAddress import RangeAddress
+from bicp_document_structure.range.address.RangeAddress import RangeAddress
+from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
 
 
 class RangeImp(Range):
@@ -16,7 +17,7 @@ class RangeImp(Range):
 
         rangeIsValid = sourceContainer.containsAddress(firstCellAddress) and sourceContainer.containsAddress(
             lastCellAddress)
-        rAddress = RangeAddress(firstCellAddress, lastCellAddress)
+        rAddress = RangeAddressImp(firstCellAddress, lastCellAddress)
         if rangeIsValid:
             self.__rangeAddress = rAddress
             self.__firstCell = firstCellAddress
@@ -28,13 +29,18 @@ class RangeImp(Range):
             ))
 
     @staticmethod
-    def fromAddress(rangeAddress:RangeAddress,sourceContainer: MutableCellContainer)->Range:
-        return RangeImp(rangeAddress.firstAddress,rangeAddress.lastAddress,sourceContainer)
+    def fromRangeAddress(rangeAddress: RangeAddress, sourceContainer: MutableCellContainer) -> Range:
+        return RangeImp(rangeAddress.firstAddress, rangeAddress.lastAddress, sourceContainer)
 
     @staticmethod
-    def fromStrAddress(address:str,sourceContainer:MutableCellContainer)->Range:
+    def fromStrAddress(address: str, sourceContainer: MutableCellContainer) -> Range:
         raise NotImplementedError()
 
+    @staticmethod
+    def fromArbitraryCells(firstCellAddress: CellAddress, lastCellAddress: CellAddress,
+                           sourceContainer: MutableCellContainer):
+        rangeAddress = RangeAddressImp.fromArbitraryCells(firstCellAddress, lastCellAddress)
+        return RangeImp.fromRangeAddress(rangeAddress, sourceContainer)
 
     ### >> CellContainer << ###
 
@@ -54,7 +60,7 @@ class RangeImp(Range):
         return super().isEmpty()
 
     @property
-    def rangeAddress(self) -> RangeAddress:
+    def rangeAddress(self) -> RangeAddressImp:
         return self.__rangeAddress
 
     ### >> Range  << ###

@@ -6,8 +6,8 @@ from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.column.Column import Column
 from bicp_document_structure.range.Range import Range
-from bicp_document_structure.range.RangeAddress import RangeAddress
 from bicp_document_structure.range.RangeImp import RangeImp
+from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
 from bicp_document_structure.sheet.WorksheetConst import WorksheetConst
 
 
@@ -20,8 +20,8 @@ class ColumnImp(Column):
         if type(cellDict) is dict:
             self.__cellDict = cellDict
             self.__colIndex = colIndex
-            self.__rangeAddress = RangeAddress(CellIndex(self.__colIndex, 1),
-                                               CellIndex(self.__colIndex, WorksheetConst.rowLimit))
+            self.__rangeAddress = RangeAddressImp(CellIndex(self.__colIndex, 1),
+                                                  CellIndex(self.__colIndex, WorksheetConst.rowLimit))
         else:
             raise ValueError("cellDict must be a dict")
 
@@ -88,7 +88,7 @@ class ColumnImp(Column):
         return list(self.__cellDict.values())
 
     @property
-    def rangeAddress(self) -> RangeAddress:
+    def rangeAddress(self) -> RangeAddressImp:
         return self.__rangeAddress
 
     ### >> Range << ###

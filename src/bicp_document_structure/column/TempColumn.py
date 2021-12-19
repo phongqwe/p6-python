@@ -7,7 +7,7 @@ from bicp_document_structure.column.Column import Column
 from bicp_document_structure.column.ColumnImp import ColumnImp
 from bicp_document_structure.column.MutableColumnContainer import MutableColumnContainer
 from bicp_document_structure.range.Range import Range
-from bicp_document_structure.range.RangeAddress import RangeAddress
+from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
 
 
 class TempColumn(Column):
@@ -59,7 +59,7 @@ class TempColumn(Column):
         return self.__innerCol.isEmpty()
 
     @property
-    def rangeAddress(self) -> RangeAddress:
+    def rangeAddress(self) -> RangeAddressImp:
         return self.__innerCol.rangeAddress
 
     ### >> CellContainer << ###

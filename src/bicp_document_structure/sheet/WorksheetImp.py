@@ -6,8 +6,8 @@ from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.column.Column import Column
 from bicp_document_structure.column.TempColumn import TempColumn
 from bicp_document_structure.range.Range import Range
-from bicp_document_structure.range.RangeAddress import RangeAddress
 from bicp_document_structure.range.RangeImp import RangeImp
+from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
 from bicp_document_structure.sheet.Worksheet import Worksheet
 from bicp_document_structure.sheet.WorksheetConst import WorksheetConst
 from bicp_document_structure.util.Util import typeCheck
@@ -36,11 +36,11 @@ class WorksheetImp(Worksheet):
         if isinstance(address, CellAddress):
             return self.getCell(address)
 
-    def range(self, rangeAddress: Union[str, RangeAddress]) -> Range:
+    def range(self, rangeAddress: Union[str, RangeAddressImp]) -> Range:
         if isinstance(rangeAddress, str):
             raise NotImplementedError()
-        if isinstance(rangeAddress, RangeAddress):
-            return RangeImp.fromAddress(rangeAddress, self)
+        if isinstance(rangeAddress, RangeAddressImp):
+            return RangeImp.fromRangeAddress(rangeAddress, self)
 
     ### >> CellContainer << ###
 
@@ -82,8 +82,8 @@ class WorksheetImp(Worksheet):
         return rt
 
     @property
-    def rangeAddress(self) -> RangeAddress:
-        return RangeAddress(
+    def rangeAddress(self) -> RangeAddressImp:
+        return RangeAddressImp(
             CellIndex(1, 1),
             CellIndex(WorksheetConst.colLimit, WorksheetConst.rowLimit)
         )

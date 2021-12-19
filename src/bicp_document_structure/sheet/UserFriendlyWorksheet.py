@@ -4,7 +4,7 @@ from typing import Tuple, Union
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.range.Range import Range
-from bicp_document_structure.range.RangeAddress import RangeAddress
+from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
 
 
 class UserFriendlyWorksheet(ABC):
@@ -14,6 +14,6 @@ class UserFriendlyWorksheet(ABC):
         """get cell"""
         raise NotImplementedError()
 
-    def range(self, rangeAddress: Union[str, RangeAddress]) -> Range:
+    def range(self, rangeAddress: Union[str, RangeAddressImp]) -> Range:
         """get a range"""
         raise NotImplementedError()
