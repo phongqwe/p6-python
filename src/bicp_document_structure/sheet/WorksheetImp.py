@@ -1,27 +1,48 @@
-from typing import List
+from typing import List, Union, Tuple
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.column.Column import Column
 from bicp_document_structure.column.TempColumn import TempColumn
+from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.RangeAddress import RangeAddress
+from bicp_document_structure.range.RangeImp import RangeImp
 from bicp_document_structure.sheet.Worksheet import Worksheet
 from bicp_document_structure.sheet.WorksheetConst import WorksheetConst
 from bicp_document_structure.util.Util import typeCheck
 
 
 class WorksheetImp(Worksheet):
-    def __init__(self, name="",colDict=None):
+    def __init__(self, name="", colDict=None):
         if colDict is None:
             colDict = {}
         self.__colDict = colDict
         self.__name = name
 
     ### >> Worksheet << ###
+
     @property
     def name(self) -> str:
         return self.__name
+
+    ### >> UserFriendlyWorksheet << ###
+
+    def cell(self, address: Union[str, CellAddress, Tuple[int, int]]) -> Cell:
+        if isinstance(address, str):
+            raise NotImplementedError()
+        if isinstance(address, Tuple):
+            raise NotImplementedError()
+        if isinstance(address, CellAddress):
+            return self.getCell(address)
+
+    def range(self, rangeAddress: Union[str, RangeAddress]) -> Range:
+        if isinstance(rangeAddress, str):
+            raise NotImplementedError()
+        if isinstance(rangeAddress, RangeAddress):
+            return RangeImp.fromAddress(rangeAddress, self)
+
+    ### >> CellContainer << ###
 
     def isSameRangeAddress(self, other):
         """
@@ -29,13 +50,11 @@ class WorksheetImp(Worksheet):
         :param other: other Worksheet
         :return: always return True because every worksheet has the same fixed range address
         """
-        typeCheck(other,"other",Worksheet)
+        typeCheck(other, "other", Worksheet)
         return True
 
-    ### >> CellContainer << ###
-
     def hasCellAt(self, address: CellAddress) -> bool:
-        typeCheck(address,"address",CellAddress)
+        typeCheck(address, "address", CellAddress)
         if self.hasColumn(address.colIndex):
             return self.getCol(address.colIndex).hasCellAt(address)
         else:

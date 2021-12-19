@@ -25,14 +25,13 @@ class SingleBookApp(App):
         return False
 
     def setActiveWorkbook(self, indexOrName: Union[int, str]):
-        return
+        raise NotImplementedError()
 
     def createNewWorkBook(self, name: str):
-        return
+        raise NotImplementedError()
 
     def saveWorkbook(self, nameOrIndex: Union[int, str], filePath: str):
-        return
+        raise NotImplementedError()
 
     def loadWorkbook(self, filePath: str) -> bool:
-        return False
-
+        raise NotImplementedError()

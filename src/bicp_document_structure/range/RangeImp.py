@@ -27,6 +27,15 @@ class RangeImp(Range):
                 sc=str(sourceContainer.rangeAddress), r=str(rAddress)
             ))
 
+    @staticmethod
+    def fromAddress(rangeAddress:RangeAddress,sourceContainer: MutableCellContainer)->Range:
+        return RangeImp(rangeAddress.firstAddress,rangeAddress.lastAddress,sourceContainer)
+
+    @staticmethod
+    def fromStrAddress(address:str,sourceContainer:MutableCellContainer)->Range:
+        raise NotImplementedError()
+
+
     ### >> CellContainer << ###
 
     def hasCellAt(self, address: CellAddress) -> bool:
