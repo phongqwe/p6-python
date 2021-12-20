@@ -41,7 +41,7 @@ class WorkbookImp(Workbook):
 
     ### >> Workbook << ###
 
-    def setActiveSheet(self, indexOrName):
+    def setActiveSheet(self, indexOrName:Union[int, str]):
         sheet = self.getSheet(indexOrName)
         if sheet is not None:
             self.__activeSheet = sheet
