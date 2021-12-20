@@ -2,7 +2,7 @@ import unittest
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellIndex import CellIndex
-from bicp_document_structure.sheet.WorksheetImp import WorksheetImp
+from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 
 class TempCellTest(unittest.TestCase):

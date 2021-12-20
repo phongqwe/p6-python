@@ -64,3 +64,7 @@ class TempCell(Cell):
     def runCode(self, globalScope=None, localScope=None):
         self.__innerCell.runCode(globalScope, localScope)
         self.__writeCell()
+
+    def __eq__(self, o: object) -> bool:
+        return self.__innerCell.__eq__(o)
+

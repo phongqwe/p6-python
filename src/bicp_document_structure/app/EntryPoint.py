@@ -2,6 +2,7 @@ from typing import Optional, Union
 
 from bicp_document_structure.app.App import App
 from bicp_document_structure.app.SingleBookApp import SingleBookApp
+from bicp_document_structure.workbook.WorkBook import Workbook
 # class AppInit:
 #     __appInstance = None
 #     __globals = None
@@ -29,8 +30,7 @@ from bicp_document_structure.app.SingleBookApp import SingleBookApp
 #             # gs["globalsX"] = gs
 #             AppInit.__globals = gs
 #         return AppInit.__globals
-from bicp_document_structure.sheet.Worksheet import Worksheet
-from bicp_document_structure.workbook.WorkBook import Workbook
+from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 __appInstance = None
 __globals = None

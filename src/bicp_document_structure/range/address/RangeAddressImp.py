@@ -1,11 +1,14 @@
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.range.address.RangeAddress import RangeAddress
+from bicp_document_structure.util.Util import typeCheck
 
 
 class RangeAddressImp(RangeAddress):
 
     def __init__(self,firstAddress:CellAddress, lastAddress:CellAddress):
+        typeCheck(firstAddress,"firstAddress",CellAddress)
+        typeCheck(lastAddress,"lastAddress",CellAddress)
         self.__firstAddress = None
         self.__lastAddress = None
         rowOk = firstAddress.rowIndex <= lastAddress.rowIndex

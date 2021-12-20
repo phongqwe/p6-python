@@ -4,10 +4,41 @@ import unittest
 from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.column.ColumnImp import ColumnImp
-from bicp_document_structure.sheet.WorksheetImp import WorksheetImp
+from bicp_document_structure.range.RangeImp import RangeImp
+from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
+from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 
 class WorksheetTest(unittest.TestCase):
+
+    def test_cell(self):
+        s = WorksheetImp()
+        expect = DataCell(CellIndex(1, 2))
+
+        c1 = s.cell("A2")
+        self.assertEqual(expect, c1)
+
+        c2 = s.cell("a2")
+        self.assertEqual(expect, c2)
+
+        c3 = s.cell((1, 2))
+        self.assertEqual(expect, c3)
+
+    def test_range(self):
+        s = WorksheetImp()
+        ad1 = CellIndex(1, 1)  # A1
+        ad2 = CellIndex(20, 20)  # T20
+        expect = RangeImp(ad1, ad2, s)
+
+        r1 = s.range("A1:T20")
+        self.assertEqual(expect, r1)
+
+        r2 = s.range(RangeAddressImp(ad1, ad2))
+        self.assertEqual(expect, r2)
+
+        r3 = s.range((ad1, ad2))
+        self.assertEqual(expect, r3)
+
     def makeTestObj(self):
         cellAddr = CellIndex(random.randrange(1, 20), random.randrange(1, 20))
         cell = DataCell(cellAddr, 123, "code")

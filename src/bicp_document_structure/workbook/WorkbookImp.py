@@ -1,10 +1,10 @@
 from collections import OrderedDict as ODict
 from typing import List, Union, Optional, OrderedDict
 
-from bicp_document_structure.sheet.Worksheet import Worksheet
-from bicp_document_structure.sheet.WorksheetImp import WorksheetImp
 from bicp_document_structure.util.Util import typeCheck
 from bicp_document_structure.workbook.WorkBook import Workbook
+from bicp_document_structure.worksheet.Worksheet import Worksheet
+from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 
 class WorkbookImp(Workbook):

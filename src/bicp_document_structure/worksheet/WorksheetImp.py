@@ -3,14 +3,17 @@ from typing import List, Union, Tuple
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.address.CellIndex import CellIndex
+from bicp_document_structure.cell.address.CellLabel import CellLabel
 from bicp_document_structure.column.Column import Column
 from bicp_document_structure.column.TempColumn import TempColumn
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.RangeImp import RangeImp
+from bicp_document_structure.range.address.RangeAddress import RangeAddress
 from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
-from bicp_document_structure.sheet.Worksheet import Worksheet
-from bicp_document_structure.sheet.WorksheetConst import WorksheetConst
+from bicp_document_structure.range.address.RangeLabel import RangeLabel
 from bicp_document_structure.util.Util import typeCheck
+from bicp_document_structure.worksheet.Worksheet import Worksheet
+from bicp_document_structure.worksheet.WorksheetConst import WorksheetConst
 
 
 class WorksheetImp(Worksheet):
@@ -19,6 +22,9 @@ class WorksheetImp(Worksheet):
             colDict = {}
         self.__colDict = colDict
         self.__name = name
+
+
+
 
     ### >> Worksheet << ###
 
@@ -29,18 +35,24 @@ class WorksheetImp(Worksheet):
     ### >> UserFriendlyWorksheet << ###
 
     def cell(self, address: Union[str, CellAddress, Tuple[int, int]]) -> Cell:
+        parsedAddress = address
         if isinstance(address, str):
-            raise NotImplementedError()
+            parsedAddress = CellLabel(address)
         if isinstance(address, Tuple):
-            raise NotImplementedError()
-        if isinstance(address, CellAddress):
-            return self.getCell(address)
+            parsedAddress = CellIndex(address[0],address[1])
+        return self.getCell(parsedAddress)
 
-    def range(self, rangeAddress: Union[str, RangeAddressImp]) -> Range:
+    def range(self, rangeAddress: Union[str, RangeAddress,Tuple[CellAddress,CellAddress]]) -> Range:
+        parsedAddress = rangeAddress
         if isinstance(rangeAddress, str):
-            raise NotImplementedError()
-        if isinstance(rangeAddress, RangeAddressImp):
-            return RangeImp.fromRangeAddress(rangeAddress, self)
+            parsedAddress = RangeLabel(rangeAddress)
+
+        if isinstance(rangeAddress,Tuple):
+            ad1 = rangeAddress[0]
+            ad2 = rangeAddress[1]
+            parsedAddress = RangeAddressImp(ad1,ad2)
+
+        return RangeImp.fromRangeAddress(parsedAddress, self)
 
     ### >> CellContainer << ###
 

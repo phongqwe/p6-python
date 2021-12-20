@@ -8,7 +8,7 @@ from bicp_document_structure.column.Column import Column
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.RangeImp import RangeImp
 from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
-from bicp_document_structure.sheet.WorksheetConst import WorksheetConst
+from bicp_document_structure.worksheet.WorksheetConst import WorksheetConst
 
 
 class ColumnImp(Column):

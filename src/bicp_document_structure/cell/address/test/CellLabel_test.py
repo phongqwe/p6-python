@@ -11,7 +11,10 @@ class CellLabel_test(unittest.TestCase):
             "A1": CellIndex(1, 1),
             "B323": CellIndex(2, 323),
             "ABU96": CellIndex(749, 96),
-            "GG888": CellIndex(189, 888)
+            "GG888": CellIndex(189, 888),
+            "a1":CellIndex(1,1),
+            "b323": CellIndex(2, 323),
+            "abu96": CellIndex(749, 96),
         }
         for k,v in data.items():
             self.assertEqual(v, CellLabel(k))

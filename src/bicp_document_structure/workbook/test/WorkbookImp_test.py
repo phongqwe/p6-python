@@ -1,8 +1,8 @@
 import unittest
 from collections import OrderedDict
 
-from bicp_document_structure.sheet.WorksheetImp import WorksheetImp
 from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
+from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 
 class WorkbookImp_test(unittest.TestCase):

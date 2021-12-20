@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import Optional, Union
 
-from bicp_document_structure.sheet.Worksheet import Worksheet
+from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 
 class Workbook(ABC):
