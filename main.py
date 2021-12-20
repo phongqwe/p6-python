@@ -19,10 +19,9 @@ class B:
 
 
 def main():
-    z = B.__dict__
-    for k,v in z.items():
-        if isinstance(v,staticmethod):
-            print(k)
+    z="@abc"
+    print(z.startswith("@"))
+    print(z[1:])
 
 
 if __name__ == "__main__":

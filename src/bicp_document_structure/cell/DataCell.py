@@ -1,6 +1,7 @@
 from bicp_document_structure.app.GlobalScope import getGlobals
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
+from bicp_document_structure.cell.exception_displayer.ExceptionDisplayer import convertExceptionToStr
 from bicp_document_structure.code_executor.CodeExecutor import CodeExecutor
 
 
@@ -16,13 +17,23 @@ class DataCell(Cell):
 
     ### >> Cell << ###
 
+    def _bareValue(self):
+        return self.__value
+
+    @property
+    def displayValue(self) -> str:
+        if isinstance(self.value,Exception):
+            return convertExceptionToStr(self.__value)
+        else:
+            str(self.__value)
+
     @property
     def value(self):
         """
         get the value contained in this cell. If this cell contains code, the code will run and the updated value will be returned
         """
         if self.hasCode():
-            self.runCode(getGlobals(), locals())
+            self.runCode(getGlobals())
         return self.__value
 
     @value.setter
@@ -67,8 +78,10 @@ class DataCell(Cell):
 
         if globalScope is None:
             globalScope = getGlobals()
-
-        codeResult = CodeExecutor.evalCode(self.code, globalScope, localScope)
+        try:
+            codeResult = CodeExecutor.evalCode(self.code, globalScope, localScope)
+        except Exception as e:
+            codeResult = e
         self.value = codeResult
 
     def setCodeAndRun(self, newCode, globalScope=None, localScope=None):
@@ -76,4 +89,4 @@ class DataCell(Cell):
         self.runCode(globalScope, localScope)
 
     def hasCode(self) -> bool:
-        return len(self.__code) != 0
+        return self.__code is not None and len(self.__code) != 0

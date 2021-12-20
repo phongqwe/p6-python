@@ -1,28 +1,61 @@
+import re
+
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.util.AlphabetBaseNumberSystem import AlphabetBaseNumberSystem
-from bicp_document_structure.util.Util import typeCheck
+from bicp_document_structure.util.result.Err import Err
+from bicp_document_structure.util.result.Ok import Ok
+from bicp_document_structure.util.result.Result import Result
 
 
 class CellLabel(CellAddress):
-    def __init__(self,label:str):
+    __labelPattern = re.compile("@[A-Za-z]+[1-9][0-9]*")
+
+    def __init__(self, label: str):
         self.__label = label
         self.__indexAddress = CellLabel.__addressFromLabel(label)
 
     @staticmethod
     def __addressFromLabel(address: str) -> CellIndex:
-        typeCheck(address, "address", str)
-        col = ""
-        row = ""
-        for c in address:
-            if c.isnumeric():
-                row += c
-            else:
-                col += c
+        """
+        :param address: can be in form "@<cell_address>" such as "@A1"
+        :return:
+        """
+        checkResult = CellLabel.__checkCellAddressFormat(address)
+        if checkResult.isOk():
+            bareAddress = address[1:]
+            col = ""
+            row = ""
+            for c in bareAddress:
+                if c.isnumeric():
+                    row += c
+                else:
+                    col += c
+            colIndex = AlphabetBaseNumberSystem.translate(col)
+            rowIndex = int(row)
+            return CellIndex(colIndex, rowIndex)
+        else:
+            raise checkResult.err
 
-        colIndex = AlphabetBaseNumberSystem.translate(col)
-        rowIndex = int(row)
-        return CellIndex(colIndex, rowIndex)
+    @staticmethod
+    def __checkCellAddressFormat(address: str) -> Result:
+        """
+        check address format
+        :param address: must be like "@[A-Za-z]+[1-9][0-9]*" eg: "@A1", "@ABC123"
+        :return: Ok if address is legal, Err with an exception otherwise
+        """
+        if not isinstance(address, str):
+            return Err(ValueError("cell address must be a string."))
+        else:
+            if address.startswith("@"):
+                matchResult = CellLabel.__labelPattern.fullmatch(address)
+                if matchResult is not None:
+                    return Ok(None)
+                else:
+                    return Err(
+                        ValueError("Cell address \"{cdr}\" does not match the required pattern".format(cdr=address)))
+            else:
+                return Err(ValueError("Cell address must start with \"@\""))
 
     @property
     def rowIndex(self) -> int:

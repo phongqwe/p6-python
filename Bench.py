@@ -6,7 +6,10 @@ def zsd():
     return 10
 class Bench(unittest.TestCase):
     def test_z(self):
-        l = ["a","b","c"]
-        print(", ".join(l))
+        try:
+            raise ValueError("abc")
+        except Exception as e:
+            print(e)
+
 
 

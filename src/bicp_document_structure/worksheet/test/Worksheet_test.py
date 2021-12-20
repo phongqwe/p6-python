@@ -15,10 +15,10 @@ class WorksheetTest(unittest.TestCase):
         s = WorksheetImp()
         expect = DataCell(CellIndex(1, 2))
 
-        c1 = s.cell("A2")
+        c1 = s.cell("@A2")
         self.assertEqual(expect, c1)
 
-        c2 = s.cell("a2")
+        c2 = s.cell("@a2")
         self.assertEqual(expect, c2)
 
         c3 = s.cell((1, 2))
@@ -30,7 +30,7 @@ class WorksheetTest(unittest.TestCase):
         ad2 = CellIndex(20, 20)  # T20
         expect = RangeImp(ad1, ad2, s)
 
-        r1 = s.range("A1:T20")
+        r1 = s.range("@A1:T20")
         self.assertEqual(expect, r1)
 
         r2 = s.range(RangeAddressImp(ad1, ad2))
@@ -53,7 +53,7 @@ class WorksheetTest(unittest.TestCase):
     def test_getCell(self):
         s = WorksheetImp()
         cellAddr = CellIndex(12, 12)
-        cell = DataCell(cellAddr, 123, "code")
+        cell = DataCell(cellAddr)
         s.addCell(cell)
         self.assertEqual(cell, s.getCell(cellAddr))
 

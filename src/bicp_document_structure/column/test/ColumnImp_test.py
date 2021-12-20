@@ -52,7 +52,7 @@ class ColumnImpTest(unittest.TestCase):
 
     def test_addCell(self):
         r = ColumnImp.empty(5)
-        cell = DataCell(CellIndex(5, 1), 123, "code 1")
+        cell = DataCell(CellIndex(5, 1))
         r.addCell(cell)
         self.assertEqual(cell, r.getCell(CellIndex(5, 1)))
 

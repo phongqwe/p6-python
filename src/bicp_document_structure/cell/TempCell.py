@@ -21,12 +21,21 @@ class TempCell(Cell):
         else:
             self.__innerCell = DataCell(address)
 
+    def _bareValue(self):
+        return self.__innerCell._bareValue()
+
     ### >> Cell << ###
-    def setCodeAndRun(self, newCode, globalScope, localScope=None):
+
+    def setCodeAndRun(self, newCode, globalScope=None, localScope=None):
         self.__innerCell.setCodeAndRun(newCode, globalScope, localScope)
+        self.__writeCell()
 
     def hasCode(self) -> bool:
         return self.__innerCell.hasCode()
+
+    @property
+    def displayValue(self) -> str:
+        return self.__innerCell.displayValue
 
     @property
     def value(self):
