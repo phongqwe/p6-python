@@ -44,7 +44,7 @@ class RangeLabel(RangeAddress):
                     return Ok(None)
                 else:
                     return Err(
-                        ValueError("Range label \"{cdr}\" does not match the required pattern".format(cdr=label)))
+                        ValueError("Range label \"{cdr}\" does not match the required pattern: {pt}".format(cdr=label,pt=str(RangeLabel.__labelPattern.pattern))))
             else:
                 return Err(ValueError("Range label must start with \"@\""))
 

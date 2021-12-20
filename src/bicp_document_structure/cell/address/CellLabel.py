@@ -53,7 +53,10 @@ class CellLabel(CellAddress):
                     return Ok(None)
                 else:
                     return Err(
-                        ValueError("Cell address \"{cdr}\" does not match the required pattern".format(cdr=address)))
+                        ValueError(
+                            "Cell address \"{cdr}\" does not match the required pattern: {pt}".format(cdr=address,
+                                                                                                      pt=str(
+                                                                                                          CellLabel.__labelPattern.pattern))))
             else:
                 return Err(ValueError("Cell address must start with \"@\""))
 
