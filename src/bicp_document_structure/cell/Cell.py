@@ -38,5 +38,13 @@ class Cell(ABC):
     def isValueEqual(self, anotherCell):
         return self.value == anotherCell.value
 
-    def runCode(self, globalScope, localScope):
+    def runCode(self, globalScope=None, localScope=None):
+        raise NotImplementedError()
+
+    def setCodeAndRun(self,newCode,globalScope=None, localScope=None):
+        """set new code for this cell and execute it immediately"""
+        raise NotImplementedError()
+
+    def hasCode(self)->bool:
+        """:return True if this cell contain any code"""
         raise NotImplementedError()

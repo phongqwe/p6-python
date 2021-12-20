@@ -22,6 +22,11 @@ class TempCell(Cell):
             self.__innerCell = DataCell(address)
 
     ### >> Cell << ###
+    def setCodeAndRun(self, newCode, globalScope, localScope=None):
+        self.__innerCell.setCodeAndRun(newCode, globalScope, localScope)
+
+    def hasCode(self) -> bool:
+        return self.__innerCell.hasCode()
 
     @property
     def value(self):
@@ -67,4 +72,3 @@ class TempCell(Cell):
 
     def __eq__(self, o: object) -> bool:
         return self.__innerCell.__eq__(o)
-

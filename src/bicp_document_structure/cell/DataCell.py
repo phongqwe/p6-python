@@ -1,3 +1,4 @@
+from bicp_document_structure.app.GlobalScope import getGlobals
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.code_executor.CodeExecutor import CodeExecutor
@@ -13,15 +14,20 @@ class DataCell(Cell):
         self.__code: str = code
         self.__addr = address
 
+    ### >> Cell << ###
+
     @property
     def value(self):
+        """
+        get the value contained in this cell. If this cell contains code, the code will run and the updated value will be returned
+        """
+        if self.hasCode():
+            self.runCode(getGlobals(), locals())
         return self.__value
 
     @value.setter
     def value(self, newValue):
         self.__value = newValue
-        # # x: code must be erase when literal value is set
-        # self.__code = ""
 
     @property
     def code(self) -> str:
@@ -55,8 +61,19 @@ class DataCell(Cell):
     def col(self) -> int:
         return self.__addr.colIndex
 
-    def runCode(self, globalScope, localScope=None):
+    def runCode(self, globalScope=None, localScope=None):
         if localScope is None:
             localScope = {}
+
+        if globalScope is None:
+            globalScope = getGlobals()
+
         codeResult = CodeExecutor.evalCode(self.code, globalScope, localScope)
         self.value = codeResult
+
+    def setCodeAndRun(self, newCode, globalScope=None, localScope=None):
+        self.code = newCode
+        self.runCode(globalScope, localScope)
+
+    def hasCode(self) -> bool:
+        return len(self.__code) != 0

@@ -1,3 +1,6 @@
+from bicp_document_structure.app.Other import startApp, activeSheet, activeWorkbook
+
+
 class A:
     def __init__(self):
         pass
@@ -11,19 +14,17 @@ class B:
         return globals()
 
 def main():
-    """
-    calling globals from different file produce different objects
-    so it is crucial that I give each cell the correct global scope
-
-    code executor require a global and local scope because: it may access global var (such as app, workbook). It needs to know where to get them.
-    :return:
-    """
-    g1 = globals()
-    g2 = g1.copy()
-    g1.update({"p":"pp"})
-    print(g1["p"])
-    # print(g2["p"])
-    print(g1==g2)
+    # g = getGlobals()
+    startApp()
+    activeBook = activeWorkbook()
+    activeBook.createNewSheet("Sheet1")
+    activeBook.setActiveSheet("Sheet1")
+    sheet = activeSheet()
+    cell = sheet.cell((1,1))
+    cell.code = "x=1;x+10"
+    cell.runCode()
+    print(cell.value)
+    # print(g["__appInstances"])
 
 
 if __name__ == "__main__":
