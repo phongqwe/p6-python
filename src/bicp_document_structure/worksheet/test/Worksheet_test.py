@@ -69,11 +69,11 @@ class WorksheetTest(unittest.TestCase):
     def test_containAddress(self):
         s = WorksheetImp()
         cell, cellAddr = self.makeTestObj()
-        self.assertFalse(s.containsAddress(cellAddr))
+        self.assertTrue(s.containsAddress(cellAddr))
         s.addCell(cell)
         self.assertTrue(s.containsAddress(cellAddr))
         s.removeCell(cellAddr)
-        self.assertFalse(s.containsAddress(cellAddr))
+        self.assertTrue(s.containsAddress(cellAddr))
 
     def test_cells(self):
         cell1, cellAddr1 = self.makeTestObj()

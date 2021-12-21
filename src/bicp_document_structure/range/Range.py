@@ -1,10 +1,11 @@
 from abc import ABC
 
 from bicp_document_structure.cell.address.CellAddress import CellAddress
+from bicp_document_structure.cell_container.MutableCellContainer import MutableCellContainer
 from bicp_document_structure.cell_container.UserFriendlyCellContainer import UserFriendlyCellContainer
 
 
-class Range(UserFriendlyCellContainer,ABC):
+class Range(UserFriendlyCellContainer,MutableCellContainer,ABC):
     """ a sub container derived from bigger cell container """
 
     @property

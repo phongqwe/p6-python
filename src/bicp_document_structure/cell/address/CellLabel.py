@@ -72,4 +72,4 @@ class CellLabel(CellAddress):
         return self.__indexAddress.__eq__(o)
 
     def __str__(self):
-        return self.__label
+        return self.__label[1:]

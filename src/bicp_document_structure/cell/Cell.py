@@ -10,6 +10,15 @@ class Cell(ABC):
     """
 
     @property
+    def numericValue(self)->float:
+        return float(self.value)
+
+    @property
+    def strValue(self)->str:
+        return str(self.value)
+
+
+    @property
     def displayValue(self)->str:
         """string representation of the object stored in this cell"""
         raise NotImplementedError()
