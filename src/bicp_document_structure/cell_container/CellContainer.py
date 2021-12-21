@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import List
+from typing import List, Optional
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
@@ -16,7 +16,7 @@ class CellContainer(ABC):
         """
         raise NotImplementedError()
 
-    def getCell(self, address: CellAddress) -> Cell:
+    def getCell(self, address: CellAddress) -> Optional[Cell]:
         """
         get cell at an address. If such cell does not exist, return a TempCell
         :return the cell at the position

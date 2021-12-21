@@ -62,7 +62,7 @@ class RangeImpTest(unittest.TestCase):
         c2 = CellIndex(100, 100)
         self.assertFalse(r.hasCellAt(c2))
 
-    def test_getCell(self):
+    def test_getOrMakeCell(self):
         r, parent = self.makeTestObj()
         ad1 = CellIndex(2, 2)
 
@@ -74,7 +74,7 @@ class RangeImpTest(unittest.TestCase):
                 return None
 
         parent.getCell.side_effect = se
-        self.assertIsNotNone(r.getCell(ad1))
+        self.assertIsNotNone(r.getOrMakeCell(ad1))
 
         # get cell NOT exist in parent container
         def se2(a):
@@ -84,12 +84,12 @@ class RangeImpTest(unittest.TestCase):
                 return 123
 
         parent.getCell.side_effect = se2
-        with self.assertRaises(LookupError):
-            r.getCell(ad1)
+        # with self.assertRaises(LookupError):
+        #     r.getOrMakeCell(ad1)
 
         # get cell out of range
         with self.assertRaises(ValueError):
-            r.getCell(CellIndex(100, 100))
+            r.getOrMakeCell(CellIndex(100, 100))
 
     def test_cells(self):
         r,parent = self.makeTestObj()

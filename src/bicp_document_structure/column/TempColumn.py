@@ -49,9 +49,9 @@ class TempColumn(Column):
     def hasCellAt(self, address: CellAddress) -> bool:
         return self.__innerCol.hasCellAt(address)
 
-    def getCell(self, address: CellAddress) -> Cell:
+    def getOrMakeCell(self, address: CellAddress) -> Cell:
         if self.hasCellAt(address):
-            return self.__innerCol.getCell(address)
+            return self.__innerCol.getOrMakeCell(address)
         else:
             return TempCell(self, address)
 

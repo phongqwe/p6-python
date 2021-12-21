@@ -55,7 +55,7 @@ class WorksheetTest(unittest.TestCase):
         cellAddr = CellIndex(12, 12)
         cell = DataCell(cellAddr)
         s.addCell(cell)
-        self.assertEqual(cell, s.getCell(cellAddr))
+        self.assertEqual(cell, s.getOrMakeCell(cellAddr))
 
     def test_isEmpty(self):
         s = WorksheetImp()
@@ -100,14 +100,14 @@ class WorksheetTest(unittest.TestCase):
 
     def test_getNonExistenceCell(self):
         s = WorksheetImp()
-        c = s.getCell(CellIndex(1, 1))
+        c = s.getOrMakeCell(CellIndex(1, 1))
         self.assertIsNotNone(c)
         self.assertTrue(s.isEmpty())
         c.code = "z"
         self.assertFalse(s.isEmpty())
 
         c2Addr = CellIndex(1, 2)
-        c2 = s.getCell(c2Addr)
+        c2 = s.getOrMakeCell(c2Addr)
         self.assertFalse(s.hasCellAt(c2Addr))
         c2.value = 123
         self.assertTrue(s.hasCellAt(c2Addr))

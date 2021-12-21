@@ -1,4 +1,4 @@
-from typing import List, Union, Tuple
+from typing import List, Union, Tuple, Optional
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
@@ -40,7 +40,7 @@ class WorksheetImp(Worksheet):
             parsedAddress = CellLabel(address)
         if isinstance(address, Tuple):
             parsedAddress = CellIndex(address[0],address[1])
-        return self.getCell(parsedAddress)
+        return self.getOrMakeCell(parsedAddress)
 
     def range(self, rangeAddress: Union[str, RangeAddress,Tuple[CellAddress,CellAddress]]) -> Range:
         parsedAddress = rangeAddress
@@ -65,17 +65,17 @@ class WorksheetImp(Worksheet):
         typeCheck(other, "other", Worksheet)
         return True
 
+    def getCell(self, address: CellAddress) -> Optional[Cell]:
+        col = self.getCol(address.colIndex)
+        rt = col.getCell(address)
+        return rt
+
     def hasCellAt(self, address: CellAddress) -> bool:
         typeCheck(address, "address", CellAddress)
         if self.hasColumn(address.colIndex):
             return self.getCol(address.colIndex).hasCellAt(address)
         else:
             return False
-
-    def getCell(self, address: CellAddress) -> Cell:
-        col = self.getCol(address.colIndex)
-        rt = col.getCell(address)
-        return rt
 
     def isEmpty(self) -> bool:
         return not bool(self.__colDict)
@@ -101,6 +101,11 @@ class WorksheetImp(Worksheet):
         )
 
     ### >> MutableCellContainer << ###
+
+    def getOrMakeCell(self, address: CellAddress) -> Cell:
+        col = self.getCol(address.colIndex)
+        rt = col.getOrMakeCell(address)
+        return rt
 
     def addCell(self, cell: Cell):
         self.getCol(cell.col).addCell(cell)

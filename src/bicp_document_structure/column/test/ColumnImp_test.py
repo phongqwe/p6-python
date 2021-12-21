@@ -24,7 +24,7 @@ class ColumnImpTest(unittest.TestCase):
         d = {}
         r = ColumnImp(1, d)
         try:
-            cell = r.getCell(CellIndex(1, 2))
+            cell = r.getOrMakeCell(CellIndex(1, 2))
             self.assertIsNotNone(cell)
             self.assertTrue(len(d) == 0)
         except:
@@ -33,32 +33,32 @@ class ColumnImpTest(unittest.TestCase):
     def test_getNonExistingCellThenModify_writeCellWhenSettingValue(self):
         r = ColumnImp.empty(2)
         pos = CellIndex(2, 1)
-        cell = r.getCell(pos)
+        cell = r.getOrMakeCell(pos)
         cell.value = 123
-        self.assertEqual(123, r.getCell(pos).value)
+        self.assertEqual(123, r.getOrMakeCell(pos).value)
 
     def test_getNonExistingCellThenModify_writeCellWhenSettingCode(self):
         r = ColumnImp.empty(2)
         pos = CellIndex(2, 1)
-        cell = r.getCell(pos)
+        cell = r.getOrMakeCell(pos)
         cell.code = "abc"
-        self.assertEqual("abc", r.getCell(pos).code)
+        self.assertEqual("abc", r.getOrMakeCell(pos).code)
 
     def test_isEmpty(self):
         r = ColumnImp(1, {})
         self.assertTrue(r.isEmpty())
-        r.getCell(CellIndex(1, 2))
+        r.getOrMakeCell(CellIndex(1, 2))
         self.assertTrue(r.isEmpty())
 
     def test_addCell(self):
         r = ColumnImp.empty(5)
         cell = DataCell(CellIndex(5, 1))
         r.addCell(cell)
-        self.assertEqual(cell, r.getCell(CellIndex(5, 1)))
+        self.assertEqual(cell, r.getOrMakeCell(CellIndex(5, 1)))
 
     def test_addCell_fail(self):
         with self.assertRaises(ValueError):
             r = ColumnImp.empty(5)
             cell = DataCell(CellIndex(1, 1), 123, "code 1")
             r.addCell(cell)
-            self.assertEqual(cell, r.getCell(CellIndex(5, 1)))
+            self.assertEqual(cell, r.getOrMakeCell(CellIndex(5, 1)))

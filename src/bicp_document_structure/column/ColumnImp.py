@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.TempCell import TempCell
@@ -65,6 +65,8 @@ class ColumnImp(Column):
     def removeCell(self, address: CellAddress):
         del self.__cellDict[address.rowIndex]
 
+
+
     ### >> CellContainer << ###
 
     def hasCellAt(self, address: CellAddress):
@@ -72,7 +74,16 @@ class ColumnImp(Column):
         colIsMatched = address.colIndex == self.__colIndex
         return colIsMatched and rowIsMatched
 
-    def getCell(self, address: CellAddress) -> Cell:
+    def getCell(self, address: CellAddress) -> Optional[Cell]:
+        if self.hasCellAt(address):
+            return self.__cellDict[address.rowIndex]
+        else:
+            return None
+
+    def isSameRangeAddress(self, other):
+        return super().isSameRangeAddress(other)
+
+    def getOrMakeCell(self, address: CellAddress) -> Cell:
         """
         :param address: cell position
         :return: either the cell at the input position or a TempCell with the same position if there aren't any cell at that position

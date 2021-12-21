@@ -13,12 +13,12 @@ class TempCellTest(unittest.TestCase):
         address = CellIndex(1,1)
 
         # this is a TempCell
-        c:Cell = s.getCell(address)
+        c:Cell = s.getOrMakeCell(address)
         self.assertTrue(s.isEmpty())
 
         c.code = code
         self.assertFalse(s.isEmpty())
-        anotherC = s.getCell(address)
+        anotherC = s.getOrMakeCell(address)
         self.assertEqual(code,c.code)
         self.assertEqual(code,anotherC.code)
 

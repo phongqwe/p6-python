@@ -15,3 +15,10 @@ class MutableCellContainer(CellContainer,ABC):
     def removeCell(self, address:CellAddress):
         """remove the cell at the specified position"""
         raise NotImplementedError()
+
+    def getOrMakeCell(self, address: CellAddress) -> Cell:
+        """
+        get cell at an address. If such cell does not exist, return a TempCell
+        :return the cell at the position
+        """
+        raise NotImplementedError()

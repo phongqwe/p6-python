@@ -18,7 +18,7 @@ class TempCell(Cell):
         self.__holder = holder
         self.__innerCell = None
         if holder.hasCellAt(address):
-            self.__innerCell = holder.getCell(address)
+            self.__innerCell = holder.getOrMakeCell(address)
         else:
             self.__innerCell = DataCell(address)
 

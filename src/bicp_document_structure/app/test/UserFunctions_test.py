@@ -7,7 +7,6 @@ class UserFunctions_test(unittest.TestCase):
     def test_onGlobalScope(self):
         startApp()
         activeBook = getActiveWorkbook()
-        activeBook.createNewSheet("Sheet1")
         activeBook.setActiveSheet("Sheet1")
         sheet = getActiveSheet()
         cellA1_1 = sheet.cell((1, 1)) #A1

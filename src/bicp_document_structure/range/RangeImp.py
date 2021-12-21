@@ -1,5 +1,5 @@
 import copy
-from typing import List
+from typing import List, Optional
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
@@ -50,11 +50,14 @@ class RangeImp(Range):
         else:
             return False
 
-    def getCell(self, address: CellAddress) -> Cell:
+    def getCell(self, address: CellAddress) -> Optional[Cell]:
         if self.containsAddress(address):
             return self.__sourceContainer.getCell(address)
         else:
             raise ValueError("cell {cd} is not in range {rd}".format(cd=str(address), rd=str(self.rangeAddress)))
+
+    def isSameRangeAddress(self, other):
+        return super().isSameRangeAddress(other)
 
     def isEmpty(self) -> bool:
         return super().isEmpty()
@@ -64,6 +67,9 @@ class RangeImp(Range):
         return self.__rangeAddress
 
     ### >> Range  << ###
+
+    def containsAddress(self, address: CellAddress) -> bool:
+        return super().containsAddress(address)
 
     @property
     def firstCellAddress(self) -> CellAddress:
@@ -82,3 +88,25 @@ class RangeImp(Range):
 
         rt = list(filter(filterFunction, allCells))
         return rt
+
+    ### >> MutableCellContainer << ###
+
+    def getOrMakeCell(self, address: CellAddress) -> Cell:
+        if self.containsAddress(address):
+            return self.__sourceContainer.getOrMakeCell(address)
+        else:
+            raise ValueError("cell {cd} is not in range {rd}".format(cd=str(address), rd=str(self.rangeAddress)))
+
+    def addCell(self, cell: Cell):
+        if self.containsAddress(cell.address):
+            self.__sourceContainer.addCell(cell)
+        else:
+            raise ValueError(
+                "Cannot add cell {cd} into range {rd}".format(cd=str(cell.address), rd=str(self.rangeAddress)))
+
+    def removeCell(self, address: CellAddress):
+        if self.containsAddress(address):
+            self.__sourceContainer.removeCell(address)
+        else:
+            raise ValueError(
+                "Cannot remove cell {cd} from range {rd}".format(cd=str(address), rd=str(self.rangeAddress)))
