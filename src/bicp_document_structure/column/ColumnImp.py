@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Union, Tuple
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.TempCell import TempCell
@@ -9,6 +9,7 @@ from bicp_document_structure.column.ColumnJson import ColumnJson
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.RangeImp import RangeImp
 from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
+from bicp_document_structure.util.AddressParser import AddressParser
 from bicp_document_structure.worksheet.WorksheetConst import WorksheetConst
 
 
@@ -36,7 +37,7 @@ class ColumnImp(Column):
     def toJson(self) -> ColumnJson:
         return ColumnJson(
             colIndex=self.index,
-            cells = self.cells
+            cells=self.cells
         )
 
     @property
@@ -65,7 +66,15 @@ class ColumnImp(Column):
     def removeCell(self, address: CellAddress):
         del self.__cellDict[address.rowIndex]
 
-
+    def getOrMakeCell(self, address: CellAddress) -> Cell:
+        """
+        :param address: cell position
+        :return: either the cell at the input position or a TempCell with the same position if there aren't any cell at that position
+        """
+        if self.hasCellAt(address):
+            return self.__cellDict[address.rowIndex]
+        else:
+            return TempCell(self, address)
 
     ### >> CellContainer << ###
 
@@ -82,16 +91,6 @@ class ColumnImp(Column):
 
     def isSameRangeAddress(self, other):
         return super().isSameRangeAddress(other)
-
-    def getOrMakeCell(self, address: CellAddress) -> Cell:
-        """
-        :param address: cell position
-        :return: either the cell at the input position or a TempCell with the same position if there aren't any cell at that position
-        """
-        if self.hasCellAt(address):
-            return self.__cellDict[address.rowIndex]
-        else:
-            return TempCell(self, address)
 
     def isEmpty(self):
         return not bool(self.__cellDict)
@@ -118,3 +117,9 @@ class ColumnImp(Column):
     @property
     def lastCellAddress(self) -> CellAddress:
         return CellIndex(self.index, WorksheetConst.rowLimit)
+
+    ### >> UserFriendlyCellContainer << ###
+
+    def cell(self, address: Union[str, CellAddress, Tuple[int, int]]) -> Cell:
+        parsedAddress = AddressParser.parseCellAddress(address)
+        return self.getOrMakeCell(parsedAddress)

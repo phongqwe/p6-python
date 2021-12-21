@@ -1,5 +1,5 @@
 import copy
-from typing import List, Optional
+from typing import List, Optional, Union, Tuple
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
@@ -41,6 +41,11 @@ class RangeImp(Range):
                            sourceContainer: MutableCellContainer):
         rangeAddress = RangeAddressImp.fromArbitraryCells(firstCellAddress, lastCellAddress)
         return RangeImp.fromRangeAddress(rangeAddress, sourceContainer)
+
+    ### >> UserFriendlyCellContainer << ###
+
+    def cell(self, address: Union[str, CellAddress, Tuple[int, int]]) -> Cell:
+        return super().cell(address)
 
     ### >> CellContainer << ###
 

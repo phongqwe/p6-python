@@ -1,10 +1,11 @@
-from typing import List
+from typing import List, Union, Tuple, Optional
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.TempCell import TempCell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.column.Column import Column
 from bicp_document_structure.column.ColumnImp import ColumnImp
+from bicp_document_structure.column.ColumnJson import ColumnJson
 from bicp_document_structure.column.MutableColumnContainer import MutableColumnContainer
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
@@ -26,6 +27,9 @@ class TempColumn(Column):
     @property
     def index(self) -> int:
         return self.__innerCol.index
+
+    def toJson(self) -> ColumnJson:
+        return self.__innerCol.toJson()
 
     ### >> Range << ###
 
@@ -72,3 +76,20 @@ class TempColumn(Column):
 
     def removeCell(self, address: CellAddress):
         self.__innerCol.removeCell(address)
+
+    def getCell(self, address: CellAddress) -> Optional[Cell]:
+        return self.__innerCol.getCell(address)
+
+    def isSameRangeAddress(self, other):
+        return self.__innerCol.isSameRangeAddress(other)
+
+    ### >> UserFriendCellContainer << ##
+    def cell(self, address: Union[str, CellAddress, Tuple[int, int]]) -> Cell:
+        return self.__innerCol.cell(address)
+
+
+
+
+
+
+

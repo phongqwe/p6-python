@@ -1,11 +1,12 @@
 from abc import ABC
 
 from bicp_document_structure.cell_container.MutableCellContainer import MutableCellContainer
+from bicp_document_structure.cell_container.UserFriendlyCellContainer import UserFriendlyCellContainer
 from bicp_document_structure.column.ColumnJson import ColumnJson
 from bicp_document_structure.range.Range import Range
 
 
-class Column(Range, MutableCellContainer, ABC):
+class Column(Range, MutableCellContainer, UserFriendlyCellContainer, ABC):
 
     def range(self, firstRow: int, lastRow: int) -> Range:
         """create a range from this colum"""
