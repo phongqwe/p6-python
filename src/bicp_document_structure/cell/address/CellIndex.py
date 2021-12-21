@@ -22,6 +22,3 @@ class CellIndex(CellAddress):
 
     def __str__(self):
         return "C({col}:{row})".format(col=self.__colIndex, row=self.__rowIndex)
-
-    def scope(self):
-        return globals()

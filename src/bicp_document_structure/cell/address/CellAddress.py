@@ -1,4 +1,5 @@
 from abc import ABC
+from typing import Tuple
 
 
 class CellAddress(ABC):
@@ -23,3 +24,7 @@ class CellAddress(ABC):
             return sameRow and sameCol
         else:
             return False
+
+    def toJson(self) -> Tuple[int, int]:
+        """return a tuple of coordinate (col, row)"""
+        return self.colIndex, self.rowIndex

@@ -1,5 +1,6 @@
 from bicp_document_structure.app.GlobalScope import getGlobals
 from bicp_document_structure.cell.Cell import Cell
+from bicp_document_structure.cell.CellJson import CellJson
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.exception_displayer.ExceptionDisplayer import convertExceptionToStr
 from bicp_document_structure.code_executor.CodeExecutor import CodeExecutor
@@ -13,16 +14,23 @@ class DataCell(Cell):
     def __init__(self, address: CellAddress, value=None, code: str = ""):
         self.__value = value
         self.__code: str = code
-        self.__addr = address
+        self.__addr:CellAddress = address
+
 
     ### >> Cell << ###
+    def toJson(self) -> CellJson:
+        return CellJson(
+            value=str(self.value),
+            code=self.code,
+            address=self.__addr.toJson(),
+        )
 
     def _bareValue(self):
         return self.__value
 
     @property
     def displayValue(self) -> str:
-        if isinstance(self.value,Exception):
+        if isinstance(self.value, Exception):
             return convertExceptionToStr(self.__value)
         else:
             str(self.__value)

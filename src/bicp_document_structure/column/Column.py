@@ -1,6 +1,7 @@
 from abc import ABC
 
 from bicp_document_structure.cell_container.MutableCellContainer import MutableCellContainer
+from bicp_document_structure.column.ColumnJson import ColumnJson
 from bicp_document_structure.range.Range import Range
 
 
@@ -13,4 +14,8 @@ class Column(Range, MutableCellContainer, ABC):
     @property
     def index(self) -> int:
         """index of this column"""
+        raise NotImplementedError()
+
+    def toJson(self)->ColumnJson:
+        """create a json facade of this column"""
         raise NotImplementedError()

@@ -5,6 +5,7 @@ from bicp_document_structure.cell.TempCell import TempCell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.column.Column import Column
+from bicp_document_structure.column.ColumnJson import ColumnJson
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.RangeImp import RangeImp
 from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
@@ -31,6 +32,12 @@ class ColumnImp(Column):
         return ColumnImp(colIndex, {})
 
     ### >> Column << ###
+
+    def toJson(self) -> ColumnJson:
+        return ColumnJson(
+            colIndex=self.index,
+            cells = self.cells
+        )
 
     @property
     def index(self) -> int:

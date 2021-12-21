@@ -1,5 +1,6 @@
 from abc import ABC
 
+from bicp_document_structure.cell.CellJson import CellJson
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 
 
@@ -60,4 +61,7 @@ class Cell(ABC):
 
     def hasCode(self)->bool:
         """:return True if this cell contain any code"""
+        raise NotImplementedError()
+
+    def toJson(self)->CellJson:
         raise NotImplementedError()

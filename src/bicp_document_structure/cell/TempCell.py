@@ -1,4 +1,5 @@
 from bicp_document_structure.cell.Cell import Cell
+from bicp_document_structure.cell.CellJson import CellJson
 from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell_container.MutableCellContainer import MutableCellContainer
@@ -21,10 +22,13 @@ class TempCell(Cell):
         else:
             self.__innerCell = DataCell(address)
 
+    ### >> Cell << ###
+
+    def toJson(self) -> CellJson:
+        return self.__innerCell.toJson()
+
     def _bareValue(self):
         return self.__innerCell._bareValue()
-
-    ### >> Cell << ###
 
     def setCodeAndRun(self, newCode, globalScope=None, localScope=None):
         self.__innerCell.setCodeAndRun(newCode, globalScope, localScope)
