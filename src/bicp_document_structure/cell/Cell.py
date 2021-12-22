@@ -10,23 +10,22 @@ class Cell(ABC):
     """
 
     @property
-    def intValue(self)->int:
+    def intValue(self) -> int:
         """get cell value as int"""
         return int(self.value)
 
     @property
-    def floatValue(self)->float:
+    def floatValue(self) -> float:
         """get cell value as float"""
         return float(self.value)
 
     @property
-    def strValue(self)->str:
+    def strValue(self) -> str:
         """get cell value as string"""
         return str(self.value)
 
-
     @property
-    def displayValue(self)->str:
+    def displayValue(self) -> str:
         """string representation of the object stored in this cell"""
         raise NotImplementedError()
 
@@ -42,19 +41,19 @@ class Cell(ABC):
         raise NotImplementedError()
 
     @value.setter
-    def value(self,newValue):
+    def value(self, newValue):
         raise NotImplementedError()
 
     @property
-    def code(self)->str:
+    def code(self) -> str:
         raise NotImplementedError()
 
     @code.setter
-    def code(self,newCode:str):
+    def code(self, newCode: str):
         raise NotImplementedError()
 
     @property
-    def address(self)->CellAddress:
+    def address(self) -> CellAddress:
         raise NotImplementedError()
 
     @property
@@ -71,13 +70,13 @@ class Cell(ABC):
     def runCode(self, globalScope=None, localScope=None):
         raise NotImplementedError()
 
-    def setCodeAndRun(self,newCode,globalScope=None, localScope=None):
+    def setCodeAndRun(self, newCode, globalScope=None, localScope=None):
         """set new code for this cell and execute it immediately"""
         raise NotImplementedError()
 
-    def hasCode(self)->bool:
+    def hasCode(self) -> bool:
         """:return True if this cell contain any code"""
         raise NotImplementedError()
 
-    def toJson(self)->CellJson:
+    def toJson(self) -> CellJson:
         raise NotImplementedError()
