@@ -9,5 +9,5 @@ class WorksheetFunctions_test(unittest.TestCase):
         restartApp()
         r = getRange("@A1:A2")
         r.cell("@A1").value=100
-        o = WorksheetFunctions.sum(r)
+        o = WorksheetFunctions.SUM(r)
         self.assertEqual(100, o)
