@@ -6,6 +6,5 @@ class WorksheetFunctions:
     def sum(cellRange: Range):
         rt = 0
         for cell in cellRange.cells:
-            # print(cell.code)
-            rt += cell.numericValue
+            rt += cell.floatValue
         return rt

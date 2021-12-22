@@ -10,11 +10,18 @@ class Cell(ABC):
     """
 
     @property
-    def numericValue(self)->float:
+    def intValue(self)->int:
+        """get cell value as int"""
+        return int(self.value)
+
+    @property
+    def floatValue(self)->float:
+        """get cell value as float"""
         return float(self.value)
 
     @property
     def strValue(self)->str:
+        """get cell value as string"""
         return str(self.value)
 
 

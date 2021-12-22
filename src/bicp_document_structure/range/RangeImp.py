@@ -7,6 +7,7 @@ from bicp_document_structure.cell_container.MutableCellContainer import MutableC
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.address.RangeAddress import RangeAddress
 from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
+from bicp_document_structure.util.AddressParser import AddressParser
 
 
 class RangeImp(Range):
@@ -45,7 +46,8 @@ class RangeImp(Range):
     ### >> UserFriendlyCellContainer << ###
 
     def cell(self, address: Union[str, CellAddress, Tuple[int, int]]) -> Cell:
-        return super().cell(address)
+        parsedAddress = AddressParser.parseCellAddress(address)
+        return self.getOrMakeCell(parsedAddress)
 
     ### >> CellContainer << ###
 

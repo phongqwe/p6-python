@@ -38,7 +38,8 @@ def startApp():
 def stopApp():
     """ stop the app, clear everything """
     g = getGlobals()
-    del g[appKey]
+    if appKey in g.keys():
+        del g[appKey]
 
 def restartApp():
     """restart the app"""
