@@ -2,7 +2,7 @@ from bicp_document_structure.app.GlobalScope import getGlobals
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.CellJson import CellJson
 from bicp_document_structure.cell.address.CellAddress import CellAddress
-from bicp_document_structure.cell.exception_displayer.ExceptionDisplayer import convertExceptionToStr
+from bicp_document_structure.cell.util.CellUtil import convertExceptionToStr
 from bicp_document_structure.code_executor.CodeExecutor import CodeExecutor
 
 
