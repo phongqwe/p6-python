@@ -6,8 +6,8 @@ from bicp_document_structure.workbook.WorkBook import Workbook
 
 class App(ABC):
     """
-    contain the central state of the app.
-    app is a collection of workbooks.
+    this class contains the central state of the app.
+    Essentially, an app is just a collection of workbooks.
     """
 
     @property
@@ -16,7 +16,7 @@ class App(ABC):
 
     def setActiveWorkbook(self, indexOrName: Union[int, str]):
         """
-        set workbook at indexOrName the active workbook.
+        Set workbook at indexOrName the active workbook.
         Should raise an exception if the indexOrName is invalid
         """
         raise NotImplementedError()

@@ -8,6 +8,11 @@ from bicp_document_structure.workbook.WorkBook import Workbook
 
 class AppImp(App):
 
+    """
+    Standard implementation of App interface
+    TODO implement this
+    """
+
     def __init__(self, workbookDict=None):
 
         if workbookDict is None:
@@ -18,10 +23,10 @@ class AppImp(App):
         self.__workbookDict = workbookDict
         self.__activeWorkbook = None
 
+    ### >> App << ###
+
     def hasNoWorkbook(self) -> bool:
         return len(self.__workbookDict) == 0
-
-    ### >> App << ###
 
     @property
     def activeWorkbook(self) -> Optional[Workbook]:
@@ -39,4 +44,3 @@ class AppImp(App):
 
     def setActiveWorkbook(self, indexOrName: Union[int, str]):
         pass
-

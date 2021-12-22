@@ -7,12 +7,15 @@ from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
 
 class SingleBookApp(App):
 
+    """
+    temporary imp of App interface
+    """
+
     def __init__(self):
         wb = WorkbookImp("Book1")
         wb.createNewSheet("Sheet1")
         wb.setActiveSheet(0)
         self.__book = wb
-
 
     @property
     def activeSheet(self):
