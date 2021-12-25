@@ -9,6 +9,3 @@ class WorksheetFunctions:
             rt += cell.floatValue
         return rt
 
-    @staticmethod
-    def sum(cellRange: Range)->float:
-        return WorksheetFunctions.SUM(cellRange)

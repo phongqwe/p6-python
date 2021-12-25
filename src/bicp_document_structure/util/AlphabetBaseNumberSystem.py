@@ -17,7 +17,7 @@ class AlphabetBaseNumberSystem:
     __scale = len(__alphabet)
 
     @staticmethod
-    def translate(abcNumber: str) -> int:
+    def toDecimal(abcNumber: str) -> int:
         typeCheck(abcNumber,"abcNumber",str)
         rt = 0
         # loop from the last char to the first char

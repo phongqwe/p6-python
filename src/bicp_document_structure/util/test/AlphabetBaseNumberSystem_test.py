@@ -23,4 +23,4 @@ class AlphabetBaseNumberSystem_test(unittest.TestCase):
             "ABO":743,
         }
         for k,v in data.items():
-            self.assertEqual(v,AlphabetBaseNumberSystem.translate(k))
+            self.assertEqual(v, AlphabetBaseNumberSystem.toDecimal(k))

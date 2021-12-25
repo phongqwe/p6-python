@@ -31,7 +31,7 @@ class CellLabel(CellAddress):
                     row += c
                 else:
                     col += c
-            colIndex = AlphabetBaseNumberSystem.translate(col)
+            colIndex = AlphabetBaseNumberSystem.toDecimal(col)
             rowIndex = int(row)
             return CellIndex(colIndex, rowIndex)
         else:
