@@ -1,4 +1,4 @@
-from typing import List, Optional, Union, Tuple
+from typing import List, Optional, Union, Tuple, Callable
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
@@ -6,6 +6,7 @@ from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.column.Column import Column
 from bicp_document_structure.column.ColumnImp import ColumnImp
 from bicp_document_structure.column.WriteBackColumn import WriteBackColumn
+from bicp_document_structure.mutation.CellMutationEvent import CellMutationEvent
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.RangeImp import RangeImp
 from bicp_document_structure.range.address.RangeAddress import RangeAddress
@@ -17,11 +18,14 @@ from bicp_document_structure.worksheet.WorksheetConst import WorksheetConst
 
 
 class WorksheetImp(Worksheet):
-    def __init__(self, name="", colDict=None):
+    def __init__(self, name="",
+                 colDict=None,
+                 onCellMutation:Callable[[Cell,CellMutationEvent],None] = None):
         if colDict is None:
             colDict = {}
         self.__colDict = colDict
         self.__name = name
+        self.__onCellMutation = onCellMutation
 
     ### >> Worksheet << ###
 
@@ -129,5 +133,5 @@ class WorksheetImp(Worksheet):
         if self.hasColumn(colIndex):
             col = self.__colDict[colIndex]
         else:
-            col = ColumnImp(colIndex, {})
-        return WriteBackColumn(col, self)
+            col = ColumnImp(colIndex, {},onCellMutation=self.__onCellMutation)
+        return WriteBackColumn(col, self,onCellMutation=self.__onCellMutation)

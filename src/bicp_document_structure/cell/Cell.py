@@ -29,7 +29,7 @@ class Cell(ABC):
         """string representation of the object stored in this cell"""
         raise NotImplementedError()
 
-    def _bareValue(self):
+    def bareValue(self):
         """
         For debugging only
         :return: the bare value, may not be consistent with the result of running the code of this cell.

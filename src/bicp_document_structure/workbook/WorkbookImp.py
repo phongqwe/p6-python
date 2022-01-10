@@ -1,6 +1,8 @@
 from collections import OrderedDict as ODict
-from typing import List, Union, Optional, OrderedDict
+from typing import List, Union, Optional, OrderedDict, Callable
 
+from bicp_document_structure.cell.Cell import Cell
+from bicp_document_structure.mutation.CellMutationEvent import CellMutationEvent
 from bicp_document_structure.util.Util import typeCheck
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.worksheet.Worksheet import Worksheet
@@ -9,8 +11,12 @@ from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 class WorkbookImp(Workbook):
 
-    def __init__(self, name, sheetDict: OrderedDict = None):
+    def __init__(self, name:str,
+                 sheetDict: OrderedDict = None,
+                 onCellMutation:Callable[[Cell,CellMutationEvent],None] = None,
+                 ):
         self.__name = name
+        self.__onCellMutation = onCellMutation
 
         if sheetDict is None:
             sheetDict = ODict()
@@ -96,7 +102,8 @@ class WorkbookImp(Workbook):
             raise ValueError(
                 "Can't create new sheet {sname} because sheet {sname} already exist".format(sname=newSheetName))
         else:
-            newSheet = WorksheetImp(newSheetName)
+            newSheet = WorksheetImp(name=newSheetName,
+                                    onCellMutation=self.__onCellMutation)
             self.__sheetDict[newSheetName] = newSheet
             return newSheet
 

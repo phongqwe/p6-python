@@ -1,4 +1,4 @@
-from typing import List, Optional, Union, Tuple
+from typing import List, Optional, Union, Tuple, Callable
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.DataCell import DataCell
@@ -7,6 +7,7 @@ from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.column.Column import Column
 from bicp_document_structure.column.ColumnJson import ColumnJson
+from bicp_document_structure.mutation.CellMutationEvent import CellMutationEvent
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.RangeImp import RangeImp
 from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
@@ -19,12 +20,13 @@ class ColumnImp(Column):
     Column is a dictionary of cell: rowIndex -> cell
     """
 
-    def __init__(self, colIndex: int, cellDict: dict):
+    def __init__(self, colIndex: int, cellDict: dict, onCellMutation:Callable[[Cell,CellMutationEvent],None] = None):
         if type(cellDict) is dict:
             self.__cellDict = cellDict
             self.__colIndex = colIndex
             self.__rangeAddress = RangeAddressImp(CellIndex(self.__colIndex, 1),
                                                   CellIndex(self.__colIndex, WorksheetConst.rowLimit))
+            self.__onCellMutation = onCellMutation
         else:
             raise ValueError("cellDict must be a dict")
 
@@ -75,13 +77,14 @@ class ColumnImp(Column):
         cell = self.getCell(address)
         if cell is not None:
             return cell
-        if self.containsAddress(address):
-            return WriteBackCell(DataCell(address),self)
         else:
-            raise ValueError("colum {cl} does not contain {adr}".format(
-                cl=str(self.index),
-                adr=address.__str__()
-            ))
+            if self.containsAddress(address):
+                return WriteBackCell(DataCell(address,onCellMutation=self.__onCellMutation),self)
+            else:
+                raise ValueError("colum {cl} does not contain {adr}".format(
+                    cl=str(self.index),
+                    adr=address.__str__()
+                ))
 
     ### >> CellContainer << ###
 

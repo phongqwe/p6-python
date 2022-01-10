@@ -1,9 +1,12 @@
 import unittest
 
-from bicp_document_structure.app.UserFunctions import startApp, getActiveWorkbook, getActiveSheet, cell, restartApp
+from bicp_document_structure.app.UserFunctions import startApp, getActiveWorkbook, getActiveSheet, cell, restartApp, \
+    getApp
 
 
 class UserFunctions_test(unittest.TestCase):
+
+
 
     def test_bench(self):
         startApp()
@@ -42,6 +45,21 @@ class UserFunctions_test(unittest.TestCase):
         cellA4.script = "cell(\"@A3\").value + 3"
         self.assertTrue(isinstance(cellA4.value,Exception))
         print(cellA4.displayValue)
+
+    def test_Result(self):
+        startApp()
+        restartApp()
+        activeBook = getActiveWorkbook()
+        activeBook.setActiveSheet("Sheet1")
+        sheet = getActiveSheet()
+        cellA1_1 = sheet.cell((1, 1))  # A1
+        cellA1_1.script = "x=1;x+10"
+        # cellA1_1.runScript()
+        # cellA1_2 = cell("@A1")
+        # self.assertEqual(11, cellA1_2.value)
+
+        result = getApp().result
+        print("k")
 
 
 

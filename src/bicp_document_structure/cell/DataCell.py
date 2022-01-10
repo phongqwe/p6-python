@@ -1,9 +1,12 @@
+from typing import Callable
+
 from bicp_document_structure.app.GlobalScope import getGlobals
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.CellJson import CellJson
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.util.CellUtil import convertExceptionToStr
 from bicp_document_structure.code_executor.CodeExecutor import CodeExecutor
+from bicp_document_structure.mutation.CellMutationEvent import CellMutationEvent
 
 
 class DataCell(Cell):
@@ -11,22 +14,27 @@ class DataCell(Cell):
     a cell that holds some data
     """
 
-    def __init__(self, address: CellAddress, value=None, code: str = ""):
+    def bareValue(self):
+        return self.__value
+
+    def __init__(self,
+                 address: CellAddress,
+                 value=None,
+                 code: str = "",
+                 onCellMutation:Callable[[Cell,CellMutationEvent],None] = None):
         self.__value = value
         self.__code: str = code
         self.__addr:CellAddress = address
+        self.__onCelMutation = onCellMutation
 
 
     ### >> Cell << ###
     def toJson(self) -> CellJson:
         return CellJson(
-            value=str(self.value),
-            code=self.script,
+            value=str(self.__value),
+            script=self.__code,
             address=self.__addr.toJson(),
         )
-
-    def _bareValue(self):
-        return self.__value
 
     @property
     def displayValue(self) -> str:
@@ -47,6 +55,8 @@ class DataCell(Cell):
     @value.setter
     def value(self, newValue):
         self.__value = newValue
+        if self.__onCelMutation is not None:
+            self.__onCelMutation(self,CellMutationEvent.NEW_VALUE)
 
     @property
     def script(self) -> str:
@@ -55,6 +65,8 @@ class DataCell(Cell):
     @script.setter
     def script(self, newCode: str):
         self.__code = newCode
+        if self.__onCelMutation is not None:
+            self.__onCelMutation(self, CellMutationEvent.NEW_SCRIPT)
 
     @property
     def address(self) -> CellAddress:

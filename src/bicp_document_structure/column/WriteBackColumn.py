@@ -1,4 +1,4 @@
-from typing import List, Union, Tuple, Optional
+from typing import List, Union, Tuple, Optional, Callable
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.DataCell import DataCell
@@ -7,14 +7,16 @@ from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.column.Column import Column
 from bicp_document_structure.column.ColumnJson import ColumnJson
 from bicp_document_structure.column.MutableColumnContainer import MutableColumnContainer
+from bicp_document_structure.mutation.CellMutationEvent import CellMutationEvent
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
 
 
 class WriteBackColumn(Column):
-    def __init__(self, col:Column, container: MutableColumnContainer):
+    def __init__(self, col:Column, container: MutableColumnContainer, onCellMutation:Callable[[Cell,CellMutationEvent],None] = None):
         self.__innerCol = col
         self.__container = container
+        self.__onCellMutation = onCellMutation
 
     ### >> Column << ##
 
@@ -51,10 +53,12 @@ class WriteBackColumn(Column):
         return self.__innerCol.hasCellAt(address)
 
     def getOrMakeCell(self, address: CellAddress) -> Cell:
+        # rt= self.__innerCol.getOrMakeCell(address)
+        # return rt
         if self.hasCellAt(address):
             return self.__innerCol.getOrMakeCell(address)
         else:
-            return WriteBackCell(DataCell(address),self)
+            return WriteBackCell(DataCell(address,onCellMutation=self.__onCellMutation),self)
 
     def isEmpty(self) -> bool:
         return self.__innerCol.isEmpty()

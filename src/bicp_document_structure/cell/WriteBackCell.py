@@ -16,12 +16,11 @@ class WriteBackCell(Cell):
         self.__rowIndex = cell.address.rowIndex
 
     ### >> Cell << ###
+    def bareValue(self):
+        return self.__innerCell.bareValue()
 
     def toJson(self) -> CellJson:
         return self.__innerCell.toJson()
-
-    def _bareValue(self):
-        return self.__innerCell._bareValue()
 
     def setScriptAndRun(self, newScript, globalScope=None, localScope=None):
         self.__innerCell.setScriptAndRun(newScript, globalScope, localScope)
