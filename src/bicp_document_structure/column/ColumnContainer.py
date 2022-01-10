@@ -4,6 +4,7 @@ from bicp_document_structure.column.Column import Column
 
 
 class ColumnContainer(ABC):
+    """ a container of columns """
     def hasColumn(self, colIndex: int) -> bool:
         """check if this holder has a column at an index"""
         raise NotImplementedError()

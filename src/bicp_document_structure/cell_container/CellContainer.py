@@ -18,7 +18,6 @@ class CellContainer(ABC):
 
     def getCell(self, address: CellAddress) -> Optional[Cell]:
         """
-        get cell at an address. If such cell does not exist, return a TempCell
         :return the cell at the position
         """
         raise NotImplementedError()
@@ -42,6 +41,10 @@ class CellContainer(ABC):
         raise NotImplementedError()
 
     def isSameRangeAddress(self,other):
+        """
+        :param other:
+        :return: true if this container covers the same address as another container, false otherwise
+        """
         if isinstance(other,CellContainer):
             return self.rangeAddress == other.rangeAddress
         else:

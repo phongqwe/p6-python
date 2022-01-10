@@ -5,10 +5,9 @@ from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell_container.MutableCellContainer import MutableCellContainer
 
 
-class TempCell(Cell):
+class WriteBackCell(Cell):
     """
-    act as a temporary cell returned by querying non-existing cell from a CellHolder.
-    Only write object to the holder when the content of the temp cell is mutated.
+    A cell that can write back to the container that contains it
     """
 
     def __init__(self, holder: MutableCellContainer, address: CellAddress):

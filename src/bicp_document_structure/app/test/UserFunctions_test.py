@@ -1,9 +1,16 @@
 import unittest
 
-from bicp_document_structure.app.UserFunctions import startApp, getActiveWorkbook, getActiveSheet, cell
+from bicp_document_structure.app.UserFunctions import startApp, getActiveWorkbook, getActiveSheet, cell, restartApp
 
 
 class UserFunctions_test(unittest.TestCase):
+
+    def test_bench(self):
+        startApp()
+        restartApp()
+        cell("@A1").value = "abc"
+        print(cell("@A1").value)
+
     def test_onGlobalScope(self):
         startApp()
         activeBook = getActiveWorkbook()

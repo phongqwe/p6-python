@@ -1,6 +1,7 @@
 from typing import Union, Optional
 
 from bicp_document_structure.app.App import App
+from bicp_document_structure.app.result_aggregator.CompResult import CompResult
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
 
@@ -16,6 +17,11 @@ class SingleBookApp(App):
         wb.createNewSheet("Sheet1")
         wb.setActiveSheet(0)
         self.__book = wb
+        self.__result = CompResult()
+
+    @property
+    def result(self) -> CompResult:
+        return self.__result
 
     @property
     def activeSheet(self):

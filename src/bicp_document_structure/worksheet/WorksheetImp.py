@@ -4,7 +4,7 @@ from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.column.Column import Column
-from bicp_document_structure.column.TempColumn import TempColumn
+from bicp_document_structure.column.WriteBackColumn import WriteBackColumn
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.RangeImp import RangeImp
 from bicp_document_structure.range.address.RangeAddress import RangeAddress
@@ -128,4 +128,4 @@ class WorksheetImp(Worksheet):
         if self.hasColumn(colIndex):
             return self.__colDict[colIndex]
         else:
-            return TempColumn(colIndex, self)
+            return WriteBackColumn(colIndex, self)

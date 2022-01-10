@@ -7,7 +7,7 @@ from bicp_document_structure.range.Range import Range
 class Column(Range, ABC):
 
     def range(self, firstRow: int, lastRow: int) -> Range:
-        """create a range from this colum"""
+        """create a range from this column"""
         raise NotImplementedError()
 
     @property

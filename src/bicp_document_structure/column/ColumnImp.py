@@ -1,7 +1,7 @@
 from typing import List, Optional, Union, Tuple
 
 from bicp_document_structure.cell.Cell import Cell
-from bicp_document_structure.cell.TempCell import TempCell
+from bicp_document_structure.cell.WriteBackCell import WriteBackCell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.column.Column import Column
@@ -74,7 +74,7 @@ class ColumnImp(Column):
         if self.hasCellAt(address):
             return self.__cellDict[address.rowIndex]
         else:
-            return TempCell(self, address)
+            return WriteBackCell(self, address)
 
     ### >> CellContainer << ###
 
