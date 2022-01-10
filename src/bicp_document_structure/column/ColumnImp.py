@@ -1,6 +1,7 @@
 from typing import List, Optional, Union, Tuple
 
 from bicp_document_structure.cell.Cell import Cell
+from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.WriteBackCell import WriteBackCell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.address.CellIndex import CellIndex
@@ -71,8 +72,11 @@ class ColumnImp(Column):
         :param address: cell position
         :return: a WriteBackCell
         """
+        cell = self.getCell(address)
+        if cell is not None:
+            return cell
         if self.containsAddress(address):
-            return WriteBackCell(self, address)
+            return WriteBackCell(DataCell(address),self)
         else:
             raise ValueError("colum {cl} does not contain {adr}".format(
                 cl=str(self.index),

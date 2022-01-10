@@ -1,6 +1,5 @@
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.CellJson import CellJson
-from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell_container.MutableCellContainer import MutableCellContainer
 
@@ -9,17 +8,12 @@ class WriteBackCell(Cell):
     """
     A cell decorator that can write back to the container that contains the cell
     """
-
-    def __init__(self, container: MutableCellContainer, address: CellAddress):
-        self.__pos = address
-        self.__colIndex = address.colIndex
-        self.__rowIndex = address.rowIndex
+    def __init__(self, cell:Cell,container:MutableCellContainer):
+        self.__innerCell = cell
         self.__container = container
-        self.__innerCell = None
-        if container.hasCellAt(address):
-            self.__innerCell = container.getCell(address)
-        else:
-            self.__innerCell = DataCell(address)
+        self.__pos = cell.address
+        self.__colIndex = cell.address.colIndex
+        self.__rowIndex = cell.address.rowIndex
 
     ### >> Cell << ###
 

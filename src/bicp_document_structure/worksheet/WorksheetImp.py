@@ -4,6 +4,7 @@ from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.column.Column import Column
+from bicp_document_structure.column.ColumnImp import ColumnImp
 from bicp_document_structure.column.WriteBackColumn import WriteBackColumn
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.RangeImp import RangeImp
@@ -126,6 +127,7 @@ class WorksheetImp(Worksheet):
 
     def getCol(self, colIndex: int) -> Column:
         if self.hasColumn(colIndex):
-            return self.__colDict[colIndex]
+            col = self.__colDict[colIndex]
         else:
-            return WriteBackColumn(colIndex, self)
+            col = ColumnImp(colIndex, {})
+        return WriteBackColumn(col, self)

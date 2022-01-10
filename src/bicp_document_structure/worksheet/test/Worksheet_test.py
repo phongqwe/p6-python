@@ -4,6 +4,7 @@ import unittest
 from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.column.ColumnImp import ColumnImp
+from bicp_document_structure.column.WriteBackColumn import WriteBackColumn
 from bicp_document_structure.range.RangeImp import RangeImp
 from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
 from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
@@ -58,13 +59,13 @@ class WorksheetTest(unittest.TestCase):
         self.assertEqual(cell, s.getOrMakeCell(cellAddr))
 
     def test_isEmpty(self):
-        s = WorksheetImp()
-        self.assertTrue(s.isEmpty())
+        sheet = WorksheetImp()
+        self.assertTrue(sheet.isEmpty())
         cell, cellAddr = self.makeTestObj()
-        s.addCell(cell)
-        self.assertFalse(s.isEmpty())
-        s.removeCell(cellAddr)
-        self.assertTrue(s.isEmpty())
+        sheet.addCell(cell)
+        self.assertFalse(sheet.isEmpty())
+        sheet.removeCell(cellAddr)
+        self.assertTrue(sheet.isEmpty())
 
     def test_containAddress(self):
         s = WorksheetImp()
@@ -85,15 +86,15 @@ class WorksheetTest(unittest.TestCase):
         s.removeCell(cellAddr1)
         self.assertEqual([cell2], s.cells)
 
-    def test_columOperation(self):
-        s = WorksheetImp()
-        c = ColumnImp(1, {1: DataCell(CellIndex(1, 1), 123, "code")})
-        self.assertFalse(s.hasColumn(c.index))
-        s.setCol(c)
-        self.assertTrue(s.hasColumn(c.index))
-        self.assertEqual(c, s.getCol(1))
-        s.removeCol(c.index)
-        self.assertTrue(s.isEmpty())
+    def test_columnOperation(self):
+        sheet = WorksheetImp()
+        col = ColumnImp(1, {1: DataCell(CellIndex(1, 1), 123, "code")})
+        self.assertFalse(sheet.hasColumn(col.index))
+        sheet.setCol(col)
+        self.assertTrue(sheet.hasColumn(col.index))
+        self.assertEqual(WriteBackColumn(col,sheet), sheet.getCol(1))
+        sheet.removeCol(col.index)
+        self.assertTrue(sheet.isEmpty())
 
     def test_range(self):
         s = WorksheetImp()
