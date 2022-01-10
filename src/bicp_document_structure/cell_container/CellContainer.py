@@ -12,7 +12,7 @@ class CellContainer(ABC):
     def hasCellAt(self, address: CellAddress) -> bool:
         """
         Important: while this does check for valid address/index, it does NOT return true simply an address/index is inside this container. This check the existence of an object instance inside this container.
-        :return true if this holder has a cell OBJECT at the specified position
+        :return true if this container has a cell OBJECT at the specified position
         """
         raise NotImplementedError()
 
@@ -23,7 +23,7 @@ class CellContainer(ABC):
         raise NotImplementedError()
 
     def isEmpty(self) -> bool:
-        """:return true if this holder is empty"""
+        """:return true if this container is empty"""
         raise NotImplementedError()
 
     def containsAddress(self, address: CellAddress) -> bool:

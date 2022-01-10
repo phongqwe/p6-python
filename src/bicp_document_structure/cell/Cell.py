@@ -38,18 +38,22 @@ class Cell(ABC):
 
     @property
     def value(self):
+        """ return the value of this cell """
         raise NotImplementedError()
 
     @value.setter
     def value(self, newValue):
+        """ set the value of this cell """
         raise NotImplementedError()
 
     @property
-    def code(self) -> str:
+    def script(self) -> str:
+        """ return the script hold by this cell. Script is always Python"""
         raise NotImplementedError()
 
-    @code.setter
-    def code(self, newCode: str):
+    @script.setter
+    def script(self, newCode: str):
+        """ set the script hold by this cell. Script is always Python"""
         raise NotImplementedError()
 
     @property
@@ -67,10 +71,10 @@ class Cell(ABC):
     def isValueEqual(self, anotherCell):
         return self.value == anotherCell.value
 
-    def runCode(self, globalScope=None, localScope=None):
+    def runScript(self, globalScope=None, localScope=None):
         raise NotImplementedError()
 
-    def setCodeAndRun(self, newCode, globalScope=None, localScope=None):
+    def setScriptAndRun(self, newScript, globalScope=None, localScope=None):
         """set new code for this cell and execute it immediately"""
         raise NotImplementedError()
 

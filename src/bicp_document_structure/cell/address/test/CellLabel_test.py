@@ -1,7 +1,7 @@
 import unittest
 
+from bicp_document_structure.cell.address.CellAddresses import CellAddresses
 from bicp_document_structure.cell.address.CellIndex import CellIndex
-from bicp_document_structure.cell.address.CellLabel import CellLabel
 
 
 class CellLabel_test(unittest.TestCase):
@@ -17,14 +17,14 @@ class CellLabel_test(unittest.TestCase):
             "@abu96": CellIndex(749, 96),
         }
         for k, v in data.items():
-            self.assertEqual(v, CellLabel(k))
+            self.assertEqual(v, CellAddresses.addressFromLabel(k))
 
     def test_constructorWithMalformedAddress(self):
         with self.assertRaises(ValueError):
-            CellLabel("ABU96")
+            CellAddresses.addressFromLabel("ABU96")
         with self.assertRaises(ValueError):
-            CellLabel("@ABU96__")
+            CellAddresses.addressFromLabel("@ABU96__")
         with self.assertRaises(ValueError):
-            CellLabel("@96ABU")
+            CellAddresses.addressFromLabel("@96ABU")
         with self.assertRaises(ValueError):
-            CellLabel("@ABU_96")
+            CellAddresses.addressFromLabel("@ABU_96")

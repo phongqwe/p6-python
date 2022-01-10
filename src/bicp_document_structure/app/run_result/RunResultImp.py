@@ -1,12 +1,12 @@
 from typing import List
 
-from bicp_document_structure.app.result_aggregator.CompResult import CompResult
-from bicp_document_structure.app.result_aggregator.CompResultJson import CompResultJson
+from bicp_document_structure.app.run_result.RunResult import RunResult
+from bicp_document_structure.app.run_result.RunResultJson import RunResultJson
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.CellJson import CellJson
 
 
-class CompResultImp(CompResult):
+class RunResultImp(RunResult):
 
     def __init__(self, cellList:List[Cell]=None):
         if cellList is None:
@@ -19,8 +19,8 @@ class CompResultImp(CompResult):
     def clearCell(self):
         self.__cellList = []
 
-    def toJson(self) -> CompResultJson:
+    def toJson(self) -> RunResultJson:
         cellJsons:List[CellJson] = list(map(lambda c: c.toJson, self.__cellList))
-        return CompResultJson(cellJsons)
+        return RunResultJson(cellJsons)
 
 

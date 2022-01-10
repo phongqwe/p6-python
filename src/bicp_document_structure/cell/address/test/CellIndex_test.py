@@ -26,3 +26,7 @@ class CellIndexTest(unittest.TestCase):
         self.assertFalse(p1 == "abc")
         self.assertTrue(p1 == p3)
         self.assertFalse(CellIndex(100,200) == p3)
+
+    def test_label(self):
+        lb = CellIndex(2, 323).label
+        self.assertEqual("@B323",lb)

@@ -70,7 +70,7 @@ class WriteBackColumn(Column):
 
     def addCell(self, cell: Cell):
         self.__innerCol.addCell(cell)
-        # write this temp col to the holder when a new cell is added
+        # write this temp col to the container when a new cell is added
         if not self.__holder.hasColumn(self.__innerCol.index):
             self.__holder.setCol(self.__innerCol)
 

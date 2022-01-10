@@ -69,12 +69,15 @@ class ColumnImp(Column):
     def getOrMakeCell(self, address: CellAddress) -> Cell:
         """
         :param address: cell position
-        :return: either the cell at the input position or a TempCell with the same position if there aren't any cell at that position
+        :return: a WriteBackCell
         """
-        if self.hasCellAt(address):
-            return self.__cellDict[address.rowIndex]
-        else:
+        if self.containsAddress(address):
             return WriteBackCell(self, address)
+        else:
+            raise ValueError("colum {cl} does not contain {adr}".format(
+                cl=str(self.index),
+                adr=address.__str__()
+            ))
 
     ### >> CellContainer << ###
 

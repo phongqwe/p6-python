@@ -16,13 +16,13 @@ class TempCellTest(unittest.TestCase):
         c:Cell = s.getOrMakeCell(address)
         self.assertTrue(s.isEmpty())
 
-        c.code = code
+        c.script = code
         self.assertFalse(s.isEmpty())
         anotherC = s.getOrMakeCell(address)
-        self.assertEqual(code,c.code)
-        self.assertEqual(code,anotherC.code)
+        self.assertEqual(code, c.script)
+        self.assertEqual(code, anotherC.script)
 
-        c.runCode()
+        c.runScript()
         self.assertEqual(eValue,c.value)
         self.assertEqual(eValue,anotherC.value)
 

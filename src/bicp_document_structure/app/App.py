@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import Optional, Union
 
-from bicp_document_structure.app.result_aggregator.CompResult import CompResult
+from bicp_document_structure.app.run_result.RunResult import RunResult
 from bicp_document_structure.workbook.WorkBook import Workbook
 
 
@@ -9,9 +9,8 @@ class App(ABC):
     """
     this class represents the state of the app.
     """
-
     @property
-    def result(self)->CompResult:
+    def result(self)->RunResult:
         raise NotImplementedError()
 
     @property

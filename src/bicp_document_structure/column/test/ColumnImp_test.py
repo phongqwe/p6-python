@@ -41,8 +41,8 @@ class ColumnImpTest(unittest.TestCase):
         r = ColumnImp.empty(2)
         pos = CellIndex(2, 1)
         cell = r.getOrMakeCell(pos)
-        cell.code = "abc"
-        self.assertEqual("abc", r.getOrMakeCell(pos).code)
+        cell.script = "abc"
+        self.assertEqual("abc", r.getOrMakeCell(pos).script)
 
     def test_isEmpty(self):
         r = ColumnImp(1, {})
