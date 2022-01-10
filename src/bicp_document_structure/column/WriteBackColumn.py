@@ -1,7 +1,7 @@
 from typing import List, Union, Tuple, Optional
 
 from bicp_document_structure.cell.Cell import Cell
-from bicp_document_structure.cell.TempCell import TempCell
+from bicp_document_structure.cell.WriteBackCell import WriteBackCell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.column.Column import Column
 from bicp_document_structure.column.ColumnImp import ColumnImp
@@ -11,7 +11,7 @@ from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
 
 
-class TempColumn(Column):
+class WriteBackColumn(Column):
     def __init__(self, colIndex: int, holder: MutableColumnContainer):
         self.__holder = holder
         if holder.hasColumn(colIndex):
@@ -57,7 +57,7 @@ class TempColumn(Column):
         if self.hasCellAt(address):
             return self.__innerCol.getOrMakeCell(address)
         else:
-            return TempCell(self, address)
+            return WriteBackCell(self, address)
 
     def isEmpty(self) -> bool:
         return self.__innerCol.isEmpty()
@@ -70,7 +70,7 @@ class TempColumn(Column):
 
     def addCell(self, cell: Cell):
         self.__innerCol.addCell(cell)
-        # write this temp col to the holder when a new cell is added
+        # write this temp col to the container when a new cell is added
         if not self.__holder.hasColumn(self.__innerCol.index):
             self.__holder.setCol(self.__innerCol)
 

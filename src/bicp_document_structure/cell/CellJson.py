@@ -1,9 +1,13 @@
-from bicp_document_structure.cell.address.CellAddressJson import CellAddressJson
+from typing import Tuple
+
 
 
 class CellJson(dict):
-    def __init__(self,value:str,code:str,address:CellAddressJson):
+    """
+    Json representation of a cell
+    """
+    def __init__(self,value:str,script:str,address:Tuple[int, int]):
         super().__init__()
         self.value = value
-        self.code = code
+        self.script = script
         self.addr = address

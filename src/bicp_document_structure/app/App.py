@@ -1,14 +1,17 @@
 from abc import ABC
 from typing import Optional, Union
 
+from bicp_document_structure.app.run_result.RunResult import RunResult
 from bicp_document_structure.workbook.WorkBook import Workbook
 
 
 class App(ABC):
     """
-    this class contains the central state of the app.
-    Essentially, an app is just a collection of workbooks.
+    this class represents the state of the app.
     """
+    @property
+    def result(self)->RunResult:
+        raise NotImplementedError()
 
     @property
     def activeWorkbook(self) -> Optional[Workbook]:

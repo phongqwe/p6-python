@@ -28,3 +28,30 @@ class AlphabetBaseNumberSystem:
             n = weight * charIndex
             rt += n
         return rt
+
+    @staticmethod
+    def fromDecimal(number:int)->str:
+        scale = 26
+        if number <= scale:
+            return string.ascii_uppercase[number-1]
+
+        rt = ""
+        iterNum = number
+        prevZero = False
+        while True:
+            if iterNum == 0:
+                break
+            result = int(iterNum/scale)
+            remainder = iterNum % scale
+            charIndex = -1
+            if remainder != 0:
+                if prevZero:
+                    charIndex = int(remainder-2)
+                else:
+                    charIndex = int(remainder-1)
+            else:
+                charIndex = scale-1
+            prevZero = (remainder==0)
+            rt = rt + string.ascii_uppercase[charIndex]
+            iterNum =result
+        return rt[::-1] # reversed

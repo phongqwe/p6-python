@@ -21,7 +21,7 @@ class DataCell(Cell):
     def toJson(self) -> CellJson:
         return CellJson(
             value=str(self.value),
-            code=self.code,
+            code=self.script,
             address=self.__addr.toJson(),
         )
 
@@ -41,7 +41,7 @@ class DataCell(Cell):
         get the value contained in this cell. If this cell contains code, the code will run and the updated value will be returned
         """
         if self.hasCode():
-            self.runCode(getGlobals())
+            self.runScript(getGlobals())
         return self.__value
 
     @value.setter
@@ -49,11 +49,11 @@ class DataCell(Cell):
         self.__value = newValue
 
     @property
-    def code(self) -> str:
+    def script(self) -> str:
         return self.__code
 
-    @code.setter
-    def code(self, newCode: str):
+    @script.setter
+    def script(self, newCode: str):
         self.__code = newCode
 
     @property
@@ -66,7 +66,7 @@ class DataCell(Cell):
     def __eq__(self, other):
         if isinstance(other, Cell):
             sameValue = self.value == other.value
-            sameCode = self.code == other.code
+            sameCode = self.script == other.script
             sameAddress = self.address == other.address
             return sameValue and sameCode and sameAddress
         else:
@@ -80,21 +80,21 @@ class DataCell(Cell):
     def col(self) -> int:
         return self.__addr.colIndex
 
-    def runCode(self, globalScope=None, localScope=None):
+    def runScript(self, globalScope=None, localScope=None):
         if localScope is None:
             localScope = {}
 
         if globalScope is None:
             globalScope = getGlobals()
         try:
-            codeResult = CodeExecutor.evalCode(self.code, globalScope, localScope)
+            codeResult = CodeExecutor.evalCode(self.script, globalScope, localScope)
         except Exception as e:
             codeResult = e
         self.value = codeResult
 
-    def setCodeAndRun(self, newCode, globalScope=None, localScope=None):
-        self.code = newCode
-        self.runCode(globalScope, localScope)
+    def setScriptAndRun(self, newScript, globalScope=None, localScope=None):
+        self.script = newScript
+        self.runScript(globalScope, localScope)
 
     def hasCode(self) -> bool:
         return self.__code is not None and len(self.__code) != 0

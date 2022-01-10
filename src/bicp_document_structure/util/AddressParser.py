@@ -1,8 +1,8 @@
 from typing import Union, Tuple
 
 from bicp_document_structure.cell.address.CellAddress import CellAddress
+from bicp_document_structure.cell.address.CellAddresses import CellAddresses
 from bicp_document_structure.cell.address.CellIndex import CellIndex
-from bicp_document_structure.cell.address.CellLabel import CellLabel
 from bicp_document_structure.range.address.RangeAddress import RangeAddress
 from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
 from bicp_document_structure.range.address.RangeLabel import RangeLabel
@@ -13,7 +13,7 @@ class AddressParser:
     def parseCellAddress(address: Union[str, CellAddress, Tuple[int, int]])->CellAddress:
         parsedAddress = address
         if isinstance(address, str):
-            parsedAddress = CellLabel(address)
+            parsedAddress = CellAddresses.addressFromLabel(address)
         if isinstance(address, Tuple):
             parsedAddress = CellIndex(address[0], address[1])
         return parsedAddress
@@ -22,7 +22,7 @@ class AddressParser:
     def parseRangeAddress(rangeAddress: Union[str, RangeAddress, Tuple[CellAddress, CellAddress]])->RangeAddress:
         parsedAddress = rangeAddress
         if isinstance(rangeAddress, str):
-            parsedAddress = RangeLabel(rangeAddress)
+            parsedAddress = RangeLabel.addressFromLabel(rangeAddress)
 
         if isinstance(rangeAddress, Tuple):
             ad1 = rangeAddress[0]

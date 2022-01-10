@@ -8,11 +8,11 @@ class CellBasicTest(unittest.TestCase):
     def test_Cell(self):
         c = DataCell(CellIndex(1, 1), 123, "123")
         self.assertEqual(123,c.value)
-        self.assertEqual("123",c.code)
+        self.assertEqual("123",c.script)
         c.value= 345
-        c.code ="x=345"
+        c.script = "x=345"
         self.assertEqual(345,c.value)
-        self.assertEqual("x=345",c.code)
+        self.assertEqual("x=345",c.script)
 
     def test_isValueEqual(self):
         c1 = DataCell(CellIndex(1, 1), 123)
@@ -27,5 +27,5 @@ class CellBasicTest(unittest.TestCase):
 
     def test_runCode(self):
         c1 = DataCell(CellIndex(1, 1), 123, "x=1;y=x*2+3;y")
-        c1.runCode(globals(),None)
+        c1.runScript(globals(), None)
         self.assertEqual(5,c1.value)

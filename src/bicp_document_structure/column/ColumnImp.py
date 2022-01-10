@@ -1,7 +1,7 @@
 from typing import List, Optional, Union, Tuple
 
 from bicp_document_structure.cell.Cell import Cell
-from bicp_document_structure.cell.TempCell import TempCell
+from bicp_document_structure.cell.WriteBackCell import WriteBackCell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.column.Column import Column
@@ -69,12 +69,15 @@ class ColumnImp(Column):
     def getOrMakeCell(self, address: CellAddress) -> Cell:
         """
         :param address: cell position
-        :return: either the cell at the input position or a TempCell with the same position if there aren't any cell at that position
+        :return: a WriteBackCell
         """
-        if self.hasCellAt(address):
-            return self.__cellDict[address.rowIndex]
+        if self.containsAddress(address):
+            return WriteBackCell(self, address)
         else:
-            return TempCell(self, address)
+            raise ValueError("colum {cl} does not contain {adr}".format(
+                cl=str(self.index),
+                adr=address.__str__()
+            ))
 
     ### >> CellContainer << ###
 

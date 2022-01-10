@@ -103,7 +103,7 @@ class WorksheetTest(unittest.TestCase):
         c = s.getOrMakeCell(CellIndex(1, 1))
         self.assertIsNotNone(c)
         self.assertTrue(s.isEmpty())
-        c.code = "z"
+        c.script = "z"
         self.assertFalse(s.isEmpty())
 
         c2Addr = CellIndex(1, 2)

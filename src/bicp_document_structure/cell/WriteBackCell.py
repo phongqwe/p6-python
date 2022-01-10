@@ -5,20 +5,19 @@ from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell_container.MutableCellContainer import MutableCellContainer
 
 
-class TempCell(Cell):
+class WriteBackCell(Cell):
     """
-    act as a temporary cell returned by querying non-existing cell from a CellHolder.
-    Only write object to the holder when the content of the temp cell is mutated.
+    A cell decorator that can write back to the container that contains the cell
     """
 
-    def __init__(self, holder: MutableCellContainer, address: CellAddress):
+    def __init__(self, container: MutableCellContainer, address: CellAddress):
         self.__pos = address
         self.__colIndex = address.colIndex
         self.__rowIndex = address.rowIndex
-        self.__holder = holder
+        self.__container = container
         self.__innerCell = None
-        if holder.hasCellAt(address):
-            self.__innerCell = holder.getOrMakeCell(address)
+        if container.hasCellAt(address):
+            self.__innerCell = container.getCell(address)
         else:
             self.__innerCell = DataCell(address)
 
@@ -30,8 +29,8 @@ class TempCell(Cell):
     def _bareValue(self):
         return self.__innerCell._bareValue()
 
-    def setCodeAndRun(self, newCode, globalScope=None, localScope=None):
-        self.__innerCell.setCodeAndRun(newCode, globalScope, localScope)
+    def setScriptAndRun(self, newScript, globalScope=None, localScope=None):
+        self.__innerCell.setScriptAndRun(newScript, globalScope, localScope)
         self.__writeCell()
 
     def hasCode(self) -> bool:
@@ -51,12 +50,12 @@ class TempCell(Cell):
         self.__writeCell()
 
     @property
-    def code(self) -> str:
-        return self.__innerCell.code
+    def script(self) -> str:
+        return self.__innerCell.script
 
-    @code.setter
-    def code(self, newCode: str):
-        self.__innerCell.code = newCode
+    @script.setter
+    def script(self, newCode: str):
+        self.__innerCell.script = newCode
         self.__writeCell()
 
     @property
@@ -64,9 +63,9 @@ class TempCell(Cell):
         return self.__innerCell.address
 
     def __writeCell(self):
-        cellNotWritten = not self.__holder.hasCellAt(self.__pos)
+        cellNotWritten = not self.__container.hasCellAt(self.__pos)
         if cellNotWritten:
-            self.__holder.addCell(self.__innerCell)
+            self.__container.addCell(self.__innerCell)
 
     @property
     def row(self) -> int:
@@ -79,8 +78,8 @@ class TempCell(Cell):
     def isValueEqual(self, anotherCell):
         return self.__innerCell.isValueEqual(anotherCell)
 
-    def runCode(self, globalScope=None, localScope=None):
-        self.__innerCell.runCode(globalScope, localScope)
+    def runScript(self, globalScope=None, localScope=None):
+        self.__innerCell.runScript(globalScope, localScope)
         self.__writeCell()
 
     def __eq__(self, o: object) -> bool:

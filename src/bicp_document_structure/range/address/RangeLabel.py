@@ -1,7 +1,7 @@
 import re
 
 from bicp_document_structure.cell.address.CellAddress import CellAddress
-from bicp_document_structure.cell.address.CellLabel import CellLabel
+from bicp_document_structure.cell.address.CellAddresses import CellAddresses
 from bicp_document_structure.range.address.RangeAddress import RangeAddress
 from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
 from bicp_document_structure.util.result.Err import Err
@@ -13,15 +13,15 @@ class RangeLabel(RangeAddress):
     __labelPattern = re.compile("@[a-zA-Z]+[1-9][0-9]*:[a-zA-Z]+[1-9][0-9]*")
 
     def __init__(self, label: str):
-        self.__rangeAddress = RangeLabel.__addressFromLabel(label)
+        self.__rangeAddress = RangeLabel.addressFromLabel(label)
 
     @staticmethod
-    def __addressFromLabel(label: str) -> RangeAddress:
+    def addressFromLabel(label: str) -> RangeAddress:
         checkResult = RangeLabel.__checkAddressFormat(label)
         if checkResult.isOk():
             bareLabel = label[1:]  # remove @
             cellLabels = bareLabel.split(":")
-            cellAddresses = list(map(lambda cLabel: CellLabel("@"+cLabel), cellLabels))
+            cellAddresses = list(map(lambda cLabel: CellAddresses.addressFromLabel("@" + cLabel), cellLabels))
             firstCell = cellAddresses[0]
             lastCell = cellAddresses[1]
             return RangeAddressImp(firstCell, lastCell)
