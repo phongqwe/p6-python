@@ -1,15 +1,20 @@
 from abc import ABC
 from typing import Optional, Union
 
-from bicp_document_structure.workbook.WorkbookFileInfo import WorkbookFileInfo
+from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 
 class Workbook(ABC):
 
     @property
-    def fileInfo(self)->WorkbookFileInfo:
+    def workbookKey(self)->WorkbookKey:
         raise NotImplementedError()
+
+    @workbookKey.setter
+    def workbookKey(self,newKey:WorkbookKey):
+        raise NotImplementedError()
+
     @property
     def activeSheet(self)->Optional[Worksheet]:
         raise NotImplementedError()

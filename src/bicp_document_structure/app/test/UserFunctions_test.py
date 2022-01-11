@@ -1,3 +1,4 @@
+import json
 import unittest
 
 from bicp_document_structure.app.UserFunctions import startApp, getActiveWorkbook, getActiveSheet, cell, restartApp, \
@@ -26,7 +27,7 @@ class UserFunctions_test(unittest.TestCase):
         self.assertEqual(11,cellA1_2.value)
 
         cellA1_1.script = "x=2;x*50"
-        self.assertEqual(11,cellA1_1._bareValue())
+        self.assertEqual(11,cellA1_1.bareValue())
 
         cellA2 = cell("@A2")
         cellA2.setScriptAndRun("cell(\"@A1\").value+1")
@@ -59,7 +60,8 @@ class UserFunctions_test(unittest.TestCase):
         # self.assertEqual(11, cellA1_2.value)
 
         result = getApp().result
-        print("k")
+        jr = json.dumps(result.toJson().__dict__)
+        print(jr)
 
 
 

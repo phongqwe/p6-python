@@ -3,17 +3,17 @@ from collections import OrderedDict
 from pathlib import Path
 
 from bicp_document_structure.app.workbook_container.WorkbookContainerImp import WorkbookContainerImp
-from bicp_document_structure.workbook.WorkbookFileInfoImp import WorkbookFileInfoImp
 from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
+from bicp_document_structure.workbook.WorkbookKeyImp import WorkbookKeyImp
 
 
 class WorkbookContainerImp_test(unittest.TestCase):
 
     def makeTestObjs(self):
         d = OrderedDict({
-            WorkbookFileInfoImp("b1",Path("p1")): WorkbookImp("b1"),
-            WorkbookFileInfoImp("b2",Path("p1")): WorkbookImp("b2"),
-            WorkbookFileInfoImp("b3",Path("p1")): WorkbookImp("b3"),
+            WorkbookKeyImp("b1", Path("p1")): WorkbookImp("b1",path=Path("p1")),
+            WorkbookKeyImp("b2", Path("p1")): WorkbookImp("b2",path=Path("p2")),
+            WorkbookKeyImp("b3", Path("p1")): WorkbookImp("b3",path=Path("p3")),
         })
 
         wbc2 = WorkbookContainerImp(d)
@@ -24,21 +24,17 @@ class WorkbookContainerImp_test(unittest.TestCase):
         self.assertTrue(wbc.isEmpty())
 
         d = OrderedDict({
-            WorkbookFileInfoImp("b1"):WorkbookImp("b1"),
-            WorkbookFileInfoImp("b2"):WorkbookImp("b2")
+            WorkbookKeyImp("b1"):WorkbookImp("b1"),
+            WorkbookKeyImp("b2"):WorkbookImp("b2")
         })
 
         wbc2 = WorkbookContainerImp(d)
         self.assertFalse(wbc2.isEmpty())
 
     def test_getWorkbook(self):
-        self.test_getWorkbookByFileInfo()
-
-    def test_createNewBook(self):
-        wc,d = self.makeTestObjs()
-        oldCount = len(d)
-        wc.createNewWorkbook("bx")
-        self.assertEqual(oldCount+1,len(d))
+        self.test_getWorkbookByKey()
+        self.test_getWorkbookByIndex()
+        self.test_getWorkbookByName()
 
     def test_removeBook(self):
         wc,d = self.makeTestObjs()
@@ -73,11 +69,11 @@ class WorkbookContainerImp_test(unittest.TestCase):
         with self.assertRaises(ValueError):
             wc.getWorkbookByPath(Path("unavailablePath"))
 
-    def test_getWorkbookByFileInfo(self):
+    def test_getWorkbookByKey(self):
         wc, d = self.makeTestObjs()
-        b1 = wc.getWorkbook(WorkbookFileInfoImp("b1",Path("p1")))
+        b1 = wc.getWorkbookByKey(WorkbookKeyImp("b1", Path("p1")))
         self.assertIsNotNone(b1)
         self.assertEqual(list(d.items())[0][1], b1)
 
         with self.assertRaises(ValueError):
-            wc.getWorkbook(WorkbookFileInfoImp("bx"))
+            wc.getWorkbookByKey(WorkbookKeyImp("bx"))

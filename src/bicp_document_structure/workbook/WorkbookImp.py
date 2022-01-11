@@ -1,10 +1,13 @@
 from collections import OrderedDict as ODict
-from typing import List, Union, Optional, OrderedDict, Callable
+from pathlib import Path
+from typing import Union, Optional, OrderedDict, Callable
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.mutation.CellMutationEvent import CellMutationEvent
 from bicp_document_structure.util.Util import typeCheck
 from bicp_document_structure.workbook.WorkBook import Workbook
+from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
+from bicp_document_structure.workbook.WorkbookKeyImp import WorkbookKeyImp
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
@@ -12,12 +15,13 @@ from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 class WorkbookImp(Workbook):
 
     def __init__(self, name:str,
+                 path:Path = None,
                  sheetDict: OrderedDict = None,
                  onCellMutation:Callable[[Cell,CellMutationEvent],None] = None,
                  ):
         self.__name = name
         self.__onCellMutation = onCellMutation
-
+        self.__key = WorkbookKeyImp(self.__name,path)
         if sheetDict is None:
             sheetDict = ODict()
         else:
@@ -29,14 +33,6 @@ class WorkbookImp(Workbook):
             self.__activeSheet = list(self.__sheetDict.values())[0]
 
     @staticmethod
-    def fromSheets(wbName: str, sheetList: List[Worksheet]):
-        """create a workbook from a list of sheet"""
-        sheetDict = ODict()
-        for sheet in sheetList:
-            sheetDict[sheet.name] = sheet
-        return WorkbookImp(wbName, sheetDict)
-
-    @staticmethod
     def __makeOrderDict(sheetDict: dict) -> dict:
         o = 0
         rt = {}
@@ -46,6 +42,15 @@ class WorkbookImp(Workbook):
         return rt
 
     ### >> Workbook << ###
+
+    @property
+    def workbookKey(self) -> WorkbookKey:
+        return self.__key
+
+    @workbookKey.setter
+    def workbookKey(self, newKey: WorkbookKey):
+        self.__key = newKey
+        self.__name = newKey.fileName
 
     def setActiveSheet(self, indexOrName:Union[int, str]):
         sheet = self.getSheet(indexOrName)

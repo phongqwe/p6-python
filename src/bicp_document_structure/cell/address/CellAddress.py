@@ -1,5 +1,6 @@
 from abc import ABC
-from typing import Tuple
+
+from bicp_document_structure.cell.address.CellAddressJson import CellAddressJson
 
 
 class CellAddress(ABC):
@@ -25,9 +26,9 @@ class CellAddress(ABC):
         else:
             return False
 
-    def toJson(self) -> Tuple[int, int]:
-        """return a tuple of coordinate (col, row)"""
-        return self.colIndex, self.rowIndex
+    def toJson(self) -> CellAddressJson:
+        """return a json object"""
+        return CellAddressJson(self.colIndex,self.rowIndex)
 
     @property
     def label(self)->str:

@@ -15,7 +15,7 @@ class WorkbookImp_test(unittest.TestCase):
             s2.name: s2,
             s3.name:s3
         })
-        w1 = WorkbookImp("w1",d)
+        w1 = WorkbookImp("w1",sheetDict=d)
         return s1,s2,s3,w1,d
 
     def test_constructor(self):
@@ -24,7 +24,7 @@ class WorkbookImp_test(unittest.TestCase):
             s1.name:s1,
             s2.name:s2,
         })
-        w1 = WorkbookImp("w1",d)
+        w1 = WorkbookImp("w1",sheetDict=d)
         self.assertFalse(w1.isEmpty())
         self.assertEqual(2,w1.sheetCount)
         self.assertEqual(s1,w1.getSheetByName(s1.name))

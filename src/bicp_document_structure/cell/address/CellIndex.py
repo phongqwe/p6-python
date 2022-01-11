@@ -1,5 +1,3 @@
-from typing import Tuple
-
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.util.AlphabetBaseNumberSystem import AlphabetBaseNumberSystem
 
@@ -25,9 +23,6 @@ class CellIndex(CellAddress):
 
     def __str__(self):
         return "C({col}:{row})".format(col=self.__colIndex, row=self.__rowIndex)
-
-    def toJson(self) -> Tuple[int, int]:
-        return self.colIndex,self.rowIndex
 
     @property
     def label(self)->str:

@@ -1,3 +1,4 @@
+import json
 
 
 class CellAddressJson(dict):
@@ -8,3 +9,6 @@ class CellAddressJson(dict):
         super().__init__()
         self.row = row
         self.col = col
+
+    def __str__(self):
+        return json.dumps(self.__dict__)

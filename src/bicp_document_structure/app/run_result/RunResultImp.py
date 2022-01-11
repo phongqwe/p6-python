@@ -1,37 +1,32 @@
-from typing import List
-
 from bicp_document_structure.app.run_result.RunResult import RunResult
 from bicp_document_structure.app.run_result.RunResultJson import RunResultJson
-from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
+from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 
 
 class RunResultImp(RunResult):
 
-    def __init__(self, mutatedCellList:List[Cell]=None, deletedCells:List[CellAddress]=None):
-        if mutatedCellList is None:
-            mutatedCellList = []
-        if deletedCells is None:
-            deletedCells = []
-        self.__mutatedCellList = mutatedCellList
-        self.__deletedCellList = deletedCells
+    def __init__(self):
+        self.__mutatedCellDict = {}
+        self.__deletedCellDict = {}
 
-    def addMutatedCell(self,result:Cell):
-        self.__mutatedCellList.append(result)
-
-    def addDeletedCell(self, cellAddress: CellAddress):
-        self.__deletedCellList.append(cellAddress)
-
+    def addMutatedCell(self,workbookKey: WorkbookKey, worksheetName: str, cell: CellAddress):
+        pass
+    def addDeletedCell(self, workbookKey: WorkbookKey, worksheetName: str, cell: CellAddress):
+        pass
     def clearResult(self):
-        self.__mutatedCellList = []
-        self.__deletedCellList = []
+        self.__mutatedCellDict = {}
+        self.__deletedCellDict = {}
 
     def toJson(self) -> RunResultJson:
         mutatedCellJson = []
-        for cell in self.__mutatedCellList:
+        deletedCellJson = []
+        for cell in self.__mutatedCellDict:
             mutatedCellJson.append(cell.toJson())
 
-        # cellJsons:List[CellJson] = list(map(lambda c: c.toJson(), self.__mutatedCellList))
-        return RunResultJson(mutatedCellJson)
+        for cell in self.__deletedCellDict:
+            deletedCellJson.append(cell.toJson())
+
+        return RunResultJson(mutatedCellJson,deletedCellJson)
 
 
