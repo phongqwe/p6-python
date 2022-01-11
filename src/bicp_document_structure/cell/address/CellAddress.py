@@ -39,3 +39,7 @@ class CellAddress(ABC):
     def rawLabel(self)->str:
         """:return label of this cell address in raw format (eg: A1), that can NOT be used to refer to this address directly"""
         raise NotImplementedError()
+
+    def __hash__(self) -> int:
+        key = (self.colIndex,self.rowIndex)
+        return hash(key)

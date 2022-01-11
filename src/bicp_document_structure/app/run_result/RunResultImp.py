@@ -1,5 +1,6 @@
 from bicp_document_structure.app.run_result.RunResult import RunResult
 from bicp_document_structure.app.run_result.RunResultJson import RunResultJson
+from bicp_document_structure.app.run_result.SingleResultDict import SingleResultDict
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 
@@ -7,26 +8,39 @@ from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 class RunResultImp(RunResult):
 
     def __init__(self):
-        self.__mutatedCellDict = {}
-        self.__deletedCellDict = {}
+        self.__mutatedCellDict = SingleResultDict()
+        self.__deletedCellDict = SingleResultDict()
 
-    def addMutatedCell(self,workbookKey: WorkbookKey, worksheetName: str, cell: CellAddress):
-        pass
-    def addDeletedCell(self, workbookKey: WorkbookKey, worksheetName: str, cell: CellAddress):
-        pass
+    def addMutatedCell(self, workbookKey: WorkbookKey, worksheetName: str, cellAddress: CellAddress):
+        self.__mutatedCellDict.add(workbookKey, worksheetName, cellAddress)
+
+    def addDeletedCell(self, workbookKey: WorkbookKey, worksheetName: str, cellAddress: CellAddress):
+        self.__deletedCellDict.add(workbookKey, worksheetName, cellAddress)
+
+    def removeDeletedCell(self, workbookKey: WorkbookKey, worksheetName: str, cellAddress: CellAddress):
+        self.__deletedCellDict.remove(workbookKey, worksheetName, cellAddress)
+
+    def removeMutatedCell(self, workbookKey: WorkbookKey, worksheetName: str, cellAddress: CellAddress):
+        self.__mutatedCellDict.remove(workbookKey, worksheetName, cellAddress)
+
+    def containCellInDeleted(self,
+                             workbookKey: WorkbookKey,
+                             worksheetName: str,
+                             cellAddress: CellAddress):
+        return self.__deletedCellDict.checkContain(workbookKey,worksheetName,cellAddress)
+
+    def containCellInMutated(self,
+                             workbookKey: WorkbookKey,
+                             worksheetName: str,
+                             cellAddress: CellAddress):
+        return self.__mutatedCellDict.checkContain( workbookKey, worksheetName, cellAddress)
+    
+
     def clearResult(self):
-        self.__mutatedCellDict = {}
-        self.__deletedCellDict = {}
+        self.__mutatedCellDict.clear()
+        self.__deletedCellDict.clear()
 
     def toJson(self) -> RunResultJson:
         mutatedCellJson = []
         deletedCellJson = []
-        for cell in self.__mutatedCellDict:
-            mutatedCellJson.append(cell.toJson())
-
-        for cell in self.__deletedCellDict:
-            deletedCellJson.append(cell.toJson())
-
-        return RunResultJson(mutatedCellJson,deletedCellJson)
-
-
+        return RunResultJson(mutatedCellJson, deletedCellJson)
