@@ -110,3 +110,7 @@ class DataCell(Cell):
 
     def hasCode(self) -> bool:
         return self.__code is not None and len(self.__code) != 0
+
+    def __hash__(self) -> int:
+        return hash((self.__value,self.__code,self.__addr))
+
