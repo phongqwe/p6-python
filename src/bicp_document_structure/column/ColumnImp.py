@@ -20,7 +20,11 @@ class ColumnImp(Column):
     Column is a dictionary of cell: rowIndex -> cell
     """
 
-    def __init__(self, colIndex: int, cellDict: dict, onCellMutation:Callable[[Cell,CellMutationEvent],None] = None):
+    @property
+    def _onCellMutationEventHandler(self) -> Callable[[CellAddress, CellMutationEvent], None]:
+        return self.__onCellMutation
+
+    def __init__(self, colIndex: int, cellDict: dict, onCellMutation:Callable[[CellAddress,CellMutationEvent],None] = None):
         if type(cellDict) is dict:
             self.__cellDict = cellDict
             self.__colIndex = colIndex

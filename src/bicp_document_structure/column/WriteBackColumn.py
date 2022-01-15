@@ -13,12 +13,18 @@ from bicp_document_structure.range.address.RangeAddressImp import RangeAddressIm
 
 
 class WriteBackColumn(Column):
-    def __init__(self, col:Column, container: MutableColumnContainer, onCellMutation:Callable[[Cell,CellMutationEvent],None] = None):
-        self.__innerCol = col
+
+
+    def __init__(self, col:Column, container: MutableColumnContainer):
+        self.__innerCol:Column = col
         self.__container = container
-        self.__onCellMutation = onCellMutation
+        self.__onCellMutation = self.__innerCol._onCellMutationEventHandler
 
     ### >> Column << ##
+
+    @property
+    def _onCellMutationEventHandler(self) -> Callable[[CellAddress, CellMutationEvent], None]:
+        return self.__innerCol._onCellMutationEventHandler
 
     def range(self, firstRow: int, lastRow: int) -> Range:
         return self.__innerCol.range(firstRow, lastRow)

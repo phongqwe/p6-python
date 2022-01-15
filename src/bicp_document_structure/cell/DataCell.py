@@ -21,7 +21,7 @@ class DataCell(Cell):
                  address: CellAddress,
                  value=None,
                  code: str = "",
-                 onCellMutation:Callable[[Cell,CellMutationEvent],None] = None):
+                 onCellMutation:Callable[[CellAddress,CellMutationEvent],None] = None):
         self.__value = value
         self.__code: str = code
         self.__addr:CellAddress = address
@@ -49,6 +49,7 @@ class DataCell(Cell):
         get the value contained in this cell. If this cell contains code, the code will run and the updated value will be returned
         """
         if self.hasCode():
+            # x: this will update self.__value
             self.runScript(getGlobals())
         return self.__value
 
@@ -56,7 +57,7 @@ class DataCell(Cell):
     def value(self, newValue):
         self.__value = newValue
         if self.__onCelMutation is not None:
-            self.__onCelMutation(self,CellMutationEvent.NEW_VALUE)
+            self.__onCelMutation(self.address,CellMutationEvent.NEW_VALUE)
 
     @property
     def script(self) -> str:
@@ -66,7 +67,7 @@ class DataCell(Cell):
     def script(self, newCode: str):
         self.__code = newCode
         if self.__onCelMutation is not None:
-            self.__onCelMutation(self, CellMutationEvent.NEW_SCRIPT)
+            self.__onCelMutation(self.address, CellMutationEvent.NEW_SCRIPT)
 
     @property
     def address(self) -> CellAddress:
@@ -113,4 +114,3 @@ class DataCell(Cell):
 
     def __hash__(self) -> int:
         return hash((self.__value,self.__code,self.__addr))
-

@@ -1,6 +1,7 @@
 from abc import ABC
 
 from bicp_document_structure.app.run_result.RunResultJson import RunResultJson
+from bicp_document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 
@@ -35,5 +36,8 @@ class RunResult(ABC):
         """ remove everything from this RunResult object """
         raise NotImplementedError()
 
-    def toJson(self) -> RunResultJson:
+    def toJson(self,workbookContainer:WorkbookContainer) -> RunResultJson:
+        """
+        :param workbookContainer: for looking up cell data
+        """
         raise NotImplementedError()

@@ -5,7 +5,7 @@ from bicp_document_structure.mutation.CellMutationEvent import CellMutationEvent
 from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 
 
-class CellMutationEventHandlerImp(CellMutationEventHandler):
+class RunResultCMEHandler(CellMutationEventHandler):
     def __init__(self, runResult: RunResult):
         self.__runResult: RunResult = runResult
 

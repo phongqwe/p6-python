@@ -20,12 +20,12 @@ from bicp_document_structure.worksheet.WorksheetConst import WorksheetConst
 class WorksheetImp(Worksheet):
     def __init__(self, name="",
                  colDict=None,
-                 onCellMutation:Callable[[Cell,CellMutationEvent],None] = None):
+                 onCellMutation:Callable[[str, CellAddress, CellMutationEvent], None] = None):
         if colDict is None:
             colDict = {}
         self.__colDict = colDict
         self.__name = name
-        self.__onCellMutation = onCellMutation
+        self.__onCellMutation:Optional[Callable[[str, CellAddress, CellMutationEvent], None]] = onCellMutation
 
     ### >> Worksheet << ###
 
@@ -133,5 +133,10 @@ class WorksheetImp(Worksheet):
         if self.hasColumn(colIndex):
             col = self.__colDict[colIndex]
         else:
-            col = ColumnImp(colIndex, {},onCellMutation=self.__onCellMutation)
-        return WriteBackColumn(col, self,onCellMutation=self.__onCellMutation)
+            col = ColumnImp(colIndex, {},
+                            onCellMutation=self.__mutationHandler)
+        return WriteBackColumn(col, self,)
+
+    def __mutationHandler(self,cellAddress:CellAddress,event:CellMutationEvent):
+        if self.__onCellMutation is not None:
+            self.__onCellMutation(self.__name, cellAddress, event)

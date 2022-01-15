@@ -1,9 +1,11 @@
 from typing import Union, Optional
 
 from bicp_document_structure.app.App import App
+from bicp_document_structure.app.mutation_handler.RunResultCMEHandler import RunResultCMEHandler
 from bicp_document_structure.app.run_result.RunResult import RunResult
 from bicp_document_structure.app.run_result.RunResultImp import RunResultImp
 from bicp_document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
+from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.mutation.CellMutationEvent import CellMutationEvent
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
@@ -18,17 +20,18 @@ class SingleBookApp(App):
 
     def __init__(self):
         rr = RunResultImp()
-        wb = WorkbookImp("Book1",onCellMutation=self.onCellMutation)
+        self.mutationHandler = RunResultCMEHandler(rr)
+        wb = WorkbookImp("Book1",onCellMutation=self.mutationHandler.onCellMutation)
         wb.createNewSheet("Sheet1")
         wb.setActiveSheet(0)
         self.__book = wb
         self.__result = rr
 
-    def onCellMutation(self, cell, mutationEvent):
-        if mutationEvent == CellMutationEvent.DELETED:
-            self.__result.addDeletedCell(None,"",cell.address)
-        if mutationEvent == CellMutationEvent.NEW_SCRIPT or mutationEvent == CellMutationEvent.NEW_VALUE:
-            self.__result.addMutatedCell(None,"",cell)
+    def onCellMutation(self, workbookKey: WorkbookKey,
+                       worksheetName: str,
+                       cellAddress: CellAddress,
+                       mutationEvent: CellMutationEvent):
+        self.mutationHandler.onCellMutation(workbookKey, worksheetName, cellAddress, mutationEvent)
 
 
     @property

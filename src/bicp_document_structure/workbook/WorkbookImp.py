@@ -2,7 +2,7 @@ from collections import OrderedDict as ODict
 from pathlib import Path
 from typing import Union, Optional, OrderedDict, Callable
 
-from bicp_document_structure.cell.Cell import Cell
+from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.mutation.CellMutationEvent import CellMutationEvent
 from bicp_document_structure.util.Util import typeCheck
 from bicp_document_structure.workbook.WorkBook import Workbook
@@ -14,14 +14,14 @@ from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 class WorkbookImp(Workbook):
 
-    def __init__(self, name:str,
-                 path:Path = None,
+    def __init__(self, name: str,
+                 path: Path = None,
                  sheetDict: OrderedDict = None,
-                 onCellMutation:Callable[[Cell,CellMutationEvent],None] = None,
+                 onCellMutation: Callable[[WorkbookKey, str, CellAddress, CellMutationEvent], None] = None,
                  ):
         self.__name = name
-        self.__onCellMutation = onCellMutation
-        self.__key = WorkbookKeyImp(self.__name,path)
+        self.__onCellMutation:Optional[Callable[[WorkbookKey, str, CellAddress, CellMutationEvent], None]] = onCellMutation
+        self.__key = WorkbookKeyImp(self.__name, path)
         if sheetDict is None:
             sheetDict = ODict()
         else:
@@ -52,7 +52,7 @@ class WorkbookImp(Workbook):
         self.__key = newKey
         self.__name = newKey.fileName
 
-    def setActiveSheet(self, indexOrName:Union[int, str]):
+    def setActiveSheet(self, indexOrName: Union[int, str]):
         sheet = self.getSheet(indexOrName)
         if sheet is not None:
             self.__activeSheet = sheet
@@ -108,9 +108,15 @@ class WorkbookImp(Workbook):
                 "Can't create new sheet {sname} because sheet {sname} already exist".format(sname=newSheetName))
         else:
             newSheet = WorksheetImp(name=newSheetName,
-                                    onCellMutation=self.__onCellMutation)
+                                    onCellMutation=self.__mutationEventCallback)
             self.__sheetDict[newSheetName] = newSheet
             return newSheet
+
+    def __mutationEventCallback(self,
+                                worksheetName: str,
+                                cellAddress: CellAddress,
+                                mutationEvent: CellMutationEvent):
+        self.__onCellMutation(self.workbookKey, worksheetName, cellAddress, mutationEvent)
 
     def removeSheetByName(self, sheetName: str) -> Optional[Worksheet]:
         typeCheck(sheetName, "sheetName", str)
