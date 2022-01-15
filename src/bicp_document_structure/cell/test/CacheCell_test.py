@@ -30,10 +30,11 @@ class CacheCellTest(unittest.TestCase):
         cacheCell.value
         self.assertEqual(1,self.executionCounter)
         self.assertEqual(101, cache.value)
-        # new script
+        # new script and run
         cacheCell.setScriptAndRun("x=1;x+20")
         self.assertEqual(21,cache.value)
         self.assertEqual(3,self.executionCounter)
 
-if __name__ == '__main__':
-    unittest.main()
+        # just new script
+        cacheCell.script = "123"
+        self.assertTrue(cache.isEmpty())

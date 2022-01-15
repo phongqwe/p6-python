@@ -35,6 +35,11 @@ class CacheCell(Cell):
     def script(self) -> str:
         return self.__cell.script
 
+    @script.setter
+    def script(self, newCode: str):
+        self.__cell.script = newCode
+        self.__cache.clear()
+
     @property
     def address(self) -> CellAddress:
         return self.__cell.address
