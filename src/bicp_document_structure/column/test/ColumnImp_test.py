@@ -59,6 +59,6 @@ class ColumnImpTest(unittest.TestCase):
     def test_addCell_fail(self):
         with self.assertRaises(ValueError):
             r = ColumnImp.empty(5)
-            cell = DataCell(CellIndex(1, 1), 123, "code 1")
+            cell = DataCell(CellIndex(1, 1), 123, "script 1")
             r.addCell(cell)
             self.assertEqual(cell, r.getOrMakeCell(CellIndex(5, 1)))

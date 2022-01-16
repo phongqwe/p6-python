@@ -6,7 +6,39 @@ from bicp_document_structure.cell.address.CellIndex import CellIndex
 
 class DataCellTest(unittest.TestCase):
 
-    def test_assigningValue(self):
+    def test_clearScriptResult(self):
+        c1 = DataCell(CellIndex(1, 1),123)
+        c1.clearScriptResult()
+        self.assertEqual(123,c1.bareValue())
+
+        c2 = DataCell(CellIndex(1, 1),123,"123")
+        c2.clearScriptResult()
+        self.assertIsNone(c2.bareValue())
+        self.assertIsNotNone(c2.script)
+
+        c3 = DataCell(CellIndex(1,1))
+        c3.clearScriptResult()
+        self.assertIsNone(c3.bareValue())
+        self.assertIsNone(c3.script)
+
+    def test_rerun(self):
+        self.exCountA = 0
+
+        def increaseExCount(cell, mutationEvent):
+            self.exCountA += 1
+        c2 = DataCell(CellIndex(1, 1), value=123, script="123",onCellMutation=increaseExCount)
+        oldCount = self.exCountA
+        c2.rerun()
+        self.assertEqual(123,c2.bareValue())
+        # +1 when clear, and +1 when run
+        self.assertEqual(oldCount+2,self.exCountA)
+        oldCount = self.exCountA
+        c2.rerun()
+        self.assertEqual(123,c2.bareValue())
+        self.assertEqual(oldCount+2,self.exCountA)
+
+
+    def test_assigningValueAndScript(self):
         c = DataCell(CellIndex(1, 1))
         self.assertIsNone(c.value)
         self.assertIsNone(c.script)

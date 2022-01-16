@@ -22,10 +22,10 @@ class DataCell(Cell):
     def __init__(self,
                  address: CellAddress,
                  value=None,
-                 code: str = None,
+                 script: str = None,
                  onCellMutation: Callable[[Cell, CellMutationEvent], None] = None):
         self.__value = value
-        self.__code: str = code
+        self.__code: str = script
         self.__addr: CellAddress = address
         self.__onCellMutation = onCellMutation
         self.__scriptAlreadyRun = False
@@ -50,7 +50,7 @@ class DataCell(Cell):
     def value(self):
         """
         get the value contained in this cell.
-        If this cell contains code, the code will run and the updated value will be returned
+        If this cell contains script, the script will run and the updated value will be returned
         """
         shouldRun = self.hasCode() and not self.__scriptAlreadyRun
         if shouldRun:
@@ -130,4 +130,4 @@ class DataCell(Cell):
             self.__value = None
             self.__scriptAlreadyRun = False
             if self.__onCellMutation is not None:
-                self.__onCellMutation(self, CellMutationEvent.DELETED)
+                self.__onCellMutation(self, CellMutationEvent.CLEAR_SCRIPT_RESULT)
