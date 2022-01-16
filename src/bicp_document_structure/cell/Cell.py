@@ -97,3 +97,7 @@ class Cell(ABC):
             return True
         else:
             return self.value is not None
+
+    def rerun(self):
+        self.clearScriptResult()
+        self.runScript()

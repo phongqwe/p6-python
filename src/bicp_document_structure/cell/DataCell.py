@@ -82,12 +82,6 @@ class DataCell(Cell):
     def address(self) -> CellAddress:
         return self.__addr
 
-    # def isValueEqual(self, anotherCellOrValue:Union[Cell, Any]):
-    #     if isinstance(anotherCellOrValue, Cell):
-    #         return self.value == anotherCellOrValue.value
-    #     else:
-    #         return self.value == anotherCellOrValue
-
     def __eq__(self, other):
         if isinstance(other, Cell):
             sameValue = self.value == other.value
@@ -123,6 +117,7 @@ class DataCell(Cell):
     def setScriptAndRun(self, newScript, globalScope=None, localScope=None):
         self.script = newScript
         self.runScript(globalScope, localScope)
+
 
     def hasCode(self) -> bool:
         return self.__code is not None and len(self.__code) != 0

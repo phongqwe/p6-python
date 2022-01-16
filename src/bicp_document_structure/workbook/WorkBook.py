@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import Optional, Union
+from typing import Optional, Union, List
 
 from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 from bicp_document_structure.worksheet.Worksheet import Worksheet
@@ -8,6 +8,13 @@ from bicp_document_structure.worksheet.Worksheet import Worksheet
 class Workbook(ABC):
 
     def rerun(self):
+        """rerun all worksheet in this workbook"""
+        for sheet in self.sheets:
+            sheet.rerun()
+
+    @property
+    def sheets(self)->List[Worksheet]:
+        """return a list of all sheet in this workbook"""
         raise NotImplementedError()
 
     @property

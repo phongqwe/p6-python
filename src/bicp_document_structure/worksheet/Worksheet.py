@@ -17,6 +17,3 @@ class Worksheet(UserFriendlyCellContainer,
 
     def toJson(self)->WorksheetJson:
         raise NotImplementedError()
-
-    def rerun(self):
-        raise NotImplementedError()

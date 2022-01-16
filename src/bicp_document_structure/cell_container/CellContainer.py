@@ -49,3 +49,7 @@ class CellContainer(ABC):
             return self.rangeAddress == other.rangeAddress
         else:
             return False
+
+    def rerun(self):
+        for cell in self.cells:
+            cell.rerun()
