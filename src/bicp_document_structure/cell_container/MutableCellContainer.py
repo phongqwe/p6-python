@@ -18,7 +18,7 @@ class MutableCellContainer(CellContainer,ABC):
 
     def getOrMakeCell(self, address: CellAddress) -> Cell:
         """
-        get cell at an address. If such cell does not exist, return a TempCell
+        get cell at an address. If such cell does not exist, return a WriteBackCell
         :return the cell at the position
         """
         raise NotImplementedError()

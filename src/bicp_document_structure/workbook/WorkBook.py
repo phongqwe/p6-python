@@ -7,6 +7,9 @@ from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 class Workbook(ABC):
 
+    def rerun(self):
+        raise NotImplementedError()
+
     @property
     def workbookKey(self)->WorkbookKey:
         raise NotImplementedError()

@@ -1,0 +1,2 @@
+class WorksheetJson:
+    pass

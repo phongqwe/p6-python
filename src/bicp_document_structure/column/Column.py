@@ -22,6 +22,9 @@ class Column(Range, ABC):
         """index of this column"""
         raise NotImplementedError()
 
+    def rerun(self):
+        raise NotImplementedError()
+
     def toJson(self)->ColumnJson:
         """create a json facade of this column"""
         raise NotImplementedError()

@@ -7,8 +7,6 @@ from bicp_document_structure.app.UserFunctions import startApp, getActiveWorkboo
 
 class UserFunctions_test(unittest.TestCase):
 
-
-
     def test_bench(self):
         startApp()
         restartApp()
@@ -27,7 +25,7 @@ class UserFunctions_test(unittest.TestCase):
         self.assertEqual(11,cellA1_2.value)
 
         cellA1_1.script = "x=2;x*50"
-        self.assertEqual(11,cellA1_1.bareValue())
+        self.assertEqual(None,cellA1_1.bareValue())
 
         cellA2 = cell("@A2")
         cellA2.setScriptAndRun("cell(\"@A1\").value+1")
@@ -43,7 +41,7 @@ class UserFunctions_test(unittest.TestCase):
         print(cellA1_2.displayValue)
 
         cellA4 = cell("@A4")
-        cellA4.script = "cell(\"@A3\").value + 3"
+        cellA4.script = "cell(\"@A1\").value + 3"
         self.assertTrue(isinstance(cellA4.value,Exception))
         print(cellA4.displayValue)
 
@@ -60,7 +58,7 @@ class UserFunctions_test(unittest.TestCase):
         # self.assertEqual(11, cellA1_2.value)
 
         result = getApp().result
-        jr = json.dumps(result.toJson().__dict__)
+        jr = json.dumps(result.toJson(getApp()).__dict__)
         print(jr)
 
 

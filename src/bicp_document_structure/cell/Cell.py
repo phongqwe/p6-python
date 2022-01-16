@@ -31,7 +31,6 @@ class Cell(ABC):
 
     def bareValue(self):
         """
-        For debugging only
         :return: the bare value, may not be consistent with the result of running the code of this cell.
         """
         raise NotImplementedError()
@@ -72,6 +71,7 @@ class Cell(ABC):
         return self.value == anotherCell.value
 
     def runScript(self, globalScope=None, localScope=None):
+        """run the script """
         raise NotImplementedError()
 
     def setScriptAndRun(self, newScript, globalScope=None, localScope=None):
@@ -83,4 +83,8 @@ class Cell(ABC):
         raise NotImplementedError()
 
     def toJson(self) -> CellJson:
+        raise NotImplementedError()
+
+    def clearScriptResult(self):
+        """remove script result if this Cell houses any script"""
         raise NotImplementedError()

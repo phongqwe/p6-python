@@ -16,6 +16,7 @@ from bicp_document_structure.worksheet.WorksheetConst import WorksheetConst
 
 
 class ColumnImp(Column):
+
     """
     Column is a dictionary of cell: rowIndex -> cell
     """
@@ -24,7 +25,8 @@ class ColumnImp(Column):
     def _onCellMutationEventHandler(self) -> Callable[[CellAddress, CellMutationEvent], None]:
         return self.__onCellMutation
 
-    def __init__(self, colIndex: int, cellDict: dict, onCellMutation:Callable[[CellAddress,CellMutationEvent],None] = None):
+    def __init__(self, colIndex: int, cellDict: dict,
+                 onCellMutation: Callable[[CellAddress, CellMutationEvent], None] = None):
         if type(cellDict) is dict:
             self.__cellDict = cellDict
             self.__colIndex = colIndex
@@ -40,6 +42,9 @@ class ColumnImp(Column):
         return ColumnImp(colIndex, {})
 
     ### >> Column << ###
+
+    def rerun(self):
+        pass
 
     def toJson(self) -> ColumnJson:
         return ColumnJson(
@@ -83,7 +88,10 @@ class ColumnImp(Column):
             return cell
         else:
             if self.containsAddress(address):
-                return WriteBackCell(DataCell(address,onCellMutation=self.__onCellMutation),self)
+                return WriteBackCell(
+                    cell=DataCell(address, onCellMutation=self.__onCellMutation),
+                    container=self,
+                )
             else:
                 raise ValueError("colum {cl} does not contain {adr}".format(
                     cl=str(self.index),

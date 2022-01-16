@@ -10,8 +10,10 @@ from bicp_document_structure.mutation.CellMutationEvent import CellMutationEvent
 
 
 class DataCell(Cell):
+
     """
-    a cell that holds some data
+    A Cell that holds some data.
+    This Cell does not cache value, it perform re-computation on every value request.
     """
 
     def bareValue(self):
@@ -20,15 +22,16 @@ class DataCell(Cell):
     def __init__(self,
                  address: CellAddress,
                  value=None,
-                 code: str = "",
-                 onCellMutation:Callable[[CellAddress,CellMutationEvent],None] = None):
+                 code: str = None,
+                 onCellMutation: Callable[[CellAddress, CellMutationEvent], None] = None):
         self.__value = value
         self.__code: str = code
-        self.__addr:CellAddress = address
-        self.__onCelMutation = onCellMutation
-
+        self.__addr: CellAddress = address
+        self.__onCellMutation = onCellMutation
+        self.__scriptAlreadyRun = False
 
     ### >> Cell << ###
+
     def toJson(self) -> CellJson:
         return CellJson(
             value=str(self.__value),
@@ -46,18 +49,22 @@ class DataCell(Cell):
     @property
     def value(self):
         """
-        get the value contained in this cell. If this cell contains code, the code will run and the updated value will be returned
+        get the value contained in this cell.
+        If this cell contains code, the code will run and the updated value will be returned
         """
-        if self.hasCode():
+        shouldRun = self.hasCode() and not self.__scriptAlreadyRun
+        if shouldRun:
             # x: this will update self.__value
-            self.runScript(getGlobals())
+            self.runScript()
         return self.__value
 
     @value.setter
     def value(self, newValue):
         self.__value = newValue
-        if self.__onCelMutation is not None:
-            self.__onCelMutation(self.address,CellMutationEvent.NEW_VALUE)
+        self.__code = None
+        self.__scriptAlreadyRun=False
+        if self.__onCellMutation is not None:
+            self.__onCellMutation(self.address, CellMutationEvent.NEW_VALUE)
 
     @property
     def script(self) -> str:
@@ -66,8 +73,10 @@ class DataCell(Cell):
     @script.setter
     def script(self, newCode: str):
         self.__code = newCode
-        if self.__onCelMutation is not None:
-            self.__onCelMutation(self.address, CellMutationEvent.NEW_SCRIPT)
+        self.__value = None
+        if self.__onCellMutation is not None:
+            self.__onCellMutation(self.address, CellMutationEvent.NEW_SCRIPT)
+        self.__scriptAlreadyRun = False
 
     @property
     def address(self) -> CellAddress:
@@ -103,7 +112,10 @@ class DataCell(Cell):
             codeResult = CodeExecutor.evalCode(self.script, globalScope, localScope)
         except Exception as e:
             codeResult = e
-        self.value = codeResult
+        self.__value = codeResult
+        self.__scriptAlreadyRun = True
+        if self.__onCellMutation is not None:
+            self.__onCellMutation(self.address, CellMutationEvent.NEW_VALUE)
 
     def setScriptAndRun(self, newScript, globalScope=None, localScope=None):
         self.script = newScript
@@ -113,4 +125,9 @@ class DataCell(Cell):
         return self.__code is not None and len(self.__code) != 0
 
     def __hash__(self) -> int:
-        return hash((self.__value,self.__code,self.__addr))
+        return hash((self.__value, self.__code, self.__addr))
+
+    def clearScriptResult(self):
+        if self.hasCode():
+            self.__value = None
+            self.__scriptAlreadyRun = False

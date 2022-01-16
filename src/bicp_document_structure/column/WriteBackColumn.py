@@ -64,7 +64,10 @@ class WriteBackColumn(Column):
         if self.hasCellAt(address):
             return self.__innerCol.getOrMakeCell(address)
         else:
-            return WriteBackCell(DataCell(address,onCellMutation=self.__onCellMutation),self)
+            return WriteBackCell(
+                cell=DataCell(address,onCellMutation=self.__onCellMutation),
+                container=self,
+            )
 
     def isEmpty(self) -> bool:
         return self.__innerCol.isEmpty()
