@@ -23,7 +23,7 @@ class DataCell(Cell):
                  address: CellAddress,
                  value=None,
                  code: str = None,
-                 onCellMutation: Callable[[CellAddress, CellMutationEvent], None] = None):
+                 onCellMutation: Callable[[Cell, CellMutationEvent], None] = None):
         self.__value = value
         self.__code: str = code
         self.__addr: CellAddress = address
@@ -64,7 +64,7 @@ class DataCell(Cell):
         self.__code = None
         self.__scriptAlreadyRun=False
         if self.__onCellMutation is not None:
-            self.__onCellMutation(self.address, CellMutationEvent.NEW_VALUE)
+            self.__onCellMutation(self, CellMutationEvent.NEW_VALUE)
 
     @property
     def script(self) -> str:
@@ -75,15 +75,18 @@ class DataCell(Cell):
         self.__code = newCode
         self.__value = None
         if self.__onCellMutation is not None:
-            self.__onCellMutation(self.address, CellMutationEvent.NEW_SCRIPT)
+            self.__onCellMutation(self, CellMutationEvent.NEW_SCRIPT)
         self.__scriptAlreadyRun = False
 
     @property
     def address(self) -> CellAddress:
         return self.__addr
 
-    def isValueEqual(self, anotherCell):
-        return self.value == anotherCell.value
+    # def isValueEqual(self, anotherCellOrValue:Union[Cell, Any]):
+    #     if isinstance(anotherCellOrValue, Cell):
+    #         return self.value == anotherCellOrValue.value
+    #     else:
+    #         return self.value == anotherCellOrValue
 
     def __eq__(self, other):
         if isinstance(other, Cell):
@@ -115,7 +118,7 @@ class DataCell(Cell):
         self.__value = codeResult
         self.__scriptAlreadyRun = True
         if self.__onCellMutation is not None:
-            self.__onCellMutation(self.address, CellMutationEvent.NEW_VALUE)
+            self.__onCellMutation(self, CellMutationEvent.NEW_VALUE)
 
     def setScriptAndRun(self, newScript, globalScope=None, localScope=None):
         self.script = newScript
@@ -131,3 +134,5 @@ class DataCell(Cell):
         if self.hasCode():
             self.__value = None
             self.__scriptAlreadyRun = False
+            if self.__onCellMutation is not None:
+                self.__onCellMutation(self, CellMutationEvent.DELETED)

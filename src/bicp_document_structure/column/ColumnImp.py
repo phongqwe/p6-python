@@ -22,11 +22,11 @@ class ColumnImp(Column):
     """
 
     @property
-    def _onCellMutationEventHandler(self) -> Callable[[CellAddress, CellMutationEvent], None]:
+    def _onCellMutationEventHandler(self) -> Callable[[Cell, CellMutationEvent], None]:
         return self.__onCellMutation
 
     def __init__(self, colIndex: int, cellDict: dict,
-                 onCellMutation: Callable[[CellAddress, CellMutationEvent], None] = None):
+                 onCellMutation: Callable[[Cell, CellMutationEvent], None] = None):
         if type(cellDict) is dict:
             self.__cellDict = cellDict
             self.__colIndex = colIndex
@@ -43,8 +43,6 @@ class ColumnImp(Column):
 
     ### >> Column << ###
 
-    def rerun(self):
-        pass
 
     def toJson(self) -> ColumnJson:
         return ColumnJson(

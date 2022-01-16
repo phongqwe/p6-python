@@ -23,7 +23,7 @@ class WriteBackColumn(Column):
     ### >> Column << ##
 
     @property
-    def _onCellMutationEventHandler(self) -> Callable[[CellAddress, CellMutationEvent], None]:
+    def _onCellMutationEventHandler(self) -> Callable[[Cell, CellMutationEvent], None]:
         return self.__innerCol._onCellMutationEventHandler
 
     def range(self, firstRow: int, lastRow: int) -> Range:

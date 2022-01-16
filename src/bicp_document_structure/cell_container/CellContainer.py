@@ -3,7 +3,7 @@ from typing import List, Optional
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
-from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
+from bicp_document_structure.range.address.RangeAddress import RangeAddress
 
 
 class CellContainer(ABC):
@@ -36,7 +36,7 @@ class CellContainer(ABC):
         raise NotImplementedError()
 
     @property
-    def rangeAddress(self) -> RangeAddressImp:
+    def rangeAddress(self) -> RangeAddress:
         """:return range address of this container"""
         raise NotImplementedError()
 

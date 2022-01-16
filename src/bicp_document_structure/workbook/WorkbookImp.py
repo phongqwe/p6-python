@@ -2,7 +2,7 @@ from collections import OrderedDict as ODict
 from pathlib import Path
 from typing import Union, Optional, OrderedDict, Callable
 
-from bicp_document_structure.cell.address.CellAddress import CellAddress
+from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.mutation.CellMutationEvent import CellMutationEvent
 from bicp_document_structure.util.Util import typeCheck
 from bicp_document_structure.workbook.WorkBook import Workbook
@@ -17,10 +17,10 @@ class WorkbookImp(Workbook):
     def __init__(self, name: str,
                  path: Path = None,
                  sheetDict: OrderedDict = None,
-                 onCellMutation: Callable[[WorkbookKey, str, CellAddress, CellMutationEvent], None] = None,
+                 onCellMutation: Callable[[WorkbookKey, str, Cell, CellMutationEvent], None] = None,
                  ):
         self.__name = name
-        self.__onCellMutation:Optional[Callable[[WorkbookKey, str, CellAddress, CellMutationEvent], None]] = onCellMutation
+        self.__onCellMutation:Optional[Callable[[WorkbookKey, str, Cell, CellMutationEvent], None]] = onCellMutation
         self.__key = WorkbookKeyImp(self.__name, path)
         if sheetDict is None:
             sheetDict = ODict()
@@ -114,9 +114,9 @@ class WorkbookImp(Workbook):
 
     def __mutationEventCallback(self,
                                 worksheetName: str,
-                                cellAddress: CellAddress,
+                                cell: Cell,
                                 mutationEvent: CellMutationEvent):
-        self.__onCellMutation(self.workbookKey, worksheetName, cellAddress, mutationEvent)
+        self.__onCellMutation(self.workbookKey, worksheetName, cell, mutationEvent)
 
     def removeSheetByName(self, sheetName: str) -> Optional[Worksheet]:
         typeCheck(sheetName, "sheetName", str)

@@ -67,8 +67,11 @@ class Cell(ABC):
     def col(self) -> int:
         return self.address.colIndex
 
-    def isValueEqual(self, anotherCell):
-        return self.value == anotherCell.value
+    def isValueEqual(self, anotherCellOrValue):
+        if isinstance(anotherCellOrValue, Cell):
+            return self.value == anotherCellOrValue.value
+        else:
+            return self.value == anotherCellOrValue
 
     def runScript(self, globalScope=None, localScope=None):
         """run the script """
@@ -86,5 +89,11 @@ class Cell(ABC):
         raise NotImplementedError()
 
     def clearScriptResult(self):
-        """remove script result if this Cell houses any script"""
+        """delete script result if this Cell houses any script"""
         raise NotImplementedError()
+
+    def isEmpty(self):
+        if self.hasCode():
+            return True
+        else:
+            return self.value is not None

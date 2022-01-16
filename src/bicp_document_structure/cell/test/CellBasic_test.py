@@ -14,6 +14,11 @@ class DataCellTest(unittest.TestCase):
         self.assertEqual(123,c.value)
         self.assertIsNone(c.script)
 
+        c.script = "x=10;x=x+1;x;"
+        self.assertIsNone(c.bareValue())
+        self.assertTrue(c.isValueEqual(11))
+        self.assertEqual(11,c.value)
+
 
     def test_caching(self):
         self.exCount = 0
