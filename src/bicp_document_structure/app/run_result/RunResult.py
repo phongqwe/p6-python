@@ -21,7 +21,7 @@ class RunResult(ABC):
         raise NotImplementedError()
 
     def addDeletedCell(self, workbookKey: WorkbookKey, worksheetName: str, cellAddress: CellAddress):
-        """add address of cells that have been deleted"""
+        """add address of cellJsons that have been deleted"""
         raise NotImplementedError()
 
     def containCellInDeleted(self,workbookKey: WorkbookKey, worksheetName: str, cellAddress: CellAddress):

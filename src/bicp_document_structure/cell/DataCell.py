@@ -34,7 +34,7 @@ class DataCell(Cell):
 
     def toJson(self) -> CellJson:
         return CellJson(
-            value=str(self.__value),
+            value=self.__value,
             script=self.__code,
             address=self.__addr.toJson(),
         )

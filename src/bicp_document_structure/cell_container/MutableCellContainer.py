@@ -6,7 +6,7 @@ from bicp_document_structure.cell_container.CellContainer import CellContainer
 
 
 class MutableCellContainer(CellContainer,ABC):
-    """ container of cells """
+    """ container of cellJsons """
 
     def addCell(self, cell: Cell):
         """add a cell to this container"""

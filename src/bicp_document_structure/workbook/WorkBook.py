@@ -1,6 +1,7 @@
 from abc import ABC
 from typing import Optional, Union, List
 
+from bicp_document_structure.workbook.WorkbookJson import WorkbookJson
 from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 
@@ -92,3 +93,8 @@ class Workbook(ABC):
     def removeSheet(self,nameOrIndex:Union[str,int])->Optional[Worksheet]:
         """ remove sheet by either index or name. If the target sheet does not exist, simply return"""
         raise NotImplementedError()
+    def toJson(self)->WorkbookJson:
+        jsons = []
+        for sheet in self.sheets:
+            jsons.append(sheet.toJson())
+        return WorkbookJson(jsons)

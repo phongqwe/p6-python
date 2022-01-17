@@ -1,15 +1,44 @@
 {
-  "colIndex": 1,
-  "cells": [
+  "worksheets": [
     {
-      "value": "123",
-      "code": "",
-      "address": "A1"
+      "cells": [
+        {
+          "value": "value",
+          "script": null,
+          "addr": [
+            1,
+            2
+          ]
+        },
+        {
+          "value": null,
+          "script": "script x",
+          "addr": [
+            1,
+            1
+          ]
+        }
+      ]
     },
     {
-      "value": "456",
-      "code": "",
-      "address": [1,2]
+      "cells": [
+        {
+          "value": null,
+          "script": null,
+          "addr": [
+            1,
+            2
+          ]
+        },
+        {
+          "value": "value 2",
+          "script": "script 2",
+          "addr": [
+            1,
+            1
+          ]
+        }
+      ]
     }
   ]
 }
