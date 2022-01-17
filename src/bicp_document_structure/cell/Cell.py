@@ -98,6 +98,6 @@ class Cell(ABC):
         else:
             return self.value is not None
 
-    def rerun(self):
+    def reRun(self):
         self.clearScriptResult()
         self.runScript()

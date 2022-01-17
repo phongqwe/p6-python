@@ -7,10 +7,10 @@ from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 class Workbook(ABC):
 
-    def rerun(self):
+    def reRun(self):
         """rerun all worksheet in this workbook"""
         for sheet in self.sheets:
-            sheet.rerun()
+            sheet.reRun()
 
     @property
     def sheets(self)->List[Worksheet]:

@@ -50,6 +50,6 @@ class CellContainer(ABC):
         else:
             return False
 
-    def rerun(self):
+    def reRun(self):
         for cell in self.cells:
-            cell.rerun()
+            cell.reRun()

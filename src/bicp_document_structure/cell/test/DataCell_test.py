@@ -28,12 +28,12 @@ class DataCellTest(unittest.TestCase):
             self.exCountA += 1
         c2 = DataCell(CellIndex(1, 1), value=123, script="123",onCellMutation=increaseExCount)
         oldCount = self.exCountA
-        c2.rerun()
+        c2.reRun()
         self.assertEqual(123,c2.bareValue())
         # +1 when clear, and +1 when run
         self.assertEqual(oldCount+2,self.exCountA)
         oldCount = self.exCountA
-        c2.rerun()
+        c2.reRun()
         self.assertEqual(123,c2.bareValue())
         self.assertEqual(oldCount+2,self.exCountA)
 
