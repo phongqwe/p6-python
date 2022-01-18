@@ -97,4 +97,7 @@ class Workbook(ABC):
         jsons = []
         for sheet in self.sheets:
             jsons.append(sheet.toJson())
-        return WorkbookJson(jsons)
+        path = None
+        if self.workbookKey.filePath is not None:
+            path = str(self.workbookKey.filePath)
+        return WorkbookJson(self.name,path,jsons)

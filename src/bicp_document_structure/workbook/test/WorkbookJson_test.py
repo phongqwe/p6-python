@@ -8,17 +8,17 @@ from bicp_document_structure.worksheet.WorksheetJson import WorksheetJson
 
 class WorkbookJsonTest(unittest.TestCase):
     def test_jsonCreation(self):
-        wbjson = WorkbookJson([
-            WorksheetJson([
+        wbjson = WorkbookJson("workbookName","workbookPath",[
+            WorksheetJson("sheet1",[
                 CellJson("value",None,CellAddressJson(1,2)),
                 CellJson(None,"script x",CellAddressJson(1,1)),
             ]),
-            WorksheetJson([
+            WorksheetJson("sheet2",[
                 CellJson(None, None, CellAddressJson(1, 2)),
                 CellJson("value 2", "script 2", CellAddressJson(1, 1)),
             ])
         ])
-        self.assertEqual("""{"worksheets": [{"cells": [{"value": "value", "script": null, "addr": [1, 2]}, {"value": null, "script": "script x", "addr": [1, 1]}]}, {"cells": [{"value": null, "script": null, "addr": [1, 2]}, {"value": "value 2", "script": "script 2", "addr": [1, 1]}]}]}""",str(wbjson))
+        self.assertEqual("""{"name": "workbookName", "path": "workbookPath", "worksheets": [{"name": "sheet1", "cells": [{"value": "value", "script": null, "addr": [1, 2]}, {"value": null, "script": "script x", "addr": [1, 1]}]}, {"name": "sheet2", "cells": [{"value": null, "script": null, "addr": [1, 2]}, {"value": "value 2", "script": "script 2", "addr": [1, 1]}]}]}""",str(wbjson))
 
 
 

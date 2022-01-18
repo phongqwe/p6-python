@@ -100,19 +100,20 @@ class DataCell(Cell):
         return self.__addr.colIndex
 
     def runScript(self, globalScope=None, localScope=None):
-        if localScope is None:
-            localScope = {}
+        if self.script is not None:
+            if localScope is None:
+                localScope = {}
 
-        if globalScope is None:
-            globalScope = getGlobals()
-        try:
-            codeResult = CodeExecutor.evalCode(self.script, globalScope, localScope)
-        except Exception as e:
-            codeResult = e
-        self.__value = codeResult
-        self.__scriptAlreadyRun = True
-        if self.__onCellMutation is not None:
-            self.__onCellMutation(self, CellMutationEvent.NEW_VALUE)
+            if globalScope is None:
+                globalScope = getGlobals()
+            try:
+                codeResult = CodeExecutor.evalCode(self.script, globalScope, localScope)
+            except Exception as e:
+                codeResult = e
+            self.__value = codeResult
+            self.__scriptAlreadyRun = True
+            if self.__onCellMutation is not None:
+                self.__onCellMutation(self, CellMutationEvent.NEW_VALUE)
 
     def setScriptAndRun(self, newScript, globalScope=None, localScope=None):
         self.script = newScript

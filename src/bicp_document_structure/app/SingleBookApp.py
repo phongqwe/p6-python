@@ -73,3 +73,12 @@ class SingleBookApp(App):
 
     def loadWorkbook(self, filePath: str) -> bool:
         raise NotImplementedError()
+
+    def getWorkbook(self, key: Union[str, int, WorkbookKey]) -> Optional[Workbook]:
+        return self.__book
+
+    def getWorkbookByKey(self, key: WorkbookKey) -> Optional[Workbook]:
+        return self.__book
+
+
+

@@ -5,8 +5,9 @@ from bicp_document_structure.cell.CellJson import CellJson
 
 
 class WorksheetJson(dict):
-    def __init__(self, cellJsons:List[CellJson]):
+    def __init__(self, name:str,cellJsons:List[CellJson]):
         super().__init__()
+        self.name=name
         self.cells = []
         for cell in cellJsons:
             self.cells.append(cell.__dict__)

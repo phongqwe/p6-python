@@ -19,7 +19,7 @@ class WorksheetJsonTest(unittest.TestCase):
                 script="123"
             ).toJson()
         ]
-        wjson = WorksheetJson(cells)
-        self.assertEqual("""{"cells": [{"value": "abc", "script": null, "addr": [1, 1]}, {"value": null, "script": "123", "addr": [1, 2]}]}""",str(wjson))
+        wjson = WorksheetJson("worksheet name",cells)
+        self.assertEqual("""{"name": "worksheet name", "cells": [{"value": "abc", "script": null, "addr": [1, 1]}, {"value": null, "script": "123", "addr": [1, 2]}]}""",str(wjson))
 
 

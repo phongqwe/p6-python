@@ -19,9 +19,8 @@ class WorkbookImp(Workbook):
                  sheetDict: OrderedDict = None,
                  onCellMutation: Callable[[WorkbookKey, str, Cell, CellMutationEvent], None] = None,
                  ):
-        self.__name = name
         self.__onCellMutation:Optional[Callable[[WorkbookKey, str, Cell, CellMutationEvent], None]] = onCellMutation
-        self.__key = WorkbookKeyImp(self.__name, path)
+        self.__key = WorkbookKeyImp(name, path)
         if sheetDict is None:
             sheetDict = ODict()
         else:
@@ -43,6 +42,7 @@ class WorkbookImp(Workbook):
 
     ### >> Workbook << ###
 
+    @property
     def sheets(self) -> List[Worksheet]:
         return list(self.__sheetDict.values())
 
@@ -53,7 +53,6 @@ class WorkbookImp(Workbook):
     @workbookKey.setter
     def workbookKey(self, newKey: WorkbookKey):
         self.__key = newKey
-        self.__name = newKey.fileName
 
     def setActiveSheet(self, indexOrName: Union[int, str]):
         sheet = self.getSheet(indexOrName)
@@ -99,11 +98,11 @@ class WorkbookImp(Workbook):
 
     @property
     def name(self) -> str:
-        return self.__name
+        return self.workbookKey.fileName
 
     @name.setter
     def name(self, newName: str):
-        self.__name = newName
+        self.workbookKey = WorkbookKeyImp(newName,self.workbookKey.filePath)
 
     def createNewSheet(self, newSheetName) -> Worksheet:
         if newSheetName in self.__sheetDict.keys():

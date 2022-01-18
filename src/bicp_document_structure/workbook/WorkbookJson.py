@@ -1,12 +1,14 @@
 import json
-from typing import List
+from typing import List, Union
 
 from bicp_document_structure.worksheet.WorksheetJson import WorksheetJson
 
 
 class WorkbookJson(dict):
-    def __init__(self,worksheetJsons:List[WorksheetJson]):
+    def __init__(self,name:str,path:Union[str,None],worksheetJsons:List[WorksheetJson]):
         super().__init__()
+        self.name=name
+        self.path=path
         self.worksheets = []
         for sheet in worksheetJsons:
             self.worksheets.append(sheet.__dict__)

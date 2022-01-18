@@ -1,20 +1,44 @@
 import json
 import unittest
 
-from bicp_document_structure.app.UserFunctions import startApp, getActiveWorkbook, getActiveSheet, cell, restartApp, \
-    getApp
+from bicp_document_structure.app.UserFunctions import getActiveWorkbook, getActiveSheet, cell, restartApp, \
+    getApp, getWorkbook
 
 
 class UserFunctions_test(unittest.TestCase):
-
-    def test_bench(self):
-        startApp()
+    """
+    these tests emulate code execution from the front end
+    """
+    def setUp(self) -> None:
+        super().setUp()
         restartApp()
-        cell("@A1").value = "abc"
-        print(cell("@A1").value)
+
+    def test_B(self):
+        cell("@A1").value = 100.0
+        getWorkbook("Book1").reRun()
+        str(getWorkbook("Book1").toJson())
+        cell("@B1").script = """cell("@A1").value"""
+        getWorkbook("Book1").reRun()
+        print(getWorkbook("Book1").toJson())
+
+    def test_codeExecution_directLiteral(self):
+        cell("@A1").script = "100"
+        self.assertEqual(100,cell("@A1").value)
+
+    def test_codeExecution_functionCall(self):
+        cell("@A1").script = "len([1,2,3])"
+        self.assertEqual(3,cell("@A1").value)
+
+    def test_gettingWbJsonAfterExecution(self):
+        book = getWorkbook("Book1")
+        cell("@A1").value = 1
+        getWorkbook("Book1").reRun()
+        j = getWorkbook("Book1").toJson()
+        print(j)
+
 
     def test_onGlobalScope(self):
-        startApp()
+        # startApp()
         activeBook = getActiveWorkbook()
         activeBook.setActiveSheet("Sheet1")
         sheet = getActiveSheet()
@@ -46,16 +70,11 @@ class UserFunctions_test(unittest.TestCase):
         print(cellA4.displayValue)
 
     def test_Result(self):
-        startApp()
-        restartApp()
         activeBook = getActiveWorkbook()
         activeBook.setActiveSheet("Sheet1")
         sheet = getActiveSheet()
         cellA1_1 = sheet.cell((1, 1))  # A1
         cellA1_1.script = "x=1;x+10"
-        # cellA1_1.runScript()
-        # cellA1_2 = cell("@A1")
-        # self.assertEqual(11, cellA1_2.value)
 
         result = getApp().result
         jr = json.dumps(result.toJson(getApp()).__dict__)

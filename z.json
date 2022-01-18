@@ -1,38 +1,13 @@
 {
+  "name": "Book1",
+  "path": null,
   "worksheets": [
     {
+      "name": "Sheet1",
       "cells": [
         {
-          "value": "value",
+          "value": 11,
           "script": null,
-          "addr": [
-            1,
-            2
-          ]
-        },
-        {
-          "value": null,
-          "script": "script x",
-          "addr": [
-            1,
-            1
-          ]
-        }
-      ]
-    },
-    {
-      "cells": [
-        {
-          "value": null,
-          "script": null,
-          "addr": [
-            1,
-            2
-          ]
-        },
-        {
-          "value": "value 2",
-          "script": "script 2",
           "addr": [
             1,
             1

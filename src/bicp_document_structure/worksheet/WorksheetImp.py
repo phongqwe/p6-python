@@ -15,6 +15,7 @@ from bicp_document_structure.util.AddressParser import AddressParser
 from bicp_document_structure.util.Util import typeCheck
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 from bicp_document_structure.worksheet.WorksheetConst import WorksheetConst
+from bicp_document_structure.worksheet.WorksheetJson import WorksheetJson
 
 
 class WorksheetImp(Worksheet):
@@ -33,6 +34,11 @@ class WorksheetImp(Worksheet):
     def name(self) -> str:
         return self.__name
 
+    def toJson(self) -> WorksheetJson:
+        cellJsons = []
+        for cell in self.cells:
+            cellJsons.append(cell.toJson())
+        return WorksheetJson(self.__name,cellJsons)
 
     ### >> UserFriendlyCellContainer << ##
     def cell(self, address: Union[str, CellAddress, Tuple[int, int]]) -> Cell:
