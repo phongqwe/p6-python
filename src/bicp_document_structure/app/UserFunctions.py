@@ -3,6 +3,7 @@ from typing import Optional, Union, Tuple
 from bicp_document_structure.app import App
 from bicp_document_structure.app.GlobalScope import getGlobals
 from bicp_document_structure.app.SingleBookApp import SingleBookApp
+from bicp_document_structure.app.worksheet_functions.WorksheetFunctions import WorksheetFunctions
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.range.Range import Range
@@ -33,10 +34,13 @@ def startApp():
         setActiveSheet,
         #
         getRange,
-        cell
+        cell,
+        #
+        WorksheetFunctions
     ]
     for f in functionList:
         g[f.__name__] = f
+
 
 
 def stopApp():

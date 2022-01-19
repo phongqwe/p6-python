@@ -1,8 +1,8 @@
 import json
 import unittest
 
-from bicp_document_structure.app.UserFunctions import getActiveWorkbook, getActiveSheet, cell, restartApp, \
-    getApp, getWorkbook
+from bicp_document_structure.app.UserFunctions import getActiveWorkbook, getActiveSheet, cell, restartApp, getApp, \
+    getWorkbook
 
 
 class UserFunctions_test(unittest.TestCase):
@@ -14,12 +14,14 @@ class UserFunctions_test(unittest.TestCase):
         restartApp()
 
     def test_B(self):
-        cell("@A1").value = 100.0
+        cell("@A1").value = 123.0
         getWorkbook("Book1").reRun()
         str(getWorkbook("Book1").toJson())
-        cell("@B1").script = """cell("@A1").value"""
+        cell("@B1").script = """
+        cell("@A1").value
+        """.strip()
         getWorkbook("Book1").reRun()
-        print(getWorkbook("Book1").toJson())
+        str(getWorkbook("Book1").toJson())
 
     def test_codeExecution_directLiteral(self):
         cell("@A1").script = "100"

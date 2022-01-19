@@ -5,4 +5,10 @@ Global scope hold:
 """
 
 def getGlobals():
+    return getP6Globals()["_ipython_global_"]
+
+def getP6Globals():
     return globals()
+
+def setIPythonGlobals(ipythonGlobal):
+    getP6Globals()["_ipython_global_"] = ipythonGlobal

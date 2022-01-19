@@ -106,6 +106,8 @@ class DataCell(Cell):
 
             if globalScope is None:
                 globalScope = getGlobals()
+                # print("ZA WARUDO")
+                # globalScope = globals()
             try:
                 codeResult = CodeExecutor.evalCode(self.script, globalScope, localScope)
             except Exception as e:
