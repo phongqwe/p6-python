@@ -3,7 +3,6 @@ from typing import Optional, Union, Tuple
 from bicp_document_structure.app import App
 from bicp_document_structure.app.GlobalScope import getGlobals
 from bicp_document_structure.app.SingleBookApp import SingleBookApp
-from bicp_document_structure.app.worksheet_functions.WorksheetFunctions import WorksheetFunctions
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.range.Range import Range
@@ -13,35 +12,13 @@ from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 """
-This module contains function to be used by users to control the application.
+This module contains functions to be used by users to control the application.
 """
 appKey = "__appInstance"
 
-
 def startApp():
+    """create the app singleton"""
     getApp()
-    g = getGlobals()
-    functionList = [
-        getApp,
-        stopApp,
-        restartApp,
-        #
-        getActiveWorkbook,
-        setActiveWorkbook,
-        #
-        getSheet,
-        getActiveSheet,
-        setActiveSheet,
-        #
-        getRange,
-        cell,
-        #
-        WorksheetFunctions
-    ]
-    for f in functionList:
-        g[f.__name__] = f
-
-
 
 def stopApp():
     """ stop the app, clear everything """

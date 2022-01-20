@@ -13,5 +13,5 @@ class CodeExecutor:
         # compile and execute the script, not including the last expr
         exec(compile(codeAst, '<string>', mode='exec'), globalScope, localScope)
         # evaluate the last expr
-        lastEvalRs = eval(compile(lastExp, '<string>', mode='eval'), globalScope, localScope)
-        return lastEvalRs
+        lastEvalResult = eval(compile(lastExp, '<string>', mode='eval'), globalScope, localScope)
+        return lastEvalResult
