@@ -15,6 +15,8 @@ class RangeAddress(ABC):
             la=lastCellAddress
         )
 
+    def __str__(self) -> str:
+        return self.label
 
     @property
     def firstRowIndex(self)->int:
