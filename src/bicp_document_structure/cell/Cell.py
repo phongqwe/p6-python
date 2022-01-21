@@ -98,6 +98,6 @@ class Cell(ABC):
         else:
             return self.value is not None
 
-    def reRun(self):
+    def reRun(self, globalScope=None, localScope=None):
         self.clearScriptResult()
-        self.runScript()
+        self.runScript(globalScope, localScope)

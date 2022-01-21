@@ -28,12 +28,12 @@ class DataCellTest(unittest.TestCase):
             self.exCountA += 1
         c2 = DataCell(CellIndex(1, 1), value=123, script="123",onCellMutation=increaseExCount)
         oldCount = self.exCountA
-        c2.reRun()
+        c2.reRun(globals())
         self.assertEqual(123,c2.bareValue())
         # +1 when clear, and +1 when run
         self.assertEqual(oldCount+2,self.exCountA)
         oldCount = self.exCountA
-        c2.reRun()
+        c2.reRun(globals())
         self.assertEqual(123,c2.bareValue())
         self.assertEqual(oldCount+2,self.exCountA)
 
@@ -46,8 +46,10 @@ class DataCellTest(unittest.TestCase):
         self.assertEqual(123,c.value)
         self.assertIsNone(c.script)
 
+        # x: result 11 from running script should overwrite the old value 123
         c.script = "x=10;x=x+1;x;"
         self.assertIsNone(c.bareValue())
+        c.runScript(globals())
         self.assertTrue(c.isValueEqual(11))
         self.assertEqual(11,c.value)
 
@@ -59,15 +61,15 @@ class DataCellTest(unittest.TestCase):
         c = DataCell(CellIndex(1, 1), onCellMutation=increaseExCount)
         c.script = "x=345;\"abc\""
         oldCount = self.exCount
-        c.value
+        c.reRun(globals())
         self.assertEqual("abc",c.value)
-        self.assertEqual(oldCount+1,self.exCount)
+        self.assertEqual(oldCount+2,self.exCount)
 
         # access value a second time
         # cell mutation callback should not be invoked this time
         # because the run result was cache, the script should not run this time
         c.value
-        self.assertEqual(oldCount + 1, self.exCount)
+        self.assertEqual(oldCount + 2, self.exCount)
 
     def test_Cell(self):
         c = DataCell(CellIndex(1, 1), 123)
@@ -75,7 +77,8 @@ class DataCellTest(unittest.TestCase):
         self.assertEqual(None,c.script)
         c.value= 345
         c.script = "x=345;\"abc\""
-        self.assertEqual("abc",c.value)
+        c.runScript(globals())
+        self.assertEqual("abc",c.bareValue())
         self.assertEqual("x=345;\"abc\"",c.script)
 
     def test_isValueEqual(self):

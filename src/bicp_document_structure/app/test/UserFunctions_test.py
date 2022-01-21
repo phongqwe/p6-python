@@ -1,8 +1,9 @@
 import json
 import unittest
 
+from bicp_document_structure.app.GlobalScope import setIPythonGlobals
 from bicp_document_structure.app.UserFunctions import getActiveWorkbook, getActiveSheet, cell, restartApp, getApp, \
-    getWorkbook
+    getWorkbook, startApp
 
 
 class UserFunctions_test(unittest.TestCase):
@@ -11,6 +12,8 @@ class UserFunctions_test(unittest.TestCase):
     """
     def setUp(self) -> None:
         super().setUp()
+        setIPythonGlobals(globals())
+        startApp()
         restartApp()
 
     def test_B(self):

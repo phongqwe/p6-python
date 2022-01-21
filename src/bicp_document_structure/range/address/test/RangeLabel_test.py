@@ -2,7 +2,7 @@ import unittest
 
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
-from bicp_document_structure.range.address.RangeLabel import RangeLabel
+from bicp_document_structure.range.address.RangeAddresses import RangeAddresses
 
 
 class RangeLabel_test(unittest.TestCase):
@@ -16,21 +16,21 @@ class RangeLabel_test(unittest.TestCase):
         }
 
         for k,v in data.items():
-            label = RangeLabel(k)
+            label = RangeAddresses.addressFromLabel(k)
             self.assertEqual(label,v)
 
     def test_constructorWithMalformedLabel(self):
         with self.assertRaises(ValueError):
-            RangeLabel("A1:ABC2")
+            RangeAddresses.addressFromLabel("A1:ABC2")
         with self.assertRaises(ValueError):
-            RangeLabel("A1:@ABC2")
+            RangeAddresses.addressFromLabel("A1:@ABC2")
         with self.assertRaises(ValueError):
-            RangeLabel("@A_1:ABC2")
+            RangeAddresses.addressFromLabel("@A_1:ABC2")
         with self.assertRaises(ValueError):
-            RangeLabel("@_A1:ABC2")
+            RangeAddresses.addressFromLabel("@_A1:ABC2")
         with self.assertRaises(ValueError):
-            RangeLabel("@_A1:_ABC2")
+            RangeAddresses.addressFromLabel("@_A1:_ABC2")
         with self.assertRaises(ValueError):
-            RangeLabel("@_A1:_ABC2")
+            RangeAddresses.addressFromLabel("@_A1:_ABC2")
         with self.assertRaises(ValueError):
-            RangeLabel("@_A1:2ABC")
+            RangeAddresses.addressFromLabel("@_A1:2ABC")

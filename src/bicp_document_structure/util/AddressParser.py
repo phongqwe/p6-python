@@ -5,7 +5,7 @@ from bicp_document_structure.cell.address.CellAddresses import CellAddresses
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.range.address.RangeAddress import RangeAddress
 from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
-from bicp_document_structure.range.address.RangeLabel import RangeLabel
+from bicp_document_structure.range.address.RangeAddresses import RangeAddresses
 
 
 class AddressParser:
@@ -22,7 +22,7 @@ class AddressParser:
     def parseRangeAddress(rangeAddress: Union[str, RangeAddress, Tuple[CellAddress, CellAddress]])->RangeAddress:
         parsedAddress = rangeAddress
         if isinstance(rangeAddress, str):
-            parsedAddress = RangeLabel.addressFromLabel(rangeAddress)
+            parsedAddress = RangeAddresses.addressFromLabel(rangeAddress)
 
         if isinstance(rangeAddress, Tuple):
             ad1 = rangeAddress[0]

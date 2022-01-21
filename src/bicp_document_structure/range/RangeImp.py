@@ -7,6 +7,7 @@ from bicp_document_structure.cell_container.MutableCellContainer import MutableC
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.address.RangeAddress import RangeAddress
 from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
+from bicp_document_structure.range.address.RangeAddresses import RangeAddresses
 from bicp_document_structure.util.AddressParser import AddressParser
 
 
@@ -40,7 +41,7 @@ class RangeImp(Range):
     @staticmethod
     def fromArbitraryCells(firstCellAddress: CellAddress, lastCellAddress: CellAddress,
                            sourceContainer: MutableCellContainer):
-        rangeAddress = RangeAddressImp.fromArbitraryCells(firstCellAddress, lastCellAddress)
+        rangeAddress = RangeAddresses.fromArbitraryCells(firstCellAddress, lastCellAddress)
         return RangeImp.fromRangeAddress(rangeAddress, sourceContainer)
 
     ### >> UserFriendlyCellContainer << ###

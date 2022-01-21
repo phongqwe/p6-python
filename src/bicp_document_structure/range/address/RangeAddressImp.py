@@ -1,5 +1,4 @@
 from bicp_document_structure.cell.address.CellAddress import CellAddress
-from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.range.address.RangeAddress import RangeAddress
 from bicp_document_structure.util.Util import typeCheck
 
@@ -22,16 +21,6 @@ class RangeAddressImp(RangeAddress):
                 o = "row"
             reason = "firstAddress {o} is larger than lastAddress {o}".format(o=o)
             raise ValueError("invalid firstAddress and lastAddress: {reason}".format(reason=reason))
-
-    @staticmethod
-    def fromArbitraryCells(firstCell:CellAddress, secondCell:CellAddress)->RangeAddress:
-        """accept any 2 cellJsons, regardless of order, then construct a RangeAddress from that"""
-        topLeftCell = CellIndex(min(firstCell.colIndex, secondCell.colIndex),
-                                min(firstCell.rowIndex, secondCell.rowIndex))
-        botRightCell = CellIndex(max(firstCell.colIndex, secondCell.colIndex),
-                                 max(firstCell.rowIndex, secondCell.rowIndex))
-        return RangeAddressImp(topLeftCell,botRightCell)
-
 
     @property
     def firstAddress(self)->CellAddress:

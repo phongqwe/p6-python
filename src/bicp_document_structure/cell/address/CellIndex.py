@@ -17,10 +17,6 @@ class CellIndex(CellAddress):
     def colIndex(self) -> int:
         return self.__colIndex
 
-    @staticmethod
-    def zero() -> CellAddress:
-        return CellIndex(0, 0)
-
     def __str__(self):
         return "C({col}:{row})".format(col=self.__colIndex, row=self.__rowIndex)
 

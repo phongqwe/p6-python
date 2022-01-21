@@ -6,6 +6,16 @@ from bicp_document_structure.cell.address.CellAddress import CellAddress
 class RangeAddress(ABC):
 
     @property
+    def label(self)->str:
+        firstCellAddress = self.firstAddress.rawLabel
+        lastCellAddress = self.lastAddress.rawLabel
+        return "@{fa}:{la}".format(
+            fa=firstCellAddress,
+            la=lastCellAddress
+        )
+
+
+    @property
     def firstRowIndex(self)->int:
         return self.firstAddress.rowIndex
     @property

@@ -25,7 +25,7 @@ class WriteBackCellTest(unittest.TestCase):
         self.assertEqual(code, c.script)
         self.assertEqual(code, anotherC.script)
 
-        c.runScript()
+        c.runScript(globals())
         self.assertEqual(eValue, c.value)
         self.assertEqual(eValue, anotherC.value)
 
@@ -46,6 +46,6 @@ class WriteBackCellTest(unittest.TestCase):
         container.removeCell(address)
 
         # cell is added when setScriptAndRun is called
-        c.setScriptAndRun("y=10;y+100;")
+        c.setScriptAndRun("y=10;y+100;",globals())
         self.assertTrue(container.hasCellAt(address))
         container.removeCell(address)

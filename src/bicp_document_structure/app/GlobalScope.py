@@ -7,6 +7,7 @@ Important note: the content of global scope is decided by the init script run by
     + WorksheetFunctions.py
 """
 
+
 def getGlobals():
     """this is the top-level globals() """
     return getP6Globals()["_ipython_global_"]
