@@ -1,5 +1,4 @@
-# Example Package
+python3 -m build
+python -m unittest discover -s src -p "*_test.py" -v
+pip install file:///abc/document-structure-0.0.0.tar.gz --force-reinstall
 
-This is a simple example package. You can use
-[Github-flavored Markdown](https://guides.github.com/features/mastering-markdown/)
-to write your content.

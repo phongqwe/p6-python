@@ -2,11 +2,16 @@ from pathlib import Path
 from typing import Optional, Union
 
 from bicp_document_structure.workbook.WorkBook import Workbook
-from bicp_document_structure.workbook.WorkbookFileInfo import WorkbookFileInfo
+from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 
 
 class WorkbookContainer:
-    def getWorkbook(self, key: WorkbookFileInfo) -> Optional[Workbook]:
+
+    @property
+    def bookCount(self):
+        raise NotImplementedError()
+
+    def getWorkbook(self, key: Union[int,str,WorkbookKey]) -> Optional[Workbook]:
         raise NotImplementedError()
 
     def getWorkbookByIndex(self, index: int):
@@ -18,13 +23,13 @@ class WorkbookContainer:
     def getWorkbookByPath(self, path: Path):
         raise NotImplementedError()
 
-    def getWorkbookByFileInfo(self,fileInfo:WorkbookFileInfo):
+    def getWorkbookByKey(self, fileInfo:WorkbookKey):
         raise NotImplementedError()
 
-    def createNewWorkbook(self, workbookName: str):
-        raise NotImplementedError()
+    # def createNewWorkbook(self, workbookName: str):
+    #     raise NotImplementedError()
 
-    def removeWorkbook(self, indexOrKey: Union[int, WorkbookFileInfo]):
+    def removeWorkbook(self, indexOrKey: Union[int, str, WorkbookKey]):
         raise NotImplementedError()
 
     def isEmpty(self) -> bool:
@@ -33,6 +38,6 @@ class WorkbookContainer:
     def isNotEmpty(self) -> bool:
         return not self.isEmpty()
 
-    @property
-    def bookCount(self):
+    def addWorkbook(self,workbook:Workbook):
         raise NotImplementedError()
+

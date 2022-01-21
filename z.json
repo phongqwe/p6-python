@@ -1,15 +1,31 @@
 {
-  "colIndex": 1,
-  "cells": [
+  "name": "Book1",
+  "path": null,
+  "worksheets": [
     {
-      "value": "123",
-      "code": "",
-      "address": "A1"
-    },
-    {
-      "value": "456",
-      "code": "",
-      "address": [1,2]
+      "name": "Sheet1",
+      "cells": [
+        {
+          "value": 123.0,
+          "script": null,
+          "addr": [
+            1,
+            1
+          ]
+        },
+        {
+          "value": 123.0,
+          "script": "cell(\\"
+          @A1
+          \
+          \
+          ").value",
+          "addr": [
+            2,
+            1
+          ]
+        }
+      ]
     }
   ]
 }

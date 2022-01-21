@@ -1,6 +1,5 @@
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.CellJson import CellJson
-from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell_container.MutableCellContainer import MutableCellContainer
 
@@ -10,24 +9,25 @@ class WriteBackCell(Cell):
     A cell decorator that can write back to the container that contains the cell
     """
 
-    def __init__(self, container: MutableCellContainer, address: CellAddress):
-        self.__pos = address
-        self.__colIndex = address.colIndex
-        self.__rowIndex = address.rowIndex
-        self.__container = container
-        self.__innerCell = None
-        if container.hasCellAt(address):
-            self.__innerCell = container.getCell(address)
-        else:
-            self.__innerCell = DataCell(address)
+    def __init__(self, cell: Cell, container: MutableCellContainer):
+        self.__innerCell: Cell = cell
+        self.__container: MutableCellContainer = container
+        self.__pos: CellAddress = cell.address
+        self.__colIndex: int = cell.address.colIndex
+        self.__rowIndex: int = cell.address.rowIndex
 
     ### >> Cell << ###
 
+    def clearScriptResult(self):
+        self.__innerCell.clearScriptResult()
+        if not self.isEmpty():
+            self.__writeCell()
+
+    def bareValue(self):
+        return self.__innerCell.bareValue()
+
     def toJson(self) -> CellJson:
         return self.__innerCell.toJson()
-
-    def _bareValue(self):
-        return self.__innerCell._bareValue()
 
     def setScriptAndRun(self, newScript, globalScope=None, localScope=None):
         self.__innerCell.setScriptAndRun(newScript, globalScope, localScope)
@@ -42,7 +42,9 @@ class WriteBackCell(Cell):
 
     @property
     def value(self):
-        return self.__innerCell.value
+        v = self.__innerCell.value
+        self.__writeCell()
+        return v
 
     @value.setter
     def value(self, newValue):

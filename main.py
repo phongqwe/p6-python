@@ -1,29 +1,13 @@
-# from bicp_document_structure.app.UserFunctions import startApp, activeSheet, activeWorkbook
-
-
 class A:
     def __init__(self):
         pass
-    def scope(self):
-        return globals()
-
-class B:
-    def __init__(self):
-        pass
-
-    @staticmethod
-    def f1(): return 1
-
-    @staticmethod
-    def f2(): return 2
-
-
-def main():
-    z="@abc"
-    print(z.startswith("@"))
-    print(z[1:])
-
-
+    def z(self):
+        return 100
 if __name__ == "__main__":
-    main()
-
+    d1 = {1: 2, 3: 4}
+    d2 = {5: 6, 7: 9}
+    d3 = {10: 8, 13: 22}
+    all = {}
+    all.update(d1)
+    all.update(d2)
+    print(all)

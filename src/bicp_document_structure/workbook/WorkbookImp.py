@@ -1,17 +1,26 @@
 from collections import OrderedDict as ODict
-from typing import List, Union, Optional, OrderedDict
+from pathlib import Path
+from typing import Union, Optional, OrderedDict, Callable, List
 
+from bicp_document_structure.cell.Cell import Cell
+from bicp_document_structure.mutation.CellMutationEvent import CellMutationEvent
 from bicp_document_structure.util.Util import typeCheck
 from bicp_document_structure.workbook.WorkBook import Workbook
+from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
+from bicp_document_structure.workbook.WorkbookKeyImp import WorkbookKeyImp
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 
 class WorkbookImp(Workbook):
 
-    def __init__(self, name, sheetDict: OrderedDict = None):
-        self.__name = name
-
+    def __init__(self, name: str,
+                 path: Path = None,
+                 sheetDict: OrderedDict = None,
+                 onCellMutation: Callable[[WorkbookKey, str, Cell, CellMutationEvent], None] = None,
+                 ):
+        self.__onCellMutation:Optional[Callable[[WorkbookKey, str, Cell, CellMutationEvent], None]] = onCellMutation
+        self.__key = WorkbookKeyImp(name, path)
         if sheetDict is None:
             sheetDict = ODict()
         else:
@@ -21,14 +30,6 @@ class WorkbookImp(Workbook):
         self.__activeSheet = None
         if self.sheetCount != 0:
             self.__activeSheet = list(self.__sheetDict.values())[0]
-
-    @staticmethod
-    def fromSheets(wbName: str, sheetList: List[Worksheet]):
-        """create a workbook from a list of sheet"""
-        sheetDict = ODict()
-        for sheet in sheetList:
-            sheetDict[sheet.name] = sheet
-        return WorkbookImp(wbName, sheetDict)
 
     @staticmethod
     def __makeOrderDict(sheetDict: dict) -> dict:
@@ -41,7 +42,19 @@ class WorkbookImp(Workbook):
 
     ### >> Workbook << ###
 
-    def setActiveSheet(self, indexOrName:Union[int, str]):
+    @property
+    def sheets(self) -> List[Worksheet]:
+        return list(self.__sheetDict.values())
+
+    @property
+    def workbookKey(self) -> WorkbookKey:
+        return self.__key
+
+    @workbookKey.setter
+    def workbookKey(self, newKey: WorkbookKey):
+        self.__key = newKey
+
+    def setActiveSheet(self, indexOrName: Union[int, str]):
         sheet = self.getSheet(indexOrName)
         if sheet is not None:
             self.__activeSheet = sheet
@@ -85,20 +98,27 @@ class WorkbookImp(Workbook):
 
     @property
     def name(self) -> str:
-        return self.__name
+        return self.workbookKey.fileName
 
     @name.setter
     def name(self, newName: str):
-        self.__name = newName
+        self.workbookKey = WorkbookKeyImp(newName,self.workbookKey.filePath)
 
     def createNewSheet(self, newSheetName) -> Worksheet:
         if newSheetName in self.__sheetDict.keys():
             raise ValueError(
                 "Can't create new sheet {sname} because sheet {sname} already exist".format(sname=newSheetName))
         else:
-            newSheet = WorksheetImp(newSheetName)
+            newSheet = WorksheetImp(name=newSheetName,
+                                    onCellMutation=self.__mutationEventCallback)
             self.__sheetDict[newSheetName] = newSheet
             return newSheet
+
+    def __mutationEventCallback(self,
+                                worksheetName: str,
+                                cell: Cell,
+                                mutationEvent: CellMutationEvent):
+        self.__onCellMutation(self.workbookKey, worksheetName, cell, mutationEvent)
 
     def removeSheetByName(self, sheetName: str) -> Optional[Worksheet]:
         typeCheck(sheetName, "sheetName", str)

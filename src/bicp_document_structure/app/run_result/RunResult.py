@@ -1,16 +1,43 @@
 from abc import ABC
 
 from bicp_document_structure.app.run_result.RunResultJson import RunResultJson
-from bicp_document_structure.cell.CellJson import CellJson
+from bicp_document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
+from bicp_document_structure.cell.address.CellAddress import CellAddress
+from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 
 
 class RunResult(ABC):
-    """ contains result after each run. A "run" happens when a request from the front end is received and execute successfully """
-    def addCell(self,cell:CellJson):
+    
+    def removeDeletedCell(self,workbookKey: WorkbookKey, worksheetName: str, cellAddress: CellAddress):
+        """ remove a deleted cell from this result"""
         raise NotImplementedError()
 
-    def clearCell(self):
+    def removeMutatedCell(self,workbookKey: WorkbookKey, worksheetName: str, cellAddress: CellAddress):
+        """remove a deleted cell from this result"""
         raise NotImplementedError()
 
-    def toJson(self)->RunResultJson:
+    def addMutatedCell(self, workbookKey: WorkbookKey, worksheetName: str, cellAddress: CellAddress):
+        """ add a mutated Cell to this RunResult """
+        raise NotImplementedError()
+
+    def addDeletedCell(self, workbookKey: WorkbookKey, worksheetName: str, cellAddress: CellAddress):
+        """add address of cellJsons that have been deleted"""
+        raise NotImplementedError()
+
+    def containCellInDeleted(self,workbookKey: WorkbookKey, worksheetName: str, cellAddress: CellAddress):
+        """ check if this RunResult has a CellAddress as a deleted cell """
+        raise NotImplementedError()
+
+    def containCellInMutated(self,workbookKey: WorkbookKey, worksheetName: str, cellAddress: CellAddress):
+        """ check if this RunResult has a CellAddress as a mutated cell """
+        raise NotImplementedError()
+
+    def clearResult(self):
+        """ remove everything from this RunResult object """
+        raise NotImplementedError()
+
+    def toJson(self,workbookContainer:WorkbookContainer) -> RunResultJson:
+        """
+        :param workbookContainer: for looking up cell data
+        """
         raise NotImplementedError()

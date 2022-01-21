@@ -1,5 +1,6 @@
 import re
 
+from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.util.AlphabetBaseNumberSystem import AlphabetBaseNumberSystem
 from bicp_document_structure.util.result.Err import Err
@@ -11,7 +12,7 @@ class CellAddresses:
     __labelPattern = re.compile("@[A-Za-z]+[1-9][0-9]*")
 
     @staticmethod
-    def addressFromLabel(address: str) -> CellIndex:
+    def addressFromLabel(address: str) -> CellAddress:
         """
         :param address: can be in form "@<cell_address>" such as "@A1"
         :return:
@@ -31,6 +32,10 @@ class CellAddresses:
             return CellIndex(colIndex, rowIndex)
         else:
             raise checkResult.err
+
+    @staticmethod
+    def zero() -> CellAddress:
+        return CellIndex(0, 0)
 
     @staticmethod
     def __checkCellAddressFormat(address: str) -> Result:

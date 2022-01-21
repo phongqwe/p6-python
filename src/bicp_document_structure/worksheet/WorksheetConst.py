@@ -1,3 +1,3 @@
 class WorksheetConst:
-    rowLimit = 1_048_576
-    colLimit = 16_384
+    rowLimit = 1_100_000
+    colLimit = 17000

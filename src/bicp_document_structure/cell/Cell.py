@@ -8,6 +8,14 @@ class Cell(ABC):
     """
     Cell interface
     """
+    @property
+    def formula(self)->str:
+        """ the original formula """
+        raise NotImplementedError()
+    @formula.setter
+    def formula(self,newFormula):
+        """ set new formula """
+        raise NotImplementedError()
 
     @property
     def intValue(self) -> int:
@@ -29,10 +37,9 @@ class Cell(ABC):
         """string representation of the object stored in this cell"""
         raise NotImplementedError()
 
-    def _bareValue(self):
+    def bareValue(self):
         """
-        For debugging only
-        :return: the bare value, may not be consistent with the result of running the code of this cell.
+        :return: the bare value, may not be consistent with the result of running the script of this cell.
         """
         raise NotImplementedError()
 
@@ -68,19 +75,37 @@ class Cell(ABC):
     def col(self) -> int:
         return self.address.colIndex
 
-    def isValueEqual(self, anotherCell):
-        return self.value == anotherCell.value
+    def isValueEqual(self, anotherCellOrValue):
+        if isinstance(anotherCellOrValue, Cell):
+            return self.value == anotherCellOrValue.value
+        else:
+            return self.value == anotherCellOrValue
 
     def runScript(self, globalScope=None, localScope=None):
+        """run the script """
         raise NotImplementedError()
 
     def setScriptAndRun(self, newScript, globalScope=None, localScope=None):
-        """set new code for this cell and execute it immediately"""
+        """set new script for this cell and execute it immediately"""
         raise NotImplementedError()
 
     def hasCode(self) -> bool:
-        """:return True if this cell contain any code"""
+        """:return True if this cell contain any script"""
         raise NotImplementedError()
 
     def toJson(self) -> CellJson:
         raise NotImplementedError()
+
+    def clearScriptResult(self):
+        """delete script result if this Cell houses any script"""
+        raise NotImplementedError()
+
+    def isEmpty(self):
+        if self.hasCode():
+            return True
+        else:
+            return self.value is not None
+
+    def reRun(self, globalScope=None, localScope=None):
+        self.clearScriptResult()
+        self.runScript(globalScope, localScope)

@@ -1,25 +1,30 @@
-from typing import List, Union, Tuple, Optional
+from typing import List, Union, Tuple, Optional, Callable
 
 from bicp_document_structure.cell.Cell import Cell
+from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.WriteBackCell import WriteBackCell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.column.Column import Column
-from bicp_document_structure.column.ColumnImp import ColumnImp
 from bicp_document_structure.column.ColumnJson import ColumnJson
 from bicp_document_structure.column.MutableColumnContainer import MutableColumnContainer
+from bicp_document_structure.mutation.CellMutationEvent import CellMutationEvent
 from bicp_document_structure.range.Range import Range
-from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
+from bicp_document_structure.range.address.RangeAddress import RangeAddress
 
 
 class WriteBackColumn(Column):
-    def __init__(self, colIndex: int, holder: MutableColumnContainer):
-        self.__holder = holder
-        if holder.hasColumn(colIndex):
-            self.__innerCol = holder.getCol(colIndex)
-        else:
-            self.__innerCol = ColumnImp(colIndex, {})
+
+
+    def __init__(self, col:Column, container: MutableColumnContainer):
+        self.__innerCol:Column = col
+        self.__container = container
+        self.__onCellMutation = self.__innerCol._onCellMutationEventHandler
 
     ### >> Column << ##
+
+    @property
+    def _onCellMutationEventHandler(self) -> Callable[[Cell, CellMutationEvent], None]:
+        return self.__innerCol._onCellMutationEventHandler
 
     def range(self, firstRow: int, lastRow: int) -> Range:
         return self.__innerCol.range(firstRow, lastRow)
@@ -54,16 +59,21 @@ class WriteBackColumn(Column):
         return self.__innerCol.hasCellAt(address)
 
     def getOrMakeCell(self, address: CellAddress) -> Cell:
+        # rt= self.__innerCol.getOrMakeCell(address)
+        # return rt
         if self.hasCellAt(address):
             return self.__innerCol.getOrMakeCell(address)
         else:
-            return WriteBackCell(self, address)
+            return WriteBackCell(
+                cell=DataCell(address,onCellMutation=self.__onCellMutation),
+                container=self,
+            )
 
     def isEmpty(self) -> bool:
         return self.__innerCol.isEmpty()
 
     @property
-    def rangeAddress(self) -> RangeAddressImp:
+    def rangeAddress(self) -> RangeAddress:
         return self.__innerCol.rangeAddress
 
     ### >> CellContainer << ###
@@ -71,8 +81,9 @@ class WriteBackColumn(Column):
     def addCell(self, cell: Cell):
         self.__innerCol.addCell(cell)
         # write this temp col to the container when a new cell is added
-        if not self.__holder.hasColumn(self.__innerCol.index):
-            self.__holder.setCol(self.__innerCol)
+        columnNotWritten = not self.__container.hasColumn(self.__innerCol.index)
+        if columnNotWritten:
+            self.__container.setCol(self.__innerCol)
 
     def removeCell(self, address: CellAddress):
         self.__innerCol.removeCell(address)
@@ -87,9 +98,8 @@ class WriteBackColumn(Column):
     def cell(self, address: Union[str, CellAddress, Tuple[int, int]]) -> Cell:
         return self.__innerCol.cell(address)
 
-
-
-
-
-
-
+    def __eq__(self, o: object) -> bool:
+        if isinstance(o,Column):
+            return self.__innerCol == o
+        else:
+            return False

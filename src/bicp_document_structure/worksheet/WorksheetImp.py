@@ -1,10 +1,12 @@
-from typing import List, Optional, Union, Tuple
+from typing import List, Optional, Union, Tuple, Callable
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.column.Column import Column
+from bicp_document_structure.column.ColumnImp import ColumnImp
 from bicp_document_structure.column.WriteBackColumn import WriteBackColumn
+from bicp_document_structure.mutation.CellMutationEvent import CellMutationEvent
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.RangeImp import RangeImp
 from bicp_document_structure.range.address.RangeAddress import RangeAddress
@@ -13,14 +15,18 @@ from bicp_document_structure.util.AddressParser import AddressParser
 from bicp_document_structure.util.Util import typeCheck
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 from bicp_document_structure.worksheet.WorksheetConst import WorksheetConst
+from bicp_document_structure.worksheet.WorksheetJson import WorksheetJson
 
 
 class WorksheetImp(Worksheet):
-    def __init__(self, name="", colDict=None):
+    def __init__(self, name="",
+                 colDict=None,
+                 onCellMutation:Callable[[str, Cell, CellMutationEvent], None] = None):
         if colDict is None:
             colDict = {}
         self.__colDict = colDict
         self.__name = name
+        self.__onCellMutation:Optional[Callable[[str, Cell, CellMutationEvent], None]] = onCellMutation
 
     ### >> Worksheet << ###
 
@@ -28,6 +34,11 @@ class WorksheetImp(Worksheet):
     def name(self) -> str:
         return self.__name
 
+    def toJson(self) -> WorksheetJson:
+        cellJsons = []
+        for cell in self.cells:
+            cellJsons.append(cell.toJson())
+        return WorksheetJson(self.__name,cellJsons)
 
     ### >> UserFriendlyCellContainer << ##
     def cell(self, address: Union[str, CellAddress, Tuple[int, int]]) -> Cell:
@@ -126,6 +137,12 @@ class WorksheetImp(Worksheet):
 
     def getCol(self, colIndex: int) -> Column:
         if self.hasColumn(colIndex):
-            return self.__colDict[colIndex]
+            col = self.__colDict[colIndex]
         else:
-            return WriteBackColumn(colIndex, self)
+            col = ColumnImp(colIndex, {},
+                            onCellMutation=self.__mutationHandler)
+        return WriteBackColumn(col, self,)
+
+    def __mutationHandler(self,cell:Cell,event:CellMutationEvent):
+        if self.__onCellMutation is not None:
+            self.__onCellMutation(self.__name, cell, event)

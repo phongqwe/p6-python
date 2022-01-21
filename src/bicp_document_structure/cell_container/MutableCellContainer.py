@@ -6,7 +6,7 @@ from bicp_document_structure.cell_container.CellContainer import CellContainer
 
 
 class MutableCellContainer(CellContainer,ABC):
-    """ container of cells """
+    """ container of cellJsons """
 
     def addCell(self, cell: Cell):
         """add a cell to this container"""
@@ -18,7 +18,7 @@ class MutableCellContainer(CellContainer,ABC):
 
     def getOrMakeCell(self, address: CellAddress) -> Cell:
         """
-        get cell at an address. If such cell does not exist, return a TempCell
+        get cell at an address. If such cell does not exist, return a WriteBackCell
         :return the cell at the position
         """
         raise NotImplementedError()
