@@ -9,7 +9,7 @@ from bicp_document_structure.column.ColumnJson import ColumnJson
 from bicp_document_structure.column.MutableColumnContainer import MutableColumnContainer
 from bicp_document_structure.mutation.CellMutationEvent import CellMutationEvent
 from bicp_document_structure.range.Range import Range
-from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
+from bicp_document_structure.range.address.RangeAddress import RangeAddress
 
 
 class WriteBackColumn(Column):
@@ -73,7 +73,7 @@ class WriteBackColumn(Column):
         return self.__innerCol.isEmpty()
 
     @property
-    def rangeAddress(self) -> RangeAddressImp:
+    def rangeAddress(self) -> RangeAddress:
         return self.__innerCol.rangeAddress
 
     ### >> CellContainer << ###

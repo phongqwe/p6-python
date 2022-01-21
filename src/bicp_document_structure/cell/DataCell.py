@@ -16,12 +16,10 @@ class DataCell(Cell):
     This Cell does not cache value, it perform re-computation on every value request.
     """
 
-    def bareValue(self):
-        return self.__value
-
     def __init__(self,
                  address: CellAddress,
                  value=None,
+                 formula:str=None,
                  script: str = None,
                  onCellMutation: Callable[[Cell, CellMutationEvent], None] = None):
         self.__value = value
@@ -29,8 +27,25 @@ class DataCell(Cell):
         self.__addr: CellAddress = address
         self.__onCellMutation = onCellMutation
         self.__scriptAlreadyRun = False
+        self.__formula = formula
 
     ### >> Cell << ###
+
+    @property
+    def formula(self) -> str:
+        return self.__formula
+
+    @formula.setter
+    def formula(self, newFormula):
+        """ set new formula """
+        self.__formula = newFormula
+        self.script = self.__translateFormula(newFormula)
+
+    def __translateFormula(self,formula:str)->str:
+        raise NotImplementedError()
+
+    def bareValue(self):
+        return self.__value
 
     def toJson(self) -> CellJson:
         return CellJson(
@@ -77,6 +92,7 @@ class DataCell(Cell):
         if self.__onCellMutation is not None:
             self.__onCellMutation(self, CellMutationEvent.NEW_SCRIPT)
         self.__scriptAlreadyRun = False
+        self.__formula = "=SCRIPT({script})".format(script=newCode)
 
     @property
     def address(self) -> CellAddress:

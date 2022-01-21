@@ -11,7 +11,7 @@ class DataCellTest(unittest.TestCase):
         c1.clearScriptResult()
         self.assertEqual(123,c1.bareValue())
 
-        c2 = DataCell(CellIndex(1, 1),123,"123")
+        c2 = DataCell(CellIndex(1, 1),123,script="123")
         c2.clearScriptResult()
         self.assertIsNone(c2.bareValue())
         self.assertIsNotNone(c2.script)
@@ -93,6 +93,6 @@ class DataCellTest(unittest.TestCase):
         self.assertFalse(c3.isValueEqual(c2))
 
     def test_runCode(self):
-        c1 = DataCell(CellIndex(1, 1), 123, "x=1;y=x*2+3;y")
+        c1 = DataCell(CellIndex(1, 1), 123, script="x=1;y=x*2+3;y")
         c1.runScript(globals(), None)
         self.assertEqual(5,c1.value)

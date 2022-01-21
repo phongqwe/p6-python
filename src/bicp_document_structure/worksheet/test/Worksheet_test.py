@@ -42,13 +42,13 @@ class WorksheetTest(unittest.TestCase):
 
     def makeTestObj(self):
         cellAddr = CellIndex(random.randrange(1, 20), random.randrange(1, 20))
-        cell = DataCell(cellAddr, 123, "script")
+        cell = DataCell(cellAddr, 123,script= "script")
         return cell, cellAddr
 
     def test_hasCellAt(self):
         s = WorksheetImp()
         self.assertFalse(s.hasCellAt(CellIndex(1, 1)))
-        s.addCell(DataCell(CellIndex(1, 1), 123, "script"))
+        s.addCell(DataCell(CellIndex(1, 1), 123, script="script"))
         self.assertTrue(s.hasCellAt(CellIndex(1, 1)))
 
     def test_getCell(self):
@@ -88,7 +88,7 @@ class WorksheetTest(unittest.TestCase):
 
     def test_columnOperation(self):
         sheet = WorksheetImp()
-        col = ColumnImp(1, {1: DataCell(CellIndex(1, 1), 123, "script")})
+        col = ColumnImp(1, {1: DataCell(CellIndex(1, 1), 123,script= "script")})
         self.assertFalse(sheet.hasColumn(col.index))
         sheet.setCol(col)
         self.assertTrue(sheet.hasColumn(col.index))

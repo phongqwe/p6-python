@@ -8,6 +8,14 @@ class Cell(ABC):
     """
     Cell interface
     """
+    @property
+    def formula(self)->str:
+        """ the original formula """
+        raise NotImplementedError()
+    @formula.setter
+    def formula(self,newFormula):
+        """ set new formula """
+        raise NotImplementedError()
 
     @property
     def intValue(self) -> int:
