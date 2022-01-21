@@ -26,6 +26,8 @@ class PythonFormulaTranslator(FormulaTranslator):
         if scriptRs.isOk():
             return scriptRs
         else:
+            self.parserError = None
+            self.lexerError = None
             charStream = InputStream(formula)
             lexer = FormulaLexer(charStream)
             lexer.removeErrorListeners()
@@ -43,8 +45,6 @@ class PythonFormulaTranslator(FormulaTranslator):
                         loc="PythonFormulaTranslator.translate"
                     )
                 )
-                self.lexerError = None
-                self.parserError=None
                 return rt
             else:
                 visitor = PythonFormulaVisitor()
