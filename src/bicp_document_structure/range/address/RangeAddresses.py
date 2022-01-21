@@ -23,6 +23,7 @@ class RangeAddresses:
     @staticmethod
     def addressFromLabel(label: str) -> RangeAddress:
         checkResult = RangeAddresses.__checkAddressFormat(label)
+        # TODO add code to parse whole col/row into address
         if checkResult.isOk():
             bareLabel = label[1:]  # remove @
             cellLabels = bareLabel.split(":")
@@ -33,8 +34,13 @@ class RangeAddresses:
         else:
             raise checkResult.err
 
-    __labelPattern = re.compile("@[a-zA-Z]+[1-9][0-9]*:[a-zA-Z]+[1-9][0-9]*")
+    __rangeAddressPattern = re.compile("@[a-zA-Z]+[1-9][0-9]*:[a-zA-Z]+[1-9][0-9]*")
+    __wholeRangeAddressPattern = re.compile("@[a-zA-Z]+[1-9][0-9]*:[a-zA-Z]+[1-9][0-9]*")
 
+    @staticmethod
+    def checkWholeAddressFormat(label:str)->Result:
+        if not isinstance(label,str):
+            return Err(ValueError("range label must be a string."))
     @staticmethod
     def __checkAddressFormat(label: str) -> Result:
         """
@@ -45,12 +51,12 @@ class RangeAddresses:
             return Err(ValueError("range label must be a string."))
         else:
             if label.startswith("@"):
-                matchResult = RangeAddresses.__labelPattern.fullmatch(label)
+                matchResult = RangeAddresses.__rangeAddressPattern.fullmatch(label)
                 if matchResult is not None:
                     return Ok(None)
                 else:
                     return Err(
                         ValueError("Range label \"{cdr}\" does not match the required pattern: {pt}"
-                                   .format(cdr=label, pt=str(RangeAddresses.__labelPattern.pattern))))
+                                   .format(cdr=label, pt=str(RangeAddresses.__rangeAddressPattern.pattern))))
             else:
                 return Err(ValueError("Range label must start with \"@\""))

@@ -7,6 +7,7 @@ class RangeAddress(ABC):
 
     @property
     def label(self)->str:
+        # TODO add code to simplify whole column/range to shorten address
         firstCellAddress = self.firstAddress.rawLabel
         lastCellAddress = self.lastAddress.rawLabel
         return "@{fa}:{la}".format(
