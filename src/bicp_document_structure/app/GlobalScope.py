@@ -10,7 +10,10 @@ Important note: the content of global scope is decided by the init script run by
 
 def getGlobals():
     """this is the top-level globals() """
-    return getP6Globals()["_ipython_global_"]
+    if "_ipython_global_" in getP6Globals():
+        return getP6Globals()["_ipython_global_"]
+    else:
+        return None
 
 def getP6Globals():
     """this is the global of p6, to GlobalScope module"""

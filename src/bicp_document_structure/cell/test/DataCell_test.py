@@ -71,15 +71,20 @@ class DataCellTest(unittest.TestCase):
         c.value
         self.assertEqual(oldCount + 2, self.exCount)
 
-    def test_Cell(self):
+    def test_setScript(self):
         c = DataCell(CellIndex(1, 1), 123)
         self.assertEqual(123,c.value)
         self.assertEqual(None,c.script)
         c.value= 345
+        # x: set valid script
         c.script = "x=345;\"abc\""
-        c.runScript(globals())
+        c.runScript()
         self.assertEqual("abc",c.bareValue())
         self.assertEqual("x=345;\"abc\"",c.script)
+
+        # x: set empty script
+        c.script=""
+        self.assertEqual(None,c.value)
 
     def test_isValueEqual(self):
         c1 = DataCell(CellIndex(1, 1), 123)
@@ -94,5 +99,19 @@ class DataCellTest(unittest.TestCase):
 
     def test_runCode(self):
         c1 = DataCell(CellIndex(1, 1), 123, script="x=1;y=x*2+3;y")
-        c1.runScript(globals(), None)
+        c1.runScript()
         self.assertEqual(5,c1.value)
+
+    def test_setFormula1(self):
+        c1 = DataCell(CellIndex(1, 1), 123, script="x=1;y=x*2+3;y")
+        c1.formula = "=SCRIPT(x=1;y=x-200;y)"
+        self.assertEqual("x=1;y=x-200;y",c1.script)
+        self.assertEqual(-199,c1.value)
+        print(c1.value)
+
+    def test_setFormula2(self):
+        c1 = DataCell(CellIndex(1, 1), 123, script="x=1;y=x*2+3;y")
+        c1.formula = "=SUM(A1:B3)"
+        self.assertEqual("WorksheetFunctions.SUM(getRange(\"@A1:B3\"))",c1.script)
+        c1.script = "x=99;y=x-200;y"
+        self.assertEqual("=SCRIPT(x=99;y=x-200;y)",c1.formula)

@@ -18,6 +18,15 @@ class WriteBackCell(Cell):
 
     ### >> Cell << ###
 
+    @property
+    def formula(self) -> str:
+        return self.__innerCell.formula
+
+    @formula.setter
+    def formula(self, newFormula):
+        self.__innerCell.formula = newFormula
+        self.__writeCell()
+
     def clearScriptResult(self):
         self.__innerCell.clearScriptResult()
         if not self.isEmpty():
@@ -57,6 +66,7 @@ class WriteBackCell(Cell):
 
     @script.setter
     def script(self, newCode: str):
+        # x: only add new code if the new code is not empty
         self.__innerCell.script = newCode
         self.__writeCell()
 

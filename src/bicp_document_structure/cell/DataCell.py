@@ -6,7 +6,9 @@ from bicp_document_structure.cell.CellJson import CellJson
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.util.CellUtil import convertExceptionToStr
 from bicp_document_structure.code_executor.CodeExecutor import CodeExecutor
+from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from bicp_document_structure.mutation.CellMutationEvent import CellMutationEvent
+from bicp_document_structure.util.result.Result import Result
 
 
 class DataCell(Cell):
@@ -41,8 +43,15 @@ class DataCell(Cell):
         self.__formula = newFormula
         self.script = self.__translateFormula(newFormula)
 
-    def __translateFormula(self,formula:str)->str:
-        raise NotImplementedError()
+    @staticmethod
+    def __translateFormula(formula:str)->str:
+        translator = FormulaTranslators.standard()
+        transResult:Result = translator.translate(formula)
+        if transResult.isOk():
+            return transResult.value()
+        else:
+            raise ValueError(str(transResult.err))
+
 
     def bareValue(self):
         return self.__value

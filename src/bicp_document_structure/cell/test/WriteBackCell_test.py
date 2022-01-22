@@ -49,3 +49,8 @@ class WriteBackCellTest(unittest.TestCase):
         c.setScriptAndRun("y=10;y+100;",globals())
         self.assertTrue(container.hasCellAt(address))
         container.removeCell(address)
+
+        # cell is add when new formula is set
+        c.formula="zzbd"
+        self.assertTrue(container.hasCellAt(address))
+        container.removeCell(address)
