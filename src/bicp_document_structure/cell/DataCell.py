@@ -60,6 +60,7 @@ class DataCell(Cell):
         return CellJson(
             value=self.__value,
             script=self.__code,
+            formula=self.__formula,
             address=self.__addr.toJson(),
         )
 

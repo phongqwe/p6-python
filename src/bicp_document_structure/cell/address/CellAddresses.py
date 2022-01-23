@@ -1,6 +1,7 @@
 import re
 
 from bicp_document_structure.cell.address.CellAddress import CellAddress
+from bicp_document_structure.cell.address.CellAddressJson import CellAddressJson
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.util.AlphabetBaseNumberSystem import AlphabetBaseNumberSystem
 from bicp_document_structure.util.result.Err import Err
@@ -10,6 +11,10 @@ from bicp_document_structure.util.result.Result import Result
 
 class CellAddresses:
     __labelPattern = re.compile("@[A-Za-z]+[1-9][0-9]*")
+
+    @staticmethod
+    def addressFromJson(json:CellAddressJson)->CellAddress:
+        return CellIndex(json.col,json.row)
 
     @staticmethod
     def addressFromLabel(address: str) -> CellAddress:

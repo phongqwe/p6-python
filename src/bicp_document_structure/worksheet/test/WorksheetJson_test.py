@@ -21,5 +21,5 @@ class WorksheetJsonTest(unittest.TestCase):
         ]
         wjson = WorksheetJson("worksheet name",cells)
         self.assertEqual("""{"name": "worksheet name", "cells": [{"value": "abc", "script": null, "addr": [1, 1]}, {"value": null, "script": "123", "addr": [1, 2]}]}""",str(wjson))
-
+        print(str(wjson))
 

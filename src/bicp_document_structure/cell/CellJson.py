@@ -9,10 +9,11 @@ class CellJson(dict):
     Json representation of a cell
     """
 
-    def __init__(self, value: Union[str,None], script: Union[str,None], address: Union[CellAddressJson,None]):
+    def __init__(self, value: Union[str,None], script: Union[str,None], formula:Union[str,None],address: Union[CellAddressJson,None]):
         super().__init__()
         self.value = value
         self.script = script
+        self.formula = formula
         self.addr = (address.col, address.row)
 
     def __str__(self):
