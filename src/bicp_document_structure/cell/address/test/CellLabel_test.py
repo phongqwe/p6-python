@@ -6,7 +6,7 @@ from bicp_document_structure.cell.address.CellIndex import CellIndex
 
 class CellLabel_test(unittest.TestCase):
 
-    def test_constructor(self):
+    def test_createAddressFromLabel(self):
         data = {
             "@A1": CellIndex(1, 1),
             "@B323": CellIndex(2, 323),

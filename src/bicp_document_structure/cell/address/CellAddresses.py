@@ -1,4 +1,5 @@
 import re
+from typing import Union
 
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.address.CellAddressJson import CellAddressJson
@@ -13,7 +14,7 @@ class CellAddresses:
     __labelPattern = re.compile("@[A-Za-z]+[1-9][0-9]*")
 
     @staticmethod
-    def addressFromJson(json:CellAddressJson)->CellAddress:
+    def addressFromJson(json:Union[CellAddressJson,str])->CellAddress:
         return CellIndex(json.col,json.row)
 
     @staticmethod

@@ -6,13 +6,13 @@ from bicp_document_structure.app.run_result.RunResult import RunResult
 from bicp_document_structure.app.run_result.RunResultImp import RunResultImp
 from bicp_document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
 from bicp_document_structure.app.workbook_container.WorkbookContainerImp import WorkbookContainerImp
+from bicp_document_structure.file.loader import P6FileLoader
+from bicp_document_structure.file.saver import P6FileSaver
 from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
 from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 from bicp_document_structure.workbook.WorkbookKeyImp import WorkbookKeyImp
-from bicp_document_structure.workbook.loader.WorkbookLoader import WorkbookLoader
-from bicp_document_structure.workbook.saver.WorkbookSaver import WorkbookSaver
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 
@@ -25,8 +25,8 @@ class AppImp(App):
     def __init__(self,
                  workbookContainer: Optional[WorkbookContainer] = None,
                  runResult:Optional[RunResult]=None,
-                 loader: Optional[WorkbookLoader] = None,
-                 saver: Optional[WorkbookSaver] = None):
+                 loader: Optional[P6FileLoader] = None,
+                 saver: Optional[P6FileSaver] = None):
         if workbookContainer is None:
             workbookContainer = WorkbookContainerImp()
 
@@ -39,8 +39,8 @@ class AppImp(App):
         if runResult is None:
             runResult = RunResultImp()
         self.__result: RunResult = runResult
-        self.__wbLoader: WorkbookLoader = loader
-        self.__wbSaver: WorkbookSaver = saver
+        self.__wbLoader: P6FileLoader = loader
+        self.__wbSaver: P6FileSaver = saver
 
     ### >> App << ###
 

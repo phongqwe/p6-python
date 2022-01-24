@@ -5,7 +5,7 @@ from typing import Union
 from bicp_document_structure.util.result.Result import Result
 
 
-class WorkbookLoader(ABC):
+class P6FileLoader(ABC):
     """load a Workbook from a a file
     TODO implement this
 

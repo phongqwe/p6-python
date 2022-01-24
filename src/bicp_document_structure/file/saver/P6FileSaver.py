@@ -6,9 +6,8 @@ from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.workbook.WorkBook import Workbook
 
 
-class WorkbookSaver(ABC):
+class P6FileSaver(ABC):
     """save a workbook to a file
-    TODO implement this
     """
 
     def save(self, workbook: Workbook, filePath: Union[str,Path]) -> Result:

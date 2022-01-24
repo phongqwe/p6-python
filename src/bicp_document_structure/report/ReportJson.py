@@ -9,3 +9,10 @@ class ReportJson(dict):
         self.data = data
     def __str__(self):
         return json.dumps(self.__dict__)
+
+    # def toJsonDict(self)->dict:
+    #     return {
+    #         "isOk": self.isOk,
+    #         "message":self.message,
+    #         "data":self.data
+    #     }

@@ -15,7 +15,7 @@ from bicp_document_structure.worksheet.WorksheetConst import WorksheetConst
 class RangeAddresses:
     @staticmethod
     def fromArbitraryCells(firstCell: CellAddress, secondCell: CellAddress) -> RangeAddress:
-        """accept any 2 cellJsons, regardless of order, then construct a RangeAddress from that"""
+        """accept any 2 cells, regardless of order, then construct a RangeAddress from that"""
         topLeftCell = CellIndex(min(firstCell.colIndex, secondCell.colIndex),
                                 min(firstCell.rowIndex, secondCell.rowIndex))
         botRightCell = CellIndex(max(firstCell.colIndex, secondCell.colIndex),
