@@ -7,6 +7,7 @@ from bicp_document_structure.worksheet.WorksheetJson import WorksheetJson
 class Worksheets:
     @staticmethod
     def wsFromJson(worksheetJson: WorksheetJson) -> Worksheet:
+        """create a Worksheet object from a WorksheetJson object"""
         ws = WorksheetImp(name=worksheetJson.name)
         for cellJson in worksheetJson:
             cell = Cells.cellFromJson(cellJson)

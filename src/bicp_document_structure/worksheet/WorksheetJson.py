@@ -5,6 +5,10 @@ from bicp_document_structure.cell.CellJson import CellJson
 
 
 class WorksheetJson(dict):
+    """
+    json representation of a Worksheet.
+    str(WorksheetJson) returns the equivalent json string.
+    """
     def __init__(self, name: str, cells: List[CellJson]):
         super().__init__()
         self.name = name

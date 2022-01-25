@@ -10,8 +10,6 @@ from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 
 class WorkbookContainerImp(WorkbookContainer):
 
-
-
     def __init__(self, wbDict: OrderedDict = None):
         if wbDict is None:
             wbDict = OD()
@@ -59,16 +57,6 @@ class WorkbookContainerImp(WorkbookContainer):
                 "{wbn} does not exist (file = {fd})".format(wbn=key.fileName, fd=key.filePath))
 
     def removeWorkbook(self, indexOrKey: Union[int, str, WorkbookKey]):
-        # multiTypeCheck(indexOrKey, "indexOrKey", [int, str,WorkbookKey])
-        # if isinstance(indexOrKey, int):
-        #     if 0 <= indexOrKey < len(self.__wbDict):
-        #         k = list(self.__wbDict.items())[indexOrKey][0]
-        #         del self.__wbDict[k]
-        #     return
-        # if isinstance(indexOrKey, WorkbookKey):
-        #     if indexOrKey in self.__wbDict.keys():
-        #         del self.__wbDict[indexOrKey]
-        #     return
         wb = self.getWorkbook(indexOrKey)
         if wb is not None:
             del self.__wbDict[wb.workbookKey]

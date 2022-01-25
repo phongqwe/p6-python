@@ -19,7 +19,6 @@ from bicp_document_structure.worksheet.Worksheet import Worksheet
 class AppImp(App):
     """
     Standard implementation of App interface
-    TODO implement this
     """
 
     def __init__(self,
@@ -31,11 +30,13 @@ class AppImp(App):
             workbookContainer = WorkbookContainerImp()
 
         self.__wbCont: WorkbookContainer = workbookContainer
-        ## TODO set default active workbook to the first if possible
+
+        # x: set default active workbook to the first if possible
         if self.__wbCont.isNotEmpty():
             self.__activeWorkbook: Optional[Workbook] = self.__wbCont.getWorkbookByIndex(0)
         else:
             self.__activeWorkbook: Optional[Workbook] = None
+
         if runResult is None:
             runResult = RunResultImp()
         self.__result: RunResult = runResult

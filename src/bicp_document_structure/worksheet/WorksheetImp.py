@@ -79,11 +79,6 @@ class WorksheetImp(Worksheet):
         return not bool(self.__colDict)
 
     def containsAddress(self, address: CellAddress) -> bool:
-        # if self.hasColumn(address.colIndex):
-        #     return self.getCol(address.colIndex).containsAddress(address)
-        # else:
-        #     return False
-
         if self.rangeAddress.containCellAddress(address):
             return self.getCol(address.colIndex).containsAddress(address)
         else:
