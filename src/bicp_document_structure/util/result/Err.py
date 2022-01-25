@@ -3,12 +3,12 @@ from bicp_document_structure.util.result.Result import Result
 
 class Err(Result):
 
-    def __init__(self, value):
-        self.__value = value
+    def __init__(self, errReport):
+        self.__errReport = errReport
 
     @property
     def err(self):
-        return self.__value
+        return self.__errReport
 
     def value(self):
         return None

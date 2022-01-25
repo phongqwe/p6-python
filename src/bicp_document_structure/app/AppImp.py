@@ -2,12 +2,18 @@ from pathlib import Path
 from typing import Optional, Union
 
 from bicp_document_structure.app.App import App
+from bicp_document_structure.app.errors.AppErrors import AppErrors
 from bicp_document_structure.app.run_result.RunResult import RunResult
 from bicp_document_structure.app.run_result.RunResultImp import RunResultImp
 from bicp_document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
 from bicp_document_structure.app.workbook_container.WorkbookContainerImp import WorkbookContainerImp
+from bicp_document_structure.error.ErrorReport import ErrorReport
 from bicp_document_structure.file.loader import P6FileLoader
+from bicp_document_structure.file.loader.P6FileLoaderErrors import P6FileLoaderErrors
 from bicp_document_structure.file.saver import P6FileSaver
+from bicp_document_structure.file.saver.P6FileSaverErrors import P6FileSaverErrors
+from bicp_document_structure.util.result.Err import Err
+from bicp_document_structure.util.result.Ok import Ok
 from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
@@ -23,7 +29,7 @@ class AppImp(App):
 
     def __init__(self,
                  workbookContainer: Optional[WorkbookContainer] = None,
-                 runResult:Optional[RunResult]=None,
+                 runResult: Optional[RunResult] = None,
                  loader: Optional[P6FileLoader] = None,
                  saver: Optional[P6FileSaver] = None):
         if workbookContainer is None:
@@ -112,28 +118,82 @@ class AppImp(App):
         else:
             raise ValueError("Cannot save workbook at \"{v}\" to \"{p}\"".format(v=nameOrIndexOrKey, p=str(filePath)))
 
-    # TODO test this
     def saveWorkbook(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]):
         wb = self.getWorkbook(nameOrIndexOrKey)
         if wb is not None:
             saveResult = self.__wbSaver.save(wb, wb.workbookKey.filePath)
             if saveResult.isErr():
-                raise ValueError("Cannot save workbook at \"{v}\"".format(v=nameOrIndexOrKey))
+                header = saveResult.err.header
+                msg = ""
+                if header == P6FileSaverErrors.UnableToWriteFile.header:
+                    msg = "unable to write file to disk: {}".format(str(str(wb.workbookKey.filePath)))
+                elif header == P6FileSaverErrors.UnableToAccessPath.header:
+                    msg = "unable to access path: {}".format(str(str(wb.workbookKey.filePath)))
+                else:
+                    msg = "unknown error when saving file: {}".format(str(str(wb.workbookKey.filePath)))
+                raise ValueError(msg)
         else:
             raise ValueError("Workbook at \"{v}\" does not exist".format(v=nameOrIndexOrKey))
 
-    # TODO test this
-    def loadWorkbook(self, filePath: str):
-        loadResult: Result = self.__wbLoader.load(filePath)
-        if loadResult.isOk():
-            newWb: Workbook = loadResult.value()
-            alreadyHasThisWorkbook = self.getWorkbook(newWb.workbookKey) is not None
-            if alreadyHasThisWorkbook:
-                print("Already load this workbook: \"{f}\"".format(f=filePath))
-            else:
-                self.wbContainer.addWorkbook(loadResult.value())
+    def saveWorkbookRs(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]) -> Result:
+        wb = self.getWorkbook(nameOrIndexOrKey)
+        if wb is not None:
+            saveResult = self.__wbSaver.save(wb, wb.workbookKey.filePath)
+            return saveResult
         else:
-            raise ValueError("Can't load file: \"{f}\"".format(f=filePath))
+            data = None
+            if isinstance(nameOrIndexOrKey, int):
+                data = AppErrors.WorkbookNotExist.Data(index=nameOrIndexOrKey)
+            if isinstance(nameOrIndexOrKey, str):
+                data = AppErrors.WorkbookNotExist.Data(workbookName=nameOrIndexOrKey)
+            if isinstance(nameOrIndexOrKey, WorkbookKey):
+                data = AppErrors.WorkbookNotExist.Data(workbookName=nameOrIndexOrKey.fileName,
+                                                       workbookPath=nameOrIndexOrKey.filePath)
+            return Err(
+                ErrorReport(
+                    header=AppErrors.WorkbookNotExist.header,
+                    data=data
+                )
+            )
+
+    def saveWorkbookAtPathRs(self, nameOrIndexOrKey: Union[int, str, WorkbookKey],
+                             filePath: Union[str, Path]) -> Result:
+        pass
+
+    def loadWorkbook(self, filePath: Union[str, Path]):
+        path = Path(filePath)
+        wbKey = WorkbookKeyImp(path.name, path)
+        alreadyHasThisWorkbook = self.getWorkbook(wbKey) is not None
+        if alreadyHasThisWorkbook:
+            print("Already load this workbook: \"{f}\"".format(f=filePath))
+        else:
+            loadResult: Result = self.__wbLoader.load(filePath)
+            if loadResult.isOk():
+                self.wbContainer.addWorkbook(loadResult.value())
+            else:
+                header = loadResult.err.header
+                msg = ""
+                if header == P6FileLoaderErrors.FileNotExist.header:
+                    msg = "file not exist: {p} ".format(p=str(filePath))
+                elif header == P6FileLoaderErrors.UnableToOpenFile.header:
+                    msg = "unable to open file: {p}".format(p=str(filePath))
+                elif header == P6FileLoaderErrors.UnableToReadFile.header:
+                    msg = "unable to read file: {p}".format(p=str(filePath))
+                else:
+                    msg = "unknown error when trying open file: {p}".format(p=str(filePath))
+                raise ValueError(msg)
+
+    def loadWorkbookRs(self, filePath: Union[str, Path]) -> Result:
+        path = Path(filePath)
+        wbKey = WorkbookKeyImp(path.name, path)
+        alreadyHasThisWorkbook = self.getWorkbook(wbKey) is not None
+        if not alreadyHasThisWorkbook:
+            loadResult: Result = self.__wbLoader.load(filePath)
+            if loadResult.isOk():
+                self.wbContainer.addWorkbook(loadResult.value())
+            return loadResult
+        else:
+            Ok(None)
 
     def __getWBOrRaiseError(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]) -> Workbook:
         wb = self.getWorkbook(nameOrIndexOrKey)

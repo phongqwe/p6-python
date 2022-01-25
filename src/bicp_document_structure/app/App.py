@@ -102,11 +102,11 @@ class App(ABC):
         """
         raise NotImplementedError()
 
-    def loadWorkbook(self, filePath: str) -> bool:
+    def loadWorkbook(self, filePath: Union[str,Path]) -> bool:
         """load a workbook from a file path, and add it to this app state"""
         raise NotImplementedError()
 
-    def loadWorkbookRs(self, filePath: str) -> Result:
+    def loadWorkbookRs(self, filePath: Union[str,Path]) -> Result:
         """
         load a workbook from a file path, and add it to this app state
         :return an Result object if there are error instead of raising an exception
