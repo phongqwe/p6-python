@@ -9,4 +9,4 @@ class Results:
         if result.isOk():
             return result.value
         else:
-            raise ErrorReports.toException(result.err())
+            raise ErrorReports.toException(result.err)

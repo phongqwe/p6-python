@@ -109,16 +109,16 @@ class AppImp(App):
         else:
             return None
 
-    def createNewWorkBook(self, name: Optional[str] = None) -> Workbook:
-        createRs: Result[Workbook, ErrorReport] = self.createNewWorkBookRs(name)
+    def createNewWorkbook(self, name: Optional[str] = None) -> Workbook:
+        createRs: Result[Workbook, ErrorReport] = self.createNewWorkbookRs(name)
         return Results.extractOrRaise(createRs)
 
-    def createNewWorkBookRs(self, name: Optional[str] = None) -> Result[Workbook, ErrorReport]:
+    def createNewWorkbookRs(self, name: Optional[str] = None) -> Result[Workbook, ErrorReport]:
         if name is None:
             # x: create default name for new workbook
             name = "Workbook{}".format(self.__newBookIndex)
             while self.hasWorkbook(name):
-                self.__activeWorkbook += 1
+                self.__newBookIndex += 1
                 name = "Workbook{}".format(self.__newBookIndex)
 
         if not self.hasWorkbook(name):

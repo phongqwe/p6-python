@@ -63,6 +63,8 @@ class WorkbookImp(Workbook):
 
     @property
     def activeSheet(self) -> Optional[Worksheet]:
+        if not self.isEmpty() and self.__activeSheet is None:
+            self.__activeSheet = self.getSheetByIndex(0)
         return self.__activeSheet
 
     def isEmpty(self) -> bool:
@@ -118,7 +120,8 @@ class WorkbookImp(Workbook):
                                 worksheetName: str,
                                 cell: Cell,
                                 mutationEvent: CellMutationEvent):
-        self.__onCellMutation(self.workbookKey, worksheetName, cell, mutationEvent)
+        if self.__onCellMutation is not None:
+            self.__onCellMutation(self.workbookKey, worksheetName, cell, mutationEvent)
 
     def removeSheetByName(self, sheetName: str) -> Optional[Worksheet]:
         typeCheck(sheetName, "sheetName", str)

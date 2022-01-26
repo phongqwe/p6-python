@@ -15,6 +15,9 @@ class UserFunctions_test(unittest.TestCase):
         setIPythonGlobals(globals())
         startApp()
         restartApp()
+        getApp().createNewWorkbook("Book1")
+        getActiveWorkbook().createNewSheet("Sheet1")
+
 
     def test_B(self):
         cell("@A1").value = 123.0

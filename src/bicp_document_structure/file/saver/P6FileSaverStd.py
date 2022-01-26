@@ -24,29 +24,29 @@ class P6FileSaverStd(P6FileSaver):
             path = P6Files.defaultPath
 
         try:
-            file = open(filePath, "w")
+            file = open(filePath, 'w')
             try:
                 jsonObject = workbook.toJson()
                 fileObject = P6File(P6Files.currentVersion, jsonObject)
                 file.write(str(fileObject))
                 file.close()
                 return Ok(None)
-            except:
+            except Exception as e:
                 file.close()
                 return Err(
                     ErrorReport(
                         header=P6FileSaverErrors.UnableToWriteFile.header,
                         data=P6FileSaverErrors.UnableToWriteFile.Data(
-                            path
+                            path,e
                         ),
                     )
                 )
-        except:
+        except Exception as e:
             return Err(
                 ErrorReport(
                     header=P6FileSaverErrors.UnableToAccessPath.header,
                     data=P6FileSaverErrors.UnableToAccessPath.Data(
-                        path
+                        path,e
                     ),
                 )
             )

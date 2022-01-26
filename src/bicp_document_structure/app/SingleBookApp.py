@@ -55,7 +55,7 @@ class SingleBookApp(App):
     def setActiveWorkbook(self, indexOrName: Union[int, str]):
         raise NotImplementedError()
 
-    def createNewWorkBook(self, name: str):
+    def createNewWorkbook(self, name: str):
         raise NotImplementedError()
 
     def saveWorkbookAtPath(self, nameOrIndex: Union[int, str,WorkbookKey], filePath: str):

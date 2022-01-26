@@ -9,6 +9,7 @@ from bicp_document_structure.file.loader.P6FileLoader import P6FileLoader
 from bicp_document_structure.file.loader.P6FileLoaderErrors import P6FileLoaderErrors
 from bicp_document_structure.file.saver.P6FileSaver import P6FileSaver
 from bicp_document_structure.report.error.ErrorReport import ErrorReport
+from bicp_document_structure.report.error.ErrorReports import ErrorReports
 from bicp_document_structure.util.result.Err import Err
 from bicp_document_structure.util.result.Ok import Ok
 from bicp_document_structure.util.result.Result import Result
@@ -97,29 +98,36 @@ class App(ABC):
         """
         raise NotImplementedError()
 
-    def createNewWorkBook(self, name: Optional[str] = None) -> Workbook:
+    def createNewWorkbook(self, name: Optional[str] = None) -> Workbook:
         """create a new workbook, and add it to this app """
         raise NotImplementedError()
 
-    def createNewWorkBookRs(self, name: Optional[str] = None) -> Result[Workbook, ErrorReport]:
+    def createNewWorkbookRs(self, name: Optional[str] = None) -> Result[Workbook, ErrorReport]:
         """create a new workbook, and add it to this app 
         :return a Result object if there are error instead of raising an exception
         """
         raise NotImplementedError()
 
-    def closeWorkbook(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]):
-        """close a workbook"""
-        raise NotImplementedError()
-
     def hasWorkbook(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]) -> bool:
         return self.wbContainer.getWorkbook(nameOrIndexOrKey) is not None
 
-    def closeWorkbookRs(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]):
+    def closeWorkbook(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]):
+        """close a workbook"""
+        closeRs = self.closeWorkbookRs(nameOrIndexOrKey)
+        if closeRs.isErr():
+            raise ErrorReports.toException(closeRs.err)
+
+    def closeWorkbookRs(self, nameOrIndexOrKey: Union[int, str, WorkbookKey])->Result[WorkbookKey,ErrorReport]:
         """
         close a workbook
         :return a Result object if there are error instead of raising an exception
         """
-        raise NotImplementedError()
+        wb = self.getWorkbookRs(nameOrIndexOrKey)
+        if wb.isOk():
+            self.wbContainer.removeWorkbook(wb.value.workbookKey)
+            return Ok(wb.value.workbookKey)
+        else:
+            return wb
 
     def forceLoadWorkbook(self, filePath: Union[str, Path]) -> Workbook:
         """force load a workbook from a file path, and add it to this app state"""
@@ -150,15 +158,17 @@ class App(ABC):
         :param filePath:
         :return: a Result object
         """
+        path = Path(filePath)
         getWbRs: Result[Workbook, ErrorReport] = self.getWorkbookRs(nameOrIndexOrKey)
         if getWbRs.isOk():
             wb: Workbook = getWbRs.value
-            saveResult = self._fileSaver.save(wb, wb.workbookKey.filePath)
+            saveResult = self._fileSaver.save(wb, path)
             if saveResult.isOk():
-                newKey = WorkbookKeyImp(wb.workbookKey.fileName, Path(filePath))
+                newKey = WorkbookKeyImp(wb.workbookKey.fileName, path)
                 if newKey != wb.workbookKey:
                     getWbRs.workbookKey = newKey
                     self.wbContainer.addWorkbook(wb)
+                    self.refreshContainer()
             return saveResult
         else:
             return getWbRs
@@ -181,10 +191,11 @@ class App(ABC):
         wbRs: Result[Workbook, ErrorReport] = self.getWorkbookRs(nameOrIndexOrKey)
         if wbRs.isOk():
             wb: Workbook = wbRs.value
-            saveResult = self._fileSaver.save(wb, wb.workbookKey.filePath)
+            saveResult = self.saveWorkbookAtPathRs(nameOrIndexOrKey, wb.workbookKey.filePath)
             return saveResult
         else:
             return wbRs
+
 
     def loadWorkbook(self, filePath: Union[str, Path]) -> Workbook:
         """
@@ -221,3 +232,10 @@ class App(ABC):
                     data=P6FileLoaderErrors.AlreadyLoad.Data(path, None)
                 )
             )
+
+    def refreshContainer(self):
+        """make WorkbookContainer update-to-date with its elements"""
+        bookList = self.wbContainer.books()
+        self.wbContainer.clear()
+        for book in bookList:
+            self.wbContainer.addWorkbook(book)

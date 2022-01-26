@@ -50,30 +50,24 @@ class WorkbookContainerImp_test(unittest.TestCase):
         wc, d = self.makeTestObjs()
         for x in range(len(d)):
             self.assertEqual(list(d.items())[x][1],wc.getWorkbookByIndex(x))
-        with self.assertRaises(ValueError):
-            wc.getWorkbookByIndex(1000)
+        self.assertIsNone(wc.getWorkbookByIndex(1000))
 
     def test_getWorkbookByName(self):
         wc, d = self.makeTestObjs()
         names = list(map(lambda e:e[0].fileName,list(d.items())))
         for x,name in enumerate(names):
             self.assertEqual(list(d.items())[x][1],wc.getWorkbookByName(name))
-
-        with self.assertRaises(ValueError):
-            wc.getWorkbookByName("unavailableName")
+        self.assertIsNone(wc.getWorkbookByName("unavailableName"))
 
     def test_getWorkbookByPath(self):
         wc,d = self.makeTestObjs()
         b1 = list(d.items())[0][1]
         self.assertEqual(b1,wc.getWorkbookByPath(Path("p1")))
-        with self.assertRaises(ValueError):
-            wc.getWorkbookByPath(Path("unavailablePath"))
+        self.assertIsNone(wc.getWorkbookByPath(Path("unavailablePath")))
 
     def test_getWorkbookByKey(self):
         wc, d = self.makeTestObjs()
         b1 = wc.getWorkbookByKey(WorkbookKeyImp("b1", Path("p1")))
         self.assertIsNotNone(b1)
         self.assertEqual(list(d.items())[0][1], b1)
-
-        with self.assertRaises(ValueError):
-            wc.getWorkbookByKey(WorkbookKeyImp("bx"))
+        self.assertIsNone(wc.getWorkbookByKey(WorkbookKeyImp("bx")))
