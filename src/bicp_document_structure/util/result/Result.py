@@ -1,10 +1,15 @@
-class Result:
+from typing import TypeVar, Generic
+
+T = TypeVar("T")
+E = TypeVar("E")
+
+class Result(Generic[T,E]):
 
     @property
-    def err(self):
+    def err(self)->E:
         raise NotImplementedError()
 
-    def value(self):
+    def value(self)->T:
         raise NotImplementedError()
 
     def isOk(self):

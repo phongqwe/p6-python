@@ -1,16 +1,19 @@
+from typing import TypeVar, Generic
+
 from bicp_document_structure.util.result.Result import Result
 
+T = TypeVar("T")
 
-class Ok(Result):
+class Ok(Result[T,None],Generic[T]):
 
     def __init__(self, value):
         self.__value = value
 
     @property
-    def err(self):
+    def err(self)->None:
         return None
 
-    def value(self):
+    def value(self)->T:
         return self.__value
 
     def isOk(self):
