@@ -14,40 +14,40 @@ class Workbook(ABC):
             sheet.reRun()
 
     @property
-    def sheets(self)->List[Worksheet]:
+    def sheets(self) -> List[Worksheet]:
         """return a list of all sheet in this workbook"""
         raise NotImplementedError()
 
     @property
-    def workbookKey(self)->WorkbookKey:
+    def workbookKey(self) -> WorkbookKey:
         raise NotImplementedError()
 
     @workbookKey.setter
-    def workbookKey(self,newKey:WorkbookKey):
+    def workbookKey(self, newKey: WorkbookKey):
         raise NotImplementedError()
 
     @property
-    def activeSheet(self)->Optional[Worksheet]:
+    def activeSheet(self) -> Optional[Worksheet]:
         raise NotImplementedError()
 
-    def setActiveSheet(self, indexOrName:Union[int, str]):
+    def setActiveSheet(self, indexOrName: Union[int, str]):
         raise NotImplementedError()
 
-    def getSheetByName(self,name:str)->Optional[Worksheet]:
+    def getSheetByName(self, name: str) -> Optional[Worksheet]:
         """
         :param name: sheet name
         :return: the sheet having that name or None if no such sheet exists
         """
         raise NotImplementedError()
 
-    def getSheetByIndex(self,index:int)->Optional[Worksheet]:
+    def getSheetByIndex(self, index: int) -> Optional[Worksheet]:
         """
         :param index: index of a sheet
         :return: the sheet at that index, or None if no such sheet exists
         """
         raise NotImplementedError()
 
-    def getSheet(self,nameOrIndex:Union[str,int])->Optional[Worksheet]:
+    def getSheet(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
         """
         get a sheet either by name or index
         :param nameOrIndex: name or index
@@ -55,25 +55,25 @@ class Workbook(ABC):
         """
         raise NotImplementedError()
 
-    def isEmpty(self)->bool:
+    def isEmpty(self) -> bool:
         """
         :return: true if this workbook contains zero sheet
         """
         raise NotImplementedError()
 
     @property
-    def sheetCount(self)->int:
+    def sheetCount(self) -> int:
         raise NotImplementedError()
 
     @property
-    def name(self)->str:
+    def name(self) -> str:
         raise NotImplementedError()
 
     @name.setter
-    def name(self,newName:str):
+    def name(self, newName: str):
         raise NotImplementedError()
 
-    def createNewSheet(self, newSheetName:str)->Worksheet:
+    def createNewSheet(self, newSheetName: str) -> Worksheet:
         """
         add a new empty sheet to this workbook
         :param newSheetName: name of the new sheet
@@ -82,20 +82,33 @@ class Workbook(ABC):
         """
         raise NotImplementedError()
 
-    def removeSheetByName(self,sheetName:str)->Optional[Worksheet]:
+    def removeSheetByName(self, sheetName: str) -> Optional[Worksheet]:
         """ remove sheet by name. If the target sheet does not exist, simply return"""
         raise NotImplementedError()
 
-    def removeSheetByIndex(self,index:int)->Optional[Worksheet]:
+    def removeSheetByIndex(self, index: int) -> Optional[Worksheet]:
         """ remove sheet by index. If the target sheet does not exist, simply return"""
         raise NotImplementedError()
 
-    def removeSheet(self,nameOrIndex:Union[str,int])->Optional[Worksheet]:
+    def removeSheet(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
         """ remove sheet by either index or name. If the target sheet does not exist, simply return"""
         raise NotImplementedError()
 
-    def toJson(self)->WorkbookJson:
+    def toJson(self) -> WorkbookJson:
         jsons = []
         for sheet in self.sheets:
             jsons.append(sheet.toJson())
-        return WorkbookJson(self.name,jsons)
+        return WorkbookJson(self.name, jsons)
+
+    def listWorksheet(self) -> str:
+        """return a list of sheet as string"""
+        rt = ""
+        for (i, sheet) in enumerate(self.sheets):
+            rt += "{num}. {sheetName}\n".format(
+                num=str(i),
+                sheetName=sheet.name
+            )
+        if rt:
+            return rt
+        else:
+            return "empty book"

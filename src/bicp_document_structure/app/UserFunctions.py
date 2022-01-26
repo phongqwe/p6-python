@@ -100,3 +100,15 @@ def getWorkbook(nameOrIndexOrKey: Union[str, int, WorkbookKey]) -> Optional[Work
     app: App = getApp()
     wb = app.getWorkbook(nameOrIndexOrKey)
     return wb
+
+def listWorkbook()->str:
+    app = getApp()
+    return app.listWorkBook()
+
+def listWorksheet()->str:
+    """list Worksheets of the active workbook"""
+    wb = getActiveWorkbook()
+    if wb is not None:
+        return wb.listWorksheet()
+    else:
+        return ""

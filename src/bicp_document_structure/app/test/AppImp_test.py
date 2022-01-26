@@ -147,6 +147,12 @@ class AppImp_test(unittest.TestCase):
         self.assertTrue(loadRs.isOk())
         self.assertNotEqual(wb, app.getWorkbook("workbookName"))
 
+    def test_listBook(self):
+        app = self.app
+        app.createNewWorkbook("Book1")
+        app.createNewWorkbook("Book2")
+        print(app.listWorkBook())
+
     def __testFileExistence(self,path):
         self.assertTrue(path.exists())
         os.remove(path)

@@ -112,3 +112,7 @@ class WorkbookImp_test(unittest.TestCase):
         with self.assertRaises(ValueError):
             w1.setActiveSheet(100)
         self.assertEqual(s3, w1.activeSheet)
+
+    def test_listWorksheet(self):
+        s1, s2, s3, w1, sheetDict = self.makeTestObj()
+        print(w1.listWorksheet())

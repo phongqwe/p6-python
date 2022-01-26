@@ -247,3 +247,15 @@ class App(ABC):
         self.wbContainer.clear()
         for book in bookList:
             self.wbContainer.addWorkbook(book)
+
+    def listWorkBook(self)->str:
+        rt = ""
+        for (i,book) in enumerate(self.wbContainer.books()):
+            rt+="{num}. {wbName}\n".format(
+                num=str(i),
+                wbName=book.name
+            )
+        if rt:
+            return rt
+        else:
+            return "No workbook"
