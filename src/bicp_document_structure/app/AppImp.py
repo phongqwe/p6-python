@@ -6,8 +6,10 @@ from bicp_document_structure.app.run_result.RunResult import RunResult
 from bicp_document_structure.app.run_result.RunResultImp import RunResultImp
 from bicp_document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
 from bicp_document_structure.app.workbook_container.WorkbookContainerImp import WorkbookContainerImp
-from bicp_document_structure.file.loader import P6FileLoader
-from bicp_document_structure.file.saver import P6FileSaver
+from bicp_document_structure.file.loader.P6FileLoader import P6FileLoader
+from bicp_document_structure.file.loader.P6FileLoaders import P6FileLoaders
+from bicp_document_structure.file.saver.P6FileSaver import P6FileSaver
+from bicp_document_structure.file.saver.P6FileSavers import P6FileSavers
 from bicp_document_structure.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Err import Err
 from bicp_document_structure.util.result.Ok import Ok
@@ -43,9 +45,13 @@ class AppImp(App):
         if runResult is None:
             runResult = RunResultImp()
         self.__result: RunResult = runResult
+        if loader is None:
+            loader = P6FileLoaders.standard()
+        if saver is None:
+            saver = P6FileSavers.standard()
         self.__wbLoader: P6FileLoader = loader
         self.__wbSaver: P6FileSaver = saver
-        self.__newBookIndex:int = 0
+        self.__newBookIndex: int = 0
 
     ### >> App << ###
 

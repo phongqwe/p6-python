@@ -1,4 +1,6 @@
-from pathlib import Path
+from bicp_document_structure.app.errors.AppErrors import AppErrors
+from bicp_document_structure.report.error.ErrorReport import ErrorReport
+from bicp_document_structure.report.error.ErrorReports import ErrorReports
 
 
 class A:
@@ -7,5 +9,10 @@ class A:
     def z(self):
         return 100
 if __name__ == "__main__":
-    p =Path(Path("cc/dd/ee/abc.txt"))
-    print(p.name)
+    e = ErrorReports.toException(
+        ErrorReport(
+            header=AppErrors.WorkbookNotExist.header,
+            data=AppErrors.WorkbookNotExist.Data(1)
+        )
+    )
+    print(e)

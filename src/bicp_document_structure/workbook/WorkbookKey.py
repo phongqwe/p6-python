@@ -30,3 +30,11 @@ class WorkbookKey(ABC):
 
     def __hash__(self):
         return hash(self.__key())
+
+    def __str__(self) -> str:
+        return "name:{n}\npath:{p}".format(
+            n=self.fileName,
+            p=str(self.filePath)
+        )
+
+

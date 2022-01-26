@@ -6,7 +6,7 @@ class P6FileLoaders:
     __stdWbLoader = None
 
     @staticmethod
-    def std() -> P6FileLoader:
+    def standard() -> P6FileLoader:
         if P6FileLoaders.__stdWbLoader is None:
             P6FileLoaders.__stdWbLoader = P6FileLoaderStd()
         return P6FileLoaders.__stdWbLoader
