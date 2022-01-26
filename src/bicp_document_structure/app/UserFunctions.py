@@ -63,7 +63,7 @@ def getActiveSheet() -> Optional[Worksheet]:
 
 
 def setActiveSheet(indexOrName: Union[str, int]):
-    wb:Optional[Workbook] = getActiveWorkbook()
+    wb: Optional[Workbook] = getActiveWorkbook()
     if wb is None:
         raise ErrorReports.toException(
             ErrorReport(
@@ -101,13 +101,18 @@ def getWorkbook(nameOrIndexOrKey: Union[str, int, WorkbookKey]) -> Optional[Work
     wb = app.getWorkbook(nameOrIndexOrKey)
     return wb
 
-def listWorkbook()->str:
+
+def listWorkbook() -> str:
     app = getApp()
     return app.listWorkBook()
 
-def listWorksheet()->str:
+
+def listWorksheet(workBookNameOrIndexOrKey: Union[str, int, WorkbookKey, None] = None) -> str:
     """list Worksheets of the active workbook"""
-    wb = getActiveWorkbook()
+    if workBookNameOrIndexOrKey is None:
+        wb = getActiveWorkbook()
+    else:
+        wb = getWorkbook(workBookNameOrIndexOrKey)
     if wb is not None:
         return wb.listWorksheet()
     else:

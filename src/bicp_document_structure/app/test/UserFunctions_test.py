@@ -2,8 +2,7 @@ import json
 import unittest
 
 from bicp_document_structure.app.GlobalScope import setIPythonGlobals
-from bicp_document_structure.app.UserFunctions import getActiveWorkbook, getActiveSheet, cell, restartApp, getApp, \
-    getWorkbook, startApp
+from bicp_document_structure.app.UserFunctions import *
 
 
 class UserFunctions_test(unittest.TestCase):
@@ -88,6 +87,9 @@ class UserFunctions_test(unittest.TestCase):
         jr = json.dumps(result.toJson(getApp()).__dict__)
         print(jr)
 
-
+    def test_listWorkSheet(self):
+        print(listWorksheet("Book1"))
+        print(listWorksheet())
+        print(listWorkbook())
 
 
