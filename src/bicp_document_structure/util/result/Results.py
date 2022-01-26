@@ -7,6 +7,6 @@ class Results:
     def extractOrRaise(result:Result):
         """extract the value or raise the err as an error"""
         if result.isOk():
-            return result.value()
+            return result.value
         else:
             raise ErrorReports.toException(result.err())

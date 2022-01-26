@@ -48,7 +48,7 @@ class DataCell(Cell):
         translator = FormulaTranslators.standard()
         transResult:Result = translator.translate(formula)
         if transResult.isOk():
-            return transResult.value()
+            return transResult.value
         else:
             raise ValueError(str(transResult.err))
 

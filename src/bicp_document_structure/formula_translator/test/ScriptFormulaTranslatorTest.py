@@ -23,6 +23,6 @@ x)
         for (i,o) in input.items():
             outRs = translator.translate(i)
             self.assertTrue(outRs.isOk())
-            out = outRs.value()
+            out = outRs.value
             self.assertEqual(o,out)
 

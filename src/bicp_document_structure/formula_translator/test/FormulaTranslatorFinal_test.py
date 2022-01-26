@@ -88,5 +88,5 @@ x)
         for (i,o) in all.items():
             outRs = translator.translate(i)
             self.assertTrue(outRs.isOk())
-            out = outRs.value()
+            out = outRs.value
             self.assertEqual(o, out)

@@ -13,6 +13,7 @@ class Err(Result[None,E],Generic[E]):
     def err(self)->E:
         return self.__errReport
 
+    @property
     def value(self)->None:
         return None
 

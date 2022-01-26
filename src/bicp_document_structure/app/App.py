@@ -149,7 +149,7 @@ class App(ABC):
         """
         getWbRs: Result[Workbook, ErrorReport] = self.getWorkbookRs(nameOrIndexOrKey)
         if getWbRs.isOk():
-            wb: Workbook = getWbRs.value()
+            wb: Workbook = getWbRs.value
             saveResult = self._fileSaver.save(wb, wb.workbookKey.filePath)
             if saveResult.isOk():
                 newKey = WorkbookKeyImp(wb.workbookKey.fileName, Path(filePath))
@@ -177,7 +177,7 @@ class App(ABC):
         """
         wbRs: Result[Workbook, ErrorReport] = self.getWorkbookRs(nameOrIndexOrKey)
         if wbRs.isOk():
-            wb: Workbook = wbRs.value()
+            wb: Workbook = wbRs.value
             saveResult = self._fileSaver.save(wb, wb.workbookKey.filePath)
             return saveResult
         else:
@@ -209,7 +209,7 @@ class App(ABC):
         if not alreadyHasThisWorkbook:
             loadResult: Result = self._fileLoader.load(filePath)
             if loadResult.isOk():
-                self.wbContainer.addWorkbook(loadResult.value())
+                self.wbContainer.addWorkbook(loadResult.value)
             return loadResult
         else:
             return Err(

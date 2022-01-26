@@ -13,6 +13,7 @@ class Ok(Result[T,None],Generic[T]):
     def err(self)->None:
         return None
 
+    @property
     def value(self)->T:
         return self.__value
 
