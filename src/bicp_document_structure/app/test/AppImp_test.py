@@ -137,10 +137,20 @@ class AppImp_test(unittest.TestCase):
         self.assertTrue(rs.isOk())
         self.assertEqual(WorkbookKeyImp("Book2"),rs.value)
 
+    def test_forceLoad(self):
+        app = self.app
+        app.createNewWorkbook("workbookName")
+        wb = app.getWorkbook("workbookName")
+        wb.workbookKey = WorkbookKeyImp("file.txt",Path("file.txt"))
+        app.refreshContainer()
+        loadRs = app.forceLoadWorkbookRs("file.txt")
+        self.assertTrue(loadRs.isOk())
+        self.assertNotEqual(wb, app.getWorkbook("workbookName"))
 
     def __testFileExistence(self,path):
         self.assertTrue(path.exists())
         os.remove(path)
+
 
 
 

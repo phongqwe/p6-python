@@ -26,7 +26,7 @@ class WorkbookSaverStd_test(unittest.TestCase):
         savedFile = open(self.path, "r")
         savedContent = savedFile.read()
         self.assertEqual(
-            """{"version": "0", "workbookJson": {"name": "mockWorkbook", "worksheets": []}}""",
+            """{"version": "0", "workbookJson": {"worksheets": []}}""",
             savedContent)
         savedFile.close()
 

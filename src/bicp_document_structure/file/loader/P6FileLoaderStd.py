@@ -8,11 +8,12 @@ from bicp_document_structure.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Err import Err
 from bicp_document_structure.util.result.Ok import Ok
 from bicp_document_structure.util.result.Result import Result
+from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.Workbooks import Workbooks
 
 
 class P6FileLoaderStd(P6FileLoader):
-    def load(self, filePath: Union[str, Path]) -> Result:
+    def load(self, filePath: Union[str, Path]) -> Result[Workbook,ErrorReport]:
         path = Path(filePath)
         if path.exists():
             try:

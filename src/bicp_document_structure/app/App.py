@@ -122,23 +122,31 @@ class App(ABC):
         close a workbook
         :return a Result object if there are error instead of raising an exception
         """
-        wb = self.getWorkbookRs(nameOrIndexOrKey)
-        if wb.isOk():
-            self.wbContainer.removeWorkbook(wb.value.workbookKey)
-            return Ok(wb.value.workbookKey)
+        wbRs = self.getWorkbookRs(nameOrIndexOrKey)
+        if wbRs.isOk():
+            self.wbContainer.removeWorkbook(wbRs.value.workbookKey)
+            return Ok(wbRs.value.workbookKey)
         else:
-            return wb
+            return Err(wbRs.err)
 
     def forceLoadWorkbook(self, filePath: Union[str, Path]) -> Workbook:
         """force load a workbook from a file path, and add it to this app state"""
-        raise NotImplementedError()
+        loadRs = self.forceLoadWorkbookRs(filePath)
+        if loadRs.isOk():
+            wb:Workbook = loadRs.value
+            return wb
+        else:
+            raise ErrorReports.toException(loadRs.err)
 
-    def forceLoadWorkbookRs(self, filePath: Union[str, Path]) -> Result:
+    def forceLoadWorkbookRs(self, filePath: Union[str, Path]) -> Result[Workbook,ErrorReport]:
         """
-        force load a workbook from a file path, and add it to this app state
+        force load a workbook from a file path, and add it to this app state, replace whatever workbook with the same key
         :return an Result object if there are error instead of raising an exception
         """
-        raise NotImplementedError()
+        loadRs:Result[Workbook,ErrorReport] = self._fileLoader.load(Path(filePath))
+        if loadRs.isOk():
+            self.wbContainer.addWorkbook(loadRs.value)
+        return loadRs
 
     def saveWorkbookAtPath(self, nameOrIndexOrKey: Union[int, str, WorkbookKey], filePath: Union[str, Path]):
         """

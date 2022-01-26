@@ -7,7 +7,7 @@ from bicp_document_structure.worksheet.WorksheetJson import WorksheetJson
 class WorkbookJson(dict):
     def __init__(self, name: str, worksheetJsons: List[WorksheetJson]):
         super().__init__()
-        self.name: str = name
+        # self.name: str = name
         self.worksheets: List[WorksheetJson] = worksheetJsons
 
     def __str__(self):
@@ -19,7 +19,7 @@ class WorkbookJson(dict):
             sheetDict = sheetJson.toJsonDict()
             worksheets.append(sheetDict)
         return {
-            "name": self.name,
+            # "name": self.name,
             "worksheets": worksheets
         }
 
