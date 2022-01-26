@@ -27,12 +27,15 @@ class App(ABC):
     @property
     def wbContainer(self) -> WorkbookContainer:
         raise NotImplementedError()
+
     @property
-    def _fileSaver(self)->P6FileSaver:
+    def _fileSaver(self) -> P6FileSaver:
         raise NotImplementedError()
+
     @property
-    def _fileLoader(self)->P6FileLoader:
+    def _fileLoader(self) -> P6FileLoader:
         raise NotImplementedError()
+
     @property
     def result(self) -> RunResult:
         raise NotImplementedError()
@@ -94,24 +97,24 @@ class App(ABC):
         """
         raise NotImplementedError()
 
-    def createNewWorkBook(self, name: str)->Workbook:
+    def createNewWorkBook(self, name: Optional[str] = None) -> Workbook:
         """create a new workbook, and add it to this app """
         raise NotImplementedError()
 
-    def createNewWorkBookRs(self, name: str) -> Result[Workbook,ErrorReport]:
+    def createNewWorkBookRs(self, name: Optional[str] = None) -> Result[Workbook, ErrorReport]:
         """create a new workbook, and add it to this app 
         :return a Result object if there are error instead of raising an exception
         """
         raise NotImplementedError()
 
-    def closeWorkbook(self,nameOrIndexOrKey: Union[int, str, WorkbookKey]):
+    def closeWorkbook(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]):
         """close a workbook"""
         raise NotImplementedError()
 
-    def hasWorkbook(self,nameOrIndexOrKey: Union[int, str, WorkbookKey])->bool:
+    def hasWorkbook(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]) -> bool:
         return self.wbContainer.getWorkbook(nameOrIndexOrKey) is not None
 
-    def closeWorkbookRs(self,nameOrIndexOrKey: Union[int, str, WorkbookKey]):
+    def closeWorkbookRs(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]):
         """
         close a workbook
         :return a Result object if there are error instead of raising an exception
