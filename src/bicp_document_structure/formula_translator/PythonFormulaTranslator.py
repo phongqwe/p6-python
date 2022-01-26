@@ -2,13 +2,13 @@ from functools import partial
 
 from antlr4 import *
 
-from bicp_document_structure.error.ErrorReport import ErrorReport
 from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from bicp_document_structure.formula_translator.PythonFormulaVisitor import PythonFormulaVisitor
 from bicp_document_structure.formula_translator.ScriptFormulaTranslator import ScriptFormulaTranslator
 from bicp_document_structure.formula_translator.antlr4.FormulaLexer import FormulaLexer
 from bicp_document_structure.formula_translator.antlr4.FormulaParser import FormulaParser
 from bicp_document_structure.formula_translator.errors.TranslatorErrors import TranslatorErrors
+from bicp_document_structure.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Err import Err
 from bicp_document_structure.util.result.Ok import Ok
 from bicp_document_structure.util.result.Result import Result

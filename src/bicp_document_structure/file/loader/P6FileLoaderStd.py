@@ -1,10 +1,10 @@
 from pathlib import Path
 from typing import Union
 
-from bicp_document_structure.error.ErrorReport import ErrorReport
 from bicp_document_structure.file.P6File import P6File
 from bicp_document_structure.file.loader.P6FileLoader import P6FileLoader
 from bicp_document_structure.file.loader.P6FileLoaderErrors import P6FileLoaderErrors
+from bicp_document_structure.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Err import Err
 from bicp_document_structure.util.result.Ok import Ok
 from bicp_document_structure.util.result.Result import Result

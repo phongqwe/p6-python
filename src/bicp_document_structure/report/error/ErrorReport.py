@@ -1,6 +1,6 @@
 from typing import Any
 
-from bicp_document_structure.error.ErrorHeader import ErrorHeader
+from bicp_document_structure.report.error.ErrorHeader import ErrorHeader
 
 
 class ErrorReport:
