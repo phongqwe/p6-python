@@ -105,7 +105,7 @@ class AppImp(App):
     @property
     def activeSheet(self) -> Optional[Worksheet]:
         if self.__activeWorkbook is not None:
-            return self.__activeWorkbook.activeSheet
+            return self.__activeWorkbook.activeWorksheet
         else:
             return None
 

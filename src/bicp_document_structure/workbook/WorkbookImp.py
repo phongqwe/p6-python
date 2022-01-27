@@ -49,7 +49,7 @@ class WorkbookImp(Workbook):
     ### >> Workbook << ###
 
     @property
-    def sheets(self) -> List[Worksheet]:
+    def worksheets(self) -> List[Worksheet]:
         return list(self.__sheetDict.values())
 
     @property
@@ -60,30 +60,30 @@ class WorkbookImp(Workbook):
     def workbookKey(self, newKey: WorkbookKey):
         self.__key = newKey
 
-    def setActiveSheet(self, indexOrName: Union[int, str]):
-        sheet = self.getSheet(indexOrName)
+    def setActiveWorksheet(self, indexOrName: Union[int, str]):
+        sheet = self.getWorksheet(indexOrName)
         if sheet is not None:
             self.__activeSheet = sheet
         else:
             raise ValueError("{n} is invalid workbook index or workbook".format(n=indexOrName))
 
     @property
-    def activeSheet(self) -> Optional[Worksheet]:
+    def activeWorksheet(self) -> Optional[Worksheet]:
         if not self.isEmpty() and self.__activeSheet is None:
-            self.__activeSheet = self.getSheetByIndex(0)
+            self.__activeSheet = self.getWorksheetByIndex(0)
         return self.__activeSheet
 
     def isEmpty(self) -> bool:
         return self.sheetCount == 0
 
-    def getSheetByName(self, name: str) -> Optional[Worksheet]:
+    def getWorksheetByName(self, name: str) -> Optional[Worksheet]:
         typeCheck(name, "name", str)
         if name in self.__sheetDict.keys():
             return self.__sheetDict[name]
         else:
             return None
 
-    def getSheetByIndex(self, index: int) -> Optional[Worksheet]:
+    def getWorksheetByIndex(self, index: int) -> Optional[Worksheet]:
         typeCheck(index, "index", int)
         if 0 <= index < self.sheetCount:
             rt: Worksheet = list(self.__sheetDict.items())[index][1]
@@ -91,11 +91,11 @@ class WorkbookImp(Workbook):
         else:
             return None
 
-    def getSheet(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
+    def getWorksheet(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
         if isinstance(nameOrIndex, str):
-            return self.getSheetByName(nameOrIndex)
+            return self.getWorksheetByName(nameOrIndex)
         elif isinstance(nameOrIndex, int):
-            return self.getSheetByIndex(nameOrIndex)
+            return self.getWorksheetByIndex(nameOrIndex)
         else:
             raise ValueError(
                 "nameOrIndex is of type {t}. nameOrIndex must be string or int.".format(t=str(type(nameOrIndex))))
@@ -112,10 +112,10 @@ class WorkbookImp(Workbook):
     def name(self, newName: str):
         self.workbookKey = WorkbookKeyImp(newName, self.workbookKey.filePath)
 
-    def createNewSheetRs(self, newSheetName: Optional[str]=None) -> Result[Worksheet, ErrorReport]:
+    def createNewWorksheetRs(self, newSheetName: Optional[str]=None) -> Result[Worksheet, ErrorReport]:
         if newSheetName is None:
             newSheetName = "Sheet" + str(self.__nameCount)
-            while self.getSheetByName(newSheetName) is not None:
+            while self.getWorksheetByName(newSheetName) is not None:
                 self.__nameCount += 1
                 newSheetName = "Sheet" + str(self.__nameCount)
         else:
@@ -138,7 +138,7 @@ class WorkbookImp(Workbook):
         if self.__onCellMutation is not None:
             self.__onCellMutation(self.workbookKey, worksheetName, cell, mutationEvent)
 
-    def removeSheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
+    def removeWorksheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
         typeCheck(sheetName, "sheetName", str)
         if sheetName in self.__sheetDict.keys():
             rt: Worksheet = self.__sheetDict[sheetName]
@@ -152,11 +152,11 @@ class WorkbookImp(Workbook):
                 )
             )
 
-    def removeSheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
+    def removeWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
         typeCheck(index, "index", int)
         if 0 <= index < len(self.__sheetDict):
             name: str = list(self.__sheetDict.items())[index][0]
-            return self.removeSheetByNameRs(name)
+            return self.removeWorksheetByNameRs(name)
         else:
             return Err(
                 ErrorReport(
@@ -165,12 +165,12 @@ class WorkbookImp(Workbook):
                 )
             )
 
-    def removeSheetRs(self, nameOrIndex: Union[str, int]) -> Result[Worksheet, ErrorReport]:
+    def removeWorksheetRs(self, nameOrIndex: Union[str, int]) -> Result[Worksheet, ErrorReport]:
         if isinstance(nameOrIndex, str):
-            return self.removeSheetByNameRs(nameOrIndex)
+            return self.removeWorksheetByNameRs(nameOrIndex)
 
         if isinstance(nameOrIndex, int):
-            return self.removeSheetByIndexRs(nameOrIndex)
+            return self.removeWorksheetByIndexRs(nameOrIndex)
 
         raise ValueError("nameOrIndex must either be a string or a number")
 

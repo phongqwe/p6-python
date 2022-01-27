@@ -10,7 +10,7 @@ class WorksheetFunctions_test(unittest.TestCase):
         setIPythonGlobals(globals())
         startApp()
         getApp().createNewWorkbook()
-        getActiveWorkbook().createNewSheet("Sheet1")
+        getActiveWorkbook().createNewWorksheet("Sheet1")
         r = getRange("@A1:A2")
         r.cell("@A1").value=100
         o = WorksheetFunctions.SUM(getRange("@A1:A2"))

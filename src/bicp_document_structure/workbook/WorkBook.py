@@ -13,11 +13,11 @@ class Workbook(ABC):
 
     def reRun(self):
         """rerun all worksheet in this workbook"""
-        for sheet in self.sheets:
+        for sheet in self.worksheets:
             sheet.reRun()
 
     @property
-    def sheets(self) -> List[Worksheet]:
+    def worksheets(self) -> List[Worksheet]:
         """return a list of all sheet in this workbook"""
         raise NotImplementedError()
 
@@ -30,27 +30,27 @@ class Workbook(ABC):
         raise NotImplementedError()
 
     @property
-    def activeSheet(self) -> Optional[Worksheet]:
+    def activeWorksheet(self) -> Optional[Worksheet]:
         raise NotImplementedError()
 
-    def setActiveSheet(self, indexOrName: Union[int, str]):
+    def setActiveWorksheet(self, indexOrName: Union[int, str]):
         raise NotImplementedError()
 
-    def getSheetByName(self, name: str) -> Optional[Worksheet]:
+    def getWorksheetByName(self, name: str) -> Optional[Worksheet]:
         """
         :param name: sheet name
         :return: the sheet having that name or None if no such sheet exists
         """
         raise NotImplementedError()
 
-    def getSheetByIndex(self, index: int) -> Optional[Worksheet]:
+    def getWorksheetByIndex(self, index: int) -> Optional[Worksheet]:
         """
         :param index: index of a sheet
         :return: the sheet at that index, or None if no such sheet exists
         """
         raise NotImplementedError()
 
-    def getSheet(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
+    def getWorksheet(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
         """
         get a sheet either by name or index
         :param nameOrIndex: name or index
@@ -76,20 +76,20 @@ class Workbook(ABC):
     def name(self, newName: str):
         raise NotImplementedError()
 
-    def createNewSheet(self, newSheetName: Optional[str]) -> Worksheet:
+    def createNewWorksheet(self, newSheetName: Optional[str]) -> Worksheet:
         """
         add a new empty sheet to this workbook
         :param newSheetName: name of the new sheet
         :return the new worksheet
         :raise ValueError if the newSheetName already exists
         """
-        createRs = self.createNewSheetRs(newSheetName)
+        createRs = self.createNewWorksheetRs(newSheetName)
         if createRs.isOk():
             return createRs.value
         else:
             raise ErrorReports.toException(createRs.err)
 
-    def createNewSheetRs(self, newSheetName: Optional[str]) -> Result[Worksheet,ErrorReport]:
+    def createNewWorksheetRs(self, newSheetName: Optional[str]) -> Result[Worksheet, ErrorReport]:
         """
         add a new empty sheet to this workbook
         :param newSheetName: name of the new sheet
@@ -97,52 +97,52 @@ class Workbook(ABC):
         """
         raise NotImplementedError()
 
-    def removeSheetByName(self, sheetName: str) -> Optional[Worksheet]:
+    def removeWorksheetByName(self, sheetName: str) -> Optional[Worksheet]:
         """ remove sheet by name. If the target sheet does not exist, simply return"""
-        removeRs = self.removeSheetByNameRs(sheetName)
+        removeRs = self.removeWorksheetByNameRs(sheetName)
         if removeRs.isOk():
             return removeRs.value
         else:
             raise ErrorReports.toException(removeRs.err)
 
-    def removeSheetByIndex(self, index: int) -> Optional[Worksheet]:
+    def removeWorksheetByIndex(self, index: int) -> Optional[Worksheet]:
         """ remove sheet by index. If the target sheet does not exist, simply return"""
-        removeRs = self.removeSheetByIndexRs(index)
+        removeRs = self.removeWorksheetByIndexRs(index)
         if removeRs.isOk():
             return removeRs.value
         else:
             raise ErrorReports.toException(removeRs.err)
 
-    def removeSheet(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
+    def removeWorksheet(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
         """ remove sheet by either index or name. If the target sheet does not exist, simply return"""
-        removeRs = self.removeSheetRs(nameOrIndex)
+        removeRs = self.removeWorksheetRs(nameOrIndex)
         if removeRs.isOk():
             return removeRs.value
         else:
             raise ErrorReports.toException(removeRs.err)
 
-    def removeSheetByNameRs(self, sheetName: str) -> Result[Worksheet,ErrorReport]:
+    def removeWorksheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
         """ remove sheet by name. If the target sheet does not exist, simply return"""
         raise NotImplementedError()
 
-    def removeSheetByIndexRs(self, index: int) -> Result[Worksheet,ErrorReport]:
+    def removeWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
         """ remove sheet by index. If the target sheet does not exist, simply return"""
         raise NotImplementedError()
 
-    def removeSheetRs(self, nameOrIndex: Union[str, int]) -> Result[Worksheet,ErrorReport]:
+    def removeWorksheetRs(self, nameOrIndex: Union[str, int]) -> Result[Worksheet, ErrorReport]:
         """ remove sheet by either index or name. If the target sheet does not exist, simply return"""
         raise NotImplementedError()
 
     def toJson(self) -> WorkbookJson:
         jsons = []
-        for sheet in self.sheets:
+        for sheet in self.worksheets:
             jsons.append(sheet.toJson())
         return WorkbookJson(self.name, jsons)
 
     def listWorksheet(self) -> str:
         """return a list of sheet as string"""
         rt = ""
-        for (i, sheet) in enumerate(self.sheets):
+        for (i, sheet) in enumerate(self.worksheets):
             rt += "{num}. {sheetName}\n".format(
                 num=str(i),
                 sheetName=sheet.name

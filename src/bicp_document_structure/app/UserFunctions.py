@@ -57,7 +57,7 @@ def setActiveWorkbook(indexOrName):
 def getActiveSheet() -> Optional[Worksheet]:
     wb = getActiveWorkbook()
     if wb is not None:
-        return getActiveWorkbook().activeSheet
+        return getActiveWorkbook().activeWorksheet
     else:
         return None
 
@@ -71,14 +71,14 @@ def setActiveSheet(indexOrName: Union[str, int]):
                 data=AppErrors.WorkbookNotExist.Data(indexOrName)
             )
         )
-    wb.setActiveSheet(indexOrName)
+    wb.setActiveWorksheet(indexOrName)
 
 
 def getSheet(nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
     wb = getActiveWorkbook()
     if wb is None:
         return None
-    return wb.getSheet(nameOrIndex)
+    return wb.getWorksheet(nameOrIndex)
 
 
 def getRange(rangeAddress: Union[str, RangeAddress, Tuple[CellAddress, CellAddress]]) -> Optional[Range]:

@@ -15,7 +15,7 @@ class UserFunctions_test(unittest.TestCase):
         startApp()
         restartApp()
         getApp().createNewWorkbook("Book1")
-        getActiveWorkbook().createNewSheet("Sheet1")
+        getActiveWorkbook().createNewWorksheet("Sheet1")
 
 
     def test_B(self):
@@ -47,7 +47,7 @@ class UserFunctions_test(unittest.TestCase):
     def test_onGlobalScope(self):
         # startApp()
         activeBook = getActiveWorkbook()
-        activeBook.setActiveSheet("Sheet1")
+        activeBook.setActiveWorksheet("Sheet1")
         sheet = getActiveSheet()
         cellA1_1 = sheet.cell((1, 1)) #A1
         cellA1_1.script = "x=1;x+10"
@@ -78,7 +78,7 @@ class UserFunctions_test(unittest.TestCase):
 
     def test_Result(self):
         activeBook = getActiveWorkbook()
-        activeBook.setActiveSheet("Sheet1")
+        activeBook.setActiveWorksheet("Sheet1")
         sheet = getActiveSheet()
         cellA1_1 = sheet.cell((1, 1))  # A1
         cellA1_1.script = "x=1;x+10"

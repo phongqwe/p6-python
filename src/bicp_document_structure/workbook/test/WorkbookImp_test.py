@@ -27,100 +27,100 @@ class WorkbookImp_test(unittest.TestCase):
         w1 = WorkbookImp("w1", sheetDict=d)
         self.assertFalse(w1.isEmpty())
         self.assertEqual(2, w1.sheetCount)
-        self.assertEqual(s1, w1.getSheetByName(s1.name))
-        self.assertEqual(s2, w1.getSheetByName(s2.name))
+        self.assertEqual(s1, w1.getWorksheetByName(s1.name))
+        self.assertEqual(s2, w1.getWorksheetByName(s2.name))
 
     def test_fromSheets(self):
         s1, s2, s3, w1, sheetDict = self.makeTestObj()
-        self.assertEqual(s1, w1.getSheetByName(s1.name))
-        self.assertEqual(s2, w1.getSheetByName(s2.name))
-        self.assertEqual(s3, w1.getSheetByName(s3.name))
+        self.assertEqual(s1, w1.getWorksheetByName(s1.name))
+        self.assertEqual(s2, w1.getWorksheetByName(s2.name))
+        self.assertEqual(s3, w1.getWorksheetByName(s3.name))
 
     def test_getSheetByName(self):
         self.test_fromSheets()
 
     def test_getSheetByIndex(self):
         s1, s2, s3, w1, sheetDict = self.makeTestObj()
-        self.assertEqual(s1, w1.getSheetByIndex(0))
-        self.assertEqual(s2, w1.getSheetByIndex(1))
-        self.assertEqual(s3, w1.getSheetByIndex(2))
+        self.assertEqual(s1, w1.getWorksheetByIndex(0))
+        self.assertEqual(s2, w1.getWorksheetByIndex(1))
+        self.assertEqual(s3, w1.getWorksheetByIndex(2))
 
     def test_getSheet(self):
         s1, s2, s3, w1, sheetDict = self.makeTestObj()
 
-        self.assertEqual(s1, w1.getSheet(0))
-        self.assertEqual(s1, w1.getSheet(s1.name))
+        self.assertEqual(s1, w1.getWorksheet(0))
+        self.assertEqual(s1, w1.getWorksheet(s1.name))
 
-        self.assertEqual(s2, w1.getSheet(1))
-        self.assertEqual(s2, w1.getSheet(s2.name))
+        self.assertEqual(s2, w1.getWorksheet(1))
+        self.assertEqual(s2, w1.getWorksheet(s2.name))
 
-        self.assertEqual(s3, w1.getSheet(2))
-        self.assertEqual(s3, w1.getSheet(s3.name))
+        self.assertEqual(s3, w1.getWorksheet(2))
+        self.assertEqual(s3, w1.getWorksheet(s3.name))
 
     def test_sheetCount(self):
         s1, s2, s3, w1, sheetDict = self.makeTestObj()
         self.assertEqual(len(sheetDict), w1.sheetCount)
-        w1.removeSheetByIndex(0)
+        w1.removeWorksheetByIndex(0)
         self.assertEqual(2, w1.sheetCount)
 
     def test_createNameSheet(self):
         s1, s2, s3, w1, sheetDict = self.makeTestObj()
 
-        s4 = w1.createNewSheet("s4")
-        self.assertEqual(s4, w1.getSheet("s4"))
+        s4 = w1.createNewWorksheet("s4")
+        self.assertEqual(s4, w1.getWorksheet("s4"))
         self.assertEqual(s4, sheetDict["s4"])
 
         with self.assertRaises(ValueError):
-            w1.createNewSheet("s1")
+            w1.createNewWorksheet("s1")
 
     def test_CreateNewSheet_autoNaming(self):
         book = WorkbookImp("book")
         self.assertTrue(book.isEmpty())
-        createRs = book.createNewSheetRs()
+        createRs = book.createNewWorksheetRs()
         self.assertTrue(createRs.isOk())
         self.assertTrue(not book.isEmpty())
-        self.assertIsNotNone(book.getSheet("Sheet0"))
-        book.createNewSheetRs()
-        self.assertIsNotNone(book.getSheet("Sheet1"))
+        self.assertIsNotNone(book.getWorksheet("Sheet0"))
+        book.createNewWorksheetRs()
+        self.assertIsNotNone(book.getWorksheet("Sheet1"))
 
     def test_removeSheetByName(self):
         s1, s2, s3, w1, sheetDict = self.makeTestObj()
-        ds = w1.removeSheetByName(s2.name)
+        ds = w1.removeWorksheetByName(s2.name)
         self.assertEqual(s2, ds)
         self.assertEqual(2, w1.sheetCount)
-        self.assertEqual(s3, w1.getSheet(1))
+        self.assertEqual(s3, w1.getWorksheet(1))
 
     def test_removeSheetByIndex(self):
         s1, s2, s3, w1, sheetDict = self.makeTestObj()
-        ds = w1.removeSheetByIndex(1)
+        ds = w1.removeWorksheetByIndex(1)
         self.assertEqual(s2, ds)
         self.assertEqual(2, w1.sheetCount)
-        self.assertEqual(s3, w1.getSheet(1))
+        self.assertEqual(s3, w1.getWorksheet(1))
 
     def test_removeSheet(self):
         s1, s2, s3, w1, sheetDict = self.makeTestObj()
-        ds2 = w1.removeSheet(s2.name)
+        ds2 = w1.removeWorksheet(s2.name)
         self.assertEqual(s2, ds2)
         self.assertEqual(2, w1.sheetCount)
-        self.assertEqual(s3, w1.getSheet(1))
+        self.assertEqual(s3, w1.getWorksheet(1))
 
-        ds1 = w1.removeSheet(0)
+        ds1 = w1.removeWorksheet(0)
         self.assertEqual(s1, ds1)
         self.assertEqual(1, w1.sheetCount)
-        self.assertEqual(s3, w1.getSheet(0))
+        self.assertEqual(s3, w1.getWorksheet(0))
         with self.assertRaises(ValueError):
-            w1.removeSheet(0.0)
+            w1.removeWorksheet(0.0)
 
     def test_activeSheet(self):
         s1, s2, s3, w1, sheetDict = self.makeTestObj()
-        self.assertEqual(s1, w1.activeSheet)
-        w1.setActiveSheet(1)
-        self.assertEqual(s2, w1.activeSheet)
-        w1.setActiveSheet(s3.name)
-        self.assertEqual(s3, w1.activeSheet)
+        self.assertEqual(s1, w1.activeWorksheet)
+        w1.setActiveWorksheet(1)
+        self.assertEqual(s2, w1.activeWorksheet)
+        w1.setActiveWorksheet(s3.name)
+        self.assertEqual(s3, w1.activeWorksheet)
         with self.assertRaises(ValueError):
-            w1.setActiveSheet(100)
-        self.assertEqual(s3, w1.activeSheet)
+            w1.setActiveWorksheet(100)
+        self.assertEqual(s3, w1.activeWorksheet)
 
     def test_listWorksheet(self):
         s1, s2, s3, w1, sheetDict = self.makeTestObj()

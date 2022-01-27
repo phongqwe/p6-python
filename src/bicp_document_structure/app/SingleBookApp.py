@@ -22,8 +22,8 @@ class SingleBookApp(App):
         rr = RunResultImp()
         self.mutationHandler = RunResultCMEHandler(rr)
         wb = WorkbookImp("Book1",onCellMutation=self.mutationHandler.onCellMutation)
-        wb.createNewSheet("Sheet1")
-        wb.setActiveSheet(0)
+        wb.createNewWorksheet("Sheet1")
+        wb.setActiveWorksheet(0)
         self.__book = wb
         self.__result = rr
 
@@ -40,7 +40,7 @@ class SingleBookApp(App):
 
     @property
     def activeSheet(self):
-        return self.activeWorkbook.activeSheet
+        return self.activeWorkbook.activeWorksheet
 
     @property
     def activeWorkbook(self) -> Optional[Workbook]:
