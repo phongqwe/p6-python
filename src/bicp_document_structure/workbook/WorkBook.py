@@ -1,8 +1,8 @@
 from abc import ABC
 from typing import Optional, Union, List
 
-from bicp_document_structure.report.error.ErrorReport import ErrorReport
-from bicp_document_structure.report.error.ErrorReports import ErrorReports
+from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
+from bicp_document_structure.util.report.error.ErrorReports import ErrorReports
 from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.workbook.WorkbookJson import WorkbookJson
 from bicp_document_structure.workbook.WorkbookKey import WorkbookKey

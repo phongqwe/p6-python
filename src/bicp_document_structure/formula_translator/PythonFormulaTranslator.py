@@ -8,7 +8,7 @@ from bicp_document_structure.formula_translator.ScriptFormulaTranslator import S
 from bicp_document_structure.formula_translator.antlr4.FormulaLexer import FormulaLexer
 from bicp_document_structure.formula_translator.antlr4.FormulaParser import FormulaParser
 from bicp_document_structure.formula_translator.errors.TranslatorErrors import TranslatorErrors
-from bicp_document_structure.report.error.ErrorReport import ErrorReport
+from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Err import Err
 from bicp_document_structure.util.result.Ok import Ok
 from bicp_document_structure.util.result.Result import Result

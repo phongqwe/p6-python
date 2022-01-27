@@ -2,7 +2,7 @@ from abc import ABC
 from pathlib import Path
 from typing import Union
 
-from bicp_document_structure.report.error.ErrorReport import ErrorReport
+from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.workbook.WorkBook import Workbook
 

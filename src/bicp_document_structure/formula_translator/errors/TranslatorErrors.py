@@ -1,6 +1,6 @@
 from typing import Optional
 
-from bicp_document_structure.report.error.ErrorHeader import ErrorHeader
+from bicp_document_structure.util.report.error.ErrorHeader import ErrorHeader
 
 
 class TranslatorErrors:

@@ -1,8 +1,8 @@
 from pathlib import Path
 from typing import Optional
 
-from bicp_document_structure.report.error.ErrorHeader import ErrorHeader
-from bicp_document_structure.report.error.ErrorReport import ErrorReport
+from bicp_document_structure.util.report.error.ErrorHeader import ErrorHeader
+from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 
 __errPrefix = "p6FileSaverError"
 

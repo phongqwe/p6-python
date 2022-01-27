@@ -8,8 +8,8 @@ from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.address.RangeAddress import RangeAddress
-from bicp_document_structure.report.error.ErrorReport import ErrorReport
-from bicp_document_structure.report.error.ErrorReports import ErrorReports
+from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
+from bicp_document_structure.util.report.error.ErrorReports import ErrorReports
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 from bicp_document_structure.worksheet.Worksheet import Worksheet

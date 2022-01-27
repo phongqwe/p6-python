@@ -1,7 +1,7 @@
-from bicp_document_structure.report.error import ErrorHeader
+from bicp_document_structure.util.report.error import ErrorHeader
 
 
 class CommonError:
-    header = ErrorHeader("commonError_0","Common error")
+    header = ErrorHeader("commonError_0", "Common error")
     class Data:
         pass

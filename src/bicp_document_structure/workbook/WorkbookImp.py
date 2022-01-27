@@ -4,8 +4,8 @@ from typing import Union, Optional, OrderedDict, Callable, List
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.mutation.CellMutationEvent import CellMutationEvent
-from bicp_document_structure.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.Util import typeCheck
+from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Err import Err
 from bicp_document_structure.util.result.Ok import Ok
 from bicp_document_structure.util.result.Result import Result

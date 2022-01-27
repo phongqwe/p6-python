@@ -10,7 +10,7 @@ from bicp_document_structure.file.loader.P6FileLoader import P6FileLoader
 from bicp_document_structure.file.loader.P6FileLoaders import P6FileLoaders
 from bicp_document_structure.file.saver.P6FileSaver import P6FileSaver
 from bicp_document_structure.file.saver.P6FileSavers import P6FileSavers
-from bicp_document_structure.report.error.ErrorReport import ErrorReport
+from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Err import Err
 from bicp_document_structure.util.result.Ok import Ok
 from bicp_document_structure.util.result.Result import Result

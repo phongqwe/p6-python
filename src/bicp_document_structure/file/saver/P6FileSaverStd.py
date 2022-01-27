@@ -5,7 +5,7 @@ from bicp_document_structure.file.P6File import P6File
 from bicp_document_structure.file.P6Files import P6Files
 from bicp_document_structure.file.saver.P6FileSaver import P6FileSaver
 from bicp_document_structure.file.saver.P6FileSaverErrors import P6FileSaverErrors
-from bicp_document_structure.report.error.ErrorReport import ErrorReport
+from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Err import Err
 from bicp_document_structure.util.result.Ok import Ok
 from bicp_document_structure.util.result.Result import Result

@@ -1,4 +1,4 @@
-from bicp_document_structure.report.error.ErrorReports import ErrorReports
+from bicp_document_structure.util.report.error.ErrorReports import ErrorReports
 from bicp_document_structure.util.result.Result import Result
 
 
