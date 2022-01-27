@@ -1,5 +1,7 @@
+import json
 from typing import Union, Optional
 
+from bicp_document_structure.util.JsonStrMaker import JsonStrMaker
 from bicp_document_structure.util.report.error.ErrorHeader import ErrorHeader
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
@@ -23,7 +25,7 @@ class AppErrors:
 
     class WorkbookNotExist:
         header = ErrorHeader(errPrefix() + "0", "workbook does not exist")
-        class Data:
+        class Data(JsonStrMaker):
             def __init__(self, nameOrIndexOrKey: Union[str, int, WorkbookKey]):
                 self.name = None
                 self.index = None
@@ -43,6 +45,8 @@ class AppErrors:
                 if self.key is not None:
                     return "Workbook at key:\n"+str(self.key)
                 return ""
+            def jsonStr(self):
+                return json.dumps(self.__dict__)
 
     @staticmethod
     def toException(errReport: ErrorReport)->Optional[Exception]:

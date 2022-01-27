@@ -1,13 +1,12 @@
+import json
+
+
 class A:
     def __init__(self):
-        pass
-    def z(self):
-        return 100
+        self.x=1
+        self.y = 333
+    def zzz(self):
+        return 1000
+
 if __name__ == "__main__":
-    d = {
-        1:"1v",
-        2:"2v"
-    }
-    l = list(d.values())
-    d.clear()
-    print(l)
+    print(json.dumps(A().__dict__))

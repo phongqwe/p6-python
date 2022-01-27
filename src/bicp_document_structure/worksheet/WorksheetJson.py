@@ -18,6 +18,7 @@ class WorksheetJson(dict):
         return json.dumps(self.toJsonDict())
 
     def toJsonDict(self):
+        """convert this object into a dict """
         cellDicts = []
         for cell in self.cells:
             cellDicts.append(cell.toJsonDict())
@@ -28,6 +29,7 @@ class WorksheetJson(dict):
 
     @staticmethod
     def fromJsonDict(jsonDict: dict):
+        """create an instance of this class from a dict"""
         cells = []
         for cell in jsonDict.get("cells"):
             cellJson = CellJson.fromJsonDict(cell)
@@ -39,5 +41,6 @@ class WorksheetJson(dict):
 
     @staticmethod
     def fromJsonStr(jsonStr: str):
+        """create an instance of this class from a json string"""
         d = json.loads(jsonStr)
         return WorksheetJson.fromJsonDict(d)
