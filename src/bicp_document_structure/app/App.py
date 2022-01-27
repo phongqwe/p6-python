@@ -117,7 +117,7 @@ class App(ABC):
         if closeRs.isErr():
             raise ErrorReports.toException(closeRs.err)
 
-    def closeWorkbookRs(self, nameOrIndexOrKey: Union[int, str, WorkbookKey])->Result[WorkbookKey,ErrorReport]:
+    def closeWorkbookRs(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]) -> Result[WorkbookKey, ErrorReport]:
         """
         close a workbook
         :return a Result object if there are error instead of raising an exception
@@ -133,17 +133,17 @@ class App(ABC):
         """force load a workbook from a file path, and add it to this app state"""
         loadRs = self.forceLoadWorkbookRs(filePath)
         if loadRs.isOk():
-            wb:Workbook = loadRs.value
+            wb: Workbook = loadRs.value
             return wb
         else:
             raise ErrorReports.toException(loadRs.err)
 
-    def forceLoadWorkbookRs(self, filePath: Union[str, Path]) -> Result[Workbook,ErrorReport]:
+    def forceLoadWorkbookRs(self, filePath: Union[str, Path]) -> Result[Workbook, ErrorReport]:
         """
         force load a workbook from a file path, and add it to this app state, replace whatever workbook with the same key
         :return an Result object if there are error instead of raising an exception
         """
-        loadRs:Result[Workbook,ErrorReport] = self._fileLoader.load(Path(filePath))
+        loadRs: Result[Workbook, ErrorReport] = self._fileLoader.load(Path(filePath))
         if loadRs.isOk():
             self.wbContainer.addWorkbook(loadRs.value)
         return loadRs
@@ -204,7 +204,6 @@ class App(ABC):
         else:
             return wbRs
 
-
     def loadWorkbook(self, filePath: Union[str, Path]) -> Workbook:
         """
         load a workbook from a file path, and add it to this app state
@@ -248,14 +247,13 @@ class App(ABC):
         for book in bookList:
             self.wbContainer.addWorkbook(book)
 
-    def listWorkBook(self)->str:
+    def listWorkbook(self):
         rt = ""
-        for (i,book) in enumerate(self.wbContainer.books()):
-            rt+="{num}. {wbName}\n".format(
+        for (i, book) in enumerate(self.wbContainer.books()):
+            rt += "{num}. {wbName}\n".format(
                 num=str(i),
                 wbName=book.name
             )
-        if rt:
-            return rt
-        else:
-            return "No workbook"
+        if not rt:
+            rt = "No workbook"
+        print(rt)

@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional, Any
 
 
 def typeCheck(target, targetName: str, expectedType):
@@ -27,3 +27,10 @@ def multiTypeCheck(target, targetName: str, expectedTypeList: List):
 
     typeListStr = ", ".join(list(map(lambda t: str(t), expectedTypeList)))
     raise ValueError("{tn} must be one of these type {typeList}".format(tn=targetName, typeList=typeListStr))
+
+def default(something:Optional[Any],defaultValue:Any):
+    if something is None:
+        return defaultValue
+    else:
+        return something
+

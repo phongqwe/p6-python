@@ -151,7 +151,7 @@ class AppImp_test(unittest.TestCase):
         app = self.app
         app.createNewWorkbook("Book1")
         app.createNewWorkbook("Book2")
-        print(app.listWorkBook())
+        print(app.listWorkbook())
 
     def __testFileExistence(self,path):
         self.assertTrue(path.exists())

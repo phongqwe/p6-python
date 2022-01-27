@@ -102,9 +102,9 @@ def getWorkbook(nameOrIndexOrKey: Union[str, int, WorkbookKey]) -> Optional[Work
     return wb
 
 
-def listWorkbook() -> str:
+def listWorkbook():
     app = getApp()
-    return app.listWorkBook()
+    app.listWorkbook()
 
 
 def listWorksheet(workBookNameOrIndexOrKey: Union[str, int, WorkbookKey, None] = None) -> str:

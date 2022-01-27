@@ -4,8 +4,13 @@ from typing import Union, Optional, OrderedDict, Callable, List
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.mutation.CellMutationEvent import CellMutationEvent
+from bicp_document_structure.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.Util import typeCheck
+from bicp_document_structure.util.result.Err import Err
+from bicp_document_structure.util.result.Ok import Ok
+from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.workbook.WorkBook import Workbook
+from bicp_document_structure.workbook.WorkbookErrors import WorkbookErrors
 from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 from bicp_document_structure.workbook.WorkbookKeyImp import WorkbookKeyImp
 from bicp_document_structure.worksheet.Worksheet import Worksheet
@@ -19,7 +24,7 @@ class WorkbookImp(Workbook):
                  sheetDict: OrderedDict = None,
                  onCellMutation: Callable[[WorkbookKey, str, Cell, CellMutationEvent], None] = None,
                  ):
-        self.__onCellMutation:Optional[Callable[[WorkbookKey, str, Cell, CellMutationEvent], None]] = onCellMutation
+        self.__onCellMutation: Optional[Callable[[WorkbookKey, str, Cell, CellMutationEvent], None]] = onCellMutation
         self.__key = WorkbookKeyImp(name, path)
         if sheetDict is None:
             sheetDict = ODict()
@@ -30,6 +35,7 @@ class WorkbookImp(Workbook):
         self.__activeSheet = None
         if self.sheetCount != 0:
             self.__activeSheet = list(self.__sheetDict.values())[0]
+        self.__nameCount = 0
 
     @staticmethod
     def __makeOrderDict(sheetDict: dict) -> dict:
@@ -104,17 +110,26 @@ class WorkbookImp(Workbook):
 
     @name.setter
     def name(self, newName: str):
-        self.workbookKey = WorkbookKeyImp(newName,self.workbookKey.filePath)
+        self.workbookKey = WorkbookKeyImp(newName, self.workbookKey.filePath)
 
-    def createNewSheet(self, newSheetName) -> Worksheet:
-        if newSheetName in self.__sheetDict.keys():
-            raise ValueError(
-                "Can't create new sheet {sname} because sheet {sname} already exist".format(sname=newSheetName))
+    def createNewSheetRs(self, newSheetName: Optional[str]=None) -> Result[Worksheet, ErrorReport]:
+        if newSheetName is None:
+            newSheetName = "Sheet" + str(self.__nameCount)
+            while self.getSheetByName(newSheetName) is not None:
+                self.__nameCount += 1
+                newSheetName = "Sheet" + str(self.__nameCount)
         else:
-            newSheet = WorksheetImp(name=newSheetName,
-                                    onCellMutation=self.__mutationEventCallback)
-            self.__sheetDict[newSheetName] = newSheet
-            return newSheet
+            if newSheetName in self.__sheetDict.keys():
+                return Err(
+                    ErrorReport(
+                        header=WorkbookErrors.WorksheetAlreadyExist.header,
+                        data=WorkbookErrors.WorksheetAlreadyExist.Data(newSheetName)
+                    )
+                )
+        newSheet = WorksheetImp(name=newSheetName,
+                                onCellMutation=self.__mutationEventCallback)
+        self.__sheetDict[newSheetName] = newSheet
+        return Ok(newSheet)
 
     def __mutationEventCallback(self,
                                 worksheetName: str,
@@ -123,28 +138,39 @@ class WorkbookImp(Workbook):
         if self.__onCellMutation is not None:
             self.__onCellMutation(self.workbookKey, worksheetName, cell, mutationEvent)
 
-    def removeSheetByName(self, sheetName: str) -> Optional[Worksheet]:
+    def removeSheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
         typeCheck(sheetName, "sheetName", str)
         if sheetName in self.__sheetDict.keys():
             rt: Worksheet = self.__sheetDict[sheetName]
             del self.__sheetDict[sheetName]
-            return rt
+            return Ok(rt)
         else:
-            return None
+            return Err(
+                ErrorReport(
+                    header=WorkbookErrors.WorksheetAlreadyExist.header,
+                    data=WorkbookErrors.WorksheetAlreadyExist.Data(sheetName),
+                )
+            )
 
-    def removeSheetByIndex(self, index: int) -> Optional[Worksheet]:
+    def removeSheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
         typeCheck(index, "index", int)
         if 0 <= index < len(self.__sheetDict):
             name: str = list(self.__sheetDict.items())[index][0]
-            return self.removeSheetByName(name)
+            return self.removeSheetByNameRs(name)
         else:
-            return None
+            return Err(
+                ErrorReport(
+                    header=WorkbookErrors.WorksheetAlreadyExist.header,
+                    data=WorkbookErrors.WorksheetAlreadyExist.Data(index),
+                )
+            )
 
-    def removeSheet(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
+    def removeSheetRs(self, nameOrIndex: Union[str, int]) -> Result[Worksheet, ErrorReport]:
         if isinstance(nameOrIndex, str):
-            return self.removeSheetByName(nameOrIndex)
+            return self.removeSheetByNameRs(nameOrIndex)
 
         if isinstance(nameOrIndex, int):
-            return self.removeSheetByIndex(nameOrIndex)
+            return self.removeSheetByIndexRs(nameOrIndex)
 
         raise ValueError("nameOrIndex must either be a string or a number")
+

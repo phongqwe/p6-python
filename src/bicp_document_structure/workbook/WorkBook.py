@@ -1,6 +1,9 @@
 from abc import ABC
 from typing import Optional, Union, List
 
+from bicp_document_structure.report.error.ErrorReport import ErrorReport
+from bicp_document_structure.report.error.ErrorReports import ErrorReports
+from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.workbook.WorkbookJson import WorkbookJson
 from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 from bicp_document_structure.worksheet.Worksheet import Worksheet
@@ -73,24 +76,60 @@ class Workbook(ABC):
     def name(self, newName: str):
         raise NotImplementedError()
 
-    def createNewSheet(self, newSheetName: str) -> Worksheet:
+    def createNewSheet(self, newSheetName: Optional[str]) -> Worksheet:
         """
         add a new empty sheet to this workbook
         :param newSheetName: name of the new sheet
         :return the new worksheet
         :raise ValueError if the newSheetName already exists
         """
+        createRs = self.createNewSheetRs(newSheetName)
+        if createRs.isOk():
+            return createRs.value
+        else:
+            raise ErrorReports.toException(createRs.err)
+
+    def createNewSheetRs(self, newSheetName: Optional[str]) -> Result[Worksheet,ErrorReport]:
+        """
+        add a new empty sheet to this workbook
+        :param newSheetName: name of the new sheet
+        :return Result object containing the new worksheet or ErrorRepor
+        """
         raise NotImplementedError()
 
     def removeSheetByName(self, sheetName: str) -> Optional[Worksheet]:
         """ remove sheet by name. If the target sheet does not exist, simply return"""
-        raise NotImplementedError()
+        removeRs = self.removeSheetByNameRs(sheetName)
+        if removeRs.isOk():
+            return removeRs.value
+        else:
+            raise ErrorReports.toException(removeRs.err)
 
     def removeSheetByIndex(self, index: int) -> Optional[Worksheet]:
         """ remove sheet by index. If the target sheet does not exist, simply return"""
-        raise NotImplementedError()
+        removeRs = self.removeSheetByIndexRs(index)
+        if removeRs.isOk():
+            return removeRs.value
+        else:
+            raise ErrorReports.toException(removeRs.err)
 
     def removeSheet(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
+        """ remove sheet by either index or name. If the target sheet does not exist, simply return"""
+        removeRs = self.removeSheetRs(nameOrIndex)
+        if removeRs.isOk():
+            return removeRs.value
+        else:
+            raise ErrorReports.toException(removeRs.err)
+
+    def removeSheetByNameRs(self, sheetName: str) -> Result[Worksheet,ErrorReport]:
+        """ remove sheet by name. If the target sheet does not exist, simply return"""
+        raise NotImplementedError()
+
+    def removeSheetByIndexRs(self, index: int) -> Result[Worksheet,ErrorReport]:
+        """ remove sheet by index. If the target sheet does not exist, simply return"""
+        raise NotImplementedError()
+
+    def removeSheetRs(self, nameOrIndex: Union[str, int]) -> Result[Worksheet,ErrorReport]:
         """ remove sheet by either index or name. If the target sheet does not exist, simply return"""
         raise NotImplementedError()
 
@@ -108,7 +147,6 @@ class Workbook(ABC):
                 num=str(i),
                 sheetName=sheet.name
             )
-        if rt:
-            return rt
-        else:
-            return "empty book"
+        if not rt:
+            rt = "empty book"
+        print(rt)
