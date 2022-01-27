@@ -12,6 +12,7 @@ from bicp_document_structure.worksheet.Worksheets import Worksheets
 class Workbooks:
     @staticmethod
     def wbFromJson(wbJson: WorkbookJson, filePath: Union[Path, None] = None) -> Workbook:
+        """NOTE: this function use the file name as the name for the newly created Workbook"""
         path = filePath
         if filePath is None:
             if wbJson.path is None:

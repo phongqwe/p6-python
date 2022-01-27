@@ -1,6 +1,8 @@
+import json
 from abc import ABC
 from typing import Optional, Union, List
 
+from bicp_document_structure.util.report.ReportJsonStrMaker import ReportJsonStrMaker
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.report.error.ErrorReports import ErrorReports
 from bicp_document_structure.util.result.Result import Result
@@ -9,7 +11,7 @@ from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 
-class Workbook(ABC):
+class Workbook(ReportJsonStrMaker, ABC):
 
     def reRun(self):
         """rerun all worksheet in this workbook"""
@@ -150,3 +152,6 @@ class Workbook(ABC):
         if not rt:
             rt = "empty book"
         print(rt)
+
+    def reportJsonStr(self) -> str:
+        return json.dumps(self.toJson().toJsonDict())

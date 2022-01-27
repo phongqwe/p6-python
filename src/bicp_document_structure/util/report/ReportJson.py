@@ -1,7 +1,7 @@
 import json
 from typing import Any
 
-from bicp_document_structure.util.JsonStrMaker import JsonStrMaker
+from bicp_document_structure.util.report.ReportJsonStrMaker import ReportJsonStrMaker
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Result import Result
 
@@ -9,7 +9,6 @@ from bicp_document_structure.util.result.Result import Result
 class ReportJson(dict):
     def __init__(self, isOk: bool, message: str, data: str):
         """
-
         :param isOk:
         :param message:
         :param data: should be a json string
@@ -27,8 +26,8 @@ class ReportJson(dict):
         if result.isOk():
             data = result.value
             dataStr = ""
-            if isinstance(data,JsonStrMaker):
-                dataStr = data.jsonStr()
+            if isinstance(data, ReportJsonStrMaker):
+                dataStr = data.reportJsonStr()
             else:
                 dataStr = str(data)
             return ReportJson(
@@ -41,8 +40,8 @@ class ReportJson(dict):
                 errReport = result.err
                 header = errReport.header
                 dataJsonStr = ""
-                if isinstance(errReport.data,JsonStrMaker):
-                    dataJsonStr = errReport.data.jsonStr()
+                if isinstance(errReport.data, ReportJsonStrMaker):
+                    dataJsonStr = errReport.data.reportJsonStr()
                 else:
                     dataJsonStr = str(errReport.data)
                 return ReportJson(

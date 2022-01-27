@@ -1,8 +1,8 @@
 import json
 import unittest
 
-from bicp_document_structure.util.JsonStrMaker import JsonStrMaker
 from bicp_document_structure.util.report.ReportJson import ReportJson
+from bicp_document_structure.util.report.ReportJsonStrMaker import ReportJsonStrMaker
 from bicp_document_structure.util.report.error.ErrorHeader import ErrorHeader
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Err import Err
@@ -18,12 +18,12 @@ class A:
         return json.dumps(self.__dict__)
 
 
-class B(JsonStrMaker):
+class B(ReportJsonStrMaker):
     def __init__(self):
         self.x = 123
         self.y = "abc qqqq"
 
-    def jsonStr(self) -> str:
+    def reportJsonStr(self) -> str:
         return json.dumps(self.__dict__)
 
     def __int__(self):

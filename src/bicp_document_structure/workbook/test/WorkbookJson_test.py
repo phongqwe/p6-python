@@ -18,9 +18,9 @@ class WorkbookJsonTest(unittest.TestCase):
                 CellJson("value 2", "script 2", None,CellAddressJson(1, 1)),
             ])
         ])
-        self.assertEqual("""{"worksheets": [{"name": "sheet1", "cells": [{"value": "value", "script": null, "formula": null, "address": {"row": 2, "col": 1}}, {"value": null, "script": "script x", "formula": null, "address": {"row": 1, "col": 1}}]}, {"name": "sheet2", "cells": [{"value": null, "script": null, "formula": null, "address": {"row": 2, "col": 1}}, {"value": "value 2", "script": "script 2", "formula": null, "address": {"row": 1, "col": 1}}]}]}""",str(wbjson))
+        self.assertEqual("""{"name": "workbookName", "worksheets": [{"name": "sheet1", "cells": [{"value": "value", "script": null, "formula": null, "address": {"row": 2, "col": 1}}, {"value": null, "script": "script x", "formula": null, "address": {"row": 1, "col": 1}}]}, {"name": "sheet2", "cells": [{"value": null, "script": null, "formula": null, "address": {"row": 2, "col": 1}}, {"value": "value 2", "script": "script 2", "formula": null, "address": {"row": 1, "col": 1}}]}]}""",str(wbjson))
     def test_fromJsonStr(self):
-        jsonStr = """{"worksheets": [{"name": "sheet1", "cells": [{"value": "value", "script": null, "formula": null, "address": {"row": 2, "col": 1}}, {"value": null, "script": "script x", "formula": null, "address": {"row": 1, "col": 1}}]}, {"name": "sheet2", "cells": [{"value": null, "script": null, "formula": null, "address": {"row": 2, "col": 1}}, {"value": "value 2", "script": "script 2", "formula": null, "address": {"row": 1, "col": 1}}]}]}"""
+        jsonStr = """{"name": "qwe", "worksheets": [{"name": "sheet1", "cells": [{"value": "value", "script": null, "formula": null, "address": {"row": 2, "col": 1}}, {"value": null, "script": "script x", "formula": null, "address": {"row": 1, "col": 1}}]}, {"name": "sheet2", "cells": [{"value": null, "script": null, "formula": null, "address": {"row": 2, "col": 1}}, {"value": "value 2", "script": "script 2", "formula": null, "address": {"row": 1, "col": 1}}]}]}"""
         o = WorkbookJson.fromJsonStr(jsonStr)
         self.assertEqual(jsonStr,str(o))
         # todo add more test, for now this is kinda sufficient
