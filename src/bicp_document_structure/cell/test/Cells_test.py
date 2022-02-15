@@ -12,3 +12,11 @@ class Cells_test(unittest.TestCase):
         self.assertEqual(cellJson.value, cell.bareValue())
         self.assertEqual(cellJson.formula, cell.formula)
         self.assertEqual(cellJson.script, cell.script)
+
+    def test_CreateCellFromJsonStr(self):
+        cellJson = CellJson("value", "script", "formula", CellAddressJson(12, 33))
+        cellJsonStr = str(cellJson)
+        cell = Cells.cellFromJson(cellJsonStr)
+        self.assertEqual(cellJson.value, cell.bareValue())
+        self.assertEqual(cellJson.formula, cell.formula)
+        self.assertEqual(cellJson.script, cell.script)

@@ -2,9 +2,10 @@ import json
 from typing import List
 
 from bicp_document_structure.cell.CellJson import CellJson
+from bicp_document_structure.common.ToJsonStr import ToJsonStr
 
 
-class WorksheetJson(dict):
+class WorksheetJson(dict,ToJsonStr):
     """
     json representation of a Worksheet.
     str(WorksheetJson) returns the equivalent json string.
@@ -13,19 +14,6 @@ class WorksheetJson(dict):
         super().__init__()
         self.name = name
         self.cells = cells
-
-    def __str__(self):
-        return json.dumps(self.toJsonDict())
-
-    def toJsonDict(self):
-        """convert this object into a dict """
-        cellDicts = []
-        for cell in self.cells:
-            cellDicts.append(cell.toJsonDict())
-        return ({
-            "name": self.name,
-            "cells": cellDicts
-        })
 
     @staticmethod
     def fromJsonDict(jsonDict: dict):
@@ -44,3 +32,19 @@ class WorksheetJson(dict):
         """create an instance of this class from a json string"""
         d = json.loads(jsonStr)
         return WorksheetJson.fromJsonDict(d)
+
+    def toJsonStr(self) -> str:
+        return str(self)
+
+    def __str__(self):
+        return json.dumps(self.toJsonDict())
+
+    def toJsonDict(self):
+        """convert this object into a dict """
+        cellDicts = []
+        for cell in self.cells:
+            cellDicts.append(cell.toJsonDict())
+        return ({
+            "name": self.name,
+            "cells": cellDicts
+        })
