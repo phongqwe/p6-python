@@ -1,16 +1,27 @@
-from bicp_document_structure.common.ToJsonStr import ToJsonStr
+from bicp_document_structure.common.ToJsonStr import ToJson
 from bicp_document_structure.message.P6MessageHeader import P6MessageHeader
-from bicp_document_structure.message.P6RawMessage import RawMessage
 
 
-class P6Message:
-    def __init__(self, header: P6MessageHeader, content: ToJsonStr):
-        self.content: ToJsonStr = content
-        self.header: P6MessageHeader = header
+class P6Message(ToJson):
 
-    def toRawMsg(self) -> RawMessage:
-        rt = RawMessage(
-            self.header.toJsonStr(),
-            self.content.toJsonStr(),
-        )
-        return rt
+    def __init__(self, header: P6MessageHeader, content: ToJson):
+        self._content: ToJson = content
+        self._header: P6MessageHeader = header
+
+    @property
+    def content(self):
+        return self._content
+
+    @property
+    def header(self):
+        return self._header
+
+    def toJsonDict(self) -> dict:
+        return {
+            "header": self.header.toJsonDict(),
+            "content": {
+                "data":self.content.toJsonStr()
+            }
+        }
+    def toBytes(self):
+        return bytes(self.toJsonStr().encode("UTF-8"))

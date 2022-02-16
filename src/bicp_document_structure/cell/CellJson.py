@@ -2,10 +2,10 @@ import json
 from typing import Union
 
 from bicp_document_structure.cell.address.CellAddressJson import CellAddressJson
-from bicp_document_structure.common.ToJsonStr import ToJsonStr
+from bicp_document_structure.common.ToJsonStr import ToJson
 
 
-class CellJson(dict,ToJsonStr):
+class CellJson(dict, ToJson):
     """
     Json facade for Cell,
     contains methods to produce a representing json string, and to parse json string into a Cell
@@ -46,5 +46,8 @@ class CellJson(dict,ToJsonStr):
             "formula":self.formula,
             "address": self.address.__dict__
         }
+        # dict = self.__dict__
+        # dict["address"] = self.address.__dict__
+        # return dict
     def toJsonStr(self) -> str:
         return str(self)

@@ -2,10 +2,10 @@ import json
 from typing import List
 
 from bicp_document_structure.cell.CellJson import CellJson
-from bicp_document_structure.common.ToJsonStr import ToJsonStr
+from bicp_document_structure.common.ToJsonStr import ToJson
 
 
-class WorksheetJson(dict,ToJsonStr):
+class WorksheetJson(dict, ToJson):
     """
     json representation of a Worksheet.
     str(WorksheetJson) returns the equivalent json string.

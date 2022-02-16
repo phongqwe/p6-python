@@ -1,16 +1,16 @@
 from typing import TypeVar, Generic
 
-T = TypeVar("T")
+V = TypeVar("V")
 E = TypeVar("E")
 
-class Result(Generic[T,E]):
+class Result(Generic[V, E]):
 
     @property
     def err(self)->E:
         raise NotImplementedError()
 
     @property
-    def value(self)->T:
+    def value(self)->V:
         raise NotImplementedError()
 
     def getEither(self):
