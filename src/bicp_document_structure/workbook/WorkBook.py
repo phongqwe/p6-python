@@ -1,7 +1,9 @@
 import json
 from abc import ABC
-from typing import Optional, Union
+from typing import Optional, Union, Callable
 
+from bicp_document_structure.cell.Cell import Cell
+from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.util.report.ReportJsonStrMaker import ReportJsonStrMaker
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.report.error.ErrorReports import ErrorReports
@@ -155,3 +157,6 @@ class Workbook(ReportJsonStrMaker, ABC):
 
     def reportJsonStr(self) -> str:
         return json.dumps(self.toJson().toJsonDict())
+
+    def setOnCellChange(self,onCellChange:Callable[["Workbook",Worksheet,Cell,P6Event],None]):
+        raise NotImplementedError()

@@ -21,12 +21,12 @@ from bicp_document_structure.worksheet.WorksheetJson import WorksheetJson
 class WorksheetImp(Worksheet):
     def __init__(self, name="",
                  colDict=None,
-                 onCellMutation:Callable[[Worksheet, Cell, P6Event], None] = None):
+                 onCellChange:Callable[[Worksheet, Cell, P6Event], None] = None):
         if colDict is None:
             colDict = {}
         self.__colDict = colDict
         self.__name = name
-        self.__onCellMutation_ofWorksheet:Optional[Callable[[Worksheet, Cell, P6Event], None]] = onCellMutation
+        self.__onCellChangeOfWorksheet:Optional[Callable[[Worksheet, Cell, P6Event], None]] = onCellChange
 
     ### >> Worksheet << ###
 
@@ -139,5 +139,5 @@ class WorksheetImp(Worksheet):
         return WriteBackColumn(col, self,)
 
     def __onCellChange(self, cell:Cell, event:P6Event):
-        if self.__onCellMutation_ofWorksheet is not None:
-            self.__onCellMutation_ofWorksheet(self, cell, event)
+        if self.__onCellChangeOfWorksheet is not None:
+            self.__onCellChangeOfWorksheet(self, cell, event)

@@ -1,4 +1,4 @@
-from typing import Optional, Union
+from typing import Optional, Union, Callable
 
 from bicp_document_structure.app.App import App
 from bicp_document_structure.app.errors.AppErrors import AppErrors
@@ -6,6 +6,8 @@ from bicp_document_structure.app.run_result.RunResult import RunResult
 from bicp_document_structure.app.run_result.RunResultImp import RunResultImp
 from bicp_document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
 from bicp_document_structure.app.workbook_container.WorkbookContainerImp import WorkbookContainerImp
+from bicp_document_structure.cell.Cell import Cell
+from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.file.loader.P6FileLoader import P6FileLoader
 from bicp_document_structure.file.loader.P6FileLoaders import P6FileLoaders
 from bicp_document_structure.file.saver.P6FileSaver import P6FileSaver
@@ -30,11 +32,13 @@ class AppImp(App):
                  workbookContainer: Optional[WorkbookContainer] = None,
                  runResult: Optional[RunResult] = None,
                  loader: Optional[P6FileLoader] = None,
-                 saver: Optional[P6FileSaver] = None):
+                 saver: Optional[P6FileSaver] = None,
+                 onCellChange: Callable[[Workbook, Worksheet, Cell, P6Event], None] | None = None):
         if workbookContainer is None:
             workbookContainer = WorkbookContainerImp()
 
         self.__wbCont: WorkbookContainer = workbookContainer
+        self.__onCellChange: Callable[[Workbook, Worksheet, Cell, P6Event], None] | None = onCellChange
 
         # x: set default active workbook to the first if possible
         if self.__wbCont.isNotEmpty():
@@ -66,6 +70,9 @@ class AppImp(App):
     def hasNoWorkbook(self) -> bool:
         return self.wbContainer.isEmpty()
 
+    def _getOnCellChange(self) -> Callable[[Workbook, Worksheet, Cell, P6Event], None] | None:
+        return self.__onCellChange
+
     @property
     def activeWorkbook(self) -> Optional[Workbook]:
         if self.__activeWorkbook is None:
@@ -89,8 +96,8 @@ class AppImp(App):
         else:
             return Err(
                 ErrorReport(
-                    header=AppErrors.WorkbookNotExist.header,
-                    data=AppErrors.WorkbookNotExist.Data(indexOrNameOrKey)
+                    header = AppErrors.WorkbookNotExist.header,
+                    data = AppErrors.WorkbookNotExist.Data(indexOrNameOrKey)
                 )
             )
 
@@ -122,13 +129,13 @@ class AppImp(App):
                 name = "Workbook{}".format(self.__newBookIndex)
 
         if not self.hasWorkbook(name):
-            wb = WorkbookImp(name)
+            wb = WorkbookImp(name, onCellChange = self.__onCellChange)
             self.wbContainer.addWorkbook(wb)
             return Ok(wb)
         else:
             return Err(
                 ErrorReport(
-                    header=AppErrors.WorkbookAlreadyExist.header,
-                    data=AppErrors.WorkbookAlreadyExist.Data(name)
+                    header = AppErrors.WorkbookAlreadyExist.header,
+                    data = AppErrors.WorkbookAlreadyExist.Data(name)
                 )
             )

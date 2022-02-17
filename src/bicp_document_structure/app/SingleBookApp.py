@@ -1,15 +1,13 @@
 from typing import Union, Optional
 
 from bicp_document_structure.app.App import App
-from bicp_document_structure.app.mutation_handler.RunResultCMEHandler import RunResultCMEHandler
-from bicp_document_structure.app.run_result.RunResult import RunResult
-from bicp_document_structure.app.run_result.RunResultImp import RunResultImp
 from bicp_document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
-from bicp_document_structure.cell.address.CellAddress import CellAddress
-from bicp_document_structure.mutation.CellMutationEvent import CellMutationEvent
+from bicp_document_structure.cell.Cell import Cell
+from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
 from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
+from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 
 class SingleBookApp(App):
@@ -19,24 +17,17 @@ class SingleBookApp(App):
     """
 
     def __init__(self):
-        rr = RunResultImp()
-        self.mutationHandler = RunResultCMEHandler(rr)
-        wb = WorkbookImp("Book1",onCellMutation=self.mutationHandler.onCellMutation)
+        wb = WorkbookImp("Book1", onCellChange =self.onCellMutation)
         wb.createNewWorksheet("Sheet1")
         wb.setActiveWorksheet(0)
         self.__book = wb
-        self.__result = rr
 
-    def onCellMutation(self, workbookKey: WorkbookKey,
-                       worksheetName: str,
-                       cellAddress: CellAddress,
-                       mutationEvent: CellMutationEvent):
-        self.mutationHandler.onCellMutation(workbookKey, worksheetName, cellAddress, mutationEvent)
+    def onCellMutation(self, workbook: Workbook,
+                       worksheet:Worksheet,
+                       cell: Cell,
+                       mutationEvent: P6Event):
+        pass
 
-
-    @property
-    def result(self) -> RunResult:
-        return self.__result
 
     @property
     def activeSheet(self):
@@ -55,8 +46,8 @@ class SingleBookApp(App):
     def setActiveWorkbook(self, indexOrName: Union[int, str]):
         raise NotImplementedError()
 
-    def createNewWorkbook(self, name: str):
-        raise NotImplementedError()
+    def createNewWorkbook(self, name: Optional[str] = None) -> Workbook:
+        pass
 
     def saveWorkbookAtPath(self, nameOrIndex: Union[int, str,WorkbookKey], filePath: str):
         raise NotImplementedError()

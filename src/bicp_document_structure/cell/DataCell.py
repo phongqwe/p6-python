@@ -24,11 +24,11 @@ class DataCell(Cell):
                  value=None,
                  formula:str=None,
                  script: str = None,
-                 onCellMutation: Callable[[Cell, P6Event], None] = None):
+                 onCellChange: Callable[[Cell, P6Event], None] = None):
         self.__value = value
         self.__code: str = script
         self.__addr: CellAddress = address
-        self.__onCellMutation = onCellMutation
+        self.__onCellChange = onCellChange
         self.__scriptAlreadyRun = False
         self.__formula = formula
 
@@ -89,8 +89,8 @@ class DataCell(Cell):
         self.__value = newValue
         self.__code = None
         self.__scriptAlreadyRun=False
-        if self.__onCellMutation is not None:
-            self.__onCellMutation(self, P6Events.Cell.UpdateValue)
+        if self.__onCellChange is not None:
+            self.__onCellChange(self, P6Events.Cell.UpdateValue)
 
     @property
     def script(self) -> str:
@@ -100,8 +100,8 @@ class DataCell(Cell):
     def script(self, newCode: str):
         self.__code = newCode
         self.__value = None
-        if self.__onCellMutation is not None:
-            self.__onCellMutation(self, P6Events.Cell.UpdateScript)
+        if self.__onCellChange is not None:
+            self.__onCellChange(self, P6Events.Cell.UpdateScript)
         self.__scriptAlreadyRun = False
         self.__formula = "=SCRIPT({script})".format(script=newCode)
 
@@ -139,8 +139,8 @@ class DataCell(Cell):
                 codeResult = e
             self.__value = codeResult
             self.__scriptAlreadyRun = True
-            if self.__onCellMutation is not None:
-                self.__onCellMutation(self, P6Events.Cell.UpdateValue)
+            if self.__onCellChange is not None:
+                self.__onCellChange(self, P6Events.Cell.UpdateValue)
 
     def setScriptAndRun(self, newScript, globalScope=None, localScope=None):
         self.script = newScript
@@ -157,5 +157,5 @@ class DataCell(Cell):
         if self.hasCode():
             self.__value = None
             self.__scriptAlreadyRun = False
-            if self.__onCellMutation is not None:
-                self.__onCellMutation(self, P6Events.Cell.ClearScriptResult)
+            if self.__onCellChange is not None:
+                self.__onCellChange(self, P6Events.Cell.ClearScriptResult)

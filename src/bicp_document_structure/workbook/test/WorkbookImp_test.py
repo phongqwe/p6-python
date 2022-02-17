@@ -1,7 +1,12 @@
 import unittest
 from collections import OrderedDict
 
+from bicp_document_structure.cell.Cell import Cell
+from bicp_document_structure.cell.address.CellAddresses import CellAddresses
+from bicp_document_structure.event.P6Event import P6Event
+from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
+from bicp_document_structure.worksheet.Worksheet import Worksheet
 from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 
@@ -15,7 +20,7 @@ class WorkbookImp_test(unittest.TestCase):
             s2.name: s2,
             s3.name: s3
         })
-        w1 = WorkbookImp("w1", sheetDict=d)
+        w1 = WorkbookImp("w1", sheetDict = d)
         return s1, s2, s3, w1, d
 
     def test_constructor(self):
@@ -24,7 +29,7 @@ class WorkbookImp_test(unittest.TestCase):
             s1.name: s1,
             s2.name: s2,
         })
-        w1 = WorkbookImp("w1", sheetDict=d)
+        w1 = WorkbookImp("w1", sheetDict = d)
         self.assertFalse(w1.isEmpty())
         self.assertEqual(2, w1.sheetCount)
         self.assertEqual(s1, w1.getWorksheetByName(s1.name))
@@ -124,4 +129,14 @@ class WorkbookImp_test(unittest.TestCase):
 
     def test_listWorksheet(self):
         s1, s2, s3, w1, sheetDict = self.makeTestObj()
-        print(w1.listWorksheet())
+        # print(w1.listWorksheet())
+
+    def __onCellChange(self, wb: Workbook, ws: Worksheet, cell: Cell, event: P6Event):
+        self.aa = f"{wb.name}, {ws.name}, {cell.address.label}, {event.code}"
+
+    def test_invokingOnCellChange(self):
+        wb = WorkbookImp("bookz", onCellChange = self.__onCellChange)
+        sheet = wb.createNewWorksheet("sheetZ")
+        cell = sheet.cell(CellAddresses.addressFromLabel("@A32"))
+        cell.value = "abc"
+        self.assertEqual("bookz, sheetZ, @A32, e0", self.aa)

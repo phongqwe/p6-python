@@ -65,7 +65,7 @@ class WriteBackColumn(Column):
             return self.__innerCol.getOrMakeCell(address)
         else:
             return WriteBackCell(
-                cell=DataCell(address,onCellMutation=self.__onCellMutation),
+                cell=DataCell(address, onCellChange =self.__onCellMutation),
                 container=self,
             )
 

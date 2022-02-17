@@ -1,6 +1,8 @@
 from pathlib import Path
-from typing import Union
+from typing import Union, Callable
 
+from bicp_document_structure.cell.Cell import Cell
+from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.file.P6File import P6File
 from bicp_document_structure.file.loader.P6FileLoader import P6FileLoader
 from bicp_document_structure.file.loader.P6FileLoaderErrors import P6FileLoaderErrors
@@ -10,10 +12,13 @@ from bicp_document_structure.util.result.Ok import Ok
 from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.Workbooks import Workbooks
+from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 
 class P6FileLoaderStd(P6FileLoader):
-    def load(self, filePath: Union[str, Path]) -> Result[Workbook,ErrorReport]:
+    def load(self, filePath: Union[str, Path],
+             onCellChange: Callable[[Workbook, Worksheet, Cell, P6Event], None] = None
+             ) -> Result[Workbook,ErrorReport]:
         path = Path(filePath)
         if path.exists():
             try:
@@ -21,7 +26,7 @@ class P6FileLoaderStd(P6FileLoader):
                 try:
                     fileContent = file.read()
                     p6File: P6File = P6File.fromJsonStr(fileContent)
-                    workbook = Workbooks.wbFromJson(p6File.workbookJson, path)
+                    workbook = Workbooks.wbFromJson(p6File.workbookJson, path,onCellChange)
                     file.close()
                     return Ok(workbook)
                 except Exception as e:

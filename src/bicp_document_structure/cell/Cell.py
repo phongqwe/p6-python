@@ -2,7 +2,6 @@ from abc import ABC
 
 from bicp_document_structure.cell.CellJson import CellJson
 from bicp_document_structure.cell.address.CellAddress import CellAddress
-from bicp_document_structure.event.reactor.EventReactorContainer import EventReactorContainer
 
 
 class Cell(ABC):
@@ -110,6 +109,3 @@ class Cell(ABC):
     def reRun(self, globalScope=None, localScope=None):
         self.clearScriptResult()
         self.runScript(globalScope, localScope)
-
-    def setReactors(self,reactorContainer:EventReactorContainer["Cell"]):
-        raise NotImplementedError()

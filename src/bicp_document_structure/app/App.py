@@ -1,10 +1,12 @@
 from abc import ABC
 from pathlib import Path
-from typing import Optional, Union, Any
+from typing import Optional, Union, Any, Callable
 
 from bicp_document_structure.app.errors.AppErrors import AppErrors
 from bicp_document_structure.app.run_result.RunResult import RunResult
 from bicp_document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
+from bicp_document_structure.cell.Cell import Cell
+from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.file.loader.P6FileLoader import P6FileLoader
 from bicp_document_structure.file.loader.P6FileLoaderErrors import P6FileLoaderErrors
 from bicp_document_structure.file.saver.P6FileSaver import P6FileSaver
@@ -228,9 +230,11 @@ class App(ABC):
         wb = self.getWorkbook(wbKey)
         alreadyHasThisWorkbook = wb is not None
         if not alreadyHasThisWorkbook:
-            loadResult: Result = self._fileLoader.load(filePath)
+            loadResult: Result = self._fileLoader.load(filePath, self._getOnCellChange())
             if loadResult.isOk():
-                self.wbContainer.addWorkbook(loadResult.value)
+                newWb:Workbook = loadResult.value
+                # newWb.setOnCellChange(self._getOnCellChange())
+                self.wbContainer.addWorkbook(newWb)
             return loadResult
         else:
             return Err(
@@ -257,3 +261,5 @@ class App(ABC):
         if not rt:
             rt = "No workbook"
         print(rt)
+    def _getOnCellChange(self)->Callable[[Workbook,Worksheet,Cell,P6Event],None]:
+        raise NotImplementedError()

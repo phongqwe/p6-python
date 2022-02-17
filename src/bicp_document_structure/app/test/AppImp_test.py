@@ -3,16 +3,20 @@ import unittest
 from pathlib import Path
 
 from bicp_document_structure.app.AppImp import AppImp
+from bicp_document_structure.cell.Cell import Cell
+from bicp_document_structure.cell.address.CellIndex import CellIndex
+from bicp_document_structure.event.P6Event import P6Event
+from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookKeyImp import WorkbookKeyImp
+from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 
 class AppImp_test(unittest.TestCase):
 
-
-
     def setUp(self) -> None:
         super().setUp()
         self.app = AppImp()
+        self.aa = 0
 
     def test_createNewWorkbook(self):
         app = self.app
@@ -156,6 +160,31 @@ class AppImp_test(unittest.TestCase):
     def __testFileExistence(self,path):
         self.assertTrue(path.exists())
         os.remove(path)
+
+
+    def onCellChange(self,wb:Workbook,ws:Worksheet,cell:Cell,event:P6Event):
+        self.aa = 123
+
+    def __onCellChange(self, wb: Workbook, ws: Worksheet, cell: Cell, event: P6Event):
+        self.aa = f"{wb.name}, {ws.name}, {cell.address.label}, {event.code}"
+
+    def test_event_listener_on_loaded_wb(self):
+
+        app = AppImp(onCellChange = self.onCellChange)
+        fileName = "file.txt"
+
+        # x: load a valid file with result function
+        loadRs0=app.loadWorkbookRs(fileName)
+        self.assertTrue(loadRs0.isOk())
+        self.assertIsNotNone(app.getWorkbook(0))
+        wb:Workbook = loadRs0.value
+        sheet = wb.getWorksheet(0)
+        self.assertEqual(0,self.aa)
+        cell = sheet.cell(CellIndex(1,1))
+        cell.value="abc"
+        self.assertEqual(123, self.aa)
+
+
 
 
 

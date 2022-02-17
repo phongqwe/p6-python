@@ -22,9 +22,9 @@ class WorkbookImp(Workbook):
     def __init__(self, name: str,
                  path: Path = None,
                  sheetDict: OrderedDict = None,
-                 onCellMutation: Callable[[Workbook, Worksheet, Cell, P6Event], None] = None,
+                 onCellChange: Callable[[Workbook, Worksheet, Cell, P6Event], None] = None,
                  ):
-        self.__onCellMutation: Optional[Callable[[Workbook, Worksheet, Cell, P6Event], None]] = onCellMutation
+        self.__onCellChange: Optional[Callable[[Workbook, Worksheet, Cell, P6Event], None]] = onCellChange
         self.__key = WorkbookKeyImp(name, path)
         if sheetDict is None:
             sheetDict = ODict()
@@ -127,16 +127,19 @@ class WorkbookImp(Workbook):
                     )
                 )
         newSheet = WorksheetImp(name=newSheetName,
-                                onCellMutation=self.__onCellChange)
+                                onCellChange=self.__onCellChangeForWorksheet)
         self.__sheetDict[newSheetName] = newSheet
         return Ok(newSheet)
 
-    def __onCellChange(self,
-                       worksheet: Worksheet,
-                       cell: Cell,
-                       mutationEvent: P6Event):
-        if self.__onCellMutation is not None:
-            self.__onCellMutation(self, worksheet, cell, mutationEvent)
+    def __onCellChangeForWorksheet(self,
+                                   worksheet: Worksheet,
+                                   cell: Cell,
+                                   event: P6Event):
+        if self.__onCellChange is not None:
+            self.__onCellChange(self, worksheet, cell, event)
+
+    def setOnCellChange(self, onCellChange: Callable[["Workbook", Worksheet, Cell, P6Event], None]):
+        self.__onCellChange = onCellChange
 
     def removeWorksheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
         typeCheck(sheetName, "sheetName", str)
