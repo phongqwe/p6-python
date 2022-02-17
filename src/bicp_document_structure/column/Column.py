@@ -3,7 +3,7 @@ from typing import Callable
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.column.ColumnJson import ColumnJson
-from bicp_document_structure.mutation.CellMutationEvent import CellMutationEvent
+from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.range.Range import Range
 
 
@@ -14,7 +14,7 @@ class Column(Range, ABC):
         raise NotImplementedError()
 
     @property
-    def _onCellMutationEventHandler(self)->Callable[[Cell,CellMutationEvent],None]:
+    def _onCellMutationEventHandler(self)->Callable[[Cell,P6Event],None]:
         raise NotImplementedError()
 
     @property

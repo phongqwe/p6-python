@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Union, Optional, OrderedDict, Callable
 
 from bicp_document_structure.cell.Cell import Cell
-from bicp_document_structure.mutation.CellMutationEvent import CellMutationEvent
+from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.util.Util import typeCheck
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Err import Err
@@ -22,9 +22,9 @@ class WorkbookImp(Workbook):
     def __init__(self, name: str,
                  path: Path = None,
                  sheetDict: OrderedDict = None,
-                 onCellMutation: Callable[[WorkbookKey, str, Cell, CellMutationEvent], None] = None,
+                 onCellMutation: Callable[[Workbook, Worksheet, Cell, P6Event], None] = None,
                  ):
-        self.__onCellMutation: Optional[Callable[[WorkbookKey, str, Cell, CellMutationEvent], None]] = onCellMutation
+        self.__onCellMutation: Optional[Callable[[Workbook, Worksheet, Cell, P6Event], None]] = onCellMutation
         self.__key = WorkbookKeyImp(name, path)
         if sheetDict is None:
             sheetDict = ODict()
@@ -127,16 +127,16 @@ class WorkbookImp(Workbook):
                     )
                 )
         newSheet = WorksheetImp(name=newSheetName,
-                                onCellMutation=self.__mutationEventCallback)
+                                onCellMutation=self.__onCellChange)
         self.__sheetDict[newSheetName] = newSheet
         return Ok(newSheet)
 
-    def __mutationEventCallback(self,
-                                worksheetName: str,
-                                cell: Cell,
-                                mutationEvent: CellMutationEvent):
+    def __onCellChange(self,
+                       worksheet: Worksheet,
+                       cell: Cell,
+                       mutationEvent: P6Event):
         if self.__onCellMutation is not None:
-            self.__onCellMutation(self.workbookKey, worksheetName, cell, mutationEvent)
+            self.__onCellMutation(self, worksheet, cell, mutationEvent)
 
     def removeWorksheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
         typeCheck(sheetName, "sheetName", str)

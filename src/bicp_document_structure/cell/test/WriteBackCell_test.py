@@ -4,7 +4,7 @@ from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.WriteBackCell import WriteBackCell
 from bicp_document_structure.cell.address.CellIndex import CellIndex
-from bicp_document_structure.cell.test.MockContainer import MockContainer
+from bicp_document_structure.cell.test.MockContainer import MockCellContainer
 from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 
@@ -30,27 +30,27 @@ class WriteBackCellTest(unittest.TestCase):
         self.assertEqual(eValue, anotherC.value)
 
     def test_wbCell(self):
-        container = MockContainer()
+        cellContainer = MockCellContainer()
         address = CellIndex(1, 1)
-        c = WriteBackCell(DataCell(address), container)
-        self.assertFalse(container.hasCellAt(address))
+        c = WriteBackCell(DataCell(address), cellContainer)
+        self.assertFalse(cellContainer.hasCellAt(address))
 
         # cell is added when script is changed
         c.script = "x=10;x+1;"
-        self.assertTrue(container.hasCellAt(address))
-        container.removeCell(address)
+        self.assertTrue(cellContainer.hasCellAt(address))
+        cellContainer.removeCell(address)
 
         # cell is added when value is changed
         c.value = 123
-        self.assertTrue(container.hasCellAt(address))
-        container.removeCell(address)
+        self.assertTrue(cellContainer.hasCellAt(address))
+        cellContainer.removeCell(address)
 
         # cell is added when setScriptAndRun is called
         c.setScriptAndRun("y=10;y+100;",globals())
-        self.assertTrue(container.hasCellAt(address))
-        container.removeCell(address)
+        self.assertTrue(cellContainer.hasCellAt(address))
+        cellContainer.removeCell(address)
 
         # cell is add when new formula is set
         c.formula="zzbd"
-        self.assertTrue(container.hasCellAt(address))
-        container.removeCell(address)
+        self.assertTrue(cellContainer.hasCellAt(address))
+        cellContainer.removeCell(address)

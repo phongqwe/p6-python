@@ -3,7 +3,11 @@ import unittest
 
 class Bench(unittest.TestCase):
     def test_z(self):
-        l = list[int]()
-        l.append(1)
-        l.append(2)
+        d = {
+            1:"1"
+        }
+        l = ["ab","c"]
+        del(l[0])
         print(l)
+
+

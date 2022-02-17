@@ -7,7 +7,7 @@ from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.column.Column import Column
 from bicp_document_structure.column.ColumnJson import ColumnJson
 from bicp_document_structure.column.MutableColumnContainer import MutableColumnContainer
-from bicp_document_structure.mutation.CellMutationEvent import CellMutationEvent
+from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.address.RangeAddress import RangeAddress
 
@@ -23,7 +23,7 @@ class WriteBackColumn(Column):
     ### >> Column << ##
 
     @property
-    def _onCellMutationEventHandler(self) -> Callable[[Cell, CellMutationEvent], None]:
+    def _onCellMutationEventHandler(self) -> Callable[[Cell, P6Event], None]:
         return self.__innerCol._onCellMutationEventHandler
 
     def range(self, firstRow: int, lastRow: int) -> Range:

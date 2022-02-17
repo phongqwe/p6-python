@@ -3,12 +3,13 @@ from pathlib import Path
 from typing import Union, Optional, OrderedDict
 
 from bicp_document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
+from bicp_document_structure.util.CanCheckEmpty import CanCheckEmpty
 from bicp_document_structure.util.Util import typeCheck
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 
 
-class WorkbookContainerImp(WorkbookContainer):
+class WorkbookContainerImp(WorkbookContainer,CanCheckEmpty):
 
     def __init__(self, wbDict: OrderedDict = None):
         if wbDict is None:

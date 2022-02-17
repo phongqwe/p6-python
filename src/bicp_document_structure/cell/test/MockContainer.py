@@ -6,7 +6,7 @@ from bicp_document_structure.cell_container.MutableCellContainer import MutableC
 from bicp_document_structure.range.address.RangeAddress import RangeAddress
 
 
-class MockContainer(MutableCellContainer):
+class MockCellContainer(MutableCellContainer):
     def __init__(self):
         self._l = {}
 

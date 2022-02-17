@@ -6,7 +6,7 @@ from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.column.Column import Column
 from bicp_document_structure.column.ColumnImp import ColumnImp
 from bicp_document_structure.column.WriteBackColumn import WriteBackColumn
-from bicp_document_structure.mutation.CellMutationEvent import CellMutationEvent
+from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.RangeImp import RangeImp
 from bicp_document_structure.range.address.RangeAddress import RangeAddress
@@ -21,12 +21,12 @@ from bicp_document_structure.worksheet.WorksheetJson import WorksheetJson
 class WorksheetImp(Worksheet):
     def __init__(self, name="",
                  colDict=None,
-                 onCellMutation:Callable[[str, Cell, CellMutationEvent], None] = None):
+                 onCellMutation:Callable[[Worksheet, Cell, P6Event], None] = None):
         if colDict is None:
             colDict = {}
         self.__colDict = colDict
         self.__name = name
-        self.__onCellMutation:Optional[Callable[[str, Cell, CellMutationEvent], None]] = onCellMutation
+        self.__onCellMutation_ofWorksheet:Optional[Callable[[Worksheet, Cell, P6Event], None]] = onCellMutation
 
     ### >> Worksheet << ###
 
@@ -135,9 +135,9 @@ class WorksheetImp(Worksheet):
             col = self.__colDict[colIndex]
         else:
             col = ColumnImp(colIndex, {},
-                            onCellMutation=self.__mutationHandler)
+                            onCellMutation=self.__onCellChange)
         return WriteBackColumn(col, self,)
 
-    def __mutationHandler(self,cell:Cell,event:CellMutationEvent):
-        if self.__onCellMutation is not None:
-            self.__onCellMutation(self.__name, cell, event)
+    def __onCellChange(self, cell:Cell, event:P6Event):
+        if self.__onCellMutation_ofWorksheet is not None:
+            self.__onCellMutation_ofWorksheet(self, cell, event)

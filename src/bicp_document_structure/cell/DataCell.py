@@ -6,8 +6,9 @@ from bicp_document_structure.cell.CellJson import CellJson
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.util.CellUtil import convertExceptionToStr
 from bicp_document_structure.code_executor.CodeExecutor import CodeExecutor
+from bicp_document_structure.event.P6Event import P6Event
+from bicp_document_structure.event.P6Events import P6Events
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
-from bicp_document_structure.mutation.CellMutationEvent import CellMutationEvent
 from bicp_document_structure.util.result.Result import Result
 
 
@@ -23,7 +24,7 @@ class DataCell(Cell):
                  value=None,
                  formula:str=None,
                  script: str = None,
-                 onCellMutation: Callable[[Cell, CellMutationEvent], None] = None):
+                 onCellMutation: Callable[[Cell, P6Event], None] = None):
         self.__value = value
         self.__code: str = script
         self.__addr: CellAddress = address
@@ -89,7 +90,7 @@ class DataCell(Cell):
         self.__code = None
         self.__scriptAlreadyRun=False
         if self.__onCellMutation is not None:
-            self.__onCellMutation(self, CellMutationEvent.NEW_VALUE)
+            self.__onCellMutation(self, P6Events.Cell.UpdateValue)
 
     @property
     def script(self) -> str:
@@ -100,7 +101,7 @@ class DataCell(Cell):
         self.__code = newCode
         self.__value = None
         if self.__onCellMutation is not None:
-            self.__onCellMutation(self, CellMutationEvent.NEW_SCRIPT)
+            self.__onCellMutation(self, P6Events.Cell.UpdateScript)
         self.__scriptAlreadyRun = False
         self.__formula = "=SCRIPT({script})".format(script=newCode)
 
@@ -139,7 +140,7 @@ class DataCell(Cell):
             self.__value = codeResult
             self.__scriptAlreadyRun = True
             if self.__onCellMutation is not None:
-                self.__onCellMutation(self, CellMutationEvent.NEW_VALUE)
+                self.__onCellMutation(self, P6Events.Cell.UpdateValue)
 
     def setScriptAndRun(self, newScript, globalScope=None, localScope=None):
         self.script = newScript
@@ -157,4 +158,4 @@ class DataCell(Cell):
             self.__value = None
             self.__scriptAlreadyRun = False
             if self.__onCellMutation is not None:
-                self.__onCellMutation(self, CellMutationEvent.CLEAR_SCRIPT_RESULT)
+                self.__onCellMutation(self, P6Events.Cell.ClearScriptResult)
