@@ -1,5 +1,3 @@
-from typing import List
-
 from bicp_document_structure.cell.Cell import Cell
 
 
@@ -8,7 +6,7 @@ class ColumnJson(dict):
     TODO consider removing this class, it seems it is not used anywhere nor has any future use.
     """
 
-    def __init__(self, colIndex: int, cells: List[Cell]):
+    def __init__(self, colIndex: int, cells: list[Cell]):
         super().__init__()
         self.colIndex = colIndex
 

@@ -1,5 +1,4 @@
 import json
-from typing import List
 
 from bicp_document_structure.cell.CellJson import CellJson
 from bicp_document_structure.common.ToJsonStr import ToJson
@@ -10,7 +9,7 @@ class WorksheetJson(dict, ToJson):
     json representation of a Worksheet.
     str(WorksheetJson) returns the equivalent json string.
     """
-    def __init__(self, name: str, cells: List[CellJson]):
+    def __init__(self, name: str, cells: list[CellJson]):
         super().__init__()
         self.name = name
         self.cells = cells

@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
@@ -36,7 +36,7 @@ class MockContainer(MutableCellContainer):
         return self.getCell(address) is not None
 
     @property
-    def cells(self) -> List[Cell]:
+    def cells(self) -> list[Cell]:
         return list(self._l.values())
 
     @property

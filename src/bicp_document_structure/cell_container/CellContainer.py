@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import List, Optional
+from typing import Optional
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
@@ -31,7 +31,7 @@ class CellContainer(ABC):
         raise NotImplementedError()
 
     @property
-    def cells(self) -> List[Cell]:
+    def cells(self) -> list[Cell]:
         """:return a flat list of cell objects contained in this container"""
         raise NotImplementedError()
 

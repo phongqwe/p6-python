@@ -1,6 +1,6 @@
 from collections import OrderedDict as ODict
 from pathlib import Path
-from typing import Union, Optional, OrderedDict, Callable, List
+from typing import Union, Optional, OrderedDict, Callable
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.mutation.CellMutationEvent import CellMutationEvent
@@ -49,7 +49,7 @@ class WorkbookImp(Workbook):
     ### >> Workbook << ###
 
     @property
-    def worksheets(self) -> List[Worksheet]:
+    def worksheets(self) -> list[Worksheet]:
         return list(self.__sheetDict.values())
 
     @property

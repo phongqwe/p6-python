@@ -1,4 +1,4 @@
-from typing import List, Union, Tuple, Optional, Callable
+from typing import Union, Tuple, Optional, Callable
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.DataCell import DataCell
@@ -50,7 +50,7 @@ class WriteBackColumn(Column):
         return self.__innerCol.containsAddress(address)
 
     @property
-    def cells(self) -> List[Cell]:
+    def cells(self) -> list[Cell]:
         return self.__innerCol.cells
 
     ### >> CellContainer << ###

@@ -1,6 +1,6 @@
 from collections import OrderedDict as OD
 from pathlib import Path
-from typing import Union, Optional, OrderedDict, List
+from typing import Union, Optional, OrderedDict
 
 from bicp_document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
 from bicp_document_structure.util.Util import typeCheck
@@ -21,7 +21,7 @@ class WorkbookContainerImp(WorkbookContainer):
     def addWorkbook(self, workbook: Workbook):
         self.__wbDict[workbook.workbookKey] = workbook
 
-    def books(self) -> List[Workbook]:
+    def books(self) -> list[Workbook]:
         return list(self.__wbDict.values())
 
     def clear(self):

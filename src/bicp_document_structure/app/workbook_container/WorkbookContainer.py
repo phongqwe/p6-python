@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Optional, Union, List
+from typing import Optional, Union
 
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
@@ -41,7 +41,7 @@ class WorkbookContainer:
     def addWorkbook(self,workbook:Workbook):
         raise NotImplementedError()
 
-    def books(self)->List[Workbook]:
+    def books(self)->list[Workbook]:
         raise NotImplementedError()
 
     def clear(self):

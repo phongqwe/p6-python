@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import List, TypeVar, Generic
+from typing import TypeVar, Generic
 
 from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.event.reactor.EventReactor import EventReactor
@@ -7,7 +7,7 @@ from bicp_document_structure.event.reactor.EventReactor import EventReactor
 D = TypeVar("D")
 class EventReactorContainer(Generic[D],ABC):
 
-    def getReactorsForEvent(self, event: P6Event) -> List[EventReactor[D]]:
+    def getReactorsForEvent(self, event: P6Event) -> list[EventReactor[D]]:
         """get all reactors mapped to an event"""
         raise NotImplementedError()
 
@@ -40,6 +40,6 @@ class EventReactorContainer(Generic[D],ABC):
 
     def triggerReactorsFor(self,event:P6Event, data:D):
         """trigger all reactor of an event with a piece of data"""
-        reactorList:List[EventReactor[D]] = self.getReactorsForEvent(event)
+        reactorList:list[EventReactor[D]] = self.getReactorsForEvent(event)
         for reactor in reactorList:
             reactor.react(data)

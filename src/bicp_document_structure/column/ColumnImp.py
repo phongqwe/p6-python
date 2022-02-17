@@ -1,4 +1,4 @@
-from typing import List, Optional, Union, Tuple, Callable
+from typing import Optional, Union, Tuple, Callable
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.DataCell import DataCell
@@ -121,7 +121,7 @@ class ColumnImp(Column):
         return colOk and rowOk
 
     @property
-    def cells(self) -> List[Cell]:
+    def cells(self) -> list[Cell]:
         return list(self.__cellDict.values())
 
     @property

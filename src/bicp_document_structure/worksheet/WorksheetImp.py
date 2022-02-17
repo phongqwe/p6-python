@@ -1,4 +1,4 @@
-from typing import List, Optional, Union, Tuple, Callable
+from typing import Optional, Union, Tuple, Callable
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
@@ -85,7 +85,7 @@ class WorksheetImp(Worksheet):
             return False
 
     @property
-    def cells(self) -> List[Cell]:
+    def cells(self) -> list[Cell]:
         rt = []
         for k, v in (self.__colDict.items()):
             rt.extend(v.cells)

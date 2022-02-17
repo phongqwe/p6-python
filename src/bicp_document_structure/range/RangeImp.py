@@ -1,5 +1,5 @@
 import copy
-from typing import List, Optional, Union, Tuple
+from typing import Optional, Union, Tuple
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
@@ -88,7 +88,7 @@ class RangeImp(Range):
         return copy.copy(self.__lastCell)
 
     @property
-    def cells(self) -> List[Cell]:
+    def cells(self) -> list[Cell]:
         allCells = self.__sourceContainer.cells
 
         def filterFunction(cell: Cell):

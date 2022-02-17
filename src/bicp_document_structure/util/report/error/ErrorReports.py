@@ -1,5 +1,3 @@
-from typing import Optional
-
 from bicp_document_structure.app.errors.AppErrors import AppErrors
 from bicp_document_structure.file.loader.P6FileLoaderErrors import P6FileLoaderErrors
 from bicp_document_structure.file.saver.P6FileSaverErrors import P6FileSaverErrors
@@ -21,7 +19,7 @@ class ErrorReports:
         """convert error report to exception"""
         exception = None
         for converterFunction in ErrorReports.converterFunctions:
-            exception:Optional[Exception] = converterFunction(errorReport)
+            exception:Exception | None = converterFunction(errorReport)
             if exception is not None:
                 break
         return default(exception,Exception("Unknown error"))

@@ -1,6 +1,6 @@
 import json
 from abc import ABC
-from typing import Optional, Union, List
+from typing import Optional, Union
 
 from bicp_document_structure.util.report.ReportJsonStrMaker import ReportJsonStrMaker
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
@@ -19,7 +19,7 @@ class Workbook(ReportJsonStrMaker, ABC):
             sheet.reRun()
 
     @property
-    def worksheets(self) -> List[Worksheet]:
+    def worksheets(self) -> list[Worksheet]:
         """return a list of all sheet in this workbook"""
         raise NotImplementedError()
 
