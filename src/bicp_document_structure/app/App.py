@@ -7,9 +7,11 @@ from bicp_document_structure.app.run_result.RunResult import RunResult
 from bicp_document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.event.P6Event import P6Event
+from bicp_document_structure.event.reactor.EventReactorContainer import EventReactorContainer
 from bicp_document_structure.file.loader.P6FileLoader import P6FileLoader
 from bicp_document_structure.file.loader.P6FileLoaderErrors import P6FileLoaderErrors
 from bicp_document_structure.file.saver.P6FileSaver import P6FileSaver
+from bicp_document_structure.message.SocketProvider import SocketProvider
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.report.error.ErrorReports import ErrorReports
 from bicp_document_structure.util.result.Err import Err
@@ -89,8 +91,8 @@ class App(ABC):
         else:
             return Err(
                 ErrorReport(
-                    header=AppErrors.WorkbookNotExist.header,
-                    data=AppErrors.WorkbookNotExist.Data(key),
+                    header = AppErrors.WorkbookNotExist.header,
+                    data = AppErrors.WorkbookNotExist.Data(key),
                 )
             )
 
@@ -232,15 +234,15 @@ class App(ABC):
         if not alreadyHasThisWorkbook:
             loadResult: Result = self._fileLoader.load(filePath, self._getOnCellChange())
             if loadResult.isOk():
-                newWb:Workbook = loadResult.value
+                newWb: Workbook = loadResult.value
                 # newWb.setOnCellChange(self._getOnCellChange())
                 self.wbContainer.addWorkbook(newWb)
             return loadResult
         else:
             return Err(
                 ErrorReport(
-                    header=P6FileLoaderErrors.AlreadyLoad.header,
-                    data=P6FileLoaderErrors.AlreadyLoad.Data(path, None)
+                    header = P6FileLoaderErrors.AlreadyLoad.header,
+                    data = P6FileLoaderErrors.AlreadyLoad.Data(path, None)
                 )
             )
 
@@ -255,11 +257,23 @@ class App(ABC):
         rt = ""
         for (i, book) in enumerate(self.wbContainer.books()):
             rt += "{num}. {wbName}\n".format(
-                num=str(i),
-                wbName=book.name
+                num = str(i),
+                wbName = book.name
             )
         if not rt:
             rt = "No workbook"
         print(rt)
-    def _getOnCellChange(self)->Callable[[Workbook,Worksheet,Cell,P6Event],None]:
+
+    def _getOnCellChange(self) -> Callable[[Workbook, Worksheet, Cell, P6Event], None]:
         raise NotImplementedError()
+
+    @property
+    def socketProvider(self) -> SocketProvider | None:
+        raise NotImplementedError
+
+    @socketProvider.setter
+    def socketProvider(self, socketProvider: SocketProvider | None):
+        raise NotImplementedError
+    @property
+    def eventReactorContainer(self)->EventReactorContainer:
+        raise NotImplementedError

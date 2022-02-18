@@ -1,3 +1,4 @@
+import uuid
 from typing import Optional, Union, Callable
 
 from bicp_document_structure.app.App import App
@@ -8,10 +9,20 @@ from bicp_document_structure.app.workbook_container.WorkbookContainer import Wor
 from bicp_document_structure.app.workbook_container.WorkbookContainerImp import WorkbookContainerImp
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.event.P6Event import P6Event
+from bicp_document_structure.event.P6Events import P6Events
+from bicp_document_structure.event.reactor.EventReactorContainer import EventReactorContainer
+from bicp_document_structure.event.reactor.EventReactorContainers import EventReactorContainers
+from bicp_document_structure.event.reactor.EventReactors import EventReactors
+from bicp_document_structure.event.reactor.cell.CellEventData import CellEventData
 from bicp_document_structure.file.loader.P6FileLoader import P6FileLoader
 from bicp_document_structure.file.loader.P6FileLoaders import P6FileLoaders
 from bicp_document_structure.file.saver.P6FileSaver import P6FileSaver
 from bicp_document_structure.file.saver.P6FileSavers import P6FileSavers
+from bicp_document_structure.message.MsgType import MsgType
+from bicp_document_structure.message.P6Message import P6Message
+from bicp_document_structure.message.P6MessageHeader import P6MessageHeader
+from bicp_document_structure.message.SocketProvider import SocketProvider
+from bicp_document_structure.message.sender.MessageSender import MessageSender
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Err import Err
 from bicp_document_structure.util.result.Ok import Ok
@@ -33,13 +44,13 @@ class AppImp(App):
                  runResult: Optional[RunResult] = None,
                  loader: Optional[P6FileLoader] = None,
                  saver: Optional[P6FileSaver] = None,
-                 onCellChange: Callable[[Workbook, Worksheet, Cell, P6Event], None] | None = None):
+                 socketProvider: SocketProvider | None = None,
+                 cellEventReactorContainer: EventReactorContainer[CellEventData] | None = None
+                 ):
         if workbookContainer is None:
             workbookContainer = WorkbookContainerImp()
 
         self.__wbCont: WorkbookContainer = workbookContainer
-        self.__onCellChange: Callable[[Workbook, Worksheet, Cell, P6Event], None] | None = onCellChange
-
         # x: set default active workbook to the first if possible
         if self.__wbCont.isNotEmpty():
             self.__activeWorkbook: Optional[Workbook] = self.__wbCont.getWorkbookByIndex(0)
@@ -56,8 +67,42 @@ class AppImp(App):
         self.__wbLoader: P6FileLoader = loader
         self.__wbSaver: P6FileSaver = saver
         self.__newBookIndex: int = 0
+        self.__socketProvider: SocketProvider | None = socketProvider
+        if cellEventReactorContainer is None:
+            cellEventReactorContainer = EventReactorContainers.mutable()
+        self.__reactorContainer: EventReactorContainer[CellEventData] = cellEventReactorContainer
+        self.initReactor()
+
+    def initReactor(self):
+        """create reactors """
+        def reactToCellValueUpdate(data: CellEventData):
+            """send a zmq message to a predesignated socket when a cell's value is update"""
+            if self.__socketProvider is not None:
+                socket = self.__socketProvider.reqSocketForUIUpdating()
+                MessageSender.send(
+                    socket = socket,
+                    msg = P6Message(
+                        header = P6MessageHeader(str(uuid.uuid4()), MsgType.CellValueUpdate),
+                        content = data))
+        reactor = EventReactors.makeCellReactor(reactToCellValueUpdate)
+        self.__reactorContainer.addReactor(P6Events.Cell.UpdateValue, reactor)
+
+    def __onCellChangeInternal(self, wb: Workbook, ws: Worksheet, c: Cell, e: P6Event):
+        self.__reactorContainer.triggerReactorsFor(e, CellEventData(wb, ws, c))
+
+    @property
+    def eventReactorContainer(self) -> EventReactorContainer:
+        return self.__reactorContainer
 
     ### >> App << ###
+
+    @property
+    def socketProvider(self) -> SocketProvider | None:
+        return self.__socketProvider
+
+    @socketProvider.setter
+    def socketProvider(self, socketProvider):
+        self.__socketProvider = socketProvider
 
     @property
     def _fileSaver(self) -> P6FileSaver:
@@ -71,7 +116,7 @@ class AppImp(App):
         return self.wbContainer.isEmpty()
 
     def _getOnCellChange(self) -> Callable[[Workbook, Worksheet, Cell, P6Event], None] | None:
-        return self.__onCellChange
+        return self.__onCellChangeInternal
 
     @property
     def activeWorkbook(self) -> Optional[Workbook]:
@@ -129,7 +174,7 @@ class AppImp(App):
                 name = "Workbook{}".format(self.__newBookIndex)
 
         if not self.hasWorkbook(name):
-            wb = WorkbookImp(name, onCellChange = self.__onCellChange)
+            wb = WorkbookImp(name, onCellChange = self.__onCellChangeInternal)
             self.wbContainer.addWorkbook(wb)
             return Ok(wb)
         else:

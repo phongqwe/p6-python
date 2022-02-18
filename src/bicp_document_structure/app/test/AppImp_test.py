@@ -6,6 +6,8 @@ from bicp_document_structure.app.AppImp import AppImp
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.event.P6Event import P6Event
+from bicp_document_structure.event.P6Events import P6Events
+from bicp_document_structure.event.reactor.EventReactors import EventReactors
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookKeyImp import WorkbookKeyImp
 from bicp_document_structure.worksheet.Worksheet import Worksheet
@@ -160,14 +162,18 @@ class AppImp_test(unittest.TestCase):
         self.assertTrue(path.exists())
         os.remove(path)
 
-    def onCellChange(self, wb: Workbook, ws: Worksheet, cell: Cell, event: P6Event):
+    def onCellChange(self, dt):
         self.aa = 123
 
     def __onCellChange2(self, wb: Workbook, ws: Worksheet, cell: Cell, event: P6Event):
         self.aa = f"{cell.address.label}"
 
     def test_event_listener_on_workbook_loaded_from_file(self):
-        app = AppImp(onCellChange = self.onCellChange)
+        app = AppImp()
+
+        app.eventReactorContainer.addReactor(
+            P6Events.Cell.UpdateValue,
+            EventReactors.makeCellReactor(self.onCellChange))
         fileName = "file.txt"
 
         loadRs0 = app.loadWorkbookRs(fileName)

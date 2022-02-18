@@ -42,7 +42,8 @@ def getApp() -> App:
     """get the singleton App instance"""
     g = getGlobals()
     if appKey not in g.keys():
-        g[appKey] = AppImp()
+        app = AppImp()
+        g[appKey] = app
     return g[appKey]
 
 

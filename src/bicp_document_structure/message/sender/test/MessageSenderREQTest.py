@@ -8,7 +8,7 @@ from bicp_document_structure.cell.address.CellAddressJson import CellAddressJson
 from bicp_document_structure.message.MsgType import MsgType
 from bicp_document_structure.message.P6Message import P6Message
 from bicp_document_structure.message.P6MessageHeader import P6MessageHeader
-from bicp_document_structure.message.sender.MessageSenderREQ import MessageSenderREQ
+from bicp_document_structure.message.sender.MessageSender import MessageSender
 from bicp_document_structure.util.result.Err import Err
 from bicp_document_structure.util.result.Ok import Ok
 
@@ -27,7 +27,7 @@ def startREPServer(isOk, context):
 
 class MessageSenderREQTest(unittest.TestCase):
     messageObj = P6Message(
-        header = P6MessageHeader("id1", MsgType.CELL_VALUE_EDIT),
+        header = P6MessageHeader("id1", MsgType.CellValueUpdate),
         content = CellJson(
             value = "cell value",
             script = "cell script",
@@ -42,8 +42,7 @@ class MessageSenderREQTest(unittest.TestCase):
         thread.start()
         socket = context.socket(zmq.REQ)
         socket.connect("tcp://localhost:6000")
-        sender = MessageSenderREQ(socket)
-        reply = sender.send(MessageSenderREQTest.messageObj)
+        reply = MessageSender.sendREQ(socket, MessageSenderREQTest.messageObj)
         self.assertTrue(isinstance(reply, Ok))
         socket.close()
         thread.join()
@@ -54,8 +53,7 @@ class MessageSenderREQTest(unittest.TestCase):
         thread.start()
         socket = context.socket(zmq.REQ)
         socket.connect("tcp://localhost:6000")
-        sender = MessageSenderREQ(socket)
-        reply = sender.send(MessageSenderREQTest.messageObj)
+        reply = MessageSender.sendREQ(socket, MessageSenderREQTest.messageObj)
         self.assertTrue(isinstance(reply, Err))
         socket.close()
         thread.join()

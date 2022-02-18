@@ -16,3 +16,16 @@ class MessageSenderErrors:
                 return json.dumps({
                     "message":self.message.toJsonStr()
                 })
+    class WrongSocketType:
+        header = ErrorHeader(errPrefix + "2", "wrong type of socket")
+
+        class Data:
+            def __init__(self, currentType,rightType):
+                self.currentType = currentType
+                self.rightType = rightType
+
+            def __str__(self):
+                return json.dumps({
+                    "currentType":self.currentType,
+                    "rightType":self.rightType,
+                })
