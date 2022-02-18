@@ -12,7 +12,7 @@ class WorksheetJson(dict, ToJson):
     def __init__(self, name: str, cells: list[CellJson]):
         super().__init__()
         self.name = name
-        self.cells = cells
+        self.cells:list[CellJson] = cells
 
     @staticmethod
     def fromJsonDict(jsonDict: dict):

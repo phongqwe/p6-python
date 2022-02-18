@@ -96,3 +96,8 @@ class WriteBackCell(Cell):
 
     def __eq__(self, o: object) -> bool:
         return self.__innerCell.__eq__(o)
+
+    def copyFrom(self, anotherCell: "Cell"):
+        self.__innerCell.copyFrom(anotherCell)
+
+

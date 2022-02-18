@@ -129,14 +129,21 @@ class WorkbookImp_test(unittest.TestCase):
 
     def test_listWorksheet(self):
         s1, s2, s3, w1, sheetDict = self.makeTestObj()
-        # print(w1.listWorksheet())
+        print(w1.listWorksheet())
 
     def __onCellChange(self, wb: Workbook, ws: Worksheet, cell: Cell, event: P6Event):
         self.aa = f"{wb.name}, {ws.name}, {cell.address.label}, {event.code}"
 
+    def __onCellChange2(self, wb: Workbook, ws: Worksheet, cell: Cell, event: P6Event):
+        self.aa = f"{cell.address.label}"
+
     def test_invokingOnCellChange(self):
-        wb = WorkbookImp("bookz", onCellChange = self.__onCellChange)
+        wb = WorkbookImp("bookz")
+        wb.setOnCellChange(self.__onCellChange)
         sheet = wb.createNewWorksheet("sheetZ")
         cell = sheet.cell(CellAddresses.addressFromLabel("@A32"))
         cell.value = "abc"
         self.assertEqual("bookz, sheetZ, @A32, e0", self.aa)
+        wb.setOnCellChange(self.__onCellChange2)
+        cell.value = "abc"
+        self.assertEqual("@A32",self.aa)

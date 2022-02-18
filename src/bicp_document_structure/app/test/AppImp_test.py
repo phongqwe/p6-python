@@ -64,18 +64,18 @@ class AppImp_test(unittest.TestCase):
         fileName = "book1.txt"
         path = Path(fileName)
         book1 = app.createNewWorkbookRs("Book1").value
-        saveRs = app.saveWorkbookAtPathRs("Book1",fileName)
+        saveRs = app.saveWorkbookAtPathRs("Book1", fileName)
 
         self.assertTrue(saveRs.isOk())
         self.assertTrue(path.exists())
         os.remove(path)
 
-        saveRs2=app.saveWorkbookAtPathRs("Book1",Path(fileName))
+        saveRs2 = app.saveWorkbookAtPathRs("Book1", Path(fileName))
         self.assertTrue(saveRs2.isOk())
         self.assertTrue(path.exists())
         os.remove(path)
 
-        saveRs3=app.saveWorkbookAtPathRs("Book1xxx",Path(fileName))
+        saveRs3 = app.saveWorkbookAtPathRs("Book1xxx", Path(fileName))
         self.assertFalse(saveRs3.isOk())
 
         with self.assertRaises(Exception):
@@ -86,7 +86,7 @@ class AppImp_test(unittest.TestCase):
         fileName = "book1.txt"
         path = Path(fileName)
         book1 = app.createNewWorkbookRs("Book1").value
-        key = WorkbookKeyImp("Book1",path)
+        key = WorkbookKeyImp("Book1", path)
         book1.workbookKey = key
         app.refreshContainer()
 
@@ -102,12 +102,11 @@ class AppImp_test(unittest.TestCase):
         self.__testFileExistence(path)
 
     def test_loadWorkbook(self):
-
         app = self.app
         fileName = "file.txt"
 
         # x: load a valid file with result function
-        loadRs0=app.loadWorkbookRs(fileName)
+        loadRs0 = app.loadWorkbookRs(fileName)
         self.assertTrue(loadRs0.isOk())
         self.assertIsNotNone(app.getWorkbook(0))
 
@@ -139,13 +138,13 @@ class AppImp_test(unittest.TestCase):
         self.assertIsNotNone(app.getWorkbook("Book2"))
         rs = app.closeWorkbookRs("Book2")
         self.assertTrue(rs.isOk())
-        self.assertEqual(WorkbookKeyImp("Book2"),rs.value)
+        self.assertEqual(WorkbookKeyImp("Book2"), rs.value)
 
     def test_forceLoad(self):
         app = self.app
         app.createNewWorkbook("workbookName")
         wb = app.getWorkbook("workbookName")
-        wb.workbookKey = WorkbookKeyImp("file.txt",Path("file.txt"))
+        wb.workbookKey = WorkbookKeyImp("file.txt", Path("file.txt"))
         app.refreshContainer()
         loadRs = app.forceLoadWorkbookRs("file.txt")
         self.assertTrue(loadRs.isOk())
@@ -157,36 +156,35 @@ class AppImp_test(unittest.TestCase):
         app.createNewWorkbook("Book2")
         print(app.listWorkbook())
 
-    def __testFileExistence(self,path):
+    def __testFileExistence(self, path):
         self.assertTrue(path.exists())
         os.remove(path)
 
-
-    def onCellChange(self,wb:Workbook,ws:Worksheet,cell:Cell,event:P6Event):
+    def onCellChange(self, wb: Workbook, ws: Worksheet, cell: Cell, event: P6Event):
         self.aa = 123
 
-    def __onCellChange(self, wb: Workbook, ws: Worksheet, cell: Cell, event: P6Event):
-        self.aa = f"{wb.name}, {ws.name}, {cell.address.label}, {event.code}"
+    def __onCellChange2(self, wb: Workbook, ws: Worksheet, cell: Cell, event: P6Event):
+        self.aa = f"{cell.address.label}"
 
-    def test_event_listener_on_loaded_wb(self):
-
+    def test_event_listener_on_workbook_loaded_from_file(self):
         app = AppImp(onCellChange = self.onCellChange)
         fileName = "file.txt"
 
-        # x: load a valid file with result function
-        loadRs0=app.loadWorkbookRs(fileName)
+        loadRs0 = app.loadWorkbookRs(fileName)
         self.assertTrue(loadRs0.isOk())
         self.assertIsNotNone(app.getWorkbook(0))
-        wb:Workbook = loadRs0.value
+        wb: Workbook = loadRs0.value
         sheet = wb.getWorksheet(0)
-        self.assertEqual(0,self.aa)
-        cell = sheet.cell(CellIndex(1,1))
-        cell.value="abc"
+
+        cell = sheet.cell(CellIndex(1, 1))
+
+        self.assertEqual(0, self.aa)
+        cell.value = "abc"
         self.assertEqual(123, self.aa)
 
-
-
-
+        wb.setOnCellChange(self.__onCellChange2)
+        cell.value = "mnn"
+        self.assertEqual("@A1", self.aa)
 
 
 if __name__ == '__main__':

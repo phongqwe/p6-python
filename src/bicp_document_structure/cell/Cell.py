@@ -109,3 +109,7 @@ class Cell(ABC):
     def reRun(self, globalScope=None, localScope=None):
         self.clearScriptResult()
         self.runScript(globalScope, localScope)
+
+    def copyFrom(self,anotherCell:"Cell"):
+        """copy everything (data, format, etc.) from another cell to this cell"""
+        raise NotImplementedError()

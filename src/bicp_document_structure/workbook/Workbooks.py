@@ -1,15 +1,14 @@
-from collections import OrderedDict
 from pathlib import Path
 from typing import Union, Callable
 
 from bicp_document_structure.cell.Cell import Cell
+from bicp_document_structure.cell.Cells import Cells
 from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.file.P6Files import P6Files
 from bicp_document_structure.workbook import WorkbookJson
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
 from bicp_document_structure.worksheet.Worksheet import Worksheet
-from bicp_document_structure.worksheet.Worksheets import Worksheets
 
 
 class Workbooks:
@@ -25,15 +24,16 @@ class Workbooks:
             else:
                 path = Path(wbJson.path)
 
-        sheetDict = OrderedDict()
-        for sheetJson in wbJson.worksheets:
-            # todo if I inject listener here, such listener will be a method in Workbooks module. I don't like this. I could turn the listener to object.
-            sheet = Worksheets.wsFromJson(sheetJson)
-            sheetDict[sheet.name] = sheet
         wb = WorkbookImp(
             name = path.name,
             path = path,
-            sheetDict = sheetDict,
-            onCellChange = onCellChange
         )
+
+        for sheetJson in wbJson.worksheets:
+            sheet: Worksheet = wb.createNewWorksheet(sheetJson.name)
+            for cellJson in sheetJson.cells:
+                dummyCell = Cells.cellFromJson(cellJson)
+                realCell = sheet.cell(dummyCell.address)
+                realCell.copyFrom(dummyCell)
+        wb.setOnCellChange(onCellChange)
         return wb

@@ -159,3 +159,8 @@ class DataCell(Cell):
             self.__scriptAlreadyRun = False
             if self.__onCellChange is not None:
                 self.__onCellChange(self, P6Events.Cell.ClearScriptResult)
+
+    def copyFrom(self, anotherCell: "Cell"):
+        self.__value = anotherCell.value
+        self.__formula = anotherCell.formula
+        self.__code = anotherCell.script
