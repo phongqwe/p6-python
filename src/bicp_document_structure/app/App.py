@@ -3,7 +3,6 @@ from pathlib import Path
 from typing import Optional, Union, Any, Callable
 
 from bicp_document_structure.app.errors.AppErrors import AppErrors
-from bicp_document_structure.app.run_result.RunResult import RunResult
 from bicp_document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.event.P6Event import P6Event
@@ -39,10 +38,6 @@ class App(ABC):
 
     @property
     def _fileLoader(self) -> P6FileLoader:
-        raise NotImplementedError()
-
-    @property
-    def result(self) -> RunResult:
         raise NotImplementedError()
 
     @property

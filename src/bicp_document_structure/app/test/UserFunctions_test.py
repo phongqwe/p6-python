@@ -1,4 +1,3 @@
-import json
 import unittest
 
 from bicp_document_structure.app.GlobalScope import setIPythonGlobals
@@ -75,17 +74,6 @@ class UserFunctions_test(unittest.TestCase):
         cellA4.script = "cell(\"@A1\").value + 3"
         self.assertTrue(isinstance(cellA4.value,Exception))
         print(cellA4.displayValue)
-
-    def test_Result(self):
-        activeBook = getActiveWorkbook()
-        activeBook.setActiveWorksheet("Sheet1")
-        sheet = getActiveSheet()
-        cellA1_1 = sheet.cell((1, 1))  # A1
-        cellA1_1.script = "x=1;x+10"
-
-        result = getApp().result
-        jr = json.dumps(result.toJson(getApp()).__dict__)
-        print(jr)
 
     def test_listWorkSheet(self):
         print(listWorksheet("Book1"))

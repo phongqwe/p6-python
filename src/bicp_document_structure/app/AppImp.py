@@ -3,8 +3,6 @@ from typing import Optional, Union, Callable
 
 from bicp_document_structure.app.App import App
 from bicp_document_structure.app.errors.AppErrors import AppErrors
-from bicp_document_structure.app.run_result.RunResult import RunResult
-from bicp_document_structure.app.run_result.RunResultImp import RunResultImp
 from bicp_document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
 from bicp_document_structure.app.workbook_container.WorkbookContainerImp import WorkbookContainerImp
 from bicp_document_structure.cell.Cell import Cell
@@ -41,7 +39,6 @@ class AppImp(App):
 
     def __init__(self,
                  workbookContainer: Optional[WorkbookContainer] = None,
-                 runResult: Optional[RunResult] = None,
                  loader: Optional[P6FileLoader] = None,
                  saver: Optional[P6FileSaver] = None,
                  socketProvider: SocketProvider | None = None,
@@ -57,9 +54,6 @@ class AppImp(App):
         else:
             self.__activeWorkbook: Optional[Workbook] = None
 
-        if runResult is None:
-            runResult = RunResultImp()
-        self.__result: RunResult = runResult
         if loader is None:
             loader = P6FileLoaders.standard()
         if saver is None:
@@ -150,10 +144,6 @@ class AppImp(App):
     @property
     def wbContainer(self) -> WorkbookContainer:
         return self.__wbCont
-
-    @property
-    def result(self) -> RunResult:
-        return self.__result
 
     @property
     def activeSheet(self) -> Optional[Worksheet]:
