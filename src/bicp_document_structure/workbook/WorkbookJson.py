@@ -1,11 +1,11 @@
 import json
 
+from bicp_document_structure.common.ToJsonStr import ToJson
 from bicp_document_structure.worksheet.WorksheetJson import WorksheetJson
 
 
-class WorkbookJson(dict):
+class WorkbookJson(ToJson):
     def __init__(self, name: str, worksheetJsons: list[WorksheetJson]):
-        super().__init__()
         self.name=name
         self.worksheets: list[WorksheetJson] = worksheetJsons
 

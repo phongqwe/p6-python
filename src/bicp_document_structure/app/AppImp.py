@@ -71,19 +71,20 @@ class AppImp(App):
         if cellEventReactorContainer is None:
             cellEventReactorContainer = EventReactorContainers.mutable()
         self.__reactorContainer: EventReactorContainer[CellEventData] = cellEventReactorContainer
-        self.initReactor()
 
-    def initReactor(self):
+    def initBaseReactor(self):
         """create reactors """
         def reactToCellValueUpdate(data: CellEventData):
             """send a zmq message to a predesignated socket when a cell's value is update"""
             if self.__socketProvider is not None:
                 socket = self.__socketProvider.reqSocketForUIUpdating()
-                MessageSender.send(
+                replyRs = MessageSender.sendREQ(
                     socket = socket,
                     msg = P6Message(
                         header = P6MessageHeader(str(uuid.uuid4()), MsgType.CellValueUpdate),
                         content = data))
+                if replyRs.isErr():
+                    raise replyRs.err.toException()
         reactor = EventReactors.makeCellReactor(reactToCellValueUpdate)
         self.__reactorContainer.addReactor(P6Events.Cell.UpdateValue, reactor)
 

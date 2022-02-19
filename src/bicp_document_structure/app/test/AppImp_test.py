@@ -1,6 +1,9 @@
 import os
+import threading
 import unittest
 from pathlib import Path
+
+import zmq
 
 from bicp_document_structure.app.AppImp import AppImp
 from bicp_document_structure.cell.Cell import Cell
@@ -8,6 +11,7 @@ from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.event.P6Events import P6Events
 from bicp_document_structure.event.reactor.EventReactors import EventReactors
+from bicp_document_structure.message.SocketProviderImp import SocketProviderImp
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookKeyImp import WorkbookKeyImp
 from bicp_document_structure.worksheet.Worksheet import Worksheet
@@ -191,6 +195,71 @@ class AppImp_test(unittest.TestCase):
         wb.setOnCellChange(self.__onCellChange2)
         cell.value = "mnn"
         self.assertEqual("@A1", self.aa)
+
+    def startREPServer(self, isOk, context):
+        repSocket = context.socket(zmq.REP)
+        repSocket.bind("tcp://*:6000")
+        receive = repSocket.recv()
+        print(f"Server received: \n{receive}")
+        if isOk:
+            repSocket.send("ok".encode())
+        else:
+            repSocket.send("fail".encode())
+        repSocket.close()
+
+    def startREPServerOnThread(self, isOk,context) -> threading.Thread:
+        thread = threading.Thread(target = self.startREPServer, args = [isOk, context])
+        thread.start()
+        return thread
+
+    def test_integration_test_default_reactor_ok(self):
+        # start mock server
+        context = zmq.Context.instance()
+        thread = self.startREPServerOnThread(True,context)
+        socket = context.socket(zmq.REQ)
+        socket.connect("tcp://localhost:6000")
+        socketProvider = SocketProviderImp(
+            reqSocketUI = socket
+        )
+        app = AppImp()
+        app.initBaseReactor()
+        app.socketProvider = socketProvider
+        wb = app.createNewWorkbook("bookz1")
+        wb.createNewWorksheet("sheetz1")
+        cell = app.activeWorkbook.activeWorksheet.cell("@B32")
+        cell.value = 123
+
+        # stop mock server
+        thread.join()
+    def test_integration_test_default_reactor_fail(self):
+        # start mock server
+        context = zmq.Context.instance()
+        thread = self.startREPServerOnThread(False,context)
+        socket = context.socket(zmq.REQ)
+        socket.connect("tcp://localhost:6000")
+        socketProvider = SocketProviderImp(reqSocketUI = socket)
+        app = AppImp()
+        app.initBaseReactor()
+        app.socketProvider = socketProvider
+        wb = app.createNewWorkbook("bookz1")
+        wb.createNewWorksheet("sheetz1")
+        cell = app.activeWorkbook.activeWorksheet.cell("@B32")
+        with self.assertRaises(Exception):
+            cell.value = 123
+        thread.join()
+
+    def test_adding_new_reactor_to_app(self):
+        app = AppImp()
+        def reactor(_):
+            self.ze=123
+        app.eventReactorContainer.addReactor(P6Events.Cell.UpdateValue,EventReactors.makeCellReactor(reactor))
+        wb = app.createNewWorkbook("bookz1")
+        wb.createNewWorksheet("sheetz1")
+        cell = app.activeWorkbook.activeWorksheet.cell("@B32")
+        cell.value = 123
+        self.assertEqual(123,self.ze)
+
+
 
 
 if __name__ == '__main__':

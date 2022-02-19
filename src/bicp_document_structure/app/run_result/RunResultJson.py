@@ -1,12 +1,11 @@
 import json
 
 
-class RunResultJson(dict):
+class RunResultJson:
     """
     Json representation of a RunResult
     """
     def __init__(self, mutatedCellDict, deletedCellDict):
-        super().__init__()
         self.mutated = mutatedCellDict
         self.deleted = deletedCellDict
 

@@ -1,25 +1,23 @@
 import json
 from typing import Any
 
+from bicp_document_structure.common.ToJsonStr import ToJson
 from bicp_document_structure.util.report.ReportJsonStrMaker import ReportJsonStrMaker
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Result import Result
 
 
-class ReportJson(dict):
+class ReportJson(ToJson):
+
     def __init__(self, isOk: bool, message: str, data: str):
         """
         :param isOk:
         :param message:
         :param data: should be a json string
         """
-        super().__init__()
         self.isOk = isOk
         self.message = message
         self.data = data
-
-    def __str__(self):
-        return json.dumps(self.__dict__)
 
     @staticmethod
     def fromResultWithErrorReport(result: Result[Any, ErrorReport]):
@@ -31,9 +29,9 @@ class ReportJson(dict):
             else:
                 dataStr = str(data)
             return ReportJson(
-                isOk=True,
-                message="Ok",
-                data=dataStr
+                isOk = True,
+                message = "Ok",
+                data = dataStr
             )
         else:
             if isinstance(result.err, ErrorReport):
@@ -45,9 +43,16 @@ class ReportJson(dict):
                 else:
                     dataJsonStr = str(errReport.data)
                 return ReportJson(
-                    isOk=False,
-                    message="""{errorCode}: {errorDescription}""".format(errorCode=header.errorCode, errorDescription=header.errorDescription),
-                    data=dataJsonStr
+                    isOk = False,
+                    message = """{errorCode}: {errorDescription}""".format(errorCode = header.errorCode,
+                                                                           errorDescription = header.errorDescription),
+                    data = dataJsonStr
                 )
             else:
                 raise ValueError("err must be an ErrorReport")
+
+    def __str__(self):
+        return json.dumps(self.__dict__)
+
+    def toJsonDict(self) -> dict:
+        return self.__dict__
