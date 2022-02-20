@@ -12,7 +12,7 @@ class P6File:
     def toJsonDict(self):
         return {
             "version":self.version,
-            "workbookJson":self.workbookJson.toJsonDict()
+            "workbookJson":self.workbookJson.toJsonDictForSaving()
         }
     def __str__(self):
         return json.dumps(self.toJsonDict())

@@ -12,10 +12,14 @@ class CellEventData(ToJson):
         self.workbook = workbook
 
     def toJsonDict(self) -> dict:
+        path = self.workbook.workbookKey.filePath
+        pathJson = None
+        if path is not None:
+            pathJson = str(path)
         return {
             "workbook": {
                 "name": self.workbook.name,
-                "path": str(self.workbook.workbookKey.filePath)
+                "path": pathJson
             },
             "worksheet": self.worksheet.name,
             "cell": self.cell.toJson().toJsonDict()

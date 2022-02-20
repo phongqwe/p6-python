@@ -21,6 +21,6 @@ class P6MessageTest(unittest.TestCase):
             content=contentObj
         )
         jsonStr = msg.toJsonStr()
-        expectaction = """{"header": {"msgId": "id1", "msgType": "cell_value_edit"}, "content": {"data": "{\\\"value\\\": \\\"cell value\\\", \\\"script\\\": \\\"cell script\\\", \\\"formula\\\": \\\"=1234\\\", \\\"address\\\": {\\\"row\\\": 34, \\\"col\\\": 1}}"}}"""
+        expectaction = """{"header": {"msgId": "id1", "msgType": "cell_value_update"}, "content": {"data": "{\\\"value\\\": \\\"cell value\\\", \\\"script\\\": \\\"cell script\\\", \\\"formula\\\": \\\"=1234\\\", \\\"address\\\": {\\\"row\\\": 34, \\\"col\\\": 1}}"}}"""
         self.assertEqual(expectaction, jsonStr)
         self.assertEqual(bytes(expectaction.encode("UTF-8")),msg.toBytes())

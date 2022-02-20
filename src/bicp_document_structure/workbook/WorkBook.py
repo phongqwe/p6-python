@@ -3,8 +3,9 @@ from abc import ABC
 from typing import Optional, Union, Callable
 
 from bicp_document_structure.cell.Cell import Cell
+from bicp_document_structure.common.ToJsonStr import ToJson
 from bicp_document_structure.event.P6Event import P6Event
-from bicp_document_structure.util.report.ReportJsonStrMaker import ReportJsonStrMaker
+from bicp_document_structure.util.CanCheckEmpty import CanCheckEmpty
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.report.error.ErrorReports import ErrorReports
 from bicp_document_structure.util.result.Result import Result
@@ -13,7 +14,7 @@ from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 
-class Workbook(ReportJsonStrMaker, ABC):
+class Workbook(ToJson, CanCheckEmpty,ABC):
 
     def reRun(self):
         """rerun all worksheet in this workbook"""
@@ -62,12 +63,6 @@ class Workbook(ReportJsonStrMaker, ABC):
         """
         raise NotImplementedError()
 
-    def isEmpty(self) -> bool:
-        """
-        :return: true if this workbook contains zero sheet
-        """
-        raise NotImplementedError()
-
     @property
     def sheetCount(self) -> int:
         raise NotImplementedError()
@@ -93,7 +88,7 @@ class Workbook(ReportJsonStrMaker, ABC):
         else:
             raise ErrorReports.toException(createRs.err)
 
-    def createNewWorksheetRs(self, newSheetName: Optional[str]) -> Result[Worksheet, ErrorReport]:
+    def createNewWorksheetRs(self, newSheetName: Optional[str]=None) -> Result[Worksheet, ErrorReport]:
         """
         add a new empty sheet to this workbook
         :param newSheetName: name of the new sheet
@@ -141,15 +136,18 @@ class Workbook(ReportJsonStrMaker, ABC):
         jsons = []
         for sheet in self.worksheets:
             jsons.append(sheet.toJson())
-        return WorkbookJson(self.name, jsons)
+        pathJson = None
+        if self.workbookKey.filePath is not None:
+            pathJson = str(self.workbookKey.filePath)
+        return WorkbookJson(self.name, pathJson, jsons)
 
     def listWorksheet(self) -> str:
         """return a list of sheet as string"""
         rt = ""
         for (i, sheet) in enumerate(self.worksheets):
             rt += "{num}. {sheetName}\n".format(
-                num=str(i),
-                sheetName=sheet.name
+                num = str(i),
+                sheetName = sheet.name
             )
         if not rt:
             rt = "empty book"
@@ -158,5 +156,8 @@ class Workbook(ReportJsonStrMaker, ABC):
     def reportJsonStr(self) -> str:
         return json.dumps(self.toJson().toJsonDict())
 
-    def setOnCellChange(self,onCellChange:Callable[["Workbook",Worksheet,Cell,P6Event],None]):
+    def setOnCellChange(self, onCellChange: Callable[["Workbook", Worksheet, Cell, P6Event], None]):
         raise NotImplementedError()
+
+    def toJsonStrForSaving(self) -> str:
+        return self.toJson().toJsonStrForSaving()

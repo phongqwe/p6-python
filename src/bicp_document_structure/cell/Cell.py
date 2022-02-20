@@ -2,9 +2,10 @@ from abc import ABC
 
 from bicp_document_structure.cell.CellJson import CellJson
 from bicp_document_structure.cell.address.CellAddress import CellAddress
+from bicp_document_structure.common.ToJsonStr import ToJson
 
 
-class Cell(ABC):
+class Cell(ToJson,ABC):
     """
     Cell interface
     """

@@ -32,7 +32,13 @@ class DataCell(Cell):
         self.__scriptAlreadyRun = False
         self.__formula = formula
 
+    ### >> ToJson << ###
+
+    def toJsonDict(self) -> dict:
+        return self.toJson().toJsonDict()
+
     ### >> Cell << ###
+
 
     @property
     def formula(self) -> str:

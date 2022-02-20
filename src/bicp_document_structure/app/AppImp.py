@@ -152,6 +152,13 @@ class AppImp(App):
         else:
             return None
 
+    def createDefaultNewWorkbookRs(self, name: str | None = None) -> Result[Workbook, ErrorReport]:
+        newWbRs = self.createNewWorkbookRs(name)
+        if newWbRs.isOk():
+            wb = newWbRs.value
+            wb.createNewWorksheetRs()
+        return newWbRs
+
     def createNewWorkbook(self, name: Optional[str] = None) -> Workbook:
         createRs: Result[Workbook, ErrorReport] = self.createNewWorkbookRs(name)
         return Results.extractOrRaise(createRs)

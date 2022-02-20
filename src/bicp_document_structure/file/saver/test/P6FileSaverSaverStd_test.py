@@ -9,7 +9,7 @@ from bicp_document_structure.workbook.WorkbookJson import WorkbookJson
 
 class MockWorkbook(Workbook):
     def toJson(self) -> WorkbookJson:
-        return WorkbookJson("mockWorkbook", [])
+        return WorkbookJson("mockWorkbook", None,[])
 
 
 class WorkbookSaverStd_test(unittest.TestCase):
@@ -20,13 +20,15 @@ class WorkbookSaverStd_test(unittest.TestCase):
     def test_save(self):
         mockWorkbook = MockWorkbook()
         saver = P6FileSaverStd()
+        if self.path.exists():
+            os.remove(self.path)
         self.assertFalse(self.path.exists())
         saver.save(mockWorkbook, self.path)
         self.assertTrue(self.path.exists())
         savedFile = open(self.path, "r")
         savedContent = savedFile.read()
         self.assertEqual(
-            """{"version": "0", "workbookJson": {"name": "mockWorkbook", "worksheets": []}}""",
+            """{"version": "0", "workbookJson": {"name": "mockWorkbook", "path": null, "worksheets": []}}""",
             savedContent)
         savedFile.close()
 

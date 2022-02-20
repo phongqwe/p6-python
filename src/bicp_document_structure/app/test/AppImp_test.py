@@ -259,7 +259,11 @@ class AppImp_test(unittest.TestCase):
         cell.value = 123
         self.assertEqual(123,self.ze)
 
-
+    def test_createDefaultNewWorkbook(self):
+        app = AppImp()
+        wb = app.createDefaultNewWorkbook()
+        self.assertTrue(wb.isNotEmpty())
+        self.assertIsNotNone(wb.getWorksheet(0))
 
 
 if __name__ == '__main__':

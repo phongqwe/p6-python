@@ -97,6 +97,21 @@ class App(ABC):
         """
         raise NotImplementedError()
 
+    def createDefaultNewWorkbook(self, name: str | None = None)->Workbook:
+        """
+        create a new workbook with an auto generated name, a blank worksheet with auto generated name
+        :return a the newly created workbook or raising an exception if there's an error
+        """
+        createRs: Result[Workbook, ErrorReport] = self.createDefaultNewWorkbookRs(name)
+        return Results.extractOrRaise(createRs)
+
+    def createDefaultNewWorkbookRs(self, name: str | None = None)->Result[Workbook, ErrorReport]:
+        """
+        create a new workbook with an auto generated name, a blank worksheet with auto generated name
+        :return a Result object if there are error instead of raising an exception
+        """
+        raise NotImplementedError()
+
     def createNewWorkbook(self, name: Optional[str] = None) -> Workbook:
         """create a new workbook, and add it to this app """
         raise NotImplementedError()
@@ -269,6 +284,7 @@ class App(ABC):
     @socketProvider.setter
     def socketProvider(self, socketProvider: SocketProvider | None):
         raise NotImplementedError
+
     @property
-    def eventReactorContainer(self)->EventReactorContainer:
+    def eventReactorContainer(self) -> EventReactorContainer:
         raise NotImplementedError

@@ -147,3 +147,9 @@ class WorkbookImp_test(unittest.TestCase):
         wb.setOnCellChange(self.__onCellChange2)
         cell.value = "abc"
         self.assertEqual("@A32",self.aa)
+
+    def test_toJson(self):
+        s1, s2, s3, w1, d=self.makeTestObj()
+        expect = """{"name": "w1", "path": null, "worksheets": [{"name": "s1", "cells": []}, {"name": "s2", "cells": []}, {"name": "s3", "cells": []}]}"""
+        self.assertEqual(expect,w1.toJsonStr())
+        # print(w1.toJsonStr())

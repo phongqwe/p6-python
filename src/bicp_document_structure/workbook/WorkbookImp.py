@@ -177,3 +177,13 @@ class WorkbookImp(Workbook):
 
         raise ValueError("nameOrIndex must either be a string or a number")
 
+    def toJsonDict(self) -> dict:
+        # sheetJsons = []
+        # for sheet in self.worksheets:
+        #     sheetJsons.append(sheet.toJsonDict())
+        # return {
+        #     "name":self.name,
+        #     "path":self.__key.filePath,
+        #     "worksheets":sheetJsons,
+        # }
+        return self.toJson().toJsonDict()

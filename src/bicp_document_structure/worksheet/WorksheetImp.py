@@ -28,6 +28,10 @@ class WorksheetImp(Worksheet):
         self.__name = name
         self.__onCellChangeOfWorksheet:Optional[Callable[[Worksheet, Cell, P6Event], None]] = onCellChange
 
+    ### >> ToJson << ###
+    def toJsonDict(self) -> dict:
+        return self.toJson().toJsonDict()
+
     ### >> Worksheet << ###
 
     @property
