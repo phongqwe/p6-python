@@ -2,6 +2,7 @@ from typing import Optional, Union, Tuple, Callable
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.DataCell import DataCell
+from bicp_document_structure.cell.EventCell import EventCell
 from bicp_document_structure.cell.WriteBackCell import WriteBackCell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.address.CellIndex import CellIndex
@@ -86,8 +87,9 @@ class ColumnImp(Column):
             return cell
         else:
             if self.containsAddress(address):
+                # onCellChange =self.__onCellMutation
                 return WriteBackCell(
-                    cell=DataCell(address, onCellChange =self.__onCellMutation),
+                    cell=EventCell(DataCell(address),onCellChange =self.__onCellMutation),
                     container=self,
                 )
             else:

@@ -1,6 +1,7 @@
 import unittest
 
 from bicp_document_structure.cell.DataCell import DataCell
+from bicp_document_structure.cell.EventCell import EventCell
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 
 
@@ -26,7 +27,7 @@ class DataCellTest(unittest.TestCase):
 
         def increaseExCount(cell, mutationEvent):
             self.exCountA += 1
-        c2 = DataCell(CellIndex(1, 1), value=123, script="123", onCellChange =increaseExCount)
+        c2 = EventCell(DataCell(CellIndex(1, 1), value=123, script="123"), onCellChange =increaseExCount)
         oldCount = self.exCountA
         c2.reRun(globals())
         self.assertEqual(123,c2.bareValue())
@@ -58,7 +59,7 @@ class DataCellTest(unittest.TestCase):
         self.exCount = 0
         def increaseExCount(a,b):
             self.exCount += 1
-        c = DataCell(CellIndex(1, 1), onCellChange =increaseExCount)
+        c = EventCell(DataCell(CellIndex(1, 1)), onCellChange =increaseExCount)
         c.script = "x=345;\"abc\""
         oldCount = self.exCount
         c.reRun(globals())
