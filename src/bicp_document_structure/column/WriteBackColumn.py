@@ -2,6 +2,7 @@ from typing import Union, Tuple, Optional, Callable
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.DataCell import DataCell
+from bicp_document_structure.cell.EventCell import EventCell
 from bicp_document_structure.cell.WriteBackCell import WriteBackCell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.column.Column import Column
@@ -65,7 +66,7 @@ class WriteBackColumn(Column):
             return self.__innerCol.getOrMakeCell(address)
         else:
             return WriteBackCell(
-                cell=DataCell(address, onCellChange =self.__onCellMutation),
+                cell=EventCell(DataCell(address), onCellChange =self.__onCellMutation),
                 container=self,
             )
 
