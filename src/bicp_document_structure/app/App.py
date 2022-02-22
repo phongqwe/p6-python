@@ -1,22 +1,30 @@
 from abc import ABC
 from pathlib import Path
-from typing import Optional, Union, Any, Callable
+from typing import Optional, Union, Any
 
 from bicp_document_structure.app.errors.AppErrors import AppErrors
 from bicp_document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
 from bicp_document_structure.cell.Cell import Cell
+from bicp_document_structure.column.Column import Column
 from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.event.reactor.EventReactorContainer import EventReactorContainer
+from bicp_document_structure.event.reactor.eventData.CellEventData import CellEventData
+from bicp_document_structure.event.reactor.eventData.ColEventData import ColEventData
+from bicp_document_structure.event.reactor.eventData.RangeEventData import RangeEventData
+from bicp_document_structure.event.reactor.eventData.WorkbookEventData import WorkbookEventData
+from bicp_document_structure.event.reactor.eventData.WorksheetEventData import WorksheetEventData
 from bicp_document_structure.file.loader.P6FileLoader import P6FileLoader
 from bicp_document_structure.file.loader.P6FileLoaderErrors import P6FileLoaderErrors
 from bicp_document_structure.file.saver.P6FileSaver import P6FileSaver
 from bicp_document_structure.message.SocketProvider import SocketProvider
+from bicp_document_structure.range.Range import Range
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.report.error.ErrorReports import ErrorReports
 from bicp_document_structure.util.result.Err import Err
 from bicp_document_structure.util.result.Ok import Ok
 from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.util.result.Results import Results
+from bicp_document_structure.workbook.EventWorkbook import EventWorkbook
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 from bicp_document_structure.workbook.WorkbookKeyImp import WorkbookKeyImp
@@ -242,11 +250,18 @@ class App(ABC):
         wb = self.getWorkbook(wbKey)
         alreadyHasThisWorkbook = wb is not None
         if not alreadyHasThisWorkbook:
-            # loadResult: Result = self._fileLoader.load(filePath, self._getOnCellChange())
             loadResult: Result = self._fileLoader.load(filePath)
             if loadResult.isOk():
                 newWb: Workbook = loadResult.value
-                self.wbContainer.addWorkbook(newWb)
+                eventNewWb = EventWorkbook(
+                    innerWorkbook = newWb,
+                    onCellEvent = self.__onCellEvent,
+                    onColEvent = self.__onColEvent,
+                    onRangeEvent = self.__onRangeEvent,
+                    onWorksheetEvent = self.__onWorksheetEvent,
+                    onWorkbookEvent = self.__onWorkbookEvent,
+                )
+                self.wbContainer.addWorkbook(eventNewWb)
             return loadResult
         else:
             return Err(
@@ -274,8 +289,20 @@ class App(ABC):
             rt = "No workbook"
         print(rt)
 
-    def _getOnCellChange(self) -> Callable[[Workbook, Worksheet, Cell, P6Event], None]:
-        raise NotImplementedError()
+    def __onCellEvent(self, wb: Workbook, ws: Worksheet, c: Cell, e: P6Event):
+        self.eventReactorContainer.triggerReactorsFor(e, CellEventData(wb, ws, c))
+
+    def __onRangeEvent(self, wb: Workbook, ws: Worksheet, r: Range, e: P6Event):
+        self.eventReactorContainer.triggerReactorsFor(e, RangeEventData(wb, ws, r))
+
+    def __onColEvent(self, wb: Workbook, ws: Worksheet, col:Column, e: P6Event):
+        self.eventReactorContainer.triggerReactorsFor(e, ColEventData(wb, ws, col))
+
+    def __onWorksheetEvent(self, wb: Workbook, ws: Worksheet, e: P6Event):
+        self.eventReactorContainer.triggerReactorsFor(e, WorksheetEventData(wb, ws))
+    def __onWorkbookEvent(self, wb: Workbook, e: P6Event):
+        self.eventReactorContainer.triggerReactorsFor(e, WorkbookEventData(wb))
+
 
     @property
     def socketProvider(self) -> SocketProvider | None:

@@ -82,9 +82,6 @@ class AppImp(App):
         reactor = EventReactors.makeCellReactor(reactToCellValueUpdate)
         self.__reactorContainer.addReactor(P6Events.Cell.UpdateValue, reactor)
 
-    def __onCellChangeInternal(self, wb: Workbook, ws: Worksheet, c: Cell, e: P6Event):
-        self.__reactorContainer.triggerReactorsFor(e, CellEventData(wb, ws, c))
-
     @property
     def eventReactorContainer(self) -> EventReactorContainer:
         return self.__reactorContainer
