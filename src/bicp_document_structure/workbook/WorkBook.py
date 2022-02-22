@@ -1,10 +1,8 @@
 import json
 from abc import ABC
-from typing import Optional, Union, Callable
+from typing import Optional, Union
 
-from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.common.ToJsonStr import ToJson
-from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.util.CanCheckEmpty import CanCheckEmpty
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.report.error.ErrorReports import ErrorReports
@@ -14,7 +12,7 @@ from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 
-class Workbook(ToJson, CanCheckEmpty,ABC):
+class Workbook(ToJson, CanCheckEmpty, ABC):
 
     def reRun(self):
         """rerun all worksheet in this workbook"""
@@ -88,7 +86,7 @@ class Workbook(ToJson, CanCheckEmpty,ABC):
         else:
             raise ErrorReports.toException(createRs.err)
 
-    def createNewWorksheetRs(self, newSheetName: Optional[str]=None) -> Result[Worksheet, ErrorReport]:
+    def createNewWorksheetRs(self, newSheetName: Optional[str] = None) -> Result[Worksheet, ErrorReport]:
         """
         add a new empty sheet to this workbook
         :param newSheetName: name of the new sheet
@@ -155,9 +153,6 @@ class Workbook(ToJson, CanCheckEmpty,ABC):
 
     def reportJsonStr(self) -> str:
         return json.dumps(self.toJson().toJsonDict())
-
-    def setOnCellChange(self, onCellChange: Callable[["Workbook", Worksheet, Cell, P6Event], None]):
-        raise NotImplementedError()
 
     def toJsonStrForSaving(self) -> str:
         return self.toJson().toJsonStrForSaving()

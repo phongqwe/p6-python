@@ -1,8 +1,8 @@
 import uuid
 from typing import Callable
 
-from bicp_document_structure.event.reactor.cell.CellEventData import CellEventData
-from bicp_document_structure.event.reactor.cell.CellEventReactor import CellEventReactor
+from bicp_document_structure.event.reactor.CellEventReactor import CellEventReactor
+from bicp_document_structure.event.reactor.eventData.CellEventData import CellEventData
 
 
 class EventReactors:

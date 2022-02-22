@@ -6,7 +6,7 @@ from bicp_document_structure.cell_container.UserFriendlyCellContainer import Use
 
 
 class Range(UserFriendlyCellContainer,MutableCellContainer,ABC):
-    """ a sub container derived from bigger cell container """
+    """ a sub container derived from a bigger cell container """
 
     @property
     def firstCellAddress(self) -> CellAddress:
@@ -20,4 +20,3 @@ class Range(UserFriendlyCellContainer,MutableCellContainer,ABC):
         rowIsInRange = self.firstCellAddress.rowIndex <= address.rowIndex <= self.lastCellAddress.rowIndex
         colIsInRange = self.firstCellAddress.colIndex <= address.colIndex <= self.lastCellAddress.colIndex
         return rowIsInRange and colIsInRange
-

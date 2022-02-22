@@ -242,10 +242,10 @@ class App(ABC):
         wb = self.getWorkbook(wbKey)
         alreadyHasThisWorkbook = wb is not None
         if not alreadyHasThisWorkbook:
-            loadResult: Result = self._fileLoader.load(filePath, self._getOnCellChange())
+            # loadResult: Result = self._fileLoader.load(filePath, self._getOnCellChange())
+            loadResult: Result = self._fileLoader.load(filePath)
             if loadResult.isOk():
                 newWb: Workbook = loadResult.value
-                # newWb.setOnCellChange(self._getOnCellChange())
                 self.wbContainer.addWorkbook(newWb)
             return loadResult
         else:

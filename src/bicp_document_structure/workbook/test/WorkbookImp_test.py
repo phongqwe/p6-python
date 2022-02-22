@@ -2,7 +2,6 @@ import unittest
 from collections import OrderedDict
 
 from bicp_document_structure.cell.Cell import Cell
-from bicp_document_structure.cell.address.CellAddresses import CellAddresses
 from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
@@ -136,17 +135,6 @@ class WorkbookImp_test(unittest.TestCase):
 
     def __onCellChange2(self, wb: Workbook, ws: Worksheet, cell: Cell, event: P6Event):
         self.aa = f"{cell.address.label}"
-
-    def test_invokingOnCellChange(self):
-        wb = WorkbookImp("bookz")
-        wb.setOnCellChange(self.__onCellChange)
-        sheet = wb.createNewWorksheet("sheetZ")
-        cell = sheet.cell(CellAddresses.addressFromLabel("@A32"))
-        cell.value = "abc"
-        self.assertEqual("bookz, sheetZ, @A32, e0", self.aa)
-        wb.setOnCellChange(self.__onCellChange2)
-        cell.value = "abc"
-        self.assertEqual("@A32",self.aa)
 
     def test_toJson(self):
         s1, s2, s3, w1, d=self.makeTestObj()

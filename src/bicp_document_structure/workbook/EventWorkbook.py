@@ -1,0 +1,96 @@
+from functools import partial
+from typing import Callable, Optional, Union
+
+from bicp_document_structure.cell.Cell import Cell
+from bicp_document_structure.column.Column import Column
+from bicp_document_structure.event.P6Event import P6Event
+from bicp_document_structure.event.P6Events import P6Events
+from bicp_document_structure.range.Range import Range
+from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
+from bicp_document_structure.util.result.Ok import Ok
+from bicp_document_structure.util.result.Result import Result
+from bicp_document_structure.workbook.WorkBook import Workbook
+from bicp_document_structure.workbook.WorkbookWrapper import WorkbookWrapper
+from bicp_document_structure.worksheet.EventWorksheet import EventWorksheet
+from bicp_document_structure.worksheet.Worksheet import Worksheet
+
+
+class EventWorkbook(WorkbookWrapper):
+    def __init__(self, innerWorkbook: Workbook,
+                 onCellChange: Callable[[Workbook, Worksheet, Cell, P6Event], None] = None,
+                 onWorksheetEvent: Callable[[Workbook, Worksheet, P6Event], None] = None,
+                 onRangeEvent: Callable[[Workbook, Worksheet, Range, P6Event], None] = None,
+                 onColEvent: Callable[[Workbook, Worksheet, Column, P6Event], None] = None,
+                 onWorkbookEvent: Callable[[Workbook, P6Event], None] = None,
+                 ):
+        super().__init__(innerWorkbook)
+        self.__onCellChange: Callable[[Workbook, Worksheet, Cell, P6Event], None] = onCellChange
+        self.__onWorksheetEvent: Callable[[Workbook, Worksheet, P6Event], None] = onWorksheetEvent
+        self.__onRangeEvent: Callable[[Workbook, Worksheet, Range, P6Event], None] = onRangeEvent
+        self.__onWorkbookEvent: Callable[[Workbook, P6Event], None] = onWorkbookEvent
+        self.__onColEvent: Callable[[Workbook, Worksheet, Column, P6Event], None] = onColEvent
+
+    @property
+    def worksheets(self) -> list[Worksheet]:
+        sheets = self._innerWorkbook.worksheets
+        rt = list(map(lambda s: self.__wrap(s), sheets))
+        return rt
+
+    @property
+    def activeWorksheet(self) -> Optional[Worksheet]:
+        activeSheet = self._innerWorkbook.activeWorksheet
+        return self.__wrap(activeSheet)
+
+    def getWorksheetByName(self, name: str) -> Optional[Worksheet]:
+        s = self._innerWorkbook.getWorksheetByName(name)
+        if s is not None:
+            return self.__wrap(s)
+        else:
+            return s
+
+    def getWorksheetByIndex(self, index: int) -> Optional[Worksheet]:
+        s = self._innerWorkbook.getWorksheetByIndex(index)
+        if s is not None:
+            return self.__wrap(s)
+        else:
+            return s
+
+    def getWorksheet(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
+        s = self._innerWorkbook.getWorksheet(nameOrIndex)
+        if s is not None:
+            return self.__wrap(s)
+        else:
+            return s
+
+    def createNewWorksheetRs(self, newSheetName: Optional[str] = None) -> Result[Worksheet, ErrorReport]:
+        s = self._innerWorkbook.createNewWorksheetRs(newSheetName)
+        if s.isOk():
+            return Ok(self.__wrap(s.value))
+        else:
+            return s
+
+    def reRun(self):
+        self._innerWorkbook.reRun()
+        if self.__onWorkbookEvent is not None:
+            self.__onWorkbookEvent(self._innerWorkbook, P6Events.Workbook.ReRun)
+
+    def __wrap(self, sheet: Worksheet) -> Worksheet:
+        onCellEvent = self.__makePartial(self.__onCellChange)
+        onSheetEvent = self.__makePartial(self.__onWorksheetEvent)
+        onRangeEvent = self.__makePartial(self.__onRangeEvent)
+        return EventWorksheet(sheet,
+                              onCellChange = onCellEvent,
+                              onWorksheetEvent = onSheetEvent,
+                              onRangeEvent = onRangeEvent)
+
+    def __makePartial(self, callback):
+        if callback is not None:
+            return partial(callback, self._innerWorkbook)
+        else:
+            return None
+    # def __onCellChangeForWorksheet(self,
+    #                                worksheet: Worksheet,
+    #                                cell: Cell,
+    #                                event: P6Event):
+    #     if self.__onCellChange is not None:
+    #         self.__onCellChange(self._innerWorkbook, worksheet, cell, event)

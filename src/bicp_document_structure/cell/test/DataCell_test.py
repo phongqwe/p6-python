@@ -27,16 +27,16 @@ class DataCellTest(unittest.TestCase):
 
         def increaseExCount(cell, mutationEvent):
             self.exCountA += 1
-        c2 = EventCell(DataCell(CellIndex(1, 1), value=123, script="123"), onCellChange =increaseExCount)
+        c2 = EventCell(DataCell(CellIndex(1, 1), value=123, script="123"), onCellEvent =increaseExCount)
         oldCount = self.exCountA
         c2.reRun(globals())
         self.assertEqual(123,c2.bareValue())
         # +1 when clear, and +1 when run
-        self.assertEqual(oldCount+2,self.exCountA)
+        self.assertEqual(oldCount+1,self.exCountA)
         oldCount = self.exCountA
         c2.reRun(globals())
         self.assertEqual(123,c2.bareValue())
-        self.assertEqual(oldCount+2,self.exCountA)
+        self.assertEqual(oldCount+1,self.exCountA)
 
 
     def test_assigningValueAndScript(self):
@@ -59,18 +59,18 @@ class DataCellTest(unittest.TestCase):
         self.exCount = 0
         def increaseExCount(a,b):
             self.exCount += 1
-        c = EventCell(DataCell(CellIndex(1, 1)), onCellChange =increaseExCount)
+        c = EventCell(DataCell(CellIndex(1, 1)), onCellEvent =increaseExCount)
         c.script = "x=345;\"abc\""
         oldCount = self.exCount
         c.reRun(globals())
         self.assertEqual("abc",c.value)
-        self.assertEqual(oldCount+2,self.exCount)
+        self.assertEqual(oldCount+1,self.exCount)
 
         # access value a second time
         # cell mutation callback should not be invoked this time
         # because the run result was cache, the script should not run this time
         c.value
-        self.assertEqual(oldCount + 2, self.exCount)
+        self.assertEqual(oldCount + 1, self.exCount)
 
     def test_setScript(self):
         c = DataCell(CellIndex(1, 1), 123)

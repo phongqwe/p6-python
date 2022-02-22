@@ -1,9 +1,15 @@
 import unittest
+from functools import partial
 
 
 class Bench(unittest.TestCase):
+
+    def f1(self,x,y):
+        print(y)
+        return x+y
     def test_z(self):
-        er = Z()
-        print(er)
+
+        f11= partial(self.f1,y=33)
+        print(f11(100))
 
 

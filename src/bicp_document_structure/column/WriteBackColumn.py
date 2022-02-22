@@ -1,14 +1,12 @@
-from typing import Union, Tuple, Optional, Callable
+from typing import Union, Tuple, Optional
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.DataCell import DataCell
-from bicp_document_structure.cell.EventCell import EventCell
 from bicp_document_structure.cell.WriteBackCell import WriteBackCell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.column.Column import Column
 from bicp_document_structure.column.ColumnJson import ColumnJson
 from bicp_document_structure.column.MutableColumnContainer import MutableColumnContainer
-from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.address.RangeAddress import RangeAddress
 
@@ -19,13 +17,8 @@ class WriteBackColumn(Column):
     def __init__(self, col:Column, container: MutableColumnContainer):
         self.__innerCol:Column = col
         self.__container = container
-        self.__onCellMutation = self.__innerCol._onCellMutationEventHandler
 
     ### >> Column << ##
-
-    @property
-    def _onCellMutationEventHandler(self) -> Callable[[Cell, P6Event], None]:
-        return self.__innerCol._onCellMutationEventHandler
 
     def range(self, firstRow: int, lastRow: int) -> Range:
         return self.__innerCol.range(firstRow, lastRow)
@@ -60,13 +53,11 @@ class WriteBackColumn(Column):
         return self.__innerCol.hasCellAt(address)
 
     def getOrMakeCell(self, address: CellAddress) -> Cell:
-        # rt= self.__innerCol.getOrMakeCell(address)
-        # return rt
         if self.hasCellAt(address):
             return self.__innerCol.getOrMakeCell(address)
         else:
             return WriteBackCell(
-                cell=EventCell(DataCell(address), onCellChange =self.__onCellMutation),
+                cell=DataCell(address),
                 container=self,
             )
 

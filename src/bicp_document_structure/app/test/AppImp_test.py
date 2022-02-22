@@ -192,7 +192,6 @@ class AppImp_test(unittest.TestCase):
         cell.value = "abc"
         self.assertEqual(123, self.aa)
 
-        wb.setOnCellChange(self.__onCellChange2)
         cell.value = "mnn"
         self.assertEqual("@A1", self.aa)
 
@@ -231,6 +230,7 @@ class AppImp_test(unittest.TestCase):
 
         # stop mock server
         thread.join()
+
     def test_integration_test_default_reactor_fail(self):
         # start mock server
         context = zmq.Context.instance()
@@ -250,6 +250,7 @@ class AppImp_test(unittest.TestCase):
 
     def test_adding_new_reactor_to_app(self):
         app = AppImp()
+        self.ze = None
         def reactor(_):
             self.ze=123
         app.eventReactorContainer.addReactor(P6Events.Cell.UpdateValue,EventReactors.makeCellReactor(reactor))

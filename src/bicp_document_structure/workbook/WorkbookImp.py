@@ -1,9 +1,7 @@
 from collections import OrderedDict as ODict
 from pathlib import Path
-from typing import Union, Optional, OrderedDict, Callable
+from typing import Union, Optional, OrderedDict
 
-from bicp_document_structure.cell.Cell import Cell
-from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.util.Util import typeCheck
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Err import Err
@@ -22,9 +20,7 @@ class WorkbookImp(Workbook):
     def __init__(self, name: str,
                  path: Path = None,
                  sheetDict: OrderedDict = None,
-                 onCellChange: Callable[[Workbook, Worksheet, Cell, P6Event], None] = None,
                  ):
-        self.__onCellChange: Optional[Callable[[Workbook, Worksheet, Cell, P6Event], None]] = onCellChange
         self.__key = WorkbookKeyImp(name, path)
         if sheetDict is None:
             sheetDict = ODict()
@@ -65,7 +61,7 @@ class WorkbookImp(Workbook):
         if sheet is not None:
             self.__activeSheet = sheet
         else:
-            raise ValueError("{n} is invalid workbook index or workbook".format(n=indexOrName))
+            raise ValueError("{n} is invalid workbook index or workbook".format(n = indexOrName))
 
     @property
     def activeWorksheet(self) -> Optional[Worksheet]:
@@ -98,7 +94,7 @@ class WorkbookImp(Workbook):
             return self.getWorksheetByIndex(nameOrIndex)
         else:
             raise ValueError(
-                "nameOrIndex is of type {t}. nameOrIndex must be string or int.".format(t=str(type(nameOrIndex))))
+                "nameOrIndex is of type {t}. nameOrIndex must be string or int.".format(t = str(type(nameOrIndex))))
 
     @property
     def sheetCount(self) -> int:
@@ -112,7 +108,7 @@ class WorkbookImp(Workbook):
     def name(self, newName: str):
         self.workbookKey = WorkbookKeyImp(newName, self.workbookKey.filePath)
 
-    def createNewWorksheetRs(self, newSheetName: Optional[str]=None) -> Result[Worksheet, ErrorReport]:
+    def createNewWorksheetRs(self, newSheetName: Optional[str] = None) -> Result[Worksheet, ErrorReport]:
         if newSheetName is None:
             newSheetName = "Sheet" + str(self.__nameCount)
             while self.getWorksheetByName(newSheetName) is not None:
@@ -122,24 +118,13 @@ class WorkbookImp(Workbook):
             if newSheetName in self.__sheetDict.keys():
                 return Err(
                     ErrorReport(
-                        header=WorkbookErrors.WorksheetAlreadyExist.header,
-                        data=WorkbookErrors.WorksheetAlreadyExist.Data(newSheetName)
+                        header = WorkbookErrors.WorksheetAlreadyExist.header,
+                        data = WorkbookErrors.WorksheetAlreadyExist.Data(newSheetName)
                     )
                 )
-        newSheet = WorksheetImp(name=newSheetName,
-                                onCellChange=self.__onCellChangeForWorksheet)
+        newSheet = WorksheetImp(name = newSheetName)
         self.__sheetDict[newSheetName] = newSheet
         return Ok(newSheet)
-
-    def __onCellChangeForWorksheet(self,
-                                   worksheet: Worksheet,
-                                   cell: Cell,
-                                   event: P6Event):
-        if self.__onCellChange is not None:
-            self.__onCellChange(self, worksheet, cell, event)
-
-    def setOnCellChange(self, onCellChange: Callable[["Workbook", Worksheet, Cell, P6Event], None]):
-        self.__onCellChange = onCellChange
 
     def removeWorksheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
         typeCheck(sheetName, "sheetName", str)
@@ -150,8 +135,8 @@ class WorkbookImp(Workbook):
         else:
             return Err(
                 ErrorReport(
-                    header=WorkbookErrors.WorksheetAlreadyExist.header,
-                    data=WorkbookErrors.WorksheetAlreadyExist.Data(sheetName),
+                    header = WorkbookErrors.WorksheetAlreadyExist.header,
+                    data = WorkbookErrors.WorksheetAlreadyExist.Data(sheetName),
                 )
             )
 
@@ -163,8 +148,8 @@ class WorkbookImp(Workbook):
         else:
             return Err(
                 ErrorReport(
-                    header=WorkbookErrors.WorksheetAlreadyExist.header,
-                    data=WorkbookErrors.WorksheetAlreadyExist.Data(index),
+                    header = WorkbookErrors.WorksheetAlreadyExist.header,
+                    data = WorkbookErrors.WorksheetAlreadyExist.Data(index),
                 )
             )
 
@@ -178,12 +163,4 @@ class WorkbookImp(Workbook):
         raise ValueError("nameOrIndex must either be a string or a number")
 
     def toJsonDict(self) -> dict:
-        # sheetJsons = []
-        # for sheet in self.worksheets:
-        #     sheetJsons.append(sheet.toJsonDict())
-        # return {
-        #     "name":self.name,
-        #     "path":self.__key.filePath,
-        #     "worksheets":sheetJsons,
-        # }
         return self.toJson().toJsonDict()

@@ -1,14 +1,12 @@
-from typing import Optional, Union, Tuple, Callable
+from typing import Optional, Union, Tuple
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.DataCell import DataCell
-from bicp_document_structure.cell.EventCell import EventCell
 from bicp_document_structure.cell.WriteBackCell import WriteBackCell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.column.Column import Column
 from bicp_document_structure.column.ColumnJson import ColumnJson
-from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.RangeImp import RangeImp
 from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
@@ -22,18 +20,12 @@ class ColumnImp(Column):
     Column is a dictionary of cell: rowIndex -> cell
     """
 
-    @property
-    def _onCellMutationEventHandler(self) -> Callable[[Cell, P6Event], None]:
-        return self.__onCellMutation
-
-    def __init__(self, colIndex: int, cellDict: dict,
-                 onCellMutation: Callable[[Cell, P6Event], None] = None):
+    def __init__(self, colIndex: int, cellDict: dict):
         if type(cellDict) is dict:
             self.__cellDict = cellDict
             self.__colIndex = colIndex
             self.__rangeAddress = RangeAddressImp(CellIndex(self.__colIndex, 1),
                                                   CellIndex(self.__colIndex, WorksheetConst.rowLimit))
-            self.__onCellMutation = onCellMutation
         else:
             raise ValueError("cellDict must be a dict")
 
@@ -87,9 +79,8 @@ class ColumnImp(Column):
             return cell
         else:
             if self.containsAddress(address):
-                # onCellChange =self.__onCellMutation
                 return WriteBackCell(
-                    cell=EventCell(DataCell(address),onCellChange =self.__onCellMutation),
+                    cell=DataCell(address),
                     container=self,
                 )
             else:

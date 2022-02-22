@@ -1,4 +1,4 @@
-from typing import Optional, Union, Tuple, Callable
+from typing import Optional, Union, Tuple
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
@@ -6,7 +6,6 @@ from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.column.Column import Column
 from bicp_document_structure.column.ColumnImp import ColumnImp
 from bicp_document_structure.column.WriteBackColumn import WriteBackColumn
-from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.RangeImp import RangeImp
 from bicp_document_structure.range.address.RangeAddress import RangeAddress
@@ -21,12 +20,13 @@ from bicp_document_structure.worksheet.WorksheetJson import WorksheetJson
 class WorksheetImp(Worksheet):
     def __init__(self, name="",
                  colDict=None,
-                 onCellChange:Callable[[Worksheet, Cell, P6Event], None] = None):
+                 # onCellChange:Callable[[Worksheet, Cell, P6Event], None] = None
+                 ):
         if colDict is None:
             colDict = {}
         self.__colDict = colDict
         self.__name = name
-        self.__onCellChangeOfWorksheet:Optional[Callable[[Worksheet, Cell, P6Event], None]] = onCellChange
+        # self.__onCellChangeOfWorksheet:Optional[Callable[[Worksheet, Cell, P6Event], None]] = onCellChange
 
     ### >> ToJson << ###
     def toJsonDict(self) -> dict:
@@ -138,10 +138,5 @@ class WorksheetImp(Worksheet):
         if self.hasColumn(colIndex):
             col = self.__colDict[colIndex]
         else:
-            col = ColumnImp(colIndex, {},
-                            onCellMutation=self.__onCellChange)
+            col = ColumnImp(colIndex, {})
         return WriteBackColumn(col, self,)
-
-    def __onCellChange(self, cell:Cell, event:P6Event):
-        if self.__onCellChangeOfWorksheet is not None:
-            self.__onCellChangeOfWorksheet(self, cell, event)

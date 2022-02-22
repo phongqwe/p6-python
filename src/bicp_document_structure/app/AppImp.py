@@ -11,7 +11,7 @@ from bicp_document_structure.event.P6Events import P6Events
 from bicp_document_structure.event.reactor.EventReactorContainer import EventReactorContainer
 from bicp_document_structure.event.reactor.EventReactorContainers import EventReactorContainers
 from bicp_document_structure.event.reactor.EventReactors import EventReactors
-from bicp_document_structure.event.reactor.cell.CellEventData import CellEventData
+from bicp_document_structure.event.reactor.eventData.CellEventData import CellEventData
 from bicp_document_structure.file.loader.P6FileLoader import P6FileLoader
 from bicp_document_structure.file.loader.P6FileLoaders import P6FileLoaders
 from bicp_document_structure.file.saver.P6FileSaver import P6FileSaver
@@ -172,7 +172,7 @@ class AppImp(App):
                 name = "Workbook{}".format(self.__newBookIndex)
 
         if not self.hasWorkbook(name):
-            wb = WorkbookImp(name, onCellChange = self.__onCellChangeInternal)
+            wb = WorkbookImp(name)
             self.wbContainer.addWorkbook(wb)
             return Ok(wb)
         else:

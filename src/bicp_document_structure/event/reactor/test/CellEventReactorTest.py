@@ -3,7 +3,7 @@ import unittest
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.address.CellIndex import CellIndex
-from bicp_document_structure.event.reactor.cell.CellEventReactor import CellEventReactor
+from bicp_document_structure.event.reactor.CellEventReactor import CellEventReactor
 
 
 class CellEventReactorTest(unittest.TestCase):
