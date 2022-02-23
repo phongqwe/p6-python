@@ -1,4 +1,3 @@
-import uuid
 from typing import Optional, Union, Callable
 
 from bicp_document_structure.app.App import App
@@ -10,17 +9,13 @@ from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.event.P6Events import P6Events
 from bicp_document_structure.event.reactor.EventReactorContainer import EventReactorContainer
 from bicp_document_structure.event.reactor.EventReactorContainers import EventReactorContainers
-from bicp_document_structure.event.reactor.EventReactors import EventReactors
+from bicp_document_structure.event.reactor.StdReactorProvider import StdReactorProvider
 from bicp_document_structure.event.reactor.eventData.CellEventData import CellEventData
 from bicp_document_structure.file.loader.P6FileLoader import P6FileLoader
 from bicp_document_structure.file.loader.P6FileLoaders import P6FileLoaders
 from bicp_document_structure.file.saver.P6FileSaver import P6FileSaver
 from bicp_document_structure.file.saver.P6FileSavers import P6FileSavers
-from bicp_document_structure.message.MsgType import MsgType
-from bicp_document_structure.message.P6Message import P6Message
-from bicp_document_structure.message.P6MessageHeader import P6MessageHeader
 from bicp_document_structure.message.SocketProvider import SocketProvider
-from bicp_document_structure.message.sender.MessageSender import MessageSender
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Err import Err
 from bicp_document_structure.util.result.Ok import Ok
@@ -42,7 +37,7 @@ class AppImp(App):
                  loader: Optional[P6FileLoader] = None,
                  saver: Optional[P6FileSaver] = None,
                  socketProvider: SocketProvider | None = None,
-                 cellEventReactorContainer: EventReactorContainer[CellEventData] | None = None
+                 cellEventReactorContainer: EventReactorContainer[CellEventData] | None = None,
                  ):
         if workbookContainer is None:
             workbookContainer = WorkbookContainerImp()
@@ -65,28 +60,20 @@ class AppImp(App):
         if cellEventReactorContainer is None:
             cellEventReactorContainer = EventReactorContainers.mutable()
         self.__reactorContainer: EventReactorContainer[CellEventData] = cellEventReactorContainer
+        self.__reactorProvider = StdReactorProvider(self._getSocketProvider)
 
     def initBaseReactor(self):
-        """create reactors """
-        def reactToCellValueUpdate(data: CellEventData):
-            """send a zmq message to a predesignated socket when a cell's value is update"""
-            if self.__socketProvider is not None:
-                socket = self.__socketProvider.reqSocketForUIUpdating()
-                replyRs = MessageSender.sendREQ(
-                    socket = socket,
-                    msg = P6Message(
-                        header = P6MessageHeader(str(uuid.uuid4()), MsgType.CellValueUpdate),
-                        content = data))
-                if replyRs.isErr():
-                    raise replyRs.err.toException()
-        reactor = EventReactors.makeCellReactor(reactToCellValueUpdate)
-        self.__reactorContainer.addReactor(P6Events.Cell.UpdateValue, reactor)
+        """create base reactors """
+        self.__reactorContainer.addReactor(P6Events.Cell.UpdateValue, self.__reactorProvider.cellUpdateValue())
 
     @property
     def eventReactorContainer(self) -> EventReactorContainer:
         return self.__reactorContainer
 
     ### >> App << ###
+
+    def _getSocketProvider(self)->SocketProvider|None:
+        return self.__socketProvider
 
     @property
     def socketProvider(self) -> SocketProvider | None:

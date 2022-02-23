@@ -9,6 +9,8 @@ class P6Events:
         UpdateFormula = P6Event("Update cell formula", f"{__prefix}2")
         ClearScriptResult = P6Event("Clear cell script result", f"{__prefix}3")
 
+
+
     class Worksheet:
         __prefix = "WSE"
         ReRun = P6Event("ReRun worksheet",f"{__prefix}0")

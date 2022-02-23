@@ -10,8 +10,7 @@ from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.event.P6Events import P6Events
-from bicp_document_structure.event.reactor.EventReactors import EventReactors
-from bicp_document_structure.message.SocketProviderImp import SocketProviderImp
+from bicp_document_structure.event.reactor.EventReactorFactory import EventReactorFactory
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookKeyImp import WorkbookKeyImp
 from bicp_document_structure.worksheet.Worksheet import Worksheet
@@ -177,7 +176,7 @@ class AppImp_test(unittest.TestCase):
 
         app.eventReactorContainer.addReactor(
             P6Events.Cell.UpdateValue,
-            EventReactors.makeCellReactor(self.onCellChange))
+            EventReactorFactory.makeCellReactor(self.onCellChange))
         fileName = "file.txt"
 
         loadRs0 = app.loadWorkbookRs(fileName)
@@ -211,49 +210,14 @@ class AppImp_test(unittest.TestCase):
         thread.start()
         return thread
 
-    def test_integration_test_default_reactor_ok(self):
-        # start mock server
-        context = zmq.Context.instance()
-        thread = self.startREPServerOnThread(True,context)
-        socket = context.socket(zmq.REQ)
-        socket.connect("tcp://localhost:6000")
-        socketProvider = SocketProviderImp(
-            reqSocketUI = socket
-        )
-        app = AppImp()
-        app.initBaseReactor()
-        app.socketProvider = socketProvider
-        wb = app.createNewWorkbook("bookz1")
-        wb.createNewWorksheet("sheetz1")
-        cell = app.activeWorkbook.activeWorksheet.cell("@B32")
-        cell.value = 123
 
-        # stop mock server
-        thread.join()
-
-    def test_integration_test_default_reactor_fail(self):
-        # start mock server
-        context = zmq.Context.instance()
-        thread = self.startREPServerOnThread(False,context)
-        socket = context.socket(zmq.REQ)
-        socket.connect("tcp://localhost:6000")
-        socketProvider = SocketProviderImp(reqSocketUI = socket)
-        app = AppImp()
-        app.initBaseReactor()
-        app.socketProvider = socketProvider
-        wb = app.createNewWorkbook("bookz1")
-        wb.createNewWorksheet("sheetz1")
-        cell = app.activeWorkbook.activeWorksheet.cell("@B32")
-        with self.assertRaises(Exception):
-            cell.value = 123
-        thread.join()
 
     def test_adding_new_reactor_to_app(self):
         app = AppImp()
         self.ze = None
         def reactor(_):
             self.ze=123
-        app.eventReactorContainer.addReactor(P6Events.Cell.UpdateValue,EventReactors.makeCellReactor(reactor))
+        app.eventReactorContainer.addReactor(P6Events.Cell.UpdateValue, EventReactorFactory.makeCellReactor(reactor))
         wb = app.createNewWorkbook("bookz1")
         wb.createNewWorksheet("sheetz1")
         cell = app.activeWorkbook.activeWorksheet.cell("@B32")
