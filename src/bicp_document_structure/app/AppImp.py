@@ -1,11 +1,9 @@
-from typing import Optional, Union, Callable
+from typing import Optional, Union
 
 from bicp_document_structure.app.App import App
 from bicp_document_structure.app.errors.AppErrors import AppErrors
 from bicp_document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
 from bicp_document_structure.app.workbook_container.WorkbookContainerImp import WorkbookContainerImp
-from bicp_document_structure.cell.Cell import Cell
-from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.event.P6Events import P6Events
 from bicp_document_structure.event.reactor.EventReactorContainer import EventReactorContainer
 from bicp_document_structure.event.reactor.EventReactorContainers import EventReactorContainers
@@ -24,6 +22,7 @@ from bicp_document_structure.util.result.Results import Results
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
 from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
+from bicp_document_structure.workbook.WorkbookWrapper import WorkbookWrapper
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 
@@ -72,7 +71,7 @@ class AppImp(App):
 
     ### >> App << ###
 
-    def _getSocketProvider(self)->SocketProvider|None:
+    def _getSocketProvider(self) -> SocketProvider | None:
         return self.__socketProvider
 
     @property
@@ -94,9 +93,6 @@ class AppImp(App):
     def hasNoWorkbook(self) -> bool:
         return self.wbContainer.isEmpty()
 
-    def _getOnCellChange(self) -> Callable[[Workbook, Worksheet, Cell, P6Event], None] | None:
-        return self.__onCellChangeInternal
-
     @property
     def activeWorkbook(self) -> Optional[Workbook]:
         if self.__activeWorkbook is None:
@@ -104,9 +100,10 @@ class AppImp(App):
                 return None
             else:
                 self.__activeWorkbook = self.wbContainer.getWorkbookByIndex(0)
-                return self.__activeWorkbook
-        else:
-            return self.__activeWorkbook
+
+        rt = self._makeEventWb(self.__activeWorkbook)
+        return rt
+
 
     def setActiveWorkbook(self, indexOrNameOrKey: Union[int, str, WorkbookKey]):
         setRs = self.setActiveWorkbookRs(indexOrNameOrKey)
@@ -115,8 +112,11 @@ class AppImp(App):
     def setActiveWorkbookRs(self, indexOrNameOrKey: Union[int, str, WorkbookKey]) -> Result[Workbook, ErrorReport]:
         wb = self.getWorkbook(indexOrNameOrKey)
         if wb is not None:
-            self.__activeWorkbook = wb
-            return Ok(wb)
+            if isinstance(wb,WorkbookWrapper):
+                self.__activeWorkbook = wb.innerWorkbook
+            else:
+                self.__activeWorkbook = wb
+            return Ok(self.__activeWorkbook)
         else:
             return Err(
                 ErrorReport(
@@ -131,8 +131,8 @@ class AppImp(App):
 
     @property
     def activeSheet(self) -> Optional[Worksheet]:
-        if self.__activeWorkbook is not None:
-            return self.__activeWorkbook.activeWorksheet
+        if self.activeWorkbook is not None:
+            return self.activeWorkbook.activeWorksheet
         else:
             return None
 
@@ -157,8 +157,9 @@ class AppImp(App):
 
         if not self.hasWorkbook(name):
             wb = WorkbookImp(name)
+            eventNewWb = self._makeEventWb(wb)
             self.wbContainer.addWorkbook(wb)
-            return Ok(wb)
+            return Ok(eventNewWb)
         else:
             return Err(
                 ErrorReport(

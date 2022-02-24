@@ -79,7 +79,7 @@ class EventWorkbook(WorkbookWrapper):
         onSheetEvent = self.__makePartial(self.__onWorksheetEvent)
         onRangeEvent = self.__makePartial(self.__onRangeEvent)
         return EventWorksheet(sheet,
-                              onCellChange = onCellEvent,
+                              onCellEvent = onCellEvent,
                               onWorksheetEvent = onSheetEvent,
                               onRangeEvent = onRangeEvent)
 
@@ -88,9 +88,3 @@ class EventWorkbook(WorkbookWrapper):
             return partial(callback, self._innerWorkbook)
         else:
             return None
-    # def __onCellChangeForWorksheet(self,
-    #                                worksheet: Worksheet,
-    #                                cell: Cell,
-    #                                event: P6Event):
-    #     if self.__onCellChange is not None:
-    #         self.__onCellChange(self._innerWorkbook, worksheet, cell, event)

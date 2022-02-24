@@ -13,19 +13,29 @@ class EventWorksheetTest(unittest.TestCase):
         sheet = WorksheetImp()
         self.a = 0
 
-        def cb(ws, cell, event):
+        def cb( ws, cell, event):
             self.a += 1
 
-        self.b=0
-        def re(re,event):
-            self.b+=1
+        self.b = 0
 
-        self.c=0
-        def wse(wse,event):
-            self.c+=1
+        def re(ws, re, event):
+            self.b += 1
 
+        self.c = 0
 
-        eventSheet = EventWorksheet(sheet, cb,wse,re)
+        def wse( wse, event):
+            self.c += 1
+
+        self.col = 0
+        def cole(wse,col,event):
+            self.col +=1
+
+        eventSheet = EventWorksheet(sheet,
+                                    onCellEvent = cb,
+                                    onWorksheetEvent = wse,
+                                    onRangeEvent = re,
+                                    onColEvent = cole
+                                    )
         expect = DataCell(CellIndex(1, 2))
 
         # cell
@@ -59,12 +69,12 @@ class EventWorksheetTest(unittest.TestCase):
             cell.value = -999
         self.assertEqual(oldA + len(eventSheet.cells), self.a)
 
-        #getCol
+        # getCol
         oldA = self.a
         col = eventSheet.getCol(0)
         for cell in col.cells:
             cell.value = "z"
-        self.assertEqual(oldA + len(eventSheet.getCol(0).cells),self.a)
+        self.assertEqual(oldA + len(eventSheet.getCol(0).cells), self.a)
 
         # range
         rng = eventSheet.range("@A1:B3")
@@ -72,9 +82,13 @@ class EventWorksheetTest(unittest.TestCase):
         oldA = self.a
         for cell in rng.cells:
             cell.value = 123
-            count+=1
-        self.assertTrue(oldA+count,self.a)
+            count += 1
+        self.assertTrue(oldA + count, self.a)
 
         rng.reRun()
-        self.assertEqual(1,self.b)
+        self.assertEqual(1, self.b)
 
+
+        col = eventSheet.getCol(1)
+        col.reRun()
+        self.assertEqual(1,self.col)

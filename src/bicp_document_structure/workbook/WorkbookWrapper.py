@@ -21,6 +21,10 @@ class WorkbookWrapper(Workbook,ABC):
     def workbookKey(self) -> WorkbookKey:
         return self._innerWorkbook.workbookKey
 
+    @workbookKey.setter
+    def workbookKey(self,newKey:WorkbookKey):
+        self._innerWorkbook.workbookKey = newKey
+
     @property
     def activeWorksheet(self) -> Optional[Worksheet]:
         return self._innerWorkbook.activeWorksheet
@@ -45,6 +49,10 @@ class WorkbookWrapper(Workbook,ABC):
     def name(self) -> str:
         return self._innerWorkbook.name
 
+    @name.setter
+    def name(self,newName):
+        self._innerWorkbook.name = newName
+
     def createNewWorksheetRs(self, newSheetName: Optional[str] = None) -> Result[Worksheet, ErrorReport]:
         return self._innerWorkbook.createNewWorksheetRs(newSheetName)
 
@@ -62,3 +70,15 @@ class WorkbookWrapper(Workbook,ABC):
 
     def isEmpty(self) -> bool:
         return self._innerWorkbook.isEmpty()
+
+    @property
+    def innerWorkbook(self):
+        return self._innerWorkbook
+
+    def __eq__(self, o: object) -> bool:
+        if isinstance(o,WorkbookWrapper):
+            return self._innerWorkbook == o._innerWorkbook
+        elif isinstance(o,Workbook):
+            return self._innerWorkbook == o
+        else:
+            return False

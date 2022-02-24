@@ -22,7 +22,7 @@ class StdReactorProvider_test(unittest.TestCase):
             repSocket.send("fail".encode())
         repSocket.close()
 
-    def startREPServerOnThread(self, isOk,context) -> threading.Thread:
+    def startREPServerOnThread(self, isOk, context) -> threading.Thread:
         thread = threading.Thread(target = self.startREPServer, args = [isOk, context])
         thread.start()
         return thread
@@ -33,42 +33,55 @@ class StdReactorProvider_test(unittest.TestCase):
         thread = self.startREPServerOnThread(True, context)
         socket = context.socket(zmq.REQ)
         socket.connect("tcp://localhost:6000")
-        socketProvider = SocketProviderImp(
-            reqSocketUI = socket
-        )
+        socketProvider = SocketProviderImp(reqSocketUI = socket)
+
         def gs():
             return socketProvider
+
         reactorProvider = StdReactorProvider(gs)
         reactor = reactorProvider.cellUpdateValue()
+
         def onCellEvent(workbook, worksheet, cell, event):
             reactor.react(CellEventData(
-                workbook,worksheet,cell,event
+                workbook, worksheet, cell, event
             ))
-        wb = EventWorkbook(WorkbookImp("bookz1"),onCellEvent = onCellEvent)
+
+        wb = EventWorkbook(WorkbookImp("bookz1"), onCellEvent = onCellEvent)
         wb.createNewWorksheet("sheetz1")
         cell = wb.activeWorksheet.cell("@B32")
         cell.value = 123
 
         # stop mock server
         thread.join()
+        context.destroy()
 
     def test_integration_test_default_reactor_fail(self):
         # start mock server
         context = zmq.Context.instance()
+
         thread = self.startREPServerOnThread(False, context)
         socket = context.socket(zmq.REQ)
         socket.connect("tcp://localhost:6000")
         socketProvider = SocketProviderImp(reqSocketUI = socket)
-        app = AppImp()
-        app.initBaseReactor()
-        app.socketProvider = socketProvider
-        wb = app.createNewWorkbook("bookz1")
+
+        def gs():
+            return socketProvider
+
+        reactorProvider = StdReactorProvider(gs)
+        reactor = reactorProvider.cellUpdateValue()
+
+        def onCellEvent(workbook, worksheet, cell, event):
+            reactor.react(CellEventData(
+                workbook, worksheet, cell, event
+            ))
+
+        wb = EventWorkbook(WorkbookImp("bookz1"), onCellEvent = onCellEvent)
         wb.createNewWorksheet("sheetz1")
-        cell = app.activeWorkbook.activeWorksheet.cell("@B32")
+        cell = wb.activeWorksheet.cell("@B32")
         with self.assertRaises(Exception):
             cell.value = 123
         thread.join()
-
+        context.destroy()
 
 
 if __name__ == '__main__':

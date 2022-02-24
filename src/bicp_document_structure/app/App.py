@@ -68,26 +68,29 @@ class App(ABC):
 
     @property
     def activeSheet(self) -> Optional[Worksheet]:
+        """
+        :return: the activesheet of the activebook.  The returned worksheet is connected to all the reactors of this app
+        """
         raise NotImplementedError()
 
     def getWorkbookByIndex(self, index: int) -> Optional[Workbook]:
-        """:return workbook at an index"""
-        return self.wbContainer.getWorkbookByIndex(index)
+        """:return workbook at an index. The returned workbook is connected to all the reactors of this app"""
+        return self._makeEventWb(self.wbContainer.getWorkbookByIndex(index))
 
     def getWorkbookByName(self, name: str) -> Optional[Workbook]:
-        """:return workbook at a name"""
-        return self.wbContainer.getWorkbookByName(name)
+        """:return workbook at a name. The returned workbook is connected to all the reactors of this app"""
+        return self._makeEventWb(self.wbContainer.getWorkbookByName(name))
 
     def getWorkbookByKey(self, key: WorkbookKey) -> Optional[Workbook]:
-        """:return workbook at a key"""
-        return self.wbContainer.getWorkbookByKey(key)
+        """:return workbook at a key. The returned workbook is connected to all the reactors of this app"""
+        return self._makeEventWb(self.wbContainer.getWorkbookByKey(key))
 
     def getWorkbook(self, key: Union[str, int, WorkbookKey]) -> Optional[Workbook]:
-        """:return workbook at a key that is either a name, an index, or a WorkbookKey"""
-        return self.wbContainer.getWorkbook(key)
+        """:return workbook at a key that is either a name, an index, or a WorkbookKey. The returned workbook is connected to all the reactors of this app"""
+        return self._makeEventWb(self.wbContainer.getWorkbook(key))
 
     def getWorkbookRs(self, key: Union[str, int, WorkbookKey]) -> Result[Workbook, ErrorReport]:
-        """:return workbook at a key that is either a name, an index, or a WorkbookKey"""
+        """:return workbook at a key that is either a name, an index, or a WorkbookKey. The returned workbook is connected to all the reactors of this app"""
         wb = self.getWorkbook(key)
         if wb is not None:
             return Ok(wb)
@@ -105,7 +108,7 @@ class App(ABC):
         """
         raise NotImplementedError()
 
-    def createDefaultNewWorkbook(self, name: str | None = None)->Workbook:
+    def createDefaultNewWorkbook(self, name: str | None = None) -> Workbook:
         """
         create a new workbook with an auto generated name, a blank worksheet with auto generated name
         :return a the newly created workbook or raising an exception if there's an error
@@ -113,7 +116,7 @@ class App(ABC):
         createRs: Result[Workbook, ErrorReport] = self.createDefaultNewWorkbookRs(name)
         return Results.extractOrRaise(createRs)
 
-    def createDefaultNewWorkbookRs(self, name: str | None = None)->Result[Workbook, ErrorReport]:
+    def createDefaultNewWorkbookRs(self, name: str | None = None) -> Result[Workbook, ErrorReport]:
         """
         create a new workbook with an auto generated name, a blank worksheet with auto generated name
         :return a Result object if there are error instead of raising an exception
@@ -253,16 +256,11 @@ class App(ABC):
             loadResult: Result = self._fileLoader.load(filePath)
             if loadResult.isOk():
                 newWb: Workbook = loadResult.value
-                eventNewWb = EventWorkbook(
-                    innerWorkbook = newWb,
-                    onCellEvent = self.__onCellEvent,
-                    onColEvent = self.__onColEvent,
-                    onRangeEvent = self.__onRangeEvent,
-                    onWorksheetEvent = self.__onWorksheetEvent,
-                    onWorkbookEvent = self.__onWorkbookEvent,
-                )
-                self.wbContainer.addWorkbook(eventNewWb)
-            return loadResult
+                eventNewWb = self._makeEventWb(newWb)
+                self.wbContainer.addWorkbook(newWb)
+                return Ok(eventNewWb)
+            else:
+                return loadResult
         else:
             return Err(
                 ErrorReport(
@@ -289,20 +287,20 @@ class App(ABC):
             rt = "No workbook"
         print(rt)
 
-    def __onCellEvent(self, wb: Workbook, ws: Worksheet, c: Cell, e: P6Event):
-        self.eventReactorContainer.triggerReactorsFor(e, CellEventData(wb, ws, c))
+    def _onCellEvent(self, wb: Workbook, ws: Worksheet, c: Cell, e: P6Event):
+        self.eventReactorContainer.triggerReactorsFor(e, CellEventData(wb, ws, c, e))
 
-    def __onRangeEvent(self, wb: Workbook, ws: Worksheet, r: Range, e: P6Event):
-        self.eventReactorContainer.triggerReactorsFor(e, RangeEventData(wb, ws, r))
+    def _onRangeEvent(self, wb: Workbook, ws: Worksheet, r: Range, e: P6Event):
+        self.eventReactorContainer.triggerReactorsFor(e, RangeEventData(wb, ws, r, e))
 
-    def __onColEvent(self, wb: Workbook, ws: Worksheet, col:Column, e: P6Event):
-        self.eventReactorContainer.triggerReactorsFor(e, ColEventData(wb, ws, col))
+    def _onColEvent(self, wb: Workbook, ws: Worksheet, col: Column, e: P6Event):
+        self.eventReactorContainer.triggerReactorsFor(e, ColEventData(wb, ws, col, e))
 
-    def __onWorksheetEvent(self, wb: Workbook, ws: Worksheet, e: P6Event):
-        self.eventReactorContainer.triggerReactorsFor(e, WorksheetEventData(wb, ws))
-    def __onWorkbookEvent(self, wb: Workbook, e: P6Event):
-        self.eventReactorContainer.triggerReactorsFor(e, WorkbookEventData(wb))
+    def _onWorksheetEvent(self, wb: Workbook, ws: Worksheet, e: P6Event):
+        self.eventReactorContainer.triggerReactorsFor(e, WorksheetEventData(wb, ws, e))
 
+    def _onWorkbookEvent(self, wb: Workbook, e: P6Event):
+        self.eventReactorContainer.triggerReactorsFor(e, WorkbookEventData(wb, e))
 
     @property
     def socketProvider(self) -> SocketProvider | None:
@@ -315,3 +313,19 @@ class App(ABC):
     @property
     def eventReactorContainer(self) -> EventReactorContainer:
         raise NotImplementedError
+
+    def _makeEventWb(self, workbook: Workbook|Optional[Workbook]) -> EventWorkbook:
+        if workbook is not None:
+            if isinstance(workbook,EventWorkbook):
+                return workbook
+            else:
+                return EventWorkbook(
+                    innerWorkbook = workbook,
+                    onCellEvent = self._onCellEvent,
+                    onColEvent = self._onColEvent,
+                    onRangeEvent = self._onRangeEvent,
+                    onWorksheetEvent = self._onWorksheetEvent,
+                    onWorkbookEvent = self._onWorkbookEvent,
+                )
+        else:
+            return None

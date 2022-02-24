@@ -19,13 +19,13 @@ from bicp_document_structure.worksheet.WorksheetWrapper import WorksheetWrapper
 class EventWorksheet(WorksheetWrapper):
     def __init__(self,
                  innerWorksheet: Worksheet,
-                 onCellChange: Callable[[Worksheet, Cell, P6Event], None] = None,
+                 onCellEvent: Callable[[Worksheet, Cell, P6Event], None] = None,
                  onWorksheetEvent: Callable[[Worksheet, P6Event], None] = None,
                  onRangeEvent: Callable[[Worksheet, Range, P6Event], None] = None,
                  onColEvent: Callable[[Worksheet, Column, P6Event], None] = None,
                  ):
         super().__init__(innerWorksheet)
-        self.__onCellEvent: Callable[[Worksheet, Cell, P6Event], None] = onCellChange
+        self.__onCellEvent: Callable[[Worksheet, Cell, P6Event], None] = onCellEvent
         self.__onWorksheetEvent: Callable[[Worksheet, P6Event], None] = onWorksheetEvent
         self.__onRangeEvent: Callable[[Worksheet, Range, P6Event], None] = onRangeEvent
         self.__onColEvent: Callable[[Worksheet, Column, P6Event], None] = onColEvent

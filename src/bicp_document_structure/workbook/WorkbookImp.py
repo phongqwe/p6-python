@@ -13,6 +13,7 @@ from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 from bicp_document_structure.workbook.WorkbookKeyImp import WorkbookKeyImp
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
+from bicp_document_structure.worksheet.WorksheetWrapper import WorksheetWrapper
 
 
 class WorkbookImp(Workbook):
@@ -59,7 +60,11 @@ class WorkbookImp(Workbook):
     def setActiveWorksheet(self, indexOrName: Union[int, str]):
         sheet = self.getWorksheet(indexOrName)
         if sheet is not None:
-            self.__activeSheet = sheet
+            # need to remove the event layer
+            if isinstance(sheet, WorksheetWrapper):
+                self.__activeSheet = sheet.innerSheet
+            else:
+                self.__activeSheet = sheet
         else:
             raise ValueError("{n} is invalid workbook index or workbook".format(n = indexOrName))
 

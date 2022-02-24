@@ -6,14 +6,11 @@ from pathlib import Path
 import zmq
 
 from bicp_document_structure.app.AppImp import AppImp
-from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellIndex import CellIndex
-from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.event.P6Events import P6Events
 from bicp_document_structure.event.reactor.EventReactorFactory import EventReactorFactory
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookKeyImp import WorkbookKeyImp
-from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 
 class AppImp_test(unittest.TestCase):
@@ -168,8 +165,8 @@ class AppImp_test(unittest.TestCase):
     def onCellChange(self, dt):
         self.aa = 123
 
-    def __onCellChange2(self, wb: Workbook, ws: Worksheet, cell: Cell, event: P6Event):
-        self.aa = f"{cell.address.label}"
+    def __onCellChange2(self, dt):
+        self.aa = f"{dt.cell.address.label}"
 
     def test_event_listener_on_workbook_loaded_from_file(self):
         app = AppImp()
@@ -191,6 +188,9 @@ class AppImp_test(unittest.TestCase):
         cell.value = "abc"
         self.assertEqual(123, self.aa)
 
+        app.eventReactorContainer.addReactor(
+            P6Events.Cell.UpdateValue,
+            EventReactorFactory.makeCellReactor(self.__onCellChange2))
         cell.value = "mnn"
         self.assertEqual("@A1", self.aa)
 
@@ -210,18 +210,18 @@ class AppImp_test(unittest.TestCase):
         thread.start()
         return thread
 
-
-
     def test_adding_new_reactor_to_app(self):
         app = AppImp()
         self.ze = None
         def reactor(_):
             self.ze=123
-        app.eventReactorContainer.addReactor(P6Events.Cell.UpdateValue, EventReactorFactory.makeCellReactor(reactor))
+        app.eventReactorContainer.addReactor(
+            P6Events.Cell.UpdateValue,
+            EventReactorFactory.makeCellReactor(reactor))
         wb = app.createNewWorkbook("bookz1")
         wb.createNewWorksheet("sheetz1")
         cell = app.activeWorkbook.activeWorksheet.cell("@B32")
-        cell.value = 123
+        cell.value = 444
         self.assertEqual(123,self.ze)
 
     def test_createDefaultNewWorkbook(self):

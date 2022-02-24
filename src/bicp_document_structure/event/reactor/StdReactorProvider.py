@@ -42,25 +42,22 @@ class StdReactorProvider(ReactorProvider):
         return EventReactorFactory.makeCellReactor(cb)
 
     def cellUpdateScript(self) -> CellReactor:
-        pass
+        return None
 
     def cellUpdateFormula(self) -> CellReactor:
-        pass
+        return None
 
     def cellClearScriptResult(self) -> CellReactor:
-        pass
+        return None
 
     def colReRun(self) -> ColumnReactor:
-        pass
+        return None
 
     def rangeReRun(self) -> RangeEventReactor:
-        pass
+        return None
 
     def worksheetReRun(self) -> WorksheetReactor:
-        pass
+        return None
 
     def workbookReRun(self) -> WorkbookReactor:
-        pass
-
-
-
+        return None

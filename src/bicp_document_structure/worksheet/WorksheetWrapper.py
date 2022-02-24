@@ -80,3 +80,7 @@ class WorksheetWrapper(Worksheet,ABC):
 
     def reRun(self):
         self._innerSheet.reRun()
+
+    @property
+    def innerSheet(self):
+        return self._innerSheet
