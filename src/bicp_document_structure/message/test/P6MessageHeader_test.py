@@ -8,4 +8,4 @@ class P6MessageHeaderTest(unittest.TestCase):
     def test_toJsonStr(self):
         hd=P6MessageHeader("id1", MsgType.CellValueUpdate)
         print(hd.toJsonStr())
-        self.assertEqual("""{"msgId": "id1", "msgType": "cell_value_edit"}""",hd.toJsonStr())
+        self.assertEqual("""{"msgId": "id1", "msgType": "cell_value_update"}""",hd.toJsonStr())
