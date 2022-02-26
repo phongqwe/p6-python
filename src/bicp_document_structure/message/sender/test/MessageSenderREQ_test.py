@@ -27,7 +27,7 @@ def startREPServer(isOk, context):
 
 class MessageSenderREQTest(unittest.TestCase):
     messageObj = P6Message(
-        header = P6MessageHeader("id1", MsgType.CellValueUpdate),
+        header = P6MessageHeader("id1", MsgType.CellUpdateValue),
         content = CellJson(
             value = "cell value",
             script = "cell script",

@@ -1,16 +1,17 @@
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.common.ToJsonStr import ToJson
 from bicp_document_structure.event.P6Event import P6Event
+from bicp_document_structure.event.reactor.eventData.WithWorkbookData import WithWorkbookData
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 
-class CellEventData(ToJson):
+class CellEventData(ToJson,WithWorkbookData):
 
     def __init__(self, workbook: Workbook, worksheet: Worksheet, cell: Cell,event:P6Event):
         self.cell = cell
         self.worksheet = worksheet
-        self.workbook = workbook
+        self._workbook = workbook
         self.event:P6Event = event
 
     def toJsonDict(self) -> dict:
@@ -26,3 +27,8 @@ class CellEventData(ToJson):
             "worksheet": self.worksheet.name,
             "cell": self.cell.toJson().toJsonDict()
         }
+
+    @property
+    def workbook(self):
+        return self._workbook
+

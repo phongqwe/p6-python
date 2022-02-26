@@ -2,7 +2,7 @@ from abc import ABC
 
 from bicp_document_structure.event.reactor.CellReactor import CellReactor
 from bicp_document_structure.event.reactor.ColumnReactor import ColumnReactor
-from bicp_document_structure.event.reactor.RangeEventReactor import RangeEventReactor
+from bicp_document_structure.event.reactor.RangeReactor import RangeReactor
 from bicp_document_structure.event.reactor.WorkbookReactor import WorkbookReactor
 from bicp_document_structure.event.reactor.WorksheetReactor import WorksheetReactor
 
@@ -24,7 +24,7 @@ class ReactorProvider(ABC):
     def colReRun(self) -> ColumnReactor:
         raise NotImplementedError()
 
-    def rangeReRun(self) -> RangeEventReactor:
+    def rangeReRun(self) -> RangeReactor:
         raise NotImplementedError()
 
     def worksheetReRun(self) -> WorksheetReactor:
