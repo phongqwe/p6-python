@@ -35,6 +35,10 @@ class App(ABC):
     """
     this class represents the state of the app.
     """
+    @property
+    def zContext(self):
+        """zmq context"""
+        raise NotImplementedError()
 
     @property
     def wbContainer(self) -> WorkbookContainer:
@@ -314,9 +318,9 @@ class App(ABC):
     def eventReactorContainer(self) -> EventReactorContainer:
         raise NotImplementedError
 
-    def _makeEventWb(self, workbook: Workbook|Optional[Workbook]) -> EventWorkbook:
+    def _makeEventWb(self, workbook: Workbook | Optional[Workbook]) -> Optional[EventWorkbook]:
         if workbook is not None:
-            if isinstance(workbook,EventWorkbook):
+            if isinstance(workbook, EventWorkbook):
                 return workbook
             else:
                 return EventWorkbook(

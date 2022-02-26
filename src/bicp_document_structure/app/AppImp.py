@@ -1,5 +1,7 @@
 from typing import Optional, Union
 
+import zmq
+
 from bicp_document_structure.app.App import App
 from bicp_document_structure.app.errors.AppErrors import AppErrors
 from bicp_document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
@@ -14,6 +16,7 @@ from bicp_document_structure.file.loader.P6FileLoaders import P6FileLoaders
 from bicp_document_structure.file.saver.P6FileSaver import P6FileSaver
 from bicp_document_structure.file.saver.P6FileSavers import P6FileSavers
 from bicp_document_structure.message.SocketProvider import SocketProvider
+from bicp_document_structure.message.SocketProviderImp import SocketProviderImp
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Err import Err
 from bicp_document_structure.util.result.Ok import Ok
@@ -55,11 +58,20 @@ class AppImp(App):
         self.__wbLoader: P6FileLoader = loader
         self.__wbSaver: P6FileSaver = saver
         self.__newBookIndex: int = 0
-        self.__socketProvider: SocketProvider | None = socketProvider
+
+        if socketProvider is None:
+            socketProvider = SocketProviderImp()
+        self.__socketProvider: SocketProvider = socketProvider
         if cellEventReactorContainer is None:
             cellEventReactorContainer = EventReactorContainers.mutable()
         self.__reactorContainer: EventReactorContainer[CellEventData] = cellEventReactorContainer
         self.__reactorProvider = StdReactorProvider(self._getSocketProvider)
+        self.__zcontext = zmq.Context.instance()
+        self.initBaseReactor()
+
+    @property
+    def zContext(self):
+        return self.__zcontext
 
     def initBaseReactor(self):
         """create base reactors """
@@ -104,7 +116,6 @@ class AppImp(App):
         rt = self._makeEventWb(self.__activeWorkbook)
         return rt
 
-
     def setActiveWorkbook(self, indexOrNameOrKey: Union[int, str, WorkbookKey]):
         setRs = self.setActiveWorkbookRs(indexOrNameOrKey)
         return Results.extractOrRaise(setRs)
@@ -112,7 +123,7 @@ class AppImp(App):
     def setActiveWorkbookRs(self, indexOrNameOrKey: Union[int, str, WorkbookKey]) -> Result[Workbook, ErrorReport]:
         wb = self.getWorkbook(indexOrNameOrKey)
         if wb is not None:
-            if isinstance(wb,WorkbookWrapper):
+            if isinstance(wb, WorkbookWrapper):
                 self.__activeWorkbook = wb.innerWorkbook
             else:
                 self.__activeWorkbook = wb

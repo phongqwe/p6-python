@@ -27,6 +27,13 @@ class StdReactorProvider_test(unittest.TestCase):
         thread.start()
         return thread
 
+    # def z(self):
+    #     context = zmq.Context.instance()
+    #     socket = context.socket(zmq.REQ)
+    #     socket.connect("tcp://localhost:6000")
+    #     getApp().socketProvider.updateREQSocketForUIUpdating(socket)
+
+
     def test_integration_test_default_reactor_ok(self):
         # start mock server
         context = zmq.Context.instance()

@@ -2,9 +2,11 @@ import os
 import threading
 import unittest
 from pathlib import Path
+from typing import Callable
 
 import zmq
 
+from bicp_document_structure.app.App import App
 from bicp_document_structure.app.AppImp import AppImp
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.event.P6Events import P6Events
@@ -188,11 +190,6 @@ class AppImp_test(unittest.TestCase):
         cell.value = "abc"
         self.assertEqual(123, self.aa)
 
-        app.eventReactorContainer.addReactor(
-            P6Events.Cell.UpdateValue,
-            EventReactorFactory.makeCellReactor(self.__onCellChange2))
-        cell.value = "mnn"
-        self.assertEqual("@A1", self.aa)
 
     def startREPServer(self, isOk, context):
         repSocket = context.socket(zmq.REP)
@@ -230,6 +227,54 @@ class AppImp_test(unittest.TestCase):
         self.assertTrue(wb.isNotEmpty())
         self.assertIsNotNone(wb.getWorksheet(0))
 
+    def test_event_listener_on_newly_created_workbook(self):
+        def cwb(app:App):
+            wb=app.createNewWorkbook("book1")
+            return wb
+        self._test_event_onWb(cwb)
+
+
+    def test_event_listener_on_already_created_wb(self):
+        def cwb(app:App):
+            app.createNewWorkbook("book1")
+            wb = app.getWorkbook("book1")
+            return wb
+        self._test_event_onWb(cwb)
+    def test_event_listener_getWorkbookByIndex(self):
+        def cwb(app:App):
+            app.createNewWorkbook("book1")
+            wb = app.getWorkbookByIndex(0)
+            return wb
+        self._test_event_onWb(cwb)
+
+    def test_event_listener_getWorkbookByName(self):
+        def cwb(app:App):
+            app.createNewWorkbook("book1")
+            wb = app.getWorkbookByName("book1")
+            return wb
+        self._test_event_onWb(cwb)
+    def test_event_listener_getWorkbookByKey(self):
+        def cwb(app:App):
+            app.createNewWorkbook("book1")
+            wb = app.getWorkbookByKey(WorkbookKeyImp(
+                fileName = "book1",
+                filePath = None
+            ))
+            return wb
+        self._test_event_onWb(cwb)
+
+
+    def _test_event_onWb(self,wbCreator:Callable[[App],Workbook]):
+        app = AppImp()
+        app.eventReactorContainer.addReactor(
+            P6Events.Cell.UpdateValue,
+            EventReactorFactory.makeCellReactor(self.onCellChange))
+        wb = wbCreator(app)
+        sheet = wb.createNewWorksheet("sheet1")
+        cell = sheet.cell(CellIndex(1, 1))
+        self.assertEqual(0, self.aa)
+        cell.value = "abc"
+        self.assertEqual(123, self.aa)
 
 if __name__ == '__main__':
     unittest.main()

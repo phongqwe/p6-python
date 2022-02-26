@@ -23,7 +23,7 @@ class StdReactorProvider(ReactorProvider):
 
     def cellUpdateValue(self):
         """
-        send a zmq message to a predesignated socket when a cell's value is update.
+        rerun the whole workbook, serialize the workbook to json, then send the json in a zmq message to a predesignated socket.
         If sockets are not available, don't do anything
         """
         def cb(data:CellEventData):
@@ -32,13 +32,14 @@ class StdReactorProvider(ReactorProvider):
             wb.reRun()
             if socketProvider is not None:
                 socket = socketProvider.reqSocketForUIUpdating()
-                replyRs = MessageSender.sendREQ(
-                    socket = socket,
-                    msg = P6Message(
-                        header = P6MessageHeader(str(uuid.uuid4()), MsgType.CellValueUpdate),
-                        content = wb))
-                if replyRs.isErr():
-                    raise replyRs.err.toException()
+                if socket is not None:
+                    replyRs = MessageSender.sendREQ(
+                        socket = socket,
+                        msg = P6Message(
+                            header = P6MessageHeader(str(uuid.uuid4()), MsgType.CellValueUpdate),
+                            content = wb))
+                    if replyRs.isErr():
+                        raise replyRs.err.toException()
         return EventReactorFactory.makeCellReactor(cb)
 
     def cellUpdateScript(self) -> CellReactor:
