@@ -1,6 +1,7 @@
 import re
 
 from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
+from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Ok import Ok
 from bicp_document_structure.util.result.Result import Result
 
@@ -9,7 +10,7 @@ class DirectLiteralTranslator(FormulaTranslator):
     strPattern = re.compile("^\".*\"$",
                             re.IGNORECASE | re.DOTALL | re.MULTILINE | re.UNICODE)
 
-    def translate(self, formula: str) -> Result:
+    def translate(self, formula: str) -> Result[str,ErrorReport]:
         i = None
 
         try:

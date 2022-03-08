@@ -5,6 +5,7 @@ from bicp_document_structure.formula_translator.PythonLangElements import Python
 
 
 class FormulaTranslatorFinal_test(unittest.TestCase):
+
     def test_translate(self):
         f = PythonLangElements.worksheetFunctions
         literalInput = {
@@ -53,6 +54,7 @@ class FormulaTranslatorFinal_test(unittest.TestCase):
             "=f(A:b)": """{f}.f(getRange("@A:b"))""".format(f=f),
             "=f(sheet1!A:b)": """{f}.f(getSheet("sheet1").getRange("@A:b"))""".format(f=f),
             "=f(sheet1!A123)": """{f}.f(getSheet("sheet1").cell("@A123").value)""".format(f=f),
+            "=f('my sheet1'!A123)": """{f}.f(getSheet("my sheet1").cell("@A123").value)""".format(f=f),
             "=f('sheet1 23'!A123)": """{f}.f(getSheet("sheet1 23").cell("@A123").value)""".format(f=f),
         }
         composite = {
@@ -88,5 +90,4 @@ x)
         for (i,o) in all.items():
             outRs = translator.translate(i)
             self.assertTrue(outRs.isOk())
-            out = outRs.value
-            self.assertEqual(o, out)
+            self.assertEqual(o, outRs.value)

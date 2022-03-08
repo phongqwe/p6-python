@@ -7,6 +7,7 @@ from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.util.CellUtil import convertExceptionToStr
 from bicp_document_structure.code_executor.CodeExecutor import CodeExecutor
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
+from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Result import Result
 
 
@@ -41,7 +42,7 @@ class DataCell(Cell):
     @staticmethod
     def __translateFormula(formula: str) -> str:
         translator = FormulaTranslators.standard()
-        transResult: Result = translator.translate(formula)
+        transResult: Result[str,ErrorReport] = translator.translate(formula)
         if transResult.isOk():
             return transResult.value
         else:

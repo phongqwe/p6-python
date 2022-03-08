@@ -14,7 +14,7 @@ from bicp_document_structure.workbook.WorkBook import Workbook
 
 class P6FileSaverStd(P6FileSaver):
 
-    def save(self, workbook: Workbook, filePath: Union[str, Path, None]) -> Result:
+    def save(self, workbook: Workbook, filePath: Union[str, Path, None]) -> Result[None,ErrorReport]:
         path = filePath
 
         if filePath is None:

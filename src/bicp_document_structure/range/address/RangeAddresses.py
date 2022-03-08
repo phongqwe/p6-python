@@ -6,6 +6,7 @@ from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.range.address.RangeAddress import RangeAddress
 from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
 from bicp_document_structure.util.AlphabetBaseNumberSystem import AlphabetBaseNumberSystem
+from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Err import Err
 from bicp_document_structure.util.result.Ok import Ok
 from bicp_document_structure.util.result.Result import Result
@@ -81,11 +82,11 @@ class RangeAddresses:
     __singleWholeRowAddressPattern = re.compile("[1-9][0-9]*")
 
     @staticmethod
-    def checkWholeAddressFormat(label:str)->Result:
+    def checkWholeAddressFormat(label:str)->Result[None,ErrorReport]:
         return RangeAddresses.__checkAddressFormatAgainstPattern(label,RangeAddresses.__wholeRangeAddressPattern)
 
     @staticmethod
-    def checkRangeAddressFormat(label: str) -> Result:
+    def checkRangeAddressFormat(label: str) -> Result[None,ErrorReport]:
         """
         :param label: must be like "@[a-zA-Z][1-9][0-9]*:[a-zA-Z][1-9][0-9]*" eg: "@A1:B10"
         :return: Ok if address is legal, Err with an exception otherwise
@@ -93,7 +94,7 @@ class RangeAddresses:
         return RangeAddresses.__checkAddressFormatAgainstPattern(label,RangeAddresses.__rangeAddressPattern)
 
     @staticmethod
-    def __checkAddressFormatAgainstPattern(label: str, pattern) -> Result:
+    def __checkAddressFormatAgainstPattern(label: str, pattern) -> Result[None,ErrorReport]:
         """
         :param label: must be like "@[a-zA-Z][1-9][0-9]*:[a-zA-Z][1-9][0-9]*" eg: "@A1:B10"
         :return: Ok if address is legal, Err with an exception otherwise

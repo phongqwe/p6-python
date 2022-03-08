@@ -1,15 +1,15 @@
 from typing import Union
 
 from bicp_document_structure.formula_translator.PythonLangElements import PythonLangElements
-from bicp_document_structure.formula_translator.PythonMapper import PythonMapper
 from bicp_document_structure.formula_translator.antlr4.FormulaParser import FormulaParser
 from bicp_document_structure.formula_translator.antlr4.FormulaVisitor import FormulaVisitor
+from bicp_document_structure.formula_translator.mapper.PythonMapper import PythonMapper
 
 
 class PythonFormulaVisitor(FormulaVisitor):
 
     def __init__(self):
-        self.mapper = PythonMapper()
+        self.mapper = PythonMapper.instance()
 
     def visitZFormula(self, ctx: FormulaParser.ZFormulaContext):
         if ctx is not None and ctx.expr() is not None:
@@ -46,7 +46,7 @@ class PythonFormulaVisitor(FormulaVisitor):
             rawSheetName = ctx.SHEET_PREFIX().getText()
         else:
             rawSheetName = None
-        sheetName: str = self.__extractSheetName(rawSheetName)
+        sheetName: str = self._extractSheetName(rawSheetName)
         getSheet: str = ""
         if len(sheetName) != 0:
             getSheet = self.mapper.getSheet(sheetName) + "."
@@ -109,17 +109,17 @@ class PythonFormulaVisitor(FormulaVisitor):
     def visitPairCellAddress(self, ctx: FormulaParser.PairCellAddressContext):
         cell0 = ctx.cellAddress(0).getText()
         cell1 = ctx.cellAddress(1).getText()
-        rangeAddress = self.mapper.rangeAddress("{c0}:{c1}".format(c0=cell0, c1=cell1))
+        rangeAddress = self.mapper.formatRangeAddress("{c0}:{c1}".format(c0=cell0, c1=cell1))
         return self.mapper.getRange(rangeAddress)
 
     def visitOneCellAddress(self, ctx: FormulaParser.OneCellAddressContext):
-        return self.mapper.getCell(self.mapper.rangeAddress(ctx.cellAddress().getText())) + ".value"
+        return self.mapper.getCell(self.mapper.formatRangeAddress(ctx.cellAddress().getText())) + ".value"
 
     def visitColAddress(self, ctx: FormulaParser.ColAddressContext):
-        return self.mapper.getRange(self.mapper.rangeAddress(ctx.getText()))
+        return self.mapper.getRange(self.mapper.formatRangeAddress(ctx.getText()))
 
     def visitRowAddress(self, ctx: FormulaParser.RowAddressContext):
-        return self.mapper.getRange(self.mapper.rangeAddress(ctx.getText()))
+        return self.mapper.getRange(self.mapper.formatRangeAddress(ctx.getText()))
 
     def visitParensAddress(self, ctx: FormulaParser.ParensAddressContext):
         return "({c})".format(
@@ -132,10 +132,20 @@ class PythonFormulaVisitor(FormulaVisitor):
     def visitLit(self, ctx: FormulaParser.LitContext):
         return ctx.getText()
 
-    def __extractSheetName(self, rawSheetName: Union[str, None]) -> str:
+    def _extractSheetName(self, rawSheetName: Union[str, None]) -> str:
+        """
+        extract sheet name from something like this: 'sheet1 qbc'!
+        remove the trailing "!", and the single quote
+        :param rawSheetName:
+        :return:
+        """
         if rawSheetName is None or len(rawSheetName) == 0:
             return ""
-        if rawSheetName.startswith("\'"):
-            return rawSheetName[1: len(rawSheetName) - 2]
-        else:
-            return rawSheetName[0: len(rawSheetName) - 1]
+        sName = rawSheetName
+        if sName.endswith("!"):
+            sName = sName[0:len(rawSheetName)-1]
+        if sName.startswith("\'"):
+            sName= sName[1: len(sName)]
+        if sName.endswith("\'"):
+            sName = sName[0: len(sName)-1]
+        return sName

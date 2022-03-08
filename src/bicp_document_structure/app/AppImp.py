@@ -148,7 +148,7 @@ class AppImp(App):
             return None
 
     def createDefaultNewWorkbookRs(self, name: str | None = None) -> Result[Workbook, ErrorReport]:
-        newWbRs = self.createNewWorkbookRs(name)
+        newWbRs:Result[Workbook, ErrorReport] = self.createNewWorkbookRs(name)
         if newWbRs.isOk():
             wb = newWbRs.value
             wb.createNewWorksheetRs()

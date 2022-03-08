@@ -7,12 +7,12 @@ from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 
 class WorkbookKeyImp(WorkbookKey):
 
-    def __init__(self, fileName: str, filePath: Optional[Path] = None):
+    def __init__(self, fileName: str, filePath: Path | None = None):
         self.__filePath: Optional[Path] = filePath
         self.__fileName = fileName
 
     @staticmethod
-    def fromPath(path: str):
+    def fromPathStr(path: str):
         p = Path(path)
         fileName = os.path.basename(p)
         return WorkbookKeyImp(fileName, p)

@@ -63,7 +63,7 @@ class App(ABC):
         """
         raise NotImplementedError()
 
-    def setActiveWorkbookRs(self, indexOrNameOrKey: Union[int, str, WorkbookKey]) -> Result:
+    def setActiveWorkbookRs(self, indexOrNameOrKey: Union[int, str, WorkbookKey]) -> Result[Workbook, ErrorReport]:
         """
         Set workbook at indexOrName the active workbook.
         :return an Result object if there are error instead of raising an exception
@@ -257,7 +257,7 @@ class App(ABC):
         wb = self.getWorkbook(wbKey)
         alreadyHasThisWorkbook = wb is not None
         if not alreadyHasThisWorkbook:
-            loadResult: Result = self._fileLoader.load(filePath)
+            loadResult: Result[Workbook,ErrorReport] = self._fileLoader.load(filePath)
             if loadResult.isOk():
                 newWb: Workbook = loadResult.value
                 eventNewWb = self._makeEventWb(newWb)

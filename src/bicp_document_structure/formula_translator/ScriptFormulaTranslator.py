@@ -12,7 +12,7 @@ class ScriptFormulaTranslator(FormulaTranslator):
     codePatter = re.compile("\\s*=\\s*SCRIPT\\s*\\(.*\\)\\s*",
                             re.IGNORECASE | re.DOTALL | re.MULTILINE | re.UNICODE)
 
-    def translate(self, formula: str) -> Result:
+    def translate(self, formula: str) -> Result[str,ErrorReport]:
         isMatch = ScriptFormulaTranslator.codePatter.fullmatch(formula.upper()) is not None
         if isMatch:
             trimmed: str = formula.strip()
@@ -26,8 +26,8 @@ class ScriptFormulaTranslator(FormulaTranslator):
         else:
             return Err(
                 ErrorReport(
-                    TranslatorErrors.NotAScriptCallHeader,
-                    TranslatorErrors.NotAScriptCallData(formula),
+                    TranslatorErrors.NotAScriptCallError.header,
+                    TranslatorErrors.NotAScriptCallError.Data(formula),
                     loc=""
                 )
             )

@@ -5,6 +5,7 @@ from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.address.CellAddressJson import CellAddressJson
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.util.AlphabetBaseNumberSystem import AlphabetBaseNumberSystem
+from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Err import Err
 from bicp_document_structure.util.result.Ok import Ok
 from bicp_document_structure.util.result.Result import Result
@@ -44,7 +45,7 @@ class CellAddresses:
         return CellIndex(0, 0)
 
     @staticmethod
-    def __checkCellAddressFormat(address: str) -> Result:
+    def __checkCellAddressFormat(address: str) -> Result[None,ErrorReport]:
         """
         check address format
         :param address: must be like "@[A-Za-z]+[1-9][0-9]*" eg: "@A1", "@ABC123"
