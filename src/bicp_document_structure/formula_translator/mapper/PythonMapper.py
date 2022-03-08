@@ -21,7 +21,8 @@ class PythonMapper:
 
     def getCell(self,cellAddress: str)->str:
         return "cell({ca})".format(ca=cellAddress)
-
+    def getActiveWorkbook(self):
+        return "getActiveWorkbook()"
     def getWorkbook(self, workbookNameOrKeyOrIndex: str | int | WorkbookKey)->str:
         if isinstance(workbookNameOrKeyOrIndex, str):
             return "getWorkbook(\"{wbn}\")".format(wbn=workbookNameOrKeyOrIndex)

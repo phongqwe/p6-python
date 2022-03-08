@@ -9,55 +9,74 @@ from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 
 class WithWbWsVisitor(PythonFormulaVisitor):
     def __init__(self,
-                 sheetName: str,
-                 workbookKey: WorkbookKey,
-                 visitor: FormulaVisitor,):
+                 visitor: FormulaVisitor,
+                 sheetName: str | None = None,
+                 workbookKey: WorkbookKey | None = None
+                 ):
         super().__init__()
-        self._sheetName = sheetName
-        self._wbKey = workbookKey
-        self._visitor = visitor
+        self._sheetName: str | None = sheetName
+        self._wbKey: WorkbookKey | None = workbookKey
+        self._visitor:FormulaVisitor = visitor
         self.mapper = PythonMapper.instance()
         self.wsMapper = WorksheetMapper.instance()
         self.wbMapper = WorkbookMapper.instance()
-        self.getSheetCode = self.__getSheet(self._sheetName)
-        self.__getWBCode = self.mapper.getWorkbook(self._wbKey)
+        self.getSheetCode:str = self.__getSheet(self._sheetName)
+        self.__getWBCode:str = self.mapper.getWorkbook(self._wbKey)
 
     def visitSheetRangeAddrExpr(self, ctx: FormulaParser.SheetRangeAddrExprContext):
+        rawSheetName = ""
         if ctx.SHEET_PREFIX() is not None:
             rawSheetName = ctx.SHEET_PREFIX().getText()
         else:
-            rawSheetName = self._sheetName
-        sheetName: str = self._extractSheetName(rawSheetName) # specific
+            if self._sheetName is not None:
+                rawSheetName = self._sheetName
+        sheetName: str = self._extractSheetName(rawSheetName)  # specific
         getSheet: str = ""
-        if len(sheetName) != 0:
-            getSheet = self.wbMapper.getSheet(sheetName)
         rangeObj = self.visit(ctx.rangeAddress())
-        rt= f'{self.__getWBCode}.{getSheet}.{rangeObj}'
+        if self.__getWBCode is not None:
+            if len(sheetName) != 0:
+                getSheet = self.wbMapper.getSheet(sheetName)
+            rt = f'{self.__getWBCode}.{getSheet}.{rangeObj}'
+        else:
+            if len(sheetName) != 0:
+                getSheet = self.mapper.getSheet(sheetName)
+            rt = f'{getSheet}.{rangeObj}'
         return rt
 
     def visitPairCellAddress(self, ctx: FormulaParser.PairCellAddressContext):
         cell0 = ctx.cellAddress(0).getText()
         cell1 = ctx.cellAddress(1).getText()
         rangeAddress = self.mapper.formatRangeAddress(f'{cell0}:{cell1}')
-        return self.wsMapper.getRange(rangeAddress)
+        if self._sheetName is None:
+            return self.mapper.getRange(rangeAddress)
+        else:
+            return self.wsMapper.getRange(rangeAddress)
 
     def visitOneCellAddress(self, ctx: FormulaParser.OneCellAddressContext):
         cellAddress = self.mapper.formatRangeAddress(ctx.cellAddress().getText())
-        return self.wsMapper.getCell(cellAddress) + ".value"
+        if self._sheetName is None:
+            return self.mapper.getCell(cellAddress) + ".value"
+        else:
+            return self.wsMapper.getCell(cellAddress) + ".value"
+        
 
     def visitColAddress(self, ctx: FormulaParser.ColAddressContext):
-        return self.wsMapper.getRange(self.mapper.formatRangeAddress(ctx.getText()))
-
+        if self._sheetName is None:
+            return self.mapper.getRange(self.mapper.formatRangeAddress(ctx.getText()))
+        else:
+            return self.wsMapper.getRange(self.mapper.formatRangeAddress(ctx.getText()))
+        
     def visitRowAddress(self, ctx: FormulaParser.RowAddressContext):
-        return self.wsMapper.getRange(self.mapper.formatRangeAddress(ctx.getText()))
+        if self._sheetName is None:
+            return self.mapper.getRange(self.mapper.formatRangeAddress(ctx.getText()))
+        else:
+            return self.wsMapper.getRange(self.mapper.formatRangeAddress(ctx.getText()))
 
 
-    def __getSheet(self,sheetName:str)->str:
-        getWb:str = self.mapper.getWorkbook(self._wbKey)
-        getSheet:str = f'{getWb}.getSheet("{sheetName}")'
+    def __getSheet(self, sheetName: str) -> str:
+        if self._wbKey is None:
+            getWb: str = self.mapper.getActiveWorkbook()
+        else:
+            getWb: str = self.mapper.getWorkbook(self._wbKey)
+        getSheet: str = f'{getWb}.getSheet("{sheetName}")'
         return getSheet
-
-    def __getRange(self,getRangeCode:str)->str:
-        getSheet = self.wbMapper.getSheet(self._sheetName)
-        rt = f'{self.__getWBCode}.{getSheet}.{getRangeCode}'
-        return rt

@@ -47,7 +47,7 @@ def getApp() -> App:
     return g[appKey]
 
 
-def getActiveWorkbook() -> Optional[Workbook]:
+def getActiveWorkbook() -> Workbook | None:
     return getApp().activeWorkbook
 
 
@@ -68,8 +68,8 @@ def setActiveSheet(indexOrName: Union[str, int]):
     if wb is None:
         raise ErrorReports.toException(
             ErrorReport(
-                header=AppErrors.WorkbookNotExist.header,
-                data=AppErrors.WorkbookNotExist.Data(indexOrName)
+                header = AppErrors.WorkbookNotExist.header,
+                data = AppErrors.WorkbookNotExist.Data(indexOrName)
             )
         )
     wb.setActiveWorksheet(indexOrName)
