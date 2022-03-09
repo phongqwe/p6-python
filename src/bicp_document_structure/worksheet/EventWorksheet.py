@@ -4,8 +4,6 @@ from typing import Callable, Tuple, Optional
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.EventCell import EventCell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
-from bicp_document_structure.column.Column import Column
-from bicp_document_structure.column.EventColumn import EventColumn
 from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.event.P6Events import P6Events
 from bicp_document_structure.range.EventRange import EventRange
@@ -22,13 +20,11 @@ class EventWorksheet(WorksheetWrapper):
                  onCellEvent: Callable[[Worksheet, Cell, P6Event], None] = None,
                  onWorksheetEvent: Callable[[Worksheet, P6Event], None] = None,
                  onRangeEvent: Callable[[Worksheet, Range, P6Event], None] = None,
-                 onColEvent: Callable[[Worksheet, Column, P6Event], None] = None,
                  ):
         super().__init__(innerWorksheet)
         self.__onCellEvent: Callable[[Worksheet, Cell, P6Event], None] = onCellEvent
         self.__onWorksheetEvent: Callable[[Worksheet, P6Event], None] = onWorksheetEvent
         self.__onRangeEvent: Callable[[Worksheet, Range, P6Event], None] = onRangeEvent
-        self.__onColEvent: Callable[[Worksheet, Column, P6Event], None] = onColEvent
 
     def __makePartial(self, callback):
         """create a partial function from a function by setting the 1st arg = self._innerSheet"""
@@ -37,18 +33,9 @@ class EventWorksheet(WorksheetWrapper):
         else:
             return None
 
-    def getCol(self, colIndex: int) -> Column:
-        innerCol = self._innerSheet.getCol(colIndex)
-        return EventColumn(innerCol,
-                           onCellChange = self.__makePartial(self.__onCellEvent),
-                           onRangeEvent = self.__makePartial(self.__onRangeEvent),
-                           onColEvent = self.__makePartial(self.__onColEvent),
-                           )
-
     def getOrMakeCell(self, address: CellAddress) -> Cell:
-        col = self.getCol(address.colIndex)
-        rt = col.getOrMakeCell(address)
-        return rt
+        c:Cell = self._innerSheet.getOrMakeCell(address)
+        return self.__wrap(c)
 
     def cell(self, address: str | CellAddress | Tuple[int, int]) -> Cell:
         parsedAddress = AddressParser.parseCellAddress(address)

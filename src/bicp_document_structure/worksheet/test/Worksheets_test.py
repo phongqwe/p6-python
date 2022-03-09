@@ -2,6 +2,7 @@ import unittest
 
 from bicp_document_structure.cell.CellJson import CellJson
 from bicp_document_structure.cell.address.CellAddressJson import CellAddressJson
+from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 from bicp_document_structure.worksheet.WorksheetJson import WorksheetJson
 from bicp_document_structure.worksheet.Worksheets import Worksheets
@@ -11,6 +12,9 @@ class Worksheets_test(unittest.TestCase):
     """
     if I hold json object directly, deserialize will be hard.
     """
+    @staticmethod
+    def transGetter(name):
+        return FormulaTranslators.mock()
     def test_something(self):
         json = WorksheetJson(
             name="sheet1",
@@ -20,7 +24,7 @@ class Worksheets_test(unittest.TestCase):
                 CellJson("value3", "script3", "formula3", CellAddressJson(3,4))
             ]
         )
-        sheet = Worksheets.wsFromJson(json)
+        sheet = Worksheets.wsFromJson(json,self.transGetter)
         self.assertTrue(isinstance(sheet,Worksheet))
         self.assertEqual(json.name,sheet.name)
         # cell12 = sheet.cell((1,2))

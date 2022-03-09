@@ -3,14 +3,18 @@ import unittest
 from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.address.CellAddresses import CellAddresses
 from bicp_document_structure.cell.address.CellIndex import CellIndex
+from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from bicp_document_structure.worksheet.EventWorksheet import EventWorksheet
-from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
+from bicp_document_structure.worksheet.WorksheetImp2 import WorksheetImp2
 
 
 class EventWorksheet_test(unittest.TestCase):
 
+    @staticmethod
+    def transGetter(name):
+        return FormulaTranslators.mock()
     def test_InvokingReactor(self):
-        sheet = WorksheetImp()
+        sheet = WorksheetImp2(name = "s3", translatorGetter = self.transGetter)
         self.a = 0
 
         def cb( ws, cell, event):
@@ -27,14 +31,11 @@ class EventWorksheet_test(unittest.TestCase):
             self.c += 1
 
         self.col = 0
-        def cole(wse,col,event):
-            self.col +=1
 
         eventSheet = EventWorksheet(sheet,
                                     onCellEvent = cb,
                                     onWorksheetEvent = wse,
                                     onRangeEvent = re,
-                                    onColEvent = cole
                                     )
         expect = DataCell(CellIndex(1, 2))
 
@@ -69,13 +70,6 @@ class EventWorksheet_test(unittest.TestCase):
             cell.value = -999
         self.assertEqual(oldA + len(eventSheet.cells), self.a)
 
-        # getCol
-        oldA = self.a
-        col = eventSheet.getCol(0)
-        for cell in col.cells:
-            cell.value = "z"
-        self.assertEqual(oldA + len(eventSheet.getCol(0).cells), self.a)
-
         # range
         rng = eventSheet.range("@A1:B3")
         count = 0
@@ -87,8 +81,3 @@ class EventWorksheet_test(unittest.TestCase):
 
         rng.reRun()
         self.assertEqual(1, self.b)
-
-
-        col = eventSheet.getCol(1)
-        col.reRun()
-        self.assertEqual(1,self.col)

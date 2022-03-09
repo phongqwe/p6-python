@@ -3,7 +3,7 @@ from typing import Optional, Tuple
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
-from bicp_document_structure.column.Column import Column
+from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.address.RangeAddress import RangeAddress
 from bicp_document_structure.worksheet.Worksheet import Worksheet
@@ -15,6 +15,9 @@ class WorksheetWrapper(Worksheet,ABC):
     def __init__(self, innerWorksheet: Worksheet):
         self._innerSheet: Worksheet = innerWorksheet
 
+    @property
+    def translator(self) -> FormulaTranslator:
+        return self._innerSheet.translator
     @property
     def name(self) -> str:
         return self._innerSheet.name
@@ -56,18 +59,6 @@ class WorksheetWrapper(Worksheet,ABC):
     @property
     def rangeAddress(self) -> RangeAddress:
         return self._innerSheet.rangeAddress
-
-    def setCol(self, col: Column):
-        self._innerSheet.setCol(col)
-
-    def removeCol(self, index: int):
-        self._innerSheet.removeCol(index)
-
-    def hasColumn(self, colIndex: int) -> bool:
-        return self._innerSheet.hasColumn(colIndex)
-
-    def getCol(self, colIndex: int) -> Column:
-        return self._innerSheet.getCol(colIndex)
 
     def toJsonDict(self) -> dict:
         return self._innerSheet.toJsonDict()

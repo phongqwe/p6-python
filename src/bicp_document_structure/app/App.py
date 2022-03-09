@@ -5,11 +5,9 @@ from typing import Optional, Union, Any
 from bicp_document_structure.app.errors.AppErrors import AppErrors
 from bicp_document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
 from bicp_document_structure.cell.Cell import Cell
-from bicp_document_structure.column.Column import Column
 from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.event.reactor.EventReactorContainer import EventReactorContainer
 from bicp_document_structure.event.reactor.eventData.CellEventData import CellEventData
-from bicp_document_structure.event.reactor.eventData.ColEventData import ColEventData
 from bicp_document_structure.event.reactor.eventData.RangeEventData import RangeEventData
 from bicp_document_structure.event.reactor.eventData.WorkbookEventData import WorkbookEventData
 from bicp_document_structure.event.reactor.eventData.WorksheetEventData import WorksheetEventData
@@ -297,9 +295,6 @@ class App(ABC):
     def _onRangeEvent(self, wb: Workbook, ws: Worksheet, r: Range, e: P6Event):
         self.eventReactorContainer.triggerReactorsFor(e, RangeEventData(wb, ws, r, e))
 
-    def _onColEvent(self, wb: Workbook, ws: Worksheet, col: Column, e: P6Event):
-        self.eventReactorContainer.triggerReactorsFor(e, ColEventData(wb, ws, col, e))
-
     def _onWorksheetEvent(self, wb: Workbook, ws: Worksheet, e: P6Event):
         self.eventReactorContainer.triggerReactorsFor(e, WorksheetEventData(wb, ws, e))
 
@@ -326,7 +321,6 @@ class App(ABC):
                 return EventWorkbook(
                     innerWorkbook = workbook,
                     onCellEvent = self._onCellEvent,
-                    onColEvent = self._onColEvent,
                     onRangeEvent = self._onRangeEvent,
                     onWorksheetEvent = self._onWorksheetEvent,
                     onWorkbookEvent = self._onWorkbookEvent,

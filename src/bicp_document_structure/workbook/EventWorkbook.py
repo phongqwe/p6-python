@@ -2,7 +2,6 @@ from functools import partial
 from typing import Callable, Optional, Union
 
 from bicp_document_structure.cell.Cell import Cell
-from bicp_document_structure.column.Column import Column
 from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.event.P6Events import P6Events
 from bicp_document_structure.range.Range import Range
@@ -20,7 +19,6 @@ class EventWorkbook(WorkbookWrapper):
                  onCellEvent: Callable[[Workbook, Worksheet, Cell, P6Event], None] = None,
                  onWorksheetEvent: Callable[[Workbook, Worksheet, P6Event], None] = None,
                  onRangeEvent: Callable[[Workbook, Worksheet, Range, P6Event], None] = None,
-                 onColEvent: Callable[[Workbook, Worksheet, Column, P6Event], None] = None,
                  onWorkbookEvent: Callable[[Workbook, P6Event], None] = None,
                  ):
         super().__init__(innerWorkbook)
@@ -28,7 +26,6 @@ class EventWorkbook(WorkbookWrapper):
         self.__onWorksheetEvent: Callable[[Workbook, Worksheet, P6Event], None] = onWorksheetEvent
         self.__onRangeEvent: Callable[[Workbook, Worksheet, Range, P6Event], None] = onRangeEvent
         self.__onWorkbookEvent: Callable[[Workbook, P6Event], None] = onWorkbookEvent
-        self.__onColEvent: Callable[[Workbook, Worksheet, Column, P6Event], None] = onColEvent
 
     @property
     def worksheets(self) -> list[Worksheet]:
@@ -75,15 +72,15 @@ class EventWorkbook(WorkbookWrapper):
             self.__onWorkbookEvent(self._innerWorkbook, P6Events.Workbook.ReRun)
 
     def __wrap(self, sheet: Worksheet) -> Worksheet:
-        onCellEvent = self.__makePartial(self.__onCellChange)
-        onSheetEvent = self.__makePartial(self.__onWorksheetEvent)
-        onRangeEvent = self.__makePartial(self.__onRangeEvent)
+        onCellEvent = self.__partialWithNoneCheck(self.__onCellChange)
+        onSheetEvent = self.__partialWithNoneCheck(self.__onWorksheetEvent)
+        onRangeEvent = self.__partialWithNoneCheck(self.__onRangeEvent)
         return EventWorksheet(sheet,
                               onCellEvent = onCellEvent,
                               onWorksheetEvent = onSheetEvent,
                               onRangeEvent = onRangeEvent)
 
-    def __makePartial(self, callback):
+    def __partialWithNoneCheck(self, callback):
         if callback is not None:
             return partial(callback, self._innerWorkbook)
         else:

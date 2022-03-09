@@ -28,7 +28,7 @@ class EventColumn(ColumnWrapper):
         :return: a WriteBackCell
         """
         cell = self._innerCol.getOrMakeCell(address)
-        rt = self.__wrap(cell)
+        rt = self.__wrapCellInEventCell(cell)
         return rt
 
     def range(self, firstRow: int, lastRow: int) -> Range:
@@ -42,23 +42,23 @@ class EventColumn(ColumnWrapper):
 
     def cell(self, address: Union[str, CellAddress, Tuple[int, int]]) -> Cell:
         c = self._innerCol.cell(address)
-        ec = self.__wrap(c)
+        ec = self.__wrapCellInEventCell(c)
         return ec
 
-    def __wrap(self, cell: Cell) -> Cell:
+    def __wrapCellInEventCell(self, cell: Cell) -> Cell:
         return EventCell(cell, self.__onCellEvent)
 
     def getCell(self, address: CellAddress) -> Optional[Cell]:
         c = self._innerCol.getCell(address)
         if c is not None:
-            return self.__wrap(c)
+            return self.__wrapCellInEventCell(c)
         else:
             return c
 
     @property
     def cells(self) -> list[Cell]:
         cs = self._innerCol.cells
-        ecs = list(map(lambda c: self.__wrap(c), cs))
+        ecs = list(map(lambda c: self.__wrapCellInEventCell(c), cs))
         return ecs
 
     def reRun(self):

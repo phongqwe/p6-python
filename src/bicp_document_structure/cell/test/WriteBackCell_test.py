@@ -6,12 +6,16 @@ from bicp_document_structure.cell.WriteBackCell import WriteBackCell
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.cell.test.MockContainer import MockCellContainer
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
-from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
+from bicp_document_structure.worksheet.WorksheetImp2 import WorksheetImp2
 
 
 class WriteBackCellTest(unittest.TestCase):
+    @staticmethod
+    def transGetter(name):
+        return FormulaTranslators.mock()
+
     def test_Cell(self):
-        s = WorksheetImp()
+        s = WorksheetImp2(name="s3",translatorGetter = self.transGetter)
         code = "x=1;y=x+2;y"
         eValue = 3
         address = CellIndex(1, 1)
