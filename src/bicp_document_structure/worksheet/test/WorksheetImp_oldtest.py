@@ -5,15 +5,18 @@ from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.column.ColumnImp import ColumnImp
 from bicp_document_structure.column.WriteBackColumn import WriteBackColumn
+from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from bicp_document_structure.range.RangeImp import RangeImp
 from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
 from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 
-class WorksheetTest(unittest.TestCase):
-
+class WorksheetImp_test(unittest.TestCase):
+    @staticmethod
+    def transGetter(name):
+        return FormulaTranslators.mock()
     def test_cell(self):
-        s = WorksheetImp()
+        s = WorksheetImp(self.transGetter)
         expect = DataCell(CellIndex(1, 2))
 
         c1 = s.cell("@A2")
@@ -26,7 +29,7 @@ class WorksheetTest(unittest.TestCase):
         self.assertEqual(expect, c3)
 
     def test_range(self):
-        s = WorksheetImp()
+        s = WorksheetImp(self.transGetter)
         ad1 = CellIndex(1, 1)  # A1
         ad2 = CellIndex(20, 20)  # T20
         expect = RangeImp(ad1, ad2, s)
@@ -46,20 +49,20 @@ class WorksheetTest(unittest.TestCase):
         return cell, cellAddr
 
     def test_hasCellAt(self):
-        s = WorksheetImp()
+        s = WorksheetImp(self.transGetter)
         self.assertFalse(s.hasCellAt(CellIndex(1, 1)))
         s.addCell(DataCell(CellIndex(1, 1), 123, script="script"))
         self.assertTrue(s.hasCellAt(CellIndex(1, 1)))
 
     def test_getCell(self):
-        s = WorksheetImp()
+        s = WorksheetImp(self.transGetter)
         cellAddr = CellIndex(12, 12)
         cell = DataCell(cellAddr)
         s.addCell(cell)
         self.assertEqual(cell, s.getOrMakeCell(cellAddr))
 
     def test_isEmpty(self):
-        sheet = WorksheetImp()
+        sheet = WorksheetImp(self.transGetter)
         self.assertTrue(sheet.isEmpty())
         cell, cellAddr = self.makeTestObj()
         sheet.addCell(cell)
@@ -68,7 +71,7 @@ class WorksheetTest(unittest.TestCase):
         self.assertTrue(sheet.isEmpty())
 
     def test_containAddress(self):
-        s = WorksheetImp()
+        s = WorksheetImp(self.transGetter)
         cell, cellAddr = self.makeTestObj()
         self.assertTrue(s.containsAddress(cellAddr))
         s.addCell(cell)
@@ -79,7 +82,7 @@ class WorksheetTest(unittest.TestCase):
     def test_cells(self):
         cell1, cellAddr1 = self.makeTestObj()
         cell2, cellAddr2 = self.makeTestObj()
-        s = WorksheetImp()
+        s = WorksheetImp(self.transGetter)
         s.addCell(cell1)
         s.addCell(cell2)
         self.assertEqual([cell1, cell2], s.cells)
@@ -87,7 +90,7 @@ class WorksheetTest(unittest.TestCase):
         self.assertEqual([cell2], s.cells)
 
     def test_columnOperation(self):
-        sheet = WorksheetImp()
+        sheet = WorksheetImp(self.transGetter)
         col = ColumnImp(1, {1: DataCell(CellIndex(1, 1), 123,script= "script")})
         self.assertFalse(sheet.hasColumn(col.index))
         sheet.setCol(col)
@@ -96,11 +99,8 @@ class WorksheetTest(unittest.TestCase):
         sheet.removeCol(col.index)
         self.assertTrue(sheet.isEmpty())
 
-    def test_range(self):
-        s = WorksheetImp()
-
     def test_getNonExistenceCell(self):
-        s = WorksheetImp()
+        s = WorksheetImp(self.transGetter)
         c = s.getOrMakeCell(CellIndex(1, 1))
         self.assertIsNotNone(c)
         self.assertTrue(s.isEmpty())

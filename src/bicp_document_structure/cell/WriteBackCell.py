@@ -2,6 +2,7 @@ from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.WrapperCell import WrapperCell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell_container.MutableCellContainer import MutableCellContainer
+from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 
 
 class WriteBackCell(
@@ -20,10 +21,8 @@ class WriteBackCell(
         self.__rowIndex: int = cell.address.rowIndex
 
     ### >> Cell << ###
-
-    @WrapperCell.formula.setter
-    def formula(self, newFormula):
-        self.__innerCell.formula = newFormula
+    def setFormula(self, newFormula: str, formulaTranslator: FormulaTranslator):
+        self.__innerCell.setFormula(newFormula, formulaTranslator)
         self.__writeCell()
 
     def clearScriptResult(self):

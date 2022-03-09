@@ -3,17 +3,22 @@ from collections import OrderedDict
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.event.P6Event import P6Event
+from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
 from bicp_document_structure.worksheet.Worksheet import Worksheet
-from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
+from bicp_document_structure.worksheet.WorksheetImp2 import WorksheetImp2
 
 
 class WorkbookImp_test(unittest.TestCase):
+
+    @staticmethod
+    def transGetter(name):
+        return FormulaTranslators.mock()
     def makeTestObj(self):
-        s1 = WorksheetImp("s1")
-        s2 = WorksheetImp("s2")
-        s3 = WorksheetImp("s3")
+        s1 = WorksheetImp2(name="s1",translatorGetter = self.transGetter)
+        s2 = WorksheetImp2(name="s2",translatorGetter = self.transGetter)
+        s3 = WorksheetImp2(name="s3",translatorGetter = self.transGetter)
         d = OrderedDict({
             s1.name: s1,
             s2.name: s2,

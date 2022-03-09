@@ -7,7 +7,12 @@ class Bench(unittest.TestCase):
         print(y)
         return x+y
     def test_z(self):
-        qw = f'"abc"'
-        print(qw)
+        d = {
+            1:"abc",
+            2:"qqq",
+        }
+
+        print(d)
+
 
 

@@ -52,6 +52,9 @@ class RangeImp(Range):
 
     ### >> CellContainer << ###
 
+    def containsAddress(self, address: CellAddress) -> bool:
+        return super().containsAddress(address)
+
     def hasCellAt(self, address: CellAddress) -> bool:
         if self.containsAddress(address):
             return self.__sourceContainer.hasCellAt(address)
@@ -76,8 +79,9 @@ class RangeImp(Range):
 
     ### >> Range  << ###
 
-    def containsAddress(self, address: CellAddress) -> bool:
-        return super().containsAddress(address)
+    @property
+    def sourceContainer(self) -> MutableCellContainer:
+        return self.__sourceContainer
 
     @property
     def firstCellAddress(self) -> CellAddress:

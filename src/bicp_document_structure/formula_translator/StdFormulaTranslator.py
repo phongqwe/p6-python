@@ -5,7 +5,7 @@ from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Result import Result
 
 
-class FormulaTranslatorFinal(FormulaTranslator):
+class StdFormulaTranslator(FormulaTranslator):
 
     def __init__(self):
         self.pythonTranslator = PythonFormulaTranslator()

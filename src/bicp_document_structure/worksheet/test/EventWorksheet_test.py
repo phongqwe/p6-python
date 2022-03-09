@@ -7,7 +7,7 @@ from bicp_document_structure.worksheet.EventWorksheet import EventWorksheet
 from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 
-class EventWorksheetTest(unittest.TestCase):
+class EventWorksheet_test(unittest.TestCase):
 
     def test_InvokingReactor(self):
         sheet = WorksheetImp()

@@ -6,7 +6,7 @@ from bicp_document_structure.cell.CellJson import CellJson
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.util.CellUtil import convertExceptionToStr
 from bicp_document_structure.code_executor.CodeExecutor import CodeExecutor
-from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
+from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Result import Result
 
@@ -33,16 +33,13 @@ class DataCell(Cell):
     def formula(self) -> str:
         return self.__formula
 
-    @formula.setter
-    def formula(self, newFormula):
-        """ set new formula """
+    def setFormula(self, newFormula: str, formulaTranslator: FormulaTranslator):
         self.__formula = newFormula
-        self.script = self.__translateFormula(newFormula)
+        self.script = self.__translateFormula(newFormula, formulaTranslator)
 
     @staticmethod
-    def __translateFormula(formula: str) -> str:
-        translator = FormulaTranslators.standard()
-        transResult: Result[str,ErrorReport] = translator.translate(formula)
+    def __translateFormula(formula: str, translator: FormulaTranslator) -> str:
+        transResult: Result[str, ErrorReport] = translator.translate(formula)
         if transResult.isOk():
             return transResult.value
         else:
@@ -93,7 +90,7 @@ class DataCell(Cell):
         self.__code = newCode
         self.__value = None
         self.__scriptAlreadyRun = False
-        self.__formula = "=SCRIPT({script})".format(script = newCode)
+        self.__formula = f"=SCRIPT({newCode})"
 
     @property
     def address(self) -> CellAddress:

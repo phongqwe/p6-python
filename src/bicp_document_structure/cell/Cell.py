@@ -3,6 +3,7 @@ from abc import ABC
 from bicp_document_structure.cell.CellJson import CellJson
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.common.ToJsonStr import ToJson
+from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 
 
 class Cell(ToJson,ABC):
@@ -13,9 +14,14 @@ class Cell(ToJson,ABC):
     def formula(self)->str:
         """ the original formula """
         raise NotImplementedError()
+
     @formula.setter
     def formula(self,newFormula):
-        """ set new formula """
+        """ set new formula, script will also be updated """
+        raise NotImplementedError()
+
+    def setFormula(self,newFormula:str, formulaTranslator:FormulaTranslator):
+        """ set new formula, update script using a custom translator"""
         raise NotImplementedError()
 
     @property
@@ -85,7 +91,7 @@ class Cell(ToJson,ABC):
     def runScript(self, globalScope=None, localScope=None):
         """run the script """
         raise NotImplementedError()
-    
+
     # def runScriptEventFree(self, globalScope=None, localScope=None):
     #     """run the script without triggering event reactors """
     #     raise NotImplementedError()
@@ -93,7 +99,7 @@ class Cell(ToJson,ABC):
     def setScriptAndRun(self, newScript, globalScope=None, localScope=None):
         """set new script for this cell and execute it immediately"""
         raise NotImplementedError()
-    
+
     # def setScriptAndRunEventFree(self, newScript, globalScope=None, localScope=None):
     #     """set new script for this cell and execute it immediately"""
     #     raise NotImplementedError()
@@ -108,11 +114,11 @@ class Cell(ToJson,ABC):
     def clearScriptResult(self):
         """delete script result if this Cell houses any script"""
         raise NotImplementedError()
-    
+
     # def clearScriptResultEventFree(self):
     #     """delete script result if this Cell houses any script without triggering event reactors"""
     #     raise NotImplementedError()
-    
+
     def isEmpty(self):
         if self.hasCode():
             return True
@@ -122,7 +128,7 @@ class Cell(ToJson,ABC):
     def reRun(self, globalScope=None, localScope=None):
         self.clearScriptResult()
         self.runScript(globalScope, localScope)
-        
+
     # def reRunEventFree(self, globalScope=None, localScope=None):
     #     self.clearScriptResultEventFree()
     #     self.runScriptEventFree(globalScope, localScope)

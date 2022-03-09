@@ -1,7 +1,7 @@
 import unittest
 
-from bicp_document_structure.formula_translator.FormulaTranslatorFinal import FormulaTranslatorFinal
 from bicp_document_structure.formula_translator.PythonLangElements import PythonLangElements
+from bicp_document_structure.formula_translator.StdFormulaTranslator import StdFormulaTranslator
 
 
 class FormulaTranslatorFinal_test(unittest.TestCase):
@@ -86,7 +86,7 @@ x)
         all.update(script)
         all.update(directLiteral)
 
-        translator = FormulaTranslatorFinal()
+        translator = StdFormulaTranslator()
         for (i,o) in all.items():
             outRs = translator.translate(i)
             self.assertTrue(outRs.isOk())

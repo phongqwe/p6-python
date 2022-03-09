@@ -1,6 +1,7 @@
 from abc import ABC
 from typing import Union, Optional
 
+from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.workbook.WorkBook import Workbook
@@ -12,6 +13,9 @@ class WorkbookWrapper(Workbook,ABC):
 
     def __init__(self,innerWorkbook:Workbook):
         self._innerWorkbook = innerWorkbook
+
+    def getTranslator(self, sheetName: str) -> FormulaTranslator:
+        return self._innerWorkbook.getTranslator(sheetName)
 
     @property
     def worksheets(self) -> list[Worksheet]:

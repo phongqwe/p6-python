@@ -16,7 +16,20 @@ class Range(UserFriendlyCellContainer,MutableCellContainer,ABC):
     def lastCellAddress(self) -> CellAddress:
         raise NotImplementedError()
 
+    @property
+    def sourceContainer(self)->MutableCellContainer:
+        raise NotImplementedError()
+
     def containsAddress(self, address: CellAddress) -> bool:
         rowIsInRange = self.firstCellAddress.rowIndex <= address.rowIndex <= self.lastCellAddress.rowIndex
         colIsInRange = self.firstCellAddress.colIndex <= address.colIndex <= self.lastCellAddress.colIndex
         return rowIsInRange and colIsInRange
+
+    def __eq__(self, o: object) -> bool:
+        if isinstance(o,Range):
+            sameRangeAddress = self.isSameRangeAddress(o)
+            sameSourceContainer = self.sourceContainer == o.sourceContainer
+            return sameSourceContainer and sameRangeAddress
+        else:
+            return False
+

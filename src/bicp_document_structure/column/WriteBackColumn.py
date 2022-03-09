@@ -4,6 +4,7 @@ from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.WriteBackCell import WriteBackCell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
+from bicp_document_structure.cell_container.MutableCellContainer import MutableCellContainer
 from bicp_document_structure.column.Column import Column
 from bicp_document_structure.column.ColumnJson import ColumnJson
 from bicp_document_structure.column.MutableColumnContainer import MutableColumnContainer
@@ -35,6 +36,10 @@ class WriteBackColumn(Column):
     @property
     def firstCellAddress(self) -> CellAddress:
         return self.__innerCol.firstCellAddress
+
+    @property
+    def sourceContainer(self) -> MutableCellContainer:
+        return self.__innerCol.sourceContainer
 
     @property
     def lastCellAddress(self) -> CellAddress:

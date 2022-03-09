@@ -8,7 +8,7 @@ from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 
 
-class WbWsFormulaTranslatorFinal(FormulaTranslator):
+class WbWsFormulaTranslator(FormulaTranslator):
 
     def __init__(self, worksheetName: str | None = None, workbookKey: WorkbookKey | None = None):
         self.wsName: str | None = worksheetName

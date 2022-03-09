@@ -43,3 +43,5 @@ class CellAddress(ABC):
     def __hash__(self) -> int:
         key = (self.colIndex,self.rowIndex)
         return hash(key)
+    def toTuple(self)->(int,int):
+        return self.colIndex, self.rowIndex

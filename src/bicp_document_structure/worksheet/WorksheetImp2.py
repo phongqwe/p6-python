@@ -1,11 +1,10 @@
 from typing import Optional, Union, Tuple, Callable
 
 from bicp_document_structure.cell.Cell import Cell
+from bicp_document_structure.cell.DataCell import DataCell
+from bicp_document_structure.cell.WriteBackCell import WriteBackCell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.address.CellIndex import CellIndex
-from bicp_document_structure.column.Column import Column
-from bicp_document_structure.column.ColumnImp import ColumnImp
-from bicp_document_structure.column.WriteBackColumn import WriteBackColumn
 from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.RangeImp import RangeImp
@@ -18,25 +17,25 @@ from bicp_document_structure.worksheet.WorksheetConst import WorksheetConst
 from bicp_document_structure.worksheet.WorksheetJson import WorksheetJson
 
 
-class WorksheetImp(Worksheet):
+class WorksheetImp2(Worksheet):
     def __init__(self,
                  translatorGetter: Callable[[str], FormulaTranslator],
-                 name="",
-                 colDict=None,
-                 # onCellChange:Callable[[Worksheet, Cell, P6Event], None] = None
+                 name = "",
+
                  ):
-        if colDict is None:
-            colDict = {}
-        self.__colDict = colDict
+        # key = col index
+        self._colDict: dict[int, list[Cell]] = {}
+        # key = row index
+        self._rowDict: dict[int, list[Cell]] = {}
+        # key = (col, row)
+        self._cellDict: dict[(int, int), Cell] = {}
         self.__name = name
         # self.__onCellChangeOfWorksheet:Optional[Callable[[Worksheet, Cell, P6Event], None]] = onCellChange
-        self.translatorGetter:Callable[[str],FormulaTranslator] = translatorGetter
+        self.translatorGetter: Callable[[str], FormulaTranslator] = translatorGetter
 
     ### >> ToJson << ###
     def toJsonDict(self) -> dict:
         return self.toJson().toJsonDict()
-
-
 
     ### >> Worksheet << ###
 
@@ -52,13 +51,12 @@ class WorksheetImp(Worksheet):
         cellJsons = []
         for cell in self.cells:
             cellJsons.append(cell.toJson())
-        return WorksheetJson(self.__name,cellJsons)
+        return WorksheetJson(self.__name, cellJsons)
 
     ### >> UserFriendlyCellContainer << ##
     def cell(self, address: Union[str, CellAddress, Tuple[int, int]]) -> Cell:
-        parsedAddress = AddressParser.parseCellAddress(address)
+        parsedAddress: CellAddress = AddressParser.parseCellAddress(address)
         return self.getOrMakeCell(parsedAddress)
-
 
     ### >> UserFriendlyWorksheet << ###
 
@@ -75,35 +73,24 @@ class WorksheetImp(Worksheet):
         :return: always return True because every worksheet has the same fixed range address
         """
         typeCheck(other, "other", Worksheet)
-        return True
+        return self.rangeAddress == other.rangeAddress
 
     def getCell(self, address: CellAddress) -> Optional[Cell]:
-        col = self.getCol(address.colIndex)
-        rt = col.getCell(address)
-        return rt
+        return self._cellDict.get(address.toTuple())
 
     def hasCellAt(self, address: CellAddress) -> bool:
         typeCheck(address, "address", CellAddress)
-        if self.hasColumn(address.colIndex):
-            return self.getCol(address.colIndex).hasCellAt(address)
-        else:
-            return False
+        return self._cellDict.get(address.toTuple()) is not None
 
     def isEmpty(self) -> bool:
-        return not bool(self.__colDict)
+        return len(self._cellDict)==0
 
     def containsAddress(self, address: CellAddress) -> bool:
-        if self.rangeAddress.containCellAddress(address):
-            return self.getCol(address.colIndex).containsAddress(address)
-        else:
-            return False
+        return self.rangeAddress.containCellAddress(address)
 
     @property
     def cells(self) -> list[Cell]:
-        rt = []
-        for k, v in (self.__colDict.items()):
-            rt.extend(v.cells)
-        return rt
+        return list(self._cellDict.values())
 
     @property
     def rangeAddress(self) -> RangeAddressImp:
@@ -115,38 +102,51 @@ class WorksheetImp(Worksheet):
     ### >> MutableCellContainer << ###
 
     def getOrMakeCell(self, address: CellAddress) -> Cell:
-        col = self.getCol(address.colIndex)
-        rt = col.getOrMakeCell(address)
-        return rt
+        key = (address.colIndex, address.rowIndex)
+        rt: Cell | None = self._cellDict.get(key)
+        if rt is None:
+            if self.containsAddress(address):
+                return WriteBackCell(
+                    cell = DataCell(address),
+                    container = self,
+                )
+            else:
+                raise ValueError(f"worksheet \'{self.name}\' cannot not contain cell at address {address.__str__()}")
+        else:
+            return rt
 
     def addCell(self, cell: Cell):
-        self.getCol(cell.col).addCell(cell)
+        key = cell.address.toTuple()
+        self._cellDict[key] = cell
+
+        colIndex = cell.address.colIndex
+        col = self._colDict.get(colIndex,[])
+        col.append(cell)
+        self._colDict[colIndex] = col
+
+        rowIndex = cell.address.rowIndex
+        row = self._rowDict.get(rowIndex,[])
+        row.append(cell)
+        self._rowDict[rowIndex] = row
 
     def removeCell(self, address: CellAddress):
-        col = self.getCol(address.colIndex)
-        col.removeCell(address)
-        if col.isEmpty():
-            self.removeCol(col.index)
+        key = address.toTuple()
+        (colIndex,rowIndex) = key
+        if key in self._cellDict.keys():
+            self._cellDict.pop(key)
+        self._removeCellFromDict(self._colDict,colIndex,address)
+        self._removeCellFromDict(self._rowDict,rowIndex,address)
 
-    ### >> MutableColumnContainer << ###
+    @staticmethod
+    def _removeCellFromDict(targetDict, itemIndex:int, address:CellAddress):
+        cellList = targetDict.get(itemIndex)
+        if cellList is not None:
+            cellList = list(filter(lambda cell: cell.address != address, cellList))
+            if len(cellList) != 0:
+                targetDict[itemIndex] = cellList
+            else:
+                targetDict.pop(itemIndex)
 
-    def setCol(self, col: Column):
-        if isinstance(col, Column):
-            self.__colDict[col.index] = col
-        else:
-            raise ValueError("input col is not of type Column")
 
-    def removeCol(self, index: int):
-        del self.__colDict[index]
 
-    ### >> ColumnContainer << ###
 
-    def hasColumn(self, colIndex: int) -> bool:
-        return colIndex in self.__colDict.keys()
-
-    def getCol(self, colIndex: int) -> Column:
-        if self.hasColumn(colIndex):
-            col = self.__colDict[colIndex]
-        else:
-            col = ColumnImp(colIndex, {})
-        return WriteBackColumn(col, self,)

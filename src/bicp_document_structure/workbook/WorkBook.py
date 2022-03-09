@@ -3,6 +3,7 @@ from abc import ABC
 from typing import Optional, Union
 
 from bicp_document_structure.common.ToJsonStr import ToJson
+from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from bicp_document_structure.util.CanCheckEmpty import CanCheckEmpty
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.report.error.ErrorReports import ErrorReports
@@ -13,6 +14,12 @@ from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 
 class Workbook(ToJson, CanCheckEmpty, ABC):
+
+    def getTranslator(self, sheetName: str) -> FormulaTranslator:
+        raise NotImplementedError()
+
+    def haveSheet(self,sheetName:str)->bool:
+        return self.getWorksheet(sheetName) is not None
 
     def reRun(self):
         """rerun all worksheet in this workbook"""
