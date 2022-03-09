@@ -36,12 +36,14 @@ class RangeImp(Range):
 
     @staticmethod
     def fromStrAddress(address: str, sourceContainer: MutableCellContainer) -> Range:
-        raise NotImplementedError()
+        rangeAddress = RangeAddresses.addressFromLabel(address)
+        return RangeImp.fromRangeAddress(rangeAddress,sourceContainer)
 
     @staticmethod
-    def fromArbitraryCells(firstCellAddress: CellAddress, lastCellAddress: CellAddress,
-                           sourceContainer: MutableCellContainer):
-        rangeAddress = RangeAddresses.fromArbitraryCells(firstCellAddress, lastCellAddress)
+    def from2Cells(cell1Address: CellAddress, cell2Address: CellAddress,
+                   sourceContainer: MutableCellContainer):
+        """ accept any two cells. The cell address can be input in any order """
+        rangeAddress = RangeAddresses.fromArbitraryCells(cell1Address, cell2Address)
         return RangeImp.fromRangeAddress(rangeAddress, sourceContainer)
 
     ### >> UserFriendlyCellContainer << ###

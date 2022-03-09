@@ -21,10 +21,6 @@ class UserFunctions_test(unittest.TestCase):
         getActiveWorkbook().createNewWorksheet("Sheet1")
 
     def test_trigger_event_on_cell(self):
-        # context = getApp().zContext
-        # socket = context.socket(zmq.REQ)
-        # socket.connect("tcp://localhost:44707")
-        # getApp().socketProvider.updateREQSocketForUIUpdating(socket)
         app: App = getApp()
         self.a = 0
 

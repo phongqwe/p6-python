@@ -26,7 +26,6 @@ class RangeAddresses:
     @staticmethod
     def addressFromLabel(label: str) -> RangeAddress:
         isNormalRange = RangeAddresses.checkRangeAddressFormat(label)
-        # TODO add code to parse whole col/row into address
         if isNormalRange.isOk():
             bareLabel = label[1:]  # remove @
             cellLabels = bareLabel.split(":")

@@ -8,7 +8,7 @@ from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from bicp_document_structure.range.Range import Range
-from bicp_document_structure.range.RangeImp import RangeImp
+from bicp_document_structure.range.Ranges import Ranges
 from bicp_document_structure.range.address.RangeAddress import RangeAddress
 from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
 from bicp_document_structure.util.AddressParser import AddressParser
@@ -67,7 +67,7 @@ class WorksheetImp2(Worksheet):
 
     def range(self, rangeAddress: Union[str, RangeAddress, Tuple[CellAddress, CellAddress]]) -> Range:
         parsedAddress = AddressParser.parseRangeAddress(rangeAddress)
-        return RangeImp.fromRangeAddress(parsedAddress, self)
+        return Ranges.fromRangeAddress(parsedAddress, self)
 
     ### >> CellContainer << ###
 
