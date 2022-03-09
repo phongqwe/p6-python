@@ -3,7 +3,6 @@ from abc import ABC
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.CellJson import CellJson
 from bicp_document_structure.cell.address.CellAddress import CellAddress
-from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 
 
 class WrapperCell(Cell, ABC):
@@ -42,8 +41,9 @@ class WrapperCell(Cell, ABC):
     def formula(self) -> str:
         return self._innerCell.formula
 
-    def setFormula(self, newFormula: str, formulaTranslator: FormulaTranslator):
-        self._innerCell.setFormula(newFormula, formulaTranslator)
+    @formula.setter
+    def formula(self, newFormula: str):
+        self._innerCell.formula = newFormula
 
     def bareValue(self):
         return self._innerCell.bareValue()

@@ -3,7 +3,6 @@ from abc import ABC
 from bicp_document_structure.cell.CellJson import CellJson
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.common.ToJsonStr import ToJson
-from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 
 
 class Cell(ToJson,ABC):
@@ -18,10 +17,6 @@ class Cell(ToJson,ABC):
     @formula.setter
     def formula(self,newFormula):
         """ set new formula, script will also be updated """
-        raise NotImplementedError()
-
-    def setFormula(self,newFormula:str, formulaTranslator:FormulaTranslator):
-        """ set new formula, update script using a custom translator"""
         raise NotImplementedError()
 
     @property

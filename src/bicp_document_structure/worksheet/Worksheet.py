@@ -13,7 +13,8 @@ from bicp_document_structure.worksheet.WorksheetJson import WorksheetJson
 class Worksheet(UserFriendlyCellContainer,
                 UserFriendlyWorksheet,
                 MutableCellContainer,
-                ReportJsonStrMaker,ToJson,
+                ReportJsonStrMaker,
+                ToJson,
                 ABC):
     @property
     def name(self) -> str:

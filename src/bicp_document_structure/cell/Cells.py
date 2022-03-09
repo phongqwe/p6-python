@@ -9,6 +9,7 @@ from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.cell_container.MutableCellContainer import MutableCellContainer
 from bicp_document_structure.event.P6Event import P6Event
+from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 
 
 class Cells:
@@ -17,12 +18,13 @@ class Cells:
     """
 
     @staticmethod
-    def cellFromJson(cellJson: Union[CellJson, str]) -> Cell:
+    def cellFromJson(cellJson: Union[CellJson, str],translatorGetter:Callable[[],FormulaTranslator]|None= None) -> Cell:
         if isinstance(cellJson, str):
             cellJson = CellJson.fromJsonStr(cellJson)
 
         cell = DataCell(
             address = CellIndex(cellJson.address.col, cellJson.address.row),
+            translatorGetter = translatorGetter,
             value = cellJson.value,
             formula = cellJson.formula,
             script = cellJson.script,

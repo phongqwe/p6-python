@@ -33,4 +33,7 @@ def default(something:Optional[Any],defaultValue:Any):
         return defaultValue
     else:
         return something
-
+def makeGetter(result):
+    def getter():
+        return result
+    return getter

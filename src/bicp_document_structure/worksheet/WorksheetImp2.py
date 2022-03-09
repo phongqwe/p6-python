@@ -1,3 +1,4 @@
+from functools import partial
 from typing import Optional, Union, Tuple, Callable
 
 from bicp_document_structure.cell.Cell import Cell
@@ -36,6 +37,10 @@ class WorksheetImp2(Worksheet):
     ### >> ToJson << ###
     def toJsonDict(self) -> dict:
         return self.toJson().toJsonDict()
+
+    @property
+    def size(self) -> int:
+        return len(self._cellDict)
 
     ### >> Worksheet << ###
 
@@ -82,9 +87,6 @@ class WorksheetImp2(Worksheet):
         typeCheck(address, "address", CellAddress)
         return self._cellDict.get(address.toTuple()) is not None
 
-    def isEmpty(self) -> bool:
-        return len(self._cellDict)==0
-
     def containsAddress(self, address: CellAddress) -> bool:
         return self.rangeAddress.containCellAddress(address)
 
@@ -107,7 +109,7 @@ class WorksheetImp2(Worksheet):
         if rt is None:
             if self.containsAddress(address):
                 return WriteBackCell(
-                    cell = DataCell(address),
+                    cell = DataCell(address, translatorGetter = partial(self.translatorGetter,self.name)),
                     container = self,
                 )
             else:
@@ -116,19 +118,21 @@ class WorksheetImp2(Worksheet):
             return rt
 
     def addCell(self, cell: Cell):
-        key = cell.address.toTuple()
-        self._cellDict[key] = cell
+        if self.containsAddress(cell.address):
+            key = cell.address.toTuple()
+            self._cellDict[key] = cell
 
-        colIndex = cell.address.colIndex
-        col = self._colDict.get(colIndex,[])
-        col.append(cell)
-        self._colDict[colIndex] = col
+            colIndex = cell.address.colIndex
+            col = self._colDict.get(colIndex,[])
+            col.append(cell)
+            self._colDict[colIndex] = col
 
-        rowIndex = cell.address.rowIndex
-        row = self._rowDict.get(rowIndex,[])
-        row.append(cell)
-        self._rowDict[rowIndex] = row
-
+            rowIndex = cell.address.rowIndex
+            row = self._rowDict.get(rowIndex,[])
+            row.append(cell)
+            self._rowDict[rowIndex] = row
+        else:
+            raise Exception(f"worksheet \'{self.name}\' can't contain cell at \'{cell.address.__str__()}\'")
     def removeCell(self, address: CellAddress):
         key = address.toTuple()
         (colIndex,rowIndex) = key

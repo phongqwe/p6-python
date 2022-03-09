@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import MagicMock
 
 from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.address.CellIndex import CellIndex
@@ -10,11 +11,13 @@ class WorksheetJsonTest(unittest.TestCase):
         cells = [
             DataCell(
                 address=CellIndex(1, 1),
+                translatorGetter = MagicMock(),
                 value="abc",
                 script=None
             ).toJson(),
             DataCell(
                 address=CellIndex(1, 2),
+                translatorGetter = MagicMock(),
                 value=None,
                 script="123"
             ).toJson()

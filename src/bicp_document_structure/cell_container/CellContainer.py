@@ -4,9 +4,10 @@ from typing import Optional
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.range.address.RangeAddress import RangeAddress
+from bicp_document_structure.util.WithSize import WithSize
 
 
-class CellContainer(ABC):
+class CellContainer(WithSize,ABC):
     """ an immutable cell container. A container support accessing Cells using CellAddress """
 
     def hasCellAt(self, address: CellAddress) -> bool:
@@ -20,10 +21,6 @@ class CellContainer(ABC):
         """
         :return the cell at the position, None of the cell does not exist
         """
-        raise NotImplementedError()
-
-    def isEmpty(self) -> bool:
-        """:return true if this container is empty"""
         raise NotImplementedError()
 
     def containsAddress(self, address: CellAddress) -> bool:

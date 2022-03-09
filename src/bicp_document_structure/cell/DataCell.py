@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Callable
 
 from bicp_document_structure.app.GlobalScope import getGlobals
 from bicp_document_structure.cell.Cell import Cell
@@ -18,6 +18,7 @@ class DataCell(Cell):
 
     def __init__(self,
                  address: CellAddress,
+                 translatorGetter: Callable[[], FormulaTranslator] | None = None,
                  value: Any = None,
                  formula: str = None,
                  script: str = None):
@@ -26,6 +27,7 @@ class DataCell(Cell):
         self.__addr: CellAddress = address
         self.__scriptAlreadyRun: bool = False
         self.__formula: str = formula
+        self._translatorGetter: Callable[[], FormulaTranslator] | None = translatorGetter
 
     ### >> Cell << ###
 
@@ -33,9 +35,11 @@ class DataCell(Cell):
     def formula(self) -> str:
         return self.__formula
 
-    def setFormula(self, newFormula: str, formulaTranslator: FormulaTranslator):
+    @formula.setter
+    def formula(self, newFormula):
         self.__formula = newFormula
-        self.script = self.__translateFormula(newFormula, formulaTranslator)
+        if self._translatorGetter is not None:
+            self.script = self.__translateFormula(newFormula, self._translatorGetter())
 
     @staticmethod
     def __translateFormula(formula: str, translator: FormulaTranslator) -> str:

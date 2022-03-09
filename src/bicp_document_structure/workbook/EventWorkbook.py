@@ -30,39 +30,39 @@ class EventWorkbook(WorkbookWrapper):
     @property
     def worksheets(self) -> list[Worksheet]:
         sheets = self._innerWorkbook.worksheets
-        rt = list(map(lambda s: self.__wrap(s), sheets))
+        rt = list(map(lambda s: self.__wrapInEventWorksheet(s), sheets))
         return rt
 
     @property
     def activeWorksheet(self) -> Optional[Worksheet]:
         activeSheet = self._innerWorkbook.activeWorksheet
-        return self.__wrap(activeSheet)
+        return self.__wrapInEventWorksheet(activeSheet)
 
     def getWorksheetByName(self, name: str) -> Optional[Worksheet]:
         s = self._innerWorkbook.getWorksheetByName(name)
         if s is not None:
-            return self.__wrap(s)
+            return self.__wrapInEventWorksheet(s)
         else:
             return s
 
     def getWorksheetByIndex(self, index: int) -> Optional[Worksheet]:
         s = self._innerWorkbook.getWorksheetByIndex(index)
         if s is not None:
-            return self.__wrap(s)
+            return self.__wrapInEventWorksheet(s)
         else:
             return s
 
     def getWorksheet(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
         s = self._innerWorkbook.getWorksheet(nameOrIndex)
         if s is not None:
-            return self.__wrap(s)
+            return self.__wrapInEventWorksheet(s)
         else:
             return s
 
     def createNewWorksheetRs(self, newSheetName: Optional[str] = None) -> Result[Worksheet, ErrorReport]:
         s = self._innerWorkbook.createNewWorksheetRs(newSheetName)
         if s.isOk():
-            return Ok(self.__wrap(s.value))
+            return Ok(self.__wrapInEventWorksheet(s.value))
         else:
             return s
 
@@ -71,7 +71,7 @@ class EventWorkbook(WorkbookWrapper):
         if self.__onWorkbookEvent is not None:
             self.__onWorkbookEvent(self._innerWorkbook, P6Events.Workbook.ReRun)
 
-    def __wrap(self, sheet: Worksheet) -> Worksheet:
+    def __wrapInEventWorksheet(self, sheet: Worksheet) -> Worksheet:
         onCellEvent = self.__partialWithNoneCheck(self.__onCellChange)
         onSheetEvent = self.__partialWithNoneCheck(self.__onWorksheetEvent)
         onRangeEvent = self.__partialWithNoneCheck(self.__onRangeEvent)

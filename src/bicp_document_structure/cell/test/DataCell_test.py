@@ -1,25 +1,27 @@
 import unittest
+from unittest.mock import MagicMock
 
 from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.EventCell import EventCell
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
+from bicp_document_structure.util.Util import makeGetter
 from bicp_document_structure.workbook.WorkbookKeys import WorkbookKeys
 
 
 class DataCellTest(unittest.TestCase):
 
     def test_clearScriptResult(self):
-        c1 = DataCell(CellIndex(1, 1), 123)
+        c1 = DataCell(CellIndex(1, 1), MagicMock(),123)
         c1.clearScriptResult()
         self.assertEqual(123, c1.bareValue())
 
-        c2 = DataCell(CellIndex(1, 1), 123, script = "123")
+        c2 = DataCell(CellIndex(1, 1), MagicMock(),123, script = "123")
         c2.clearScriptResult()
         self.assertIsNone(c2.bareValue())
         self.assertIsNotNone(c2.script)
 
-        c3 = DataCell(CellIndex(1, 1))
+        c3 = DataCell(CellIndex(1, 1),MagicMock())
         c3.clearScriptResult()
         self.assertIsNone(c3.bareValue())
         self.assertIsNone(c3.script)
@@ -30,7 +32,7 @@ class DataCellTest(unittest.TestCase):
         def increaseExCount(cell, mutationEvent):
             self.exCountA += 1
 
-        c2 = EventCell(DataCell(CellIndex(1, 1), value = 123, script = "123"), onCellEvent = increaseExCount)
+        c2 = EventCell(DataCell(CellIndex(1, 1), MagicMock(),value = 123, script = "123"), onCellEvent = increaseExCount)
         oldCount = self.exCountA
         c2.reRun(globals())
         self.assertEqual(123, c2.bareValue())
@@ -42,7 +44,7 @@ class DataCellTest(unittest.TestCase):
         self.assertEqual(oldCount + 1, self.exCountA)
 
     def test_assigningValueAndScript(self):
-        c = DataCell(CellIndex(1, 1))
+        c = DataCell(CellIndex(1, 1),MagicMock())
         self.assertIsNone(c.value)
         self.assertIsNone(c.script)
         c.value = 123
@@ -62,7 +64,7 @@ class DataCellTest(unittest.TestCase):
         def increaseExCount(a, b):
             self.exCount += 1
 
-        c = EventCell(DataCell(CellIndex(1, 1)), onCellEvent = increaseExCount)
+        c = EventCell(DataCell(CellIndex(1, 1),MagicMock()), onCellEvent = increaseExCount)
         c.script = "x=345;\"abc\""
         oldCount = self.exCount
         c.reRun(globals())
@@ -76,7 +78,7 @@ class DataCellTest(unittest.TestCase):
         self.assertEqual(oldCount + 1, self.exCount)
 
     def test_setScript(self):
-        c = DataCell(CellIndex(1, 1), 123)
+        c = DataCell(CellIndex(1, 1), MagicMock(),123)
         self.assertEqual(123, c.value)
         self.assertEqual(None, c.script)
         c.value = 345
@@ -97,7 +99,7 @@ class DataCellTest(unittest.TestCase):
         self.assertTrue(c1.isValueEqual(c2))
         self.assertTrue(c2.isValueEqual(c1))
         self.assertTrue(c2.isValueEqual(c2))
-        c3 = DataCell(CellIndex(2, 3), -234)
+        c3 = DataCell(CellIndex(2, 3), value=-234)
         self.assertFalse(c2.isValueEqual(c3))
         self.assertFalse(c3.isValueEqual(c2))
 
@@ -112,17 +114,17 @@ class DataCellTest(unittest.TestCase):
             c1.formula = "\"new formula\""
 
     def test_setFormula1(self):
-        c1 = DataCell(CellIndex(1, 1), 123, script = "x=1;y=x*2+3;y")
         translator = FormulaTranslators.standardWbWs("sheet1", WorkbookKeys.fromNameAndPath("Book1", "path123"))
-        c1.setFormula("=SCRIPT(x=1;y=x-200;y)", translator)
+        c1 = DataCell(CellIndex(1, 1), makeGetter(translator), 123, script = "x=1;y=x*2+3;y")
+        c1.formula="=SCRIPT(x=1;y=x-200;y)"
         self.assertEqual("x=1;y=x-200;y", c1.script)
         self.assertEqual(-199, c1.value)
         print(c1.value)
 
     def test_setFormula2(self):
-        c1 = DataCell(CellIndex(1, 1), 123, script = "x=1;y=x*2+3;y")
         translator = FormulaTranslators.standardWbWs("sheet1", WorkbookKeys.fromNameAndPath("Book1", "path123"))
-        c1.setFormula("=SUM(A1:B3)", translator)
+        c1 = DataCell(CellIndex(1, 1), makeGetter(translator),123, script = "x=1;y=x*2+3;y")
+        c1.formula="=SUM(A1:B3)"
         self.assertEqual(
             """WorksheetFunctions.SUM(getWorkbook(WorkbookKeys.fromNameAndPath("Book1","path123")).getSheet("sheet1").getRange(\"@A1:B3\"))""",
             c1.script)

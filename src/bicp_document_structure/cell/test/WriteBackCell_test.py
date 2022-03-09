@@ -6,6 +6,7 @@ from bicp_document_structure.cell.WriteBackCell import WriteBackCell
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.cell.test.MockContainer import MockCellContainer
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
+from bicp_document_structure.util.Util import makeGetter
 from bicp_document_structure.worksheet.WorksheetImp2 import WorksheetImp2
 
 
@@ -37,7 +38,7 @@ class WriteBackCellTest(unittest.TestCase):
     def test_wbCell(self):
         cellContainer = MockCellContainer()
         address = CellIndex(1, 1)
-        c = WriteBackCell(DataCell(address), cellContainer)
+        c = WriteBackCell(DataCell(address,makeGetter(FormulaTranslators.mock())), cellContainer)
         self.assertFalse(cellContainer.hasCellAt(address))
 
         # cell is added when script is changed
@@ -56,6 +57,6 @@ class WriteBackCellTest(unittest.TestCase):
         cellContainer.removeCell(address)
 
         # cell is add when new formula is set
-        c.setFormula("zzbd",FormulaTranslators.mock())
+        c.formula="zzbd"
         self.assertTrue(cellContainer.hasCellAt(address))
         cellContainer.removeCell(address)

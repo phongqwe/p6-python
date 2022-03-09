@@ -1,5 +1,6 @@
 import random
 import unittest
+from functools import partial
 
 from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.address.CellIndex import CellIndex
@@ -17,7 +18,7 @@ class WorksheetImp2_test(unittest.TestCase):
 
     def test_cell(self):
         s = WorksheetImp2(translatorGetter = self.transGetter)
-        expect = DataCell(CellIndex(1, 2))
+        expect = DataCell(CellIndex(1, 2), translatorGetter = partial(self.transGetter, s.name))
 
         c1 = s.cell("@A2")
         self.assertEqual(expect, c1)
@@ -43,21 +44,24 @@ class WorksheetImp2_test(unittest.TestCase):
         r3 = s.range((ad1, ad2))
         self.assertEqual(expect, r3)
 
+    def transGetterForCell(self):
+        return FormulaTranslators.mock()
+
     def makeTestObj(self):
         cellAddr = CellIndex(random.randrange(1, 20), random.randrange(1, 20))
-        cell = DataCell(cellAddr, 123,script= "script")
+        cell = DataCell(cellAddr, translatorGetter = self.transGetterForCell, value = 123, script = "script")
         return cell, cellAddr
 
     def test_hasCellAt(self):
         s = WorksheetImp2(translatorGetter = self.transGetter)
         self.assertFalse(s.hasCellAt(CellIndex(1, 1)))
-        s.addCell(DataCell(CellIndex(1, 1), 123, script="script"))
+        s.addCell(DataCell(CellIndex(1, 1), translatorGetter = self.transGetterForCell,value=123, script = "script"))
         self.assertTrue(s.hasCellAt(CellIndex(1, 1)))
 
     def test_getCell(self):
         s = WorksheetImp2(translatorGetter = self.transGetter)
         cellAddr = CellIndex(12, 12)
-        cell = DataCell(cellAddr)
+        cell = DataCell(cellAddr,self.transGetterForCell)
         s.addCell(cell)
         self.assertEqual(cell, s.getOrMakeCell(cellAddr))
 
@@ -102,3 +106,14 @@ class WorksheetImp2_test(unittest.TestCase):
         self.assertFalse(s.hasCellAt(c2Addr))
         c2.value = 123
         self.assertTrue(s.hasCellAt(c2Addr))
+
+    def test_RemoveCell(self):
+        s = self.makeS()
+        c = s.getOrMakeCell(CellIndex(1, 1))
+        c.value = 123
+        s.removeCell(CellIndex(1, 1))
+        self.assertTrue(s.isEmpty())
+        self.assertIsNone(s.getCell(CellIndex(1, 1)))
+
+    def makeS(self):
+        return WorksheetImp2(translatorGetter = self.transGetter)
