@@ -6,7 +6,7 @@ from bicp_document_structure.cell.EventCell import EventCell
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from bicp_document_structure.util.Util import makeGetter
-from bicp_document_structure.workbook.WorkbookKeys import WorkbookKeys
+from bicp_document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 
 
 class DataCellTest(unittest.TestCase):
@@ -128,7 +128,7 @@ class DataCellTest(unittest.TestCase):
         c1 = DataCell(CellIndex(1, 1), makeGetter(translator),123, script = "x=1;y=x*2+3;y")
         c1.formula="=SUM(A1:B3)"
         self.assertEqual(
-            """WorksheetFunctions.SUM(getWorkbook(WorkbookKeys.fromNameAndPath("Book1","path123")).getSheet("sheet1").getRange(\"@A1:B3\"))""",
+            """WorksheetFunctions.SUM(getWorkbook(WorkbookKeys.fromNameAndPath("Book1","path123")).getWorksheet("sheet1").range(\"@A1:B3\"))""",
             c1.script)
         c1.script = "x=99;y=x-200;y"
         self.assertEqual("=SCRIPT(x=99;y=x-200;y)", c1.formula)

@@ -5,7 +5,7 @@ from bicp_document_structure.formula_translator.FormulaTranslator import Formula
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.workbook.WorkBook import Workbook
-from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
+from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 

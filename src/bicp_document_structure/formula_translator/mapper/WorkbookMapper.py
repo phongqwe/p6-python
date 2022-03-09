@@ -7,4 +7,4 @@ class WorkbookMapper:
         return WorkbookMapper.__instance
 
     def getSheet(self,sheetName: str)->str:
-        return "getSheet(\"{sn}\")".format(sn=sheetName)
+        return "getWorksheet(\"{sn}\")".format(sn=sheetName)

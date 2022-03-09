@@ -6,7 +6,7 @@ from bicp_document_structure.app.workbook_container.WorkbookContainer import Wor
 from bicp_document_structure.util.CanCheckEmpty import CanCheckEmpty
 from bicp_document_structure.util.Util import typeCheck
 from bicp_document_structure.workbook.WorkBook import Workbook
-from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
+from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
 
 
 class WorkbookContainerImp(WorkbookContainer,CanCheckEmpty):

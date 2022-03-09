@@ -4,7 +4,7 @@ from pathlib import Path
 
 from bicp_document_structure.app.workbook_container.WorkbookContainerImp import WorkbookContainerImp
 from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
-from bicp_document_structure.workbook.WorkbookKeyImp import WorkbookKeyImp
+from bicp_document_structure.workbook.key.WorkbookKeyImp import WorkbookKeyImp
 
 
 class WorkbookContainerImp_test(unittest.TestCase):

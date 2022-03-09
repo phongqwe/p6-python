@@ -5,7 +5,7 @@ from bicp_document_structure.cell.EventCell import EventCell
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from bicp_document_structure.util.Util import makeGetter
-from bicp_document_structure.workbook.WorkbookKeys import WorkbookKeys
+from bicp_document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 
 
 class EventCellTest(unittest.TestCase):

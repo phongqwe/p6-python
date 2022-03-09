@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 from typing import Optional
 
-from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
+from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
 
 
 class WorkbookKeyImp(WorkbookKey):

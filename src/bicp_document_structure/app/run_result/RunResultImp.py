@@ -3,7 +3,7 @@ from bicp_document_structure.app.run_result.RunResultJson import RunResultJson
 from bicp_document_structure.app.run_result.SingleResultDict import SingleResultDict
 from bicp_document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
 from bicp_document_structure.cell.address.CellAddress import CellAddress
-from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
+from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
 
 
 class RunResultImp(RunResult):

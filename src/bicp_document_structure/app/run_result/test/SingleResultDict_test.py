@@ -3,7 +3,7 @@ from pathlib import Path
 
 from bicp_document_structure.app.run_result.SingleResultDict import SingleResultDict
 from bicp_document_structure.cell.address.CellIndex import CellIndex
-from bicp_document_structure.workbook.WorkbookKeyImp import WorkbookKeyImp
+from bicp_document_structure.workbook.key.WorkbookKeyImp import WorkbookKeyImp
 
 
 class RunResultImpTest(unittest.TestCase):

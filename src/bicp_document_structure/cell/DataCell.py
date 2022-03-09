@@ -84,6 +84,7 @@ class DataCell(Cell):
     def value(self, newValue):
         self.__value = newValue
         self.__script = None
+        self.__formula = None
         self.__scriptAlreadyRun = False
 
     @property

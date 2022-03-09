@@ -16,9 +16,6 @@ class WorkbookKey(ABC):
     def fileName(self) -> str:
         raise NotImplementedError()
 
-    def contains(self,name:str)->bool:
-        return self.filePath == name or self.fileName ==name
-
     def __key(self)->Tuple:
         return self.filePath, self.fileName
 

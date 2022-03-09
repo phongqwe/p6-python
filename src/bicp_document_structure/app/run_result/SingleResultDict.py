@@ -1,7 +1,7 @@
 from typing import Union
 
 from bicp_document_structure.cell.address.CellAddress import CellAddress
-from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
+from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
 
 
 class SingleResultDict:

@@ -12,7 +12,7 @@ from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.event.P6Events import P6Events
 from bicp_document_structure.event.reactor.EventReactorFactory import EventReactorFactory
 from bicp_document_structure.workbook.WorkBook import Workbook
-from bicp_document_structure.workbook.WorkbookKeyImp import WorkbookKeyImp
+from bicp_document_structure.workbook.key.WorkbookKeyImp import WorkbookKeyImp
 
 
 class AppImp_test(unittest.TestCase):
@@ -275,6 +275,7 @@ class AppImp_test(unittest.TestCase):
         self.assertEqual(0, self.aa)
         cell.value = "abc"
         self.assertEqual(123, self.aa)
+
 
 if __name__ == '__main__':
     unittest.main()

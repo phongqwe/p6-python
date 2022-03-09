@@ -9,7 +9,7 @@ class WorksheetMapper:
 
 
     def getRange(self,rangeAddress: str)->str:
-        return "getRange({ra})".format(ra=rangeAddress)
+        return "range({ra})".format(ra=rangeAddress)
 
     def getCell(self,cellAddress: str)->str:
         return "cell({ca})".format(ca=cellAddress)

@@ -4,7 +4,7 @@ from typing import Union, Optional
 from bicp_document_structure.util.report.ReportJsonStrMaker import ReportJsonStrMaker
 from bicp_document_structure.util.report.error.ErrorHeader import ErrorHeader
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
-from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
+from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
 
 __errPrefix = "appErrors_"
 

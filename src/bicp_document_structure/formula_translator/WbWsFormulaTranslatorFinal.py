@@ -4,7 +4,7 @@ from bicp_document_structure.formula_translator.PythonFormulaTranslator import P
 from bicp_document_structure.formula_translator.WbWsVisitor import WbWsVisitor
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Result import Result
-from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
+from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
 
 
 class WbWsFormulaTranslator(FormulaTranslator):

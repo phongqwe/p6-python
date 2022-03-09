@@ -11,9 +11,9 @@ from bicp_document_structure.util.result.Ok import Ok
 from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookErrors import WorkbookErrors
-from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
-from bicp_document_structure.workbook.WorkbookKeyImp import WorkbookKeyImp
-from bicp_document_structure.workbook.WorkbookKeys import WorkbookKeys
+from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
+from bicp_document_structure.workbook.key.WorkbookKeyImp import WorkbookKeyImp
+from bicp_document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 from bicp_document_structure.worksheet.WorksheetImp2 import WorksheetImp2
 from bicp_document_structure.worksheet.WorksheetWrapper import WorksheetWrapper

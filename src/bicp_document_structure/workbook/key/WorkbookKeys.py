@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
-from bicp_document_structure.workbook.WorkbookKeyImp import WorkbookKeyImp
+from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
+from bicp_document_structure.workbook.key.WorkbookKeyImp import WorkbookKeyImp
 
 
 class WorkbookKeys:

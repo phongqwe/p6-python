@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Optional, Union
 
 from bicp_document_structure.workbook.WorkBook import Workbook
-from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
+from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
 
 
 class WorkbookContainer:

@@ -24,8 +24,8 @@ from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.util.result.Results import Results
 from bicp_document_structure.workbook.EventWorkbook import EventWorkbook
 from bicp_document_structure.workbook.WorkBook import Workbook
-from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
-from bicp_document_structure.workbook.WorkbookKeyImp import WorkbookKeyImp
+from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
+from bicp_document_structure.workbook.key.WorkbookKeyImp import WorkbookKeyImp
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 

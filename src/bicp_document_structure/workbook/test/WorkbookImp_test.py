@@ -7,7 +7,7 @@ from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
-from bicp_document_structure.workbook.WorkbookKeys import WorkbookKeys
+from bicp_document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 from bicp_document_structure.worksheet.WorksheetImp2 import WorksheetImp2
 
@@ -158,7 +158,7 @@ class WorkbookImp_test(unittest.TestCase):
         f = """=SUM(B3:B5)"""
         c1.formula = f
 
-        outputTemplate = """WorksheetFunctions.SUM(getWorkbook(WorkbookKeys.fromNameAndPath("{bookName}","{bookPath}")).getSheet("{sheetName}").getRange("@B3:B5"))"""
+        outputTemplate = """WorksheetFunctions.SUM(getWorkbook(WorkbookKeys.fromNameAndPath("{bookName}","{bookPath}")).getWorksheet("{sheetName}").range("@B3:B5"))"""
         self.assertEqual(
             outputTemplate.format(bookName= "w1",bookPath="p1",sheetName ="s1"),
             c1.script)

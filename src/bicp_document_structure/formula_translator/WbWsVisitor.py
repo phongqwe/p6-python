@@ -3,7 +3,7 @@ from bicp_document_structure.formula_translator.antlr4.FormulaParser import Form
 from bicp_document_structure.formula_translator.mapper.PythonMapper import PythonMapper
 from bicp_document_structure.formula_translator.mapper.WorkbookMapper import WorkbookMapper
 from bicp_document_structure.formula_translator.mapper.WorksheetMapper import WorksheetMapper
-from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
+from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
 
 
 class WbWsVisitor(PythonFormulaVisitor):
@@ -75,5 +75,5 @@ class WbWsVisitor(PythonFormulaVisitor):
             getWb: str = self.mapper.getActiveWorkbook()
         else:
             getWb: str = self.mapper.getWorkbook(self._wbKey)
-        getSheet: str = f'{getWb}.getSheet("{sheetName}")'
+        getSheet: str = f'{getWb}.getWorksheet("{sheetName}")'
         return getSheet

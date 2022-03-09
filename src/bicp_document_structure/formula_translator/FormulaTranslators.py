@@ -4,7 +4,7 @@ from bicp_document_structure.formula_translator.FormulaTranslator import Formula
 from bicp_document_structure.formula_translator.MockTranslator import MockTranslator
 from bicp_document_structure.formula_translator.StdFormulaTranslator import StdFormulaTranslator
 from bicp_document_structure.formula_translator.WbWsFormulaTranslatorFinal import WbWsFormulaTranslator
-from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
+from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
 
 
 class FormulaTranslators:
