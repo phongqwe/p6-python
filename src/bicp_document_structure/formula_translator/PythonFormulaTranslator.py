@@ -3,7 +3,6 @@ from functools import partial
 from antlr4 import *
 
 from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
-from bicp_document_structure.formula_translator.PythonFormulaVisitor import PythonFormulaVisitor
 from bicp_document_structure.formula_translator.ScriptFormulaTranslator import ScriptFormulaTranslator
 from bicp_document_structure.formula_translator.antlr4.FormulaLexer import FormulaLexer
 from bicp_document_structure.formula_translator.antlr4.FormulaParser import FormulaParser
@@ -20,15 +19,13 @@ from bicp_document_structure.util.result.Result import Result
 class PythonFormulaTranslator(FormulaTranslator):
     scriptTranslator = ScriptFormulaTranslator()
 
-    def __init__(self, visitor: FormulaVisitor|None = None):
+    def __init__(self, visitor: FormulaVisitor):
         self.parserError = None
         self.lexerError = None
-        if visitor is None:
-            visitor = PythonFormulaVisitor()
-        self.__visitor = visitor
+        self.__visitor:FormulaVisitor = visitor
 
-    def translate(self, formula: str) -> Result[str,ErrorReport]:
-        scriptRs:Result[str,ErrorReport] = PythonFormulaTranslator.scriptTranslator.translate(formula)
+    def translate(self, formula: str) -> Result[str, ErrorReport]:
+        scriptRs: Result[str, ErrorReport] = PythonFormulaTranslator.scriptTranslator.translate(formula)
         if scriptRs.isOk():
             return scriptRs
         else:
@@ -62,7 +59,3 @@ class PythonFormulaTranslator(FormulaTranslator):
 
     def onParserError(self, formula, recognizer, offendingSymbol, line, column, msg, e):
         self.parserError = TranslatorErrors.ParserError.Data(formula, recognizer, offendingSymbol, line, column, msg, e)
-
-
-
-

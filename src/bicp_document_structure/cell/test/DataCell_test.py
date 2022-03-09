@@ -78,7 +78,9 @@ class DataCellTest(unittest.TestCase):
         self.assertEqual(oldCount + 1, self.exCount)
 
     def test_setScript(self):
-        c = DataCell(CellIndex(1, 1), MagicMock(),123)
+        def getTranslator():
+            return FormulaTranslators.standardWbWs("sheet1",WorkbookKeys.fromNameAndPath("b1","path123"))
+        c = DataCell(CellIndex(1, 1), getTranslator,123)
         self.assertEqual(123, c.value)
         self.assertEqual(None, c.script)
         c.value = 345

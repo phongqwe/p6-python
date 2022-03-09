@@ -1,22 +1,19 @@
 from bicp_document_structure.formula_translator.PythonFormulaVisitor import PythonFormulaVisitor
 from bicp_document_structure.formula_translator.antlr4.FormulaParser import FormulaParser
-from bicp_document_structure.formula_translator.antlr4.FormulaVisitor import FormulaVisitor
 from bicp_document_structure.formula_translator.mapper.PythonMapper import PythonMapper
 from bicp_document_structure.formula_translator.mapper.WorkbookMapper import WorkbookMapper
 from bicp_document_structure.formula_translator.mapper.WorksheetMapper import WorksheetMapper
 from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 
 
-class WithWbWsVisitor(PythonFormulaVisitor):
+class WbWsVisitor(PythonFormulaVisitor):
     def __init__(self,
-                 visitor: FormulaVisitor,
                  sheetName: str | None = None,
                  workbookKey: WorkbookKey | None = None
                  ):
         super().__init__()
         self._sheetName: str | None = sheetName
         self._wbKey: WorkbookKey | None = workbookKey
-        self._visitor:FormulaVisitor = visitor
         self.mapper = PythonMapper.instance()
         self.wsMapper = WorksheetMapper.instance()
         self.wbMapper = WorkbookMapper.instance()

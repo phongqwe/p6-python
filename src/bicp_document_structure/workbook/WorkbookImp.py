@@ -13,6 +13,7 @@ from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookErrors import WorkbookErrors
 from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
 from bicp_document_structure.workbook.WorkbookKeyImp import WorkbookKeyImp
+from bicp_document_structure.workbook.WorkbookKeys import WorkbookKeys
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 from bicp_document_structure.worksheet.WorksheetImp2 import WorksheetImp2
 from bicp_document_structure.worksheet.WorksheetWrapper import WorksheetWrapper
@@ -123,12 +124,20 @@ class WorkbookImp(Workbook):
         return len(self.__sheetDict)
 
     @property
+    def path(self) -> Path:
+        return self.workbookKey.filePath
+
+    @path.setter
+    def path(self, newPath: Path):
+        self.workbookKey = WorkbookKeys.fromNameAndPath(self.name, newPath)
+
+    @property
     def name(self) -> str:
         return self.workbookKey.fileName
 
     @name.setter
     def name(self, newName: str):
-        self.workbookKey = WorkbookKeyImp(newName, self.workbookKey.filePath)
+        self.workbookKey = WorkbookKeys.fromNameAndPath(newName, self.workbookKey.filePath)
 
     def _generateNewSheetName(self)->str:
         newSheetName = "Sheet" + str(self.__nameCount)

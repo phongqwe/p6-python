@@ -1,11 +1,13 @@
 import unittest
 from collections import OrderedDict
+from pathlib import Path
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
+from bicp_document_structure.workbook.WorkbookKeys import WorkbookKeys
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 from bicp_document_structure.worksheet.WorksheetImp2 import WorksheetImp2
 
@@ -15,10 +17,11 @@ class WorkbookImp_test(unittest.TestCase):
     @staticmethod
     def transGetter(name):
         return FormulaTranslators.mock()
+
     def makeTestObj(self):
-        s1 = WorksheetImp2(name="s1",translatorGetter = self.transGetter)
-        s2 = WorksheetImp2(name="s2",translatorGetter = self.transGetter)
-        s3 = WorksheetImp2(name="s3",translatorGetter = self.transGetter)
+        s1 = WorksheetImp2(name = "s1", translatorGetter = self.transGetter)
+        s2 = WorksheetImp2(name = "s2", translatorGetter = self.transGetter)
+        s3 = WorksheetImp2(name = "s3", translatorGetter = self.transGetter)
         d = OrderedDict({
             s1.name: s1,
             s2.name: s2,
@@ -142,7 +145,29 @@ class WorkbookImp_test(unittest.TestCase):
         self.aa = f"{cell.address.label}"
 
     def test_toJson(self):
-        s1, s2, s3, w1, d=self.makeTestObj()
+        s1, s2, s3, w1, d = self.makeTestObj()
         expect = """{"name": "w1", "path": null, "worksheets": [{"name": "s1", "cells": []}, {"name": "s2", "cells": []}, {"name": "s3", "cells": []}]}"""
-        self.assertEqual(expect,w1.toJsonStr())
-        # print(w1.toJsonStr())
+        self.assertEqual(expect, w1.toJsonStr())
+        print(w1.toJsonStr())
+
+    def test_translator_when_change_key(self):
+        # when a workbook change its path, translators of its children obj (sheets, cells) must be regenerated.
+        w1 = WorkbookImp("w1", path = Path("p1"))
+        s1 = w1.createNewWorksheet("s1")
+        c1 = s1.cell("@A1")
+        f = """=SUM(B3:B5)"""
+        c1.formula = f
+
+        outputTemplate = """WorksheetFunctions.SUM(getWorkbook(WorkbookKeys.fromNameAndPath("{bookName}","{bookPath}")).getSheet("{sheetName}").getRange("@B3:B5"))"""
+        self.assertEqual(
+            outputTemplate.format(bookName= "w1",bookPath="p1",sheetName ="s1"),
+            c1.script)
+        w1.workbookKey = WorkbookKeys.fromNameAndPath(w1.name, "newPath")
+        self.assertEqual(
+            outputTemplate.format(bookName= "w1",bookPath="newPath",sheetName ="s1"),
+            c1.script)
+
+        w1.name="newBook"
+        self.assertEqual(
+            outputTemplate.format(bookName = "newBook", bookPath = "newPath", sheetName = "s1"),
+            c1.script)

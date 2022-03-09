@@ -45,7 +45,7 @@ class AppImp(App):
             workbookContainer = WorkbookContainerImp()
 
         self.__wbCont: WorkbookContainer = workbookContainer
-        # x: set default active workbook to the first if possible
+        # x: set default active workbook to the first workbook if possible
         if self.__wbCont.isNotEmpty():
             self.__activeWorkbook: Optional[Workbook] = self.__wbCont.getWorkbookByIndex(0)
         else:

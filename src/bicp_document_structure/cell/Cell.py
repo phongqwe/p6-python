@@ -61,7 +61,7 @@ class Cell(ToJson,ABC):
         raise NotImplementedError()
 
     @script.setter
-    def script(self, newCode: str):
+    def script(self, newScript: str):
         """ set the script hold by this cell. Script is always Python"""
         raise NotImplementedError()
 
@@ -99,8 +99,8 @@ class Cell(ToJson,ABC):
     #     """set new script for this cell and execute it immediately"""
     #     raise NotImplementedError()
 
-    def hasCode(self) -> bool:
-        """:return True if this cell contain any script"""
+    def hasScript(self) -> bool:
+        """:return True if this cell contains any script"""
         raise NotImplementedError()
 
     def toJson(self) -> CellJson:
@@ -115,7 +115,7 @@ class Cell(ToJson,ABC):
     #     raise NotImplementedError()
 
     def isEmpty(self):
-        if self.hasCode():
+        if self.hasScript():
             return True
         else:
             return self.value is not None

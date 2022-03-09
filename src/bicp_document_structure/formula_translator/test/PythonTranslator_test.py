@@ -1,6 +1,7 @@
 import unittest
 
 from bicp_document_structure.formula_translator.PythonFormulaTranslator import PythonFormulaTranslator
+from bicp_document_structure.formula_translator.PythonFormulaVisitor import PythonFormulaVisitor
 
 
 class PythonFormulaTranslator_test(unittest.TestCase):
@@ -24,7 +25,7 @@ class PythonFormulaTranslator_test(unittest.TestCase):
             """=sum(1,2,3.3,abc")""",
             """=sum(1,2,3.3,"abc)""",
         ]
-        translator = PythonFormulaTranslator()
+        translator = PythonFormulaTranslator(visitor = PythonFormulaVisitor())
         for i in script:
             outRs = translator.translate(i)
             self.assertTrue(outRs.isErr(),i)

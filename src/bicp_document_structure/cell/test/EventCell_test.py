@@ -3,6 +3,9 @@ import unittest
 from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.EventCell import EventCell
 from bicp_document_structure.cell.address.CellIndex import CellIndex
+from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
+from bicp_document_structure.util.Util import makeGetter
+from bicp_document_structure.workbook.WorkbookKeys import WorkbookKeys
 
 
 class EventCellTest(unittest.TestCase):
@@ -12,7 +15,7 @@ class EventCellTest(unittest.TestCase):
         def cb(cell,event):
             self.a=self.a+1
 
-        c1 = DataCell(CellIndex(1, 1),123)
+        c1 = DataCell(CellIndex(1, 1),makeGetter(FormulaTranslators.standardWbWs("w1",WorkbookKeys.fromNameAndPath("b1","path1"))),123)
         eventCell = EventCell(c1,cb)
         self.assertEqual(0,self.a)
 

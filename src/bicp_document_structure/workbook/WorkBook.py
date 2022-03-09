@@ -1,5 +1,6 @@
 import json
 from abc import ABC
+from pathlib import Path
 from typing import Optional, Union
 
 from bicp_document_structure.common.ToJsonStr import ToJson
@@ -78,6 +79,14 @@ class Workbook(ToJson, CanCheckEmpty, ABC):
 
     @name.setter
     def name(self, newName: str):
+        raise NotImplementedError()
+
+    @property
+    def path(self)->Path:
+        raise NotImplementedError()
+
+    @path.setter
+    def path(self,newPath:Path):
         raise NotImplementedError()
 
     def createNewWorksheet(self, newSheetName: Optional[str]) -> Worksheet:

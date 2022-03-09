@@ -1,8 +1,7 @@
 from bicp_document_structure.formula_translator.DirectLiteralTranslator import DirectLiteralTranslator
 from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from bicp_document_structure.formula_translator.PythonFormulaTranslator import PythonFormulaTranslator
-from bicp_document_structure.formula_translator.PythonFormulaVisitor import PythonFormulaVisitor
-from bicp_document_structure.formula_translator.WithWbWsVisitor import WithWbWsVisitor
+from bicp_document_structure.formula_translator.WbWsVisitor import WbWsVisitor
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.workbook.WorkbookKey import WorkbookKey
@@ -14,10 +13,9 @@ class WbWsFormulaTranslator(FormulaTranslator):
         self.wsName: str | None = worksheetName
         self.wbKey: WorkbookKey | None = workbookKey
         self.pythonTranslator = PythonFormulaTranslator(
-            visitor = WithWbWsVisitor(
+            visitor = WbWsVisitor(
                 sheetName =self.wsName,
                 workbookKey = self.wbKey,
-                visitor = PythonFormulaVisitor()
             )
         )
         self.directLiteralTranslator = DirectLiteralTranslator()

@@ -23,11 +23,11 @@ class DataCell(Cell):
                  formula: str = None,
                  script: str = None):
         self.__value: Any = value
-        self.__code: str = script
+        self.__script: str = script
         self.__addr: CellAddress = address
         self.__scriptAlreadyRun: bool = False
         self.__formula: str = formula
-        self._translatorGetter: Callable[[], FormulaTranslator] | None = translatorGetter
+        self.__translatorGetter: Callable[[], FormulaTranslator] | None = translatorGetter
 
     ### >> Cell << ###
 
@@ -38,11 +38,12 @@ class DataCell(Cell):
     @formula.setter
     def formula(self, newFormula):
         self.__formula = newFormula
-        if self._translatorGetter is not None:
-            self.script = self.__translateFormula(newFormula, self._translatorGetter())
+        if self.__translatorGetter is not None:
+            newScript = self._translateFormula(newFormula, self.__translatorGetter())
+            self.__setScriptWithoutChangingFormula(newScript)
 
     @staticmethod
-    def __translateFormula(formula: str, translator: FormulaTranslator) -> str:
+    def _translateFormula(formula: str, translator: FormulaTranslator) -> str:
         transResult: Result[str, ErrorReport] = translator.translate(formula)
         if transResult.isOk():
             return transResult.value
@@ -55,7 +56,7 @@ class DataCell(Cell):
     def toJson(self) -> CellJson:
         return CellJson(
             value = self.__value,
-            script = self.__code,
+            script = self.__script,
             formula = self.__formula,
             address = self.__addr.toJson(),
         )
@@ -73,7 +74,7 @@ class DataCell(Cell):
         get the value contained in this cell.
         If this cell contains script, the script will run and the updated value will be returned
         """
-        shouldRun = self.hasCode() and not self.__scriptAlreadyRun
+        shouldRun = self.hasScript() and not self.__scriptAlreadyRun
         if shouldRun:
             # x: this will update self.__value
             self.runScript()
@@ -82,19 +83,26 @@ class DataCell(Cell):
     @value.setter
     def value(self, newValue):
         self.__value = newValue
-        self.__code = None
+        self.__script = None
         self.__scriptAlreadyRun = False
 
     @property
     def script(self) -> str:
-        return self.__code
+        if self.formula is not None and len(self.formula) != 0:
+            if self.__translatorGetter is not None:
+                newScript = self._translateFormula(self.formula, self.__translatorGetter())
+                self.__script = newScript
+        return self.__script
 
     @script.setter
-    def script(self, newCode: str):
-        self.__code = newCode
+    def script(self, newScript: str):
+        self.__setScriptWithoutChangingFormula(newScript)
+        self.__formula = f"=SCRIPT({newScript})"
+
+    def __setScriptWithoutChangingFormula(self, newScript):
+        self.__script = newScript
         self.__value = None
         self.__scriptAlreadyRun = False
-        self.__formula = f"=SCRIPT({newCode})"
 
     @property
     def address(self) -> CellAddress:
@@ -118,14 +126,14 @@ class DataCell(Cell):
         return self.__addr.colIndex
 
     def runScript(self, globalScope = None, localScope = None):
-        if self.script is not None:
+        if self.__script is not None:
             if localScope is None:
                 localScope = {}
 
             if globalScope is None:
                 globalScope = getGlobals()
             try:
-                codeResult = CodeExecutor.evalCode(self.script, globalScope, localScope)
+                codeResult = CodeExecutor.evalCode(self.__script, globalScope, localScope)
             except Exception as e:
                 codeResult = e
             self.__value = codeResult
@@ -135,18 +143,18 @@ class DataCell(Cell):
         self.script = newScript
         self.runScript(globalScope, localScope)
 
-    def hasCode(self) -> bool:
-        return self.__code is not None and len(self.__code) != 0
+    def hasScript(self) -> bool:
+        return self.__script is not None and len(self.__script) != 0
 
     def __hash__(self) -> int:
-        return hash((self.__value, self.__code, self.__addr))
+        return hash((self.__value, self.__script, self.__addr))
 
     def clearScriptResult(self):
-        if self.hasCode():
+        if self.hasScript():
             self.__value = None
             self.__scriptAlreadyRun = False
 
     def copyFrom(self, anotherCell: "Cell"):
         self.__value = anotherCell.value
         self.__formula = anotherCell.formula
-        self.__code = anotherCell.script
+        self.__script = anotherCell.script

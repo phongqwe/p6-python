@@ -68,8 +68,8 @@ class WrapperCell(Cell, ABC):
         return self._innerCell.script
 
     @script.setter
-    def script(self, newCode: str):
-        self._innerCell.script = newCode
+    def script(self, newScript: str):
+        self._innerCell.script = newScript
 
     @property
     def address(self) -> CellAddress:
@@ -92,8 +92,8 @@ class WrapperCell(Cell, ABC):
     def setScriptAndRun(self, newScript, globalScope = None, localScope = None):
         self._innerCell.setScriptAndRun(newScript, globalScope, localScope)
 
-    def hasCode(self) -> bool:
-        return self._innerCell.hasCode()
+    def hasScript(self) -> bool:
+        return self._innerCell.hasScript()
 
     def __hash__(self) -> int:
         return self._innerCell.__hash__()

@@ -47,9 +47,9 @@ class WriteBackCell(
         self.__writeCell()
 
     @WrapperCell.script.setter
-    def script(self, newCode: str):
+    def script(self, newScript: str):
         # x: only add new code if the new code is not empty
-        self.__innerCell.script = newCode
+        self.__innerCell.script = newScript
         self.__writeCell()
 
     def __writeCell(self):
