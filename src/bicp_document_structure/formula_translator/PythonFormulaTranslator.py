@@ -17,6 +17,10 @@ from bicp_document_structure.util.result.Result import Result
 
 
 class PythonFormulaTranslator(FormulaTranslator):
+
+    """
+    A neutral translator. Its behavior can be altered by using different FormulaVisitor
+    """
     scriptTranslator = ScriptFormulaTranslator()
 
     def __init__(self, visitor: FormulaVisitor):

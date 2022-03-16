@@ -9,6 +9,11 @@ from bicp_document_structure.util.result.Result import Result
 
 
 class ScriptFormulaTranslator(FormulaTranslator):
+
+    """
+    A translator designed to specifically handle =SCRIPT() formula
+    """
+
     codePatter = re.compile("\\s*=\\s*SCRIPT\\s*\\(.*\\)\\s*",
                             re.IGNORECASE | re.DOTALL | re.MULTILINE | re.UNICODE)
 

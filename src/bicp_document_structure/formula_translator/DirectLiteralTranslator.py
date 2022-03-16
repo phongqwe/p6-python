@@ -7,6 +7,9 @@ from bicp_document_structure.util.result.Result import Result
 
 
 class DirectLiteralTranslator(FormulaTranslator):
+    """
+    This translator handles literal input such as number, string
+    """
     strPattern = re.compile("^\".*\"$",
                             re.IGNORECASE | re.DOTALL | re.MULTILINE | re.UNICODE)
 

@@ -8,7 +8,9 @@ from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
 
 
 class WbWsFormulaTranslator(FormulaTranslator):
-
+    """
+    A translator with a workbook key. The output script of this translator always explicitly specify the workbook, worksheet it depends/runs on.
+    """
     def __init__(self, worksheetName: str | None = None, workbookKey: WorkbookKey | None = None):
         self.wsName: str | None = worksheetName
         self.wbKey: WorkbookKey | None = workbookKey

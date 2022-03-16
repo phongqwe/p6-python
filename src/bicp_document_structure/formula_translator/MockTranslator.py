@@ -5,5 +5,6 @@ from bicp_document_structure.util.result.Result import Result
 
 
 class MockTranslator( FormulaTranslator):
+    """for testing only"""
     def translate(self, formula: str) -> Result[str, ErrorReport]:
         return Ok(formula)
