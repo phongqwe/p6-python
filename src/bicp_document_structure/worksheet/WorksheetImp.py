@@ -52,6 +52,9 @@ class WorksheetImp(Worksheet):
     def name(self) -> str:
         return self.__name
 
+    def rename(self, newName: str):
+        self.__name = newName
+
     def toJson(self) -> WorksheetJson:
         cellJsons = []
         for cell in self.cells:

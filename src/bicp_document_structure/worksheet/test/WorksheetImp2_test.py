@@ -16,6 +16,11 @@ class WorksheetImp2_test(unittest.TestCase):
     def transGetter(name):
         return FormulaTranslators.mock()
 
+    def testRename(self):
+        s = WorksheetImp(translatorGetter = self.transGetter,name="oldName")
+        s.rename("newName")
+        self.assertEqual("newName",s.name)
+
     def test_cell(self):
         s = WorksheetImp(translatorGetter = self.transGetter)
         expect = DataCell(CellIndex(1, 2), translatorGetter = partial(self.transGetter, s.name))

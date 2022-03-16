@@ -31,3 +31,5 @@ class Worksheet(UserFriendlyCellContainer,
         return json.dumps({
             "name":self.name
         })
+    def rename(self,newName:str):
+        raise NotImplementedError()

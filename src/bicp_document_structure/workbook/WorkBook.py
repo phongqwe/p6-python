@@ -19,7 +19,7 @@ class Workbook(ToJson, CanCheckEmpty, ABC):
     def getTranslator(self, sheetName: str) -> FormulaTranslator:
         raise NotImplementedError()
 
-    def haveSheet(self,sheetName:str)->bool:
+    def haveSheet(self, sheetName: str) -> bool:
         return self.getWorksheet(sheetName) is not None
 
     def reRun(self):
@@ -27,7 +27,12 @@ class Workbook(ToJson, CanCheckEmpty, ABC):
         for sheet in self.worksheets:
             sheet.reRun()
 
-    def renameWorksheet(self,oldSheetName:str, newSheetName:str):
+    def renameWorksheet(self, oldSheetNameOrIndex: str | int, newSheetName: str):
+        rs = self.renameWorksheetRs(oldSheetNameOrIndex, newSheetName)
+        if rs.isErr():
+            raise ErrorReports.toException(rs.err)
+
+    def renameWorksheetRs(self, oldSheetNameOrIndex: str | int, newSheetName: str) -> Result[None, ErrorReport]:
         raise NotImplementedError()
 
     @property
@@ -85,11 +90,11 @@ class Workbook(ToJson, CanCheckEmpty, ABC):
         raise NotImplementedError()
 
     @property
-    def path(self)->Path:
+    def path(self) -> Path:
         raise NotImplementedError()
 
     @path.setter
-    def path(self,newPath:Path):
+    def path(self, newPath: Path):
         raise NotImplementedError()
 
     def createNewWorksheet(self, newSheetName: Optional[str]) -> Worksheet:

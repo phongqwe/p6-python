@@ -36,7 +36,12 @@ class WorkbookImp(Workbook):
         if self.sheetCount != 0:
             self.__activeSheet = list(self.__sheetDict.values())[0]
         self.__nameCount = 0
+
+        # translator dict key = [sheetName, workbook key]
         self._translatorDict: dict[Tuple[str, WorkbookKey], FormulaTranslator] = {}
+        # create translators
+        for sheet in self.__sheetDict.values():
+            self._translatorDict[(sheet.name,self.__key)] = FormulaTranslators.standardWbWs(sheet.name, self.__key)
 
     @staticmethod
     def __makeOrderDict(sheetDict: dict) -> dict:
@@ -109,6 +114,26 @@ class WorkbookImp(Workbook):
             return rt
         else:
             return None
+
+    def renameWorksheetRs(self, oldSheetNameOrIndex: str | int, newSheetName: str) -> Result[None, ErrorReport]:
+        targetSheet: Worksheet | None = self.getWorksheet(oldSheetNameOrIndex)
+        if targetSheet is None:
+            return Err(ErrorReport(
+                WorkbookErrors.WorksheetNotExist.header,
+                WorkbookErrors.WorksheetNotExist.Data(oldSheetNameOrIndex)
+            ))
+        else:
+            oldName = targetSheet.name
+            targetSheet.rename(newSheetName)
+            # update sheet dict
+            self.__sheetDict.pop(oldName)
+            self.__sheetDict[newSheetName] = targetSheet
+            # update translator map
+            oldTranslatorDictKey = (oldName, self.workbookKey)
+            newTranslatorDictKey = (newSheetName,self.workbookKey)
+            self._translatorDict.pop(oldTranslatorDictKey)
+            self._translatorDict[newTranslatorDictKey] = FormulaTranslators.standardWbWs(newSheetName, self.workbookKey)
+            return Ok(None)
 
     def getWorksheet(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
         if isinstance(nameOrIndex, str):

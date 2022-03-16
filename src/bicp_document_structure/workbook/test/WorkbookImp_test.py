@@ -30,6 +30,19 @@ class WorkbookImp_test(unittest.TestCase):
         w1 = WorkbookImp("w1", sheetDict = d)
         return s1, s2, s3, w1, d
 
+    def test_rename(self):
+        s1, s2, s3, w, sheetDict = self.makeTestObj()
+        oldName = s1.name
+        newName = "newS1"
+        w.renameWorksheet(s1.name,newName)
+        self.assertEqual(newName,s1.name)
+        self.assertIsNone(sheetDict.get(oldName))
+        self.assertIsNotNone(sheetDict.get(newName))
+        with self.assertRaises(Exception):
+            self.assertIsNone(w.getTranslator(oldName))
+        self.assertIsNotNone(w.getTranslator(newName))
+        self.assertIsNotNone(s1.translator)
+
     def test_constructor(self):
         s1, s2, s3, w, sheetDict = self.makeTestObj()
         d = OrderedDict({
