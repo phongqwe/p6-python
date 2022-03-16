@@ -8,7 +8,7 @@ from bicp_document_structure.cell.test.MockContainer import MockCellContainer
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from bicp_document_structure.util.Util import makeGetter
 from bicp_document_structure.workbook.key.WorkbookKeys import WorkbookKeys
-from bicp_document_structure.worksheet.WorksheetImp2 import WorksheetImp2
+from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 
 class WriteBackCellTest(unittest.TestCase):
@@ -23,7 +23,7 @@ class WriteBackCellTest(unittest.TestCase):
         def transGetter(name):
             return FormulaTranslators.standardWbWs("s3",WorkbookKeys.fromNameAndPath("book1","path123"))
 
-        s = WorksheetImp2(name="s3",translatorGetter = transGetter)
+        s = WorksheetImp(name= "s3", translatorGetter = transGetter)
         code = "x=1;y=x+2;y"
         eValue = 3
         address = CellIndex(1, 1)

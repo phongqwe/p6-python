@@ -5,7 +5,7 @@ from bicp_document_structure.cell.address.CellAddresses import CellAddresses
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from bicp_document_structure.worksheet.EventWorksheet import EventWorksheet
-from bicp_document_structure.worksheet.WorksheetImp2 import WorksheetImp2
+from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 
 class EventWorksheet_test(unittest.TestCase):
@@ -14,7 +14,7 @@ class EventWorksheet_test(unittest.TestCase):
     def transGetter(name):
         return FormulaTranslators.mock()
     def test_InvokingReactor(self):
-        sheet = WorksheetImp2(name = "s3", translatorGetter = self.transGetter)
+        sheet = WorksheetImp(name = "s3", translatorGetter = self.transGetter)
         self.a = 0
 
         def cb( ws, cell, event):

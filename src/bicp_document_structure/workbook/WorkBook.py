@@ -27,6 +27,9 @@ class Workbook(ToJson, CanCheckEmpty, ABC):
         for sheet in self.worksheets:
             sheet.reRun()
 
+    def renameWorksheet(self,oldSheetName:str, newSheetName:str):
+        raise NotImplementedError()
+
     @property
     def worksheets(self) -> list[Worksheet]:
         """return a list of all sheet in this workbook"""

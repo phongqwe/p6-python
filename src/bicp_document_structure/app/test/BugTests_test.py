@@ -2,12 +2,17 @@ import unittest
 
 from bicp_document_structure.app.GlobalScope import setIPythonGlobals
 from bicp_document_structure.app.UserFunctions import *
+# these 2 imports must be keep for the formula script to be able to run
+from bicp_document_structure.app.worksheet_functions.WorksheetFunctions import WorksheetFunctions
+from bicp_document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 
 
 class BugTests_test(unittest.TestCase):
     """ this class includes re-creation of actual bugs """
     def setUp(self) -> None:
         super().setUp()
+        z = WorksheetFunctions
+        k = WorkbookKeys
         setIPythonGlobals(globals())
         startApp()
         restartApp()

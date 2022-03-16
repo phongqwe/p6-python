@@ -75,7 +75,7 @@ def setActiveSheet(indexOrName: Union[str, int]):
     wb.setActiveWorksheet(indexOrName)
 
 
-def getSheet(nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
+def getWorksheet(nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
     wb = getActiveWorkbook()
     if wb is None:
         return None

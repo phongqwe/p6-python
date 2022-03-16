@@ -18,7 +18,7 @@ from bicp_document_structure.worksheet.WorksheetConst import WorksheetConst
 from bicp_document_structure.worksheet.WorksheetJson import WorksheetJson
 
 
-class WorksheetImp2(Worksheet):
+class WorksheetImp(Worksheet):
     def __init__(self,
                  translatorGetter: Callable[[str], FormulaTranslator],
                  name = "",

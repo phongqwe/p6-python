@@ -49,7 +49,7 @@ class PythonFormulaVisitor(FormulaVisitor):
         sheetName: str = self._extractSheetName(rawSheetName)
         getSheet: str = ""
         if len(sheetName) != 0:
-            getSheet = self.mapper.getSheet(sheetName) + "."
+            getSheet = self.mapper.getWorksheet(sheetName) + "."
         rangeObj = self.visit(ctx.rangeAddress())
         return "{getSheet}{rangeObj}".format(
             getSheet=getSheet,

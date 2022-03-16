@@ -32,11 +32,11 @@ class WbWsVisitor(PythonFormulaVisitor):
         rangeObj = self.visit(ctx.rangeAddress())
         if self.__getWBCode is not None:
             if len(sheetName) != 0:
-                getSheet = self.wbMapper.getSheet(sheetName)
+                getSheet = self.wbMapper.getWorksheet(sheetName)
             rt = f'{self.__getWBCode}.{getSheet}.{rangeObj}'
         else:
             if len(sheetName) != 0:
-                getSheet = self.mapper.getSheet(sheetName)
+                getSheet = self.mapper.getWorksheet(sheetName)
             rt = f'{getSheet}.{rangeObj}'
         return rt
 

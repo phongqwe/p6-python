@@ -52,10 +52,10 @@ class FormulaTranslatorFinal_test(unittest.TestCase):
             "=f(AK11:CX34)": """{f}.f(getRange("@AK11:CX34"))""".format(f=f),
             "=f(1:123)": """{f}.f(getRange("@1:123"))""".format(f=f),
             "=f(A:b)": """{f}.f(getRange("@A:b"))""".format(f=f),
-            "=f(sheet1!A:b)": """{f}.f(getSheet("sheet1").getRange("@A:b"))""".format(f=f),
-            "=f(sheet1!A123)": """{f}.f(getSheet("sheet1").cell("@A123").value)""".format(f=f),
-            "=f('my sheet1'!A123)": """{f}.f(getSheet("my sheet1").cell("@A123").value)""".format(f=f),
-            "=f('sheet1 23'!A123)": """{f}.f(getSheet("sheet1 23").cell("@A123").value)""".format(f=f),
+            "=f(sheet1!A:b)": """{f}.f(getWorksheet("sheet1").getRange("@A:b"))""".format(f=f),
+            "=f(sheet1!A123)": """{f}.f(getWorksheet("sheet1").cell("@A123").value)""".format(f=f),
+            "=f('my sheet1'!A123)": """{f}.f(getWorksheet("my sheet1").cell("@A123").value)""".format(f=f),
+            "=f('sheet1 23'!A123)": """{f}.f(getWorksheet("sheet1 23").cell("@A123").value)""".format(f=f),
         }
         composite = {
             """=f1(1,A1,B34:z9, "zzz",-234,1+2*3,C1)""": """{f}.f1(1,cell("@A1").value,getRange("@B34:z9"),"zzz",-234,1+2*3,cell("@C1").value)""".format(f=f),

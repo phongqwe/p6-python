@@ -4,7 +4,7 @@ from collections import OrderedDict
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from bicp_document_structure.workbook.EventWorkbook import EventWorkbook
 from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
-from bicp_document_structure.worksheet.WorksheetImp2 import WorksheetImp2
+from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 
 class EventWorkbook_test(unittest.TestCase):
@@ -13,9 +13,9 @@ class EventWorkbook_test(unittest.TestCase):
         return FormulaTranslators.mock()
 
     def makeTestObj(self):
-        s1 = WorksheetImp2(name = "s1", translatorGetter = self.transGetter)
-        s2 = WorksheetImp2(name = "s2", translatorGetter = self.transGetter)
-        s3 = WorksheetImp2(name = "s3", translatorGetter = self.transGetter)
+        s1 = WorksheetImp(name = "s1", translatorGetter = self.transGetter)
+        s2 = WorksheetImp(name = "s2", translatorGetter = self.transGetter)
+        s3 = WorksheetImp(name = "s3", translatorGetter = self.transGetter)
         d = OrderedDict({
             s1.name: s1,
             s2.name: s2,

@@ -9,7 +9,7 @@ from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
 from bicp_document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from bicp_document_structure.worksheet.Worksheet import Worksheet
-from bicp_document_structure.worksheet.WorksheetImp2 import WorksheetImp2
+from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 
 class WorkbookImp_test(unittest.TestCase):
@@ -19,9 +19,9 @@ class WorkbookImp_test(unittest.TestCase):
         return FormulaTranslators.mock()
 
     def makeTestObj(self):
-        s1 = WorksheetImp2(name = "s1", translatorGetter = self.transGetter)
-        s2 = WorksheetImp2(name = "s2", translatorGetter = self.transGetter)
-        s3 = WorksheetImp2(name = "s3", translatorGetter = self.transGetter)
+        s1 = WorksheetImp(name = "s1", translatorGetter = self.transGetter)
+        s2 = WorksheetImp(name = "s2", translatorGetter = self.transGetter)
+        s3 = WorksheetImp(name = "s3", translatorGetter = self.transGetter)
         d = OrderedDict({
             s1.name: s1,
             s2.name: s2,

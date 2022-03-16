@@ -15,7 +15,7 @@ from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
 from bicp_document_structure.workbook.key.WorkbookKeyImp import WorkbookKeyImp
 from bicp_document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from bicp_document_structure.worksheet.Worksheet import Worksheet
-from bicp_document_structure.worksheet.WorksheetImp2 import WorksheetImp2
+from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 from bicp_document_structure.worksheet.WorksheetWrapper import WorksheetWrapper
 
 
@@ -30,7 +30,7 @@ class WorkbookImp(Workbook):
             sheetDict = ODict()
         else:
             typeCheck(sheetDict, "sheetDict", OrderedDict)
-        self.__sheetDict = sheetDict
+        self.__sheetDict:OrderedDict[str,Worksheet] = sheetDict
 
         self.__activeSheet = None
         if self.sheetCount != 0:
@@ -157,7 +157,7 @@ class WorkbookImp(Workbook):
                     data = WorkbookErrors.WorksheetAlreadyExist.Data(newSheetName)
                 )
             )
-        newSheet = WorksheetImp2(name = newSheetName,translatorGetter = self.getTranslator)
+        newSheet = WorksheetImp(name = newSheetName, translatorGetter = self.getTranslator)
         self.__sheetDict[newSheetName] = newSheet
         return Ok(newSheet)
 
