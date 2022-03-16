@@ -3,7 +3,7 @@ from typing import Optional
 from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from bicp_document_structure.formula_translator.MockTranslator import MockTranslator
 from bicp_document_structure.formula_translator.StdFormulaTranslator import StdFormulaTranslator
-from bicp_document_structure.formula_translator.WbWsFormulaTranslatorFinal import WbWsFormulaTranslator
+from bicp_document_structure.formula_translator.WbWsFormulaTranslator import WbWsFormulaTranslator
 from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
 
 

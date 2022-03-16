@@ -1,8 +1,6 @@
 import unittest
 
-from bicp_document_structure.formula_translator.PythonFormulaTranslator import PythonFormulaTranslator
-from bicp_document_structure.formula_translator.WbWsFormulaTranslatorFinal import WbWsFormulaTranslator
-from bicp_document_structure.formula_translator.WbWsVisitor import WbWsVisitor
+from bicp_document_structure.formula_translator.WbWsFormulaTranslator import WbWsFormulaTranslator
 from bicp_document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 
 
@@ -10,14 +8,7 @@ class WbWsVisitor_test(unittest.TestCase):
 
     def test_a(self):
 
-        translator = PythonFormulaTranslator(
-            visitor = WbWsVisitor(
-                sheetName = "Sheet1",
-                workbookKey = WorkbookKeys.fromNameAndPath("Book1","pathx"),
-            )
-        )
         translator = WbWsFormulaTranslator("Sheet1", WorkbookKeys.fromNameAndPath("Book1","pathx"))
-
 
         inputMap = {
             "=SUM(A1:A2)": """WorksheetFunctions.SUM(getWorkbook(WorkbookKeys.fromNameAndPath("Book1","pathx")).getWorksheet("Sheet1").range("@A1:A2"))""",

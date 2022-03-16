@@ -11,6 +11,7 @@ class BugTests_test(unittest.TestCase):
     """ this class includes re-creation of actual bugs """
     def setUp(self) -> None:
         super().setUp()
+        # k, z to prevent auto formatting tools from removing the respective imports
         z = WorksheetFunctions
         k = WorkbookKeys
         setIPythonGlobals(globals())
