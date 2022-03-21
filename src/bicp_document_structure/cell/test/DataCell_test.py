@@ -1,3 +1,4 @@
+import json
 import unittest
 from unittest.mock import MagicMock
 
@@ -5,6 +6,7 @@ from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.EventCell import EventCell
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
+from bicp_document_structure.message.proto.DocPM_pb2 import CellProto
 from bicp_document_structure.util.Util import makeGetter
 from bicp_document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 
@@ -25,6 +27,22 @@ class DataCellTest(unittest.TestCase):
         self.assertEqual("", o.value)
         self.assertEqual("", o.script)
         self.assertEqual("", o.formula)
+        bt1 = c1.toProtoStr()
+        # step1: convert proto str to string
+        # step 2: store it whereever I want
+
+        # step 3: parse it to byte array and use it on the other end.
+        d = {
+
+            "v":bt1
+        }
+        jsonStr=json.dumps(d)
+        parsedJson = json.loads(jsonStr)
+        protoStr = bytes(parsedJson["v"].encode("utf-8"))
+        c2 = CellProto()
+        c2.ParseFromString(protoStr)
+        print(c2)
+
 
     def test_clearScriptResult(self):
         c1 = DataCell(CellIndex(1, 1), MagicMock(), 123)

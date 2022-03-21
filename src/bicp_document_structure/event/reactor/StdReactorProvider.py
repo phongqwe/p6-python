@@ -36,8 +36,27 @@ class StdReactorProvider(ReactorProvider):
         self.__worksheetRenameFail: WorksheetReactor | None = None
 
         self.__workbookReRun: WorkbookReactor | None = None
+    def stdCallback_Proto(self, event: P6Event, data: WithWorkbookData):
+        """
+        rerun the whole workbook, serialize the workbook to json, then send the json in a zmq message to a predesignated socket.
+        If sockets are not available, don't do anything
+        """
+        socketProvider = self.__spg()
+        wb = data.workbook
+        wb.reRun()
+        if socketProvider is not None:
+            socket = socketProvider.reqSocketForUIUpdating()
+            if socket is not None:
+                replyRs = MessageSender.sendREQ_Proto(
+                # replyRs = MessageSender.sendREQ(
+                    socket = socket,
+                    msg = P6Message(
+                        header = P6MessageHeader(str(uuid.uuid4()), event),
+                        content = wb))
+                if replyRs.isErr():
+                    raise replyRs.err.toException()
 
-    def stdCallback(self, event: P6Event, data: WithWorkbookData):
+    def stdCallback_json(self, event: P6Event, data: WithWorkbookData):
         """
         rerun the whole workbook, serialize the workbook to json, then send the json in a zmq message to a predesignated socket.
         If sockets are not available, don't do anything
@@ -59,39 +78,39 @@ class StdReactorProvider(ReactorProvider):
     def cellUpdateValue(self) -> CellReactor:
         if self.__cellUpdateValue is None:
             event = P6Events.Cell.UpdateValue
-            self.__cellUpdateValue = EventReactorFactory.makeCellReactor(partial(self.stdCallback, event),event)
+            self.__cellUpdateValue = EventReactorFactory.makeCellReactor(partial(self.stdCallback_Proto, event))
         return self.__cellUpdateValue
 
     def cellUpdateScript(self) -> CellReactor:
         if self.__cellUpdateScript is None:
             event = P6Events.Cell.UpdateScript
-            self.__cellUpdateScript = EventReactorFactory.makeCellReactor(partial(self.stdCallback, event),event)
+            self.__cellUpdateScript = EventReactorFactory.makeCellReactor(partial(self.stdCallback_Proto, event))
         return self.__cellUpdateScript
 
     def cellUpdateFormula(self) -> CellReactor:
         if self.__cellFormulaUpdate is None:
             event = P6Events.Cell.UpdateFormula
-            self.__cellFormulaUpdate = EventReactorFactory.makeCellReactor(partial(self.stdCallback, event),event)
+            self.__cellFormulaUpdate = EventReactorFactory.makeCellReactor(partial(self.stdCallback_Proto, event))
         return self.__cellFormulaUpdate
 
     def cellClearScriptResult(self) -> CellReactor:
         if self.__cellClearScriptResult is None:
             event = P6Events.Cell.ClearScriptResult
             self.__cellClearScriptResult = EventReactorFactory.makeCellReactor(
-                partial(self.stdCallback, event),event)
+                partial(self.stdCallback_Proto, event))
         return self.__cellClearScriptResult
 
     def rangeReRun(self) -> RangeReactor:
         if self.__rangeReRun is None:
             event = P6Events.Range.ReRun
-            self.__rangeReRun = EventReactorFactory.makeRangeReactor(partial(self.stdCallback, event),event)
+            self.__rangeReRun = EventReactorFactory.makeRangeReactor(partial(self.stdCallback_Proto, event))
         return self.__rangeReRun
 
     def worksheetReRun(self) -> WorksheetReactor:
         if self.__worksheetReRun is None:
             event = P6Events.Worksheet.ReRun
             self.__worksheetReRun = EventReactorFactory.makeRangeReactor(
-                partial(self.stdCallback, event),event)
+                partial(self.stdCallback_Proto, event))
         return self.__worksheetReRun
 
     def workbookCB(self, event: P6Event, data: WorkbookEventData):
@@ -111,11 +130,11 @@ class StdReactorProvider(ReactorProvider):
     def workbookReRun(self) -> WorkbookReactor:
         if self.__workbookReRun is None:
             event = P6Events.Workbook.ReRun
-            self.__workbookReRun = EventReactorFactory.makeWorkbookReactor(partial(self.workbookCB, event),event)
+            self.__workbookReRun = EventReactorFactory.makeWorkbookReactor(partial(self.workbookCB, event))
         return self.__workbookReRun
 
     def worksheetRenameOk(self) -> WorksheetReactor:
         if self.__worksheetRenameOk is None:
             event = P6Events.Worksheet.RenameOk
-            self.__worksheetRenameOk = EventReactorFactory.makeWorksheetReactor(partial(self.stdCallback, event),event)
+            self.__worksheetRenameOk = EventReactorFactory.makeWorksheetReactor(partial(self.stdCallback_Proto, event))
         return self.__worksheetRenameOk

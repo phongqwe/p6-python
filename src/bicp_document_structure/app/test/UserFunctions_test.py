@@ -29,7 +29,7 @@ class UserFunctions_test(unittest.TestCase):
 
         app.eventReactorContainer.addReactor(
             P6Events.Cell.UpdateValue,
-            EventReactorFactory.makeCellReactor(onCellChange,P6Events.Cell.UpdateValue))
+            EventReactorFactory.makeCellReactor(onCellChange))
         c1 = cell("@A1")
         c1.value = 123
         self.assertEqual(1, self.a)

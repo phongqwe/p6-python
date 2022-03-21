@@ -4,7 +4,8 @@ from typing import Generic, TypeVar
 P = TypeVar("P")
 class ToProto(Generic[P],ABC):
     def toProtoStr(self)->str:
-        return P.SerializeToString()
+        strByte= self.toProtoObj().SerializeToString()
+        return str(strByte,"utf-8")
     
     def toProtoObj(self)->P:
         raise NotImplementedError()

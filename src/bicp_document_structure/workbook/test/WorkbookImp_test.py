@@ -25,7 +25,7 @@ class WorkbookImp_test(unittest.TestCase):
         w1.path = Path("someFile.qwe")
         o2 = w1.toProtoObj()
         self.assertEqual(str(w1.path.absolute()),o2.path)
-        print(str(w1.path.absolute()))
+
 
     @staticmethod
     def transGetter(name):

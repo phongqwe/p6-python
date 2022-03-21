@@ -1,4 +1,5 @@
 from abc import ABC
+from pathlib import Path
 from typing import Union, Optional
 
 from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
@@ -16,6 +17,10 @@ class WorkbookWrapper(Workbook,ABC):
 
     def getTranslator(self, sheetName: str) -> FormulaTranslator:
         return self._innerWorkbook.getTranslator(sheetName)
+
+    @property
+    def path(self) -> Path:
+        return self._innerWorkbook.path
 
     def renameWorksheet(self, oldSheetNameOrIndex: str | int, newSheetName: str):
         return self._innerWorkbook.renameWorksheet(oldSheetNameOrIndex, newSheetName)

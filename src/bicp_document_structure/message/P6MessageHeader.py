@@ -19,5 +19,5 @@ class P6MessageHeader(ToJson):
     def toJsonDict(self) -> dict:
         return {
             "msgId":self.msgId,
-            "msgType":self.eventType.msgRepresentation
+            "eventType":self.eventType.msgRepresentation
         }

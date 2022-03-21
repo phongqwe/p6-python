@@ -12,6 +12,7 @@ from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
 
 port = findNewSocketPort()
 
+
 class StdReactorProvider_test(unittest.TestCase):
     def startREPServer(self, isOk, context):
         repSocket = context.socket(zmq.REP)
@@ -24,8 +25,8 @@ class StdReactorProvider_test(unittest.TestCase):
             repSocket.send("fail".encode())
         repSocket.close()
 
-    def startREPServerOnThread(self, isOk, context) -> threading.Thread:
-        thread = threading.Thread(target = self.startREPServer, args = [isOk, context])
+    def startREPServerOnThread(self, isOk, zContext) -> threading.Thread:
+        thread = threading.Thread(target = self.startREPServer, args = [isOk, zContext])
         thread.start()
         return thread
 
@@ -34,7 +35,6 @@ class StdReactorProvider_test(unittest.TestCase):
     #     socket = context.socket(zmq.REQ)
     #     socket.connect("tcp://localhost:6000")
     #     getApp().socketProvider.updateREQSocketForUIUpdating(socket)
-
 
     def test_integration_test_default_reactor_ok(self):
         # start mock server
@@ -68,7 +68,7 @@ class StdReactorProvider_test(unittest.TestCase):
         # start mock server
         context = zmq.Context.instance()
 
-        thread = self.startREPServerOnThread(False, context)
+        thread = self.startREPServerOnThread(isOk = False, zContext = context)
         socket = context.socket(zmq.REQ)
         socket.connect(f"tcp://localhost:{port}")
         socketProvider = SocketProviderImp(reqSocketUI = socket)
