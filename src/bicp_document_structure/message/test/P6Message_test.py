@@ -2,7 +2,7 @@ import unittest
 
 from bicp_document_structure.cell.CellJson import CellJson
 from bicp_document_structure.cell.address.CellAddressJson import CellAddressJson
-from bicp_document_structure.message.MsgType import MsgType
+from bicp_document_structure.event.P6Events import P6Events
 from bicp_document_structure.message.P6Message import P6Message
 from bicp_document_structure.message.P6MessageHeader import P6MessageHeader
 
@@ -15,7 +15,7 @@ class P6MessageTest(unittest.TestCase):
             formula="=1234",
             address=CellAddressJson(1, 34)
         )
-        hd = P6MessageHeader("id1", MsgType.CellUpdateValue)
+        hd = P6MessageHeader("id1", P6Events.Cell.UpdateValue)
         msg = P6Message(
             header=hd,
             content=contentObj

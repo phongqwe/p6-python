@@ -2,6 +2,9 @@ from enum import Enum
 
 
 class MsgType(Enum):
+    """
+    @deprecated dont update this any further
+    """
     CellUpdateValue= "cell_value_update"
     CellUpdateScript= "cell_update_script"
     CellUpdateFormula= "cell_update_formula"

@@ -17,6 +17,12 @@ class WorkbookWrapper(Workbook,ABC):
     def getTranslator(self, sheetName: str) -> FormulaTranslator:
         return self._innerWorkbook.getTranslator(sheetName)
 
+    def renameWorksheet(self, oldSheetNameOrIndex: str | int, newSheetName: str):
+        return self._innerWorkbook.renameWorksheet(oldSheetNameOrIndex, newSheetName)
+
+    def renameWorksheetRs(self, oldSheetNameOrIndex: str | int, newSheetName: str) -> Result[None, ErrorReport]:
+        return self._innerWorkbook.renameWorksheetRs(oldSheetNameOrIndex, newSheetName)
+
     @property
     def worksheets(self) -> list[Worksheet]:
         return self._innerWorkbook.worksheets

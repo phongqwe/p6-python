@@ -6,6 +6,13 @@ from bicp_document_structure.cell.address.CellIndex import CellIndex
 
 class CellIndexTest(unittest.TestCase):
 
+    def test_toProtoObj(self):
+        p1 = CellIndex(1, 2)
+        o =p1.toProtoObj()
+        self.assertEqual(1,o.col)
+        self.assertEqual(2,o.row)
+
+
     def test_Eq(self):
         class DummyAddress(CellAddress):
             def __init__(self,c,r):

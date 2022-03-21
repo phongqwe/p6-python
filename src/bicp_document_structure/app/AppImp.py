@@ -75,7 +75,10 @@ class AppImp(App):
 
     def initBaseReactor(self):
         """create base reactors """
-        self.__reactorContainer.addReactor(P6Events.Cell.UpdateValue, self.__reactorProvider.cellUpdateValue())
+        container = self.__reactorContainer
+        provider = self.__reactorProvider
+        container.addReactor(P6Events.Cell.UpdateValue, provider.cellUpdateValue())
+        container.addReactor(P6Events.Worksheet.RenameOk, provider.worksheetRenameOk())
 
     @property
     def eventReactorContainer(self) -> EventReactorContainer:

@@ -6,14 +6,16 @@ import zmq
 from bicp_document_structure.event.reactor.StdReactorProvider import StdReactorProvider
 from bicp_document_structure.event.reactor.eventData.CellEventData import CellEventData
 from bicp_document_structure.message.SocketProviderImp import SocketProviderImp
+from bicp_document_structure.util.for_test.TestUtils import findNewSocketPort
 from bicp_document_structure.workbook.EventWorkbook import EventWorkbook
 from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
 
+port = findNewSocketPort()
 
 class StdReactorProvider_test(unittest.TestCase):
     def startREPServer(self, isOk, context):
         repSocket = context.socket(zmq.REP)
-        repSocket.bind("tcp://*:6000")
+        repSocket.bind(f"tcp://*:{port}")
         receive = repSocket.recv()
         print(f"Server received: \n{receive}")
         if isOk:
@@ -39,7 +41,7 @@ class StdReactorProvider_test(unittest.TestCase):
         context = zmq.Context.instance()
         thread = self.startREPServerOnThread(True, context)
         socket = context.socket(zmq.REQ)
-        socket.connect("tcp://localhost:6000")
+        socket.connect(f"tcp://localhost:{port}")
         socketProvider = SocketProviderImp(reqSocketUI = socket)
 
         def gs():
@@ -68,7 +70,7 @@ class StdReactorProvider_test(unittest.TestCase):
 
         thread = self.startREPServerOnThread(False, context)
         socket = context.socket(zmq.REQ)
-        socket.connect("tcp://localhost:6000")
+        socket.connect(f"tcp://localhost:{port}")
         socketProvider = SocketProviderImp(reqSocketUI = socket)
 
         def gs():

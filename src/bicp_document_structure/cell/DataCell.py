@@ -7,6 +7,8 @@ from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.util.CellUtil import convertExceptionToStr
 from bicp_document_structure.code_executor.CodeExecutor import CodeExecutor
 from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
+from bicp_document_structure.message.proto.DocPM_pb2 import CellProto
+from bicp_document_structure.util.Util import default
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Result import Result
 
@@ -49,6 +51,18 @@ class DataCell(Cell):
             return transResult.value
         else:
             raise ValueError(str(transResult.err))
+
+    def toProtoObj(self) ->CellProto:
+        cellProto = CellProto()
+        cellProto.address.CopyFrom(self.address.toProtoObj())
+        if self.__value is not None:
+            cellProto.value = str(self.__value)
+        else:
+            cellProto.value = ""
+
+        cellProto.script = default(self.__script,"")
+        cellProto.formula = default(self.__formula,"")
+        return cellProto
 
     def bareValue(self):
         return self.__value

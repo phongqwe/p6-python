@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import MagicMock
 
 from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.EventCell import EventCell
@@ -9,6 +10,16 @@ from bicp_document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 
 
 class EventCellTest(unittest.TestCase):
+
+    def test_toProtoObj(self):
+        self.a = 0
+
+        c1 = DataCell(CellIndex(1, 1),
+                      MagicMock(),
+                      123)
+        eventCell = EventCell(c1, MagicMock())
+
+        self.assertEqual(c1.toProtoObj(),eventCell.toProtoObj())
 
     def test_emitEvent(self):
         self.a=0

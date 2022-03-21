@@ -1,9 +1,11 @@
 from abc import ABC
 
 from bicp_document_structure.cell.address.CellAddressJson import CellAddressJson
+from bicp_document_structure.message.proto.DocPM_pb2 import CellAddressProto
+from bicp_document_structure.util.ToProto import ToProto
 
 
-class CellAddress(ABC):
+class CellAddress(ToProto[CellAddressProto],ABC):
     """
     an interface representing a position of a cell, including row and column index
     """

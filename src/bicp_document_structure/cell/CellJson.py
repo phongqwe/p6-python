@@ -2,7 +2,7 @@ import json
 from typing import Union
 
 from bicp_document_structure.cell.address.CellAddressJson import CellAddressJson
-from bicp_document_structure.common.ToJsonStr import ToJson
+from bicp_document_structure.util.ToJson import ToJson
 
 
 class CellJson(dict, ToJson):

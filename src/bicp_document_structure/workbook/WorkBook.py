@@ -3,9 +3,12 @@ from abc import ABC
 from pathlib import Path
 from typing import Optional, Union
 
-from bicp_document_structure.common.ToJsonStr import ToJson
 from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
+from bicp_document_structure.message.proto.DocPM_pb2 import WorkbookProto
 from bicp_document_structure.util.CanCheckEmpty import CanCheckEmpty
+from bicp_document_structure.util.ToJson import ToJson
+from bicp_document_structure.util.ToProto import ToProto
+from bicp_document_structure.util.Util import default
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.report.error.ErrorReports import ErrorReports
 from bicp_document_structure.util.result.Result import Result
@@ -14,7 +17,20 @@ from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 
-class Workbook(ToJson, CanCheckEmpty, ABC):
+class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto],ABC):
+
+    def toProtoObj(self) -> WorkbookProto:
+        rt = WorkbookProto()
+        rt.name = default(self.name,"")
+        if self.path is None:
+            rt.path = ""
+        else:
+            rt.path = str(self.path.absolute())
+        sheets = []
+        for sheet in self.worksheets:
+            sheets.append(sheet.toProtoObj())
+        rt.worksheet.extend(sheets)
+        return rt
 
     def getTranslator(self, sheetName: str) -> FormulaTranslator:
         raise NotImplementedError()

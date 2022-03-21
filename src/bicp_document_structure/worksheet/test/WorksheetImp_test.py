@@ -1,6 +1,7 @@
 import random
 import unittest
 from functools import partial
+from unittest.mock import MagicMock
 
 from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.address.CellIndex import CellIndex
@@ -10,7 +11,16 @@ from bicp_document_structure.range.address.RangeAddressImp import RangeAddressIm
 from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 
-class WorksheetImp2_test(unittest.TestCase):
+class WorksheetImp_test(unittest.TestCase):
+
+    def test_toProtoObj(self):
+        s = WorksheetImp(translatorGetter = MagicMock(), name = "oldName")
+        s.cell("@A1").value=123
+        s.cell("@B3").value=333
+        o = s.toProtoObj()
+        self.assertEqual("oldName",o.name)
+        self.assertEqual(s.cell("@A1").toProtoObj(),o.cell[0])
+        self.assertEqual(s.cell("@B3").toProtoObj(),o.cell[1])
 
     @staticmethod
     def transGetter(name):

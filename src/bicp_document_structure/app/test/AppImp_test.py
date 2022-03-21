@@ -11,9 +11,11 @@ from bicp_document_structure.app.AppImp import AppImp
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.event.P6Events import P6Events
 from bicp_document_structure.event.reactor.EventReactorFactory import EventReactorFactory
+from bicp_document_structure.util.for_test.TestUtils import findNewSocketPort
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.key.WorkbookKeyImp import WorkbookKeyImp
 
+port = findNewSocketPort()
 
 class AppImp_test(unittest.TestCase):
 
@@ -21,6 +23,22 @@ class AppImp_test(unittest.TestCase):
         super().setUp()
         self.app = AppImp()
         self.aa = 0
+
+    def startREPServer(self, isOk, context):
+        repSocket = context.socket(zmq.REP)
+        repSocket.bind(f"tcp://*:{port}")
+        receive = repSocket.recv()
+        print(f"Server received: \n{receive}")
+        if isOk:
+            repSocket.send("ok".encode())
+        else:
+            repSocket.send("fail".encode())
+        repSocket.close()
+
+    def startREPServerOnThread(self, isOk, context) -> threading.Thread:
+        thread = threading.Thread(target = self.startREPServer, args = [isOk, context])
+        thread.start()
+        return thread
 
     def test_createNewWorkbook(self):
         app = self.app
@@ -175,7 +193,7 @@ class AppImp_test(unittest.TestCase):
 
         app.eventReactorContainer.addReactor(
             P6Events.Cell.UpdateValue,
-            EventReactorFactory.makeCellReactor(self.onCellChange))
+            EventReactorFactory.makeCellReactor(self.onCellChange, P6Events.Cell.UpdateValue))
         fileName = "file.txt"
 
         loadRs0 = app.loadWorkbookRs(fileName)
@@ -190,36 +208,21 @@ class AppImp_test(unittest.TestCase):
         cell.value = "abc"
         self.assertEqual(123, self.aa)
 
-
-    def startREPServer(self, isOk, context):
-        repSocket = context.socket(zmq.REP)
-        repSocket.bind("tcp://*:6000")
-        receive = repSocket.recv()
-        print(f"Server received: \n{receive}")
-        if isOk:
-            repSocket.send("ok".encode())
-        else:
-            repSocket.send("fail".encode())
-        repSocket.close()
-
-    def startREPServerOnThread(self, isOk,context) -> threading.Thread:
-        thread = threading.Thread(target = self.startREPServer, args = [isOk, context])
-        thread.start()
-        return thread
-
     def test_adding_new_reactor_to_app(self):
         app = AppImp()
         self.ze = None
+
         def reactor(_):
-            self.ze=123
+            self.ze = 123
+
         app.eventReactorContainer.addReactor(
             P6Events.Cell.UpdateValue,
-            EventReactorFactory.makeCellReactor(reactor))
+            EventReactorFactory.makeCellReactor(reactor, P6Events.Cell.UpdateValue, ))
         wb = app.createNewWorkbook("bookz1")
         wb.createNewWorksheet("sheetz1")
         cell = app.activeWorkbook.activeWorksheet.cell("@B32")
         cell.value = 444
-        self.assertEqual(123,self.ze)
+        self.assertEqual(123, self.ze)
 
     def test_createDefaultNewWorkbook(self):
         app = AppImp()
@@ -228,47 +231,52 @@ class AppImp_test(unittest.TestCase):
         self.assertIsNotNone(wb.getWorksheet(0))
 
     def test_event_listener_on_newly_created_workbook(self):
-        def cwb(app:App):
-            wb=app.createNewWorkbook("book1")
+        def cwb(app: App):
+            wb = app.createNewWorkbook("book1")
             return wb
+
         self._test_event_onWb(cwb)
 
-
     def test_event_listener_on_already_created_wb(self):
-        def cwb(app:App):
+        def cwb(app: App):
             app.createNewWorkbook("book1")
             wb = app.getWorkbook("book1")
             return wb
+
         self._test_event_onWb(cwb)
+
     def test_event_listener_getWorkbookByIndex(self):
-        def cwb(app:App):
+        def cwb(app: App):
             app.createNewWorkbook("book1")
             wb = app.getWorkbookByIndex(0)
             return wb
+
         self._test_event_onWb(cwb)
 
     def test_event_listener_getWorkbookByName(self):
-        def cwb(app:App):
+        def cwb(app: App):
             app.createNewWorkbook("book1")
             wb = app.getWorkbookByName("book1")
             return wb
+
         self._test_event_onWb(cwb)
+
     def test_event_listener_getWorkbookByKey(self):
-        def cwb(app:App):
+        def cwb(app: App):
             app.createNewWorkbook("book1")
             wb = app.getWorkbookByKey(WorkbookKeyImp(
                 fileName = "book1",
                 filePath = None
             ))
             return wb
+
         self._test_event_onWb(cwb)
 
-
-    def _test_event_onWb(self,wbCreator:Callable[[App],Workbook]):
+    def _test_event_onWb(self, wbCreator: Callable[[App], Workbook]):
         app = AppImp()
         app.eventReactorContainer.addReactor(
             P6Events.Cell.UpdateValue,
-            EventReactorFactory.makeCellReactor(self.onCellChange))
+            EventReactorFactory.makeCellReactor(self.onCellChange, P6Events.Cell.UpdateValue, ))
         wb = wbCreator(app)
         sheet = wb.createNewWorksheet("sheet1")
         cell = sheet.cell(CellIndex(1, 1))

@@ -2,10 +2,12 @@ from abc import ABC
 
 from bicp_document_structure.cell.CellJson import CellJson
 from bicp_document_structure.cell.address.CellAddress import CellAddress
-from bicp_document_structure.common.ToJsonStr import ToJson
+from bicp_document_structure.message.proto.DocPM_pb2 import CellProto
+from bicp_document_structure.util.ToJson import ToJson
+from bicp_document_structure.util.ToProto import ToProto
 
 
-class Cell(ToJson,ABC):
+class Cell(ToJson,ToProto[CellProto],ABC):
     """
     Cell interface
     """
@@ -32,7 +34,11 @@ class Cell(ToJson,ABC):
     @property
     def strValue(self) -> str:
         """get cell value as string"""
-        return str(self.value)
+        # return str(self.value)
+        if self.value is None:
+            return ""
+        else:
+            return str(self.value)
 
     @property
     def displayValue(self) -> str:

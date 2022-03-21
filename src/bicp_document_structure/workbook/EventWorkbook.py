@@ -29,23 +29,27 @@ class EventWorkbook(WorkbookWrapper):
 
     @property
     def worksheets(self) -> list[Worksheet]:
+        """wrap the result worksheets in event worksheet, so that they can propagate event"""
         sheets = self._innerWorkbook.worksheets
         rt = list(map(lambda s: self.__wrapInEventWorksheet(s), sheets))
         return rt
 
     @property
     def activeWorksheet(self) -> Optional[Worksheet]:
+        """wrap the result worksheet in event worksheet, so that it can propagate event"""
         activeSheet = self._innerWorkbook.activeWorksheet
         return self.__wrapInEventWorksheet(activeSheet)
 
     def getWorksheetByName(self, name: str) -> Optional[Worksheet]:
-        s = self._innerWorkbook.getWorksheetByName(name)
-        if s is not None:
-            return self.__wrapInEventWorksheet(s)
+        """wrap the result worksheet in event worksheet, so that it can propagate event"""
+        sheet = self._innerWorkbook.getWorksheetByName(name)
+        if sheet is not None:
+            return self.__wrapInEventWorksheet(sheet)
         else:
-            return s
+            return sheet
 
     def getWorksheetByIndex(self, index: int) -> Optional[Worksheet]:
+        """wrap the result worksheet in event worksheet, so that it can propagate event"""
         s = self._innerWorkbook.getWorksheetByIndex(index)
         if s is not None:
             return self.__wrapInEventWorksheet(s)
@@ -53,6 +57,7 @@ class EventWorkbook(WorkbookWrapper):
             return s
 
     def getWorksheet(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
+        """wrap the result worksheet in event worksheet, so that it can propagate event"""
         s = self._innerWorkbook.getWorksheet(nameOrIndex)
         if s is not None:
             return self.__wrapInEventWorksheet(s)
@@ -60,6 +65,7 @@ class EventWorkbook(WorkbookWrapper):
             return s
 
     def createNewWorksheetRs(self, newSheetName: Optional[str] = None) -> Result[Worksheet, ErrorReport]:
+        """wrap the result worksheet in event worksheet, so that it can propagate event"""
         s = self._innerWorkbook.createNewWorksheetRs(newSheetName)
         if s.isOk():
             return Ok(self.__wrapInEventWorksheet(s.value))
@@ -85,3 +91,17 @@ class EventWorkbook(WorkbookWrapper):
             return partial(callback, self._innerWorkbook)
         else:
             return None
+
+    def renameWorksheet(self, oldSheetNameOrIndex: str | int, newSheetName: str):
+        rs = self.renameWorksheetRs(oldSheetNameOrIndex, newSheetName)
+        if rs.isOk():
+            self.__onWorksheetEvent(self,self.getWorksheet(newSheetName),P6Events.Worksheet.RenameOk)
+        else:
+            self.__onWorksheetEvent(self, self.getWorksheet(newSheetName), P6Events.Worksheet.RenameFail)
+
+    def renameWorksheetRs(self, oldSheetNameOrIndex: str | int, newSheetName: str) -> Result[None, ErrorReport]:
+        rs = self._innerWorkbook.renameWorksheetRs(oldSheetNameOrIndex, newSheetName)
+        return rs
+
+
+

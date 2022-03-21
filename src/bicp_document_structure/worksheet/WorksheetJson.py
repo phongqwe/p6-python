@@ -1,7 +1,7 @@
 import json
 
 from bicp_document_structure.cell.CellJson import CellJson
-from bicp_document_structure.common.ToJsonStr import ToJson
+from bicp_document_structure.util.ToJson import ToJson
 
 
 class WorksheetJson(dict, ToJson):

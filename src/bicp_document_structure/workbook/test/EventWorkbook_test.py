@@ -1,5 +1,6 @@
 import unittest
 from collections import OrderedDict
+from pathlib import Path
 
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from bicp_document_structure.workbook.EventWorkbook import EventWorkbook
@@ -8,6 +9,19 @@ from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 
 class EventWorkbook_test(unittest.TestCase):
+    def test_toProtoObj(self):
+        s1, s2, s3, w1, d = self.makeTestObj()
+        o = w1.toProtoObj()
+        self.assertEqual(w1.name, o.name)
+        self.assertEqual("", str(o.path))
+        self.assertEqual(s1.toProtoObj(),o.worksheet[0])
+        self.assertEqual(s2.toProtoObj(),o.worksheet[1])
+        self.assertEqual(s3.toProtoObj(),o.worksheet[2])
+        w1.path = Path("someFile.qwe")
+        o2 = w1.toProtoObj()
+        self.assertEqual(str(w1.path.absolute()),o2.path)
+        print(str(w1.path.absolute()))
+
     @staticmethod
     def transGetter(name):
         return FormulaTranslators.mock()
@@ -56,3 +70,12 @@ class EventWorkbook_test(unittest.TestCase):
         c4 = eventWb.getWorksheet(0).cell("@h1")
         c4.value = "mmm"
         self.assertEqual(6, self.a)
+
+    def testRename(self):
+        s1, s2, s3, w1, d = self.makeTestObj()
+        self.a = 0
+        def cb(wb, ws, e):
+            self.a += 1
+        ewb = EventWorkbook(w1,onWorksheetEvent = cb)
+        ewb.renameWorksheet(s1.name, "newName")
+        self.assertEqual(1,self.a)

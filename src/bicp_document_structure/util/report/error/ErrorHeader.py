@@ -1,4 +1,4 @@
-from bicp_document_structure.common.ToJsonStr import ToJson
+from bicp_document_structure.util.ToJson import ToJson
 
 
 class ErrorHeader(ToJson):

@@ -3,6 +3,7 @@ from abc import ABC
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.CellJson import CellJson
 from bicp_document_structure.cell.address.CellAddress import CellAddress
+from bicp_document_structure.message.proto.DocPM_pb2 import CellProto
 
 
 class WrapperCell(Cell, ABC):
@@ -12,6 +13,9 @@ class WrapperCell(Cell, ABC):
 
     def __init__(self, innerCell: Cell):
         self._innerCell: Cell = innerCell
+
+    def toProtoObj(self) -> CellProto:
+        return self._innerCell.toProtoObj()
 
     @property
     def intValue(self) -> int:

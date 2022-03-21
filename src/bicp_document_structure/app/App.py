@@ -292,14 +292,14 @@ class App(ABC):
     def _onCellEvent(self, wb: Workbook, ws: Worksheet, c: Cell, e: P6Event):
         self.eventReactorContainer.triggerReactorsFor(e, CellEventData(wb, ws, c, e))
 
-    def _onRangeEvent(self, wb: Workbook, ws: Worksheet, r: Range, e: P6Event):
-        self.eventReactorContainer.triggerReactorsFor(e, RangeEventData(wb, ws, r, e))
+    def _onRangeEvent(self, wb: Workbook, ws: Worksheet, r: Range, event: P6Event):
+        self.eventReactorContainer.triggerReactorsFor(event, RangeEventData(wb, ws, r, event))
 
-    def _onWorksheetEvent(self, wb: Workbook, ws: Worksheet, e: P6Event):
-        self.eventReactorContainer.triggerReactorsFor(e, WorksheetEventData(wb, ws, e))
+    def _onWorksheetEvent(self, wb: Workbook, ws: Worksheet, event: P6Event):
+        self.eventReactorContainer.triggerReactorsFor(event, WorksheetEventData(wb, ws, event))
 
-    def _onWorkbookEvent(self, wb: Workbook, e: P6Event):
-        self.eventReactorContainer.triggerReactorsFor(e, WorkbookEventData(wb, e))
+    def _onWorkbookEvent(self, wb: Workbook, event: P6Event):
+        self.eventReactorContainer.triggerReactorsFor(event, WorkbookEventData(wb, event))
 
     @property
     def socketProvider(self) -> SocketProvider | None:

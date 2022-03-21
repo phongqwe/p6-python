@@ -1,6 +1,7 @@
 import uuid
 from typing import Callable
 
+from bicp_document_structure.event.P6Event import P6Event
 from bicp_document_structure.event.reactor.CellReactor import CellReactor
 from bicp_document_structure.event.reactor.ColumnReactor import ColumnReactor
 from bicp_document_structure.event.reactor.RangeReactor import RangeReactor
@@ -15,9 +16,9 @@ from bicp_document_structure.event.reactor.eventData.WorksheetEventData import W
 
 class EventReactorFactory:
     @staticmethod
-    def makeCellReactor(callback:Callable[[CellEventData], None]) -> CellReactor:
+    def makeCellReactor(callback:Callable[[CellEventData], None],event:P6Event) -> CellReactor:
         """create a cell reactor with randomize uuid4 id"""
-        return CellReactor(str(uuid.uuid4()), callback)
+        return CellReactor(str(uuid.uuid4()), callback,event)
 
     @staticmethod
     def makeColReactor(callback: Callable[[ColEventData], None]) -> ColumnReactor:
@@ -25,16 +26,16 @@ class EventReactorFactory:
         return ColumnReactor(str(uuid.uuid4()), callback)
 
     @staticmethod
-    def makeRangeReactor(callback: Callable[[RangeEventData], None]) -> RangeReactor:
+    def makeRangeReactor(callback: Callable[[RangeEventData], None],event:P6Event) -> RangeReactor:
         """create a range reactor with randomize uuid4 id"""
-        return RangeReactor(str(uuid.uuid4()), callback)
+        return RangeReactor(str(uuid.uuid4()), callback,event)
 
     @staticmethod
-    def makeWorksheetReactor(callback: Callable[[WorksheetEventData], None]) -> WorksheetReactor:
+    def makeWorksheetReactor(callback: Callable[[WorksheetEventData], None],event:P6Event) -> WorksheetReactor:
         """create a worksheet reactor with randomize uuid4 id"""
-        return WorksheetReactor(str(uuid.uuid4()), callback)
+        return WorksheetReactor(str(uuid.uuid4()), callback,event)
 
     @staticmethod
-    def makeWorkbookReactor(callback: Callable[[WorkbookEventData], None]) -> WorkbookReactor:
+    def makeWorkbookReactor(callback: Callable[[WorkbookEventData], None],event:P6Event) -> WorkbookReactor:
         """create a workbook reactor with randomize uuid4 id"""
-        return WorkbookReactor(str(uuid.uuid4()), callback)
+        return WorkbookReactor(str(uuid.uuid4()), callback,event)

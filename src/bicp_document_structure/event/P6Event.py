@@ -3,9 +3,14 @@ class P6Event:
     """
     Contain description of an event, serve as a tag of sort
     """
-    def __init__(self, name:str,code:str):
+    def __init__(self, name:str,code:str,msgRepresentation:str=""):
         self._code = code
         self._name = name
+        self._msgRepresentation = msgRepresentation
+
+    @property
+    def msgRepresentation(self):
+        return self._msgRepresentation
 
     @property
     def name(self) -> str:

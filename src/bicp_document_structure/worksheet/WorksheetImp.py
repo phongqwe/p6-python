@@ -44,6 +44,15 @@ class WorksheetImp(Worksheet):
 
     ### >> Worksheet << ###
 
+    # def toProtoObj(self) -> WorksheetProto:
+    #     rt = WorksheetProto()
+    #     rt.name = self.name
+    #     cells = []
+    #     for cell in self.cells:
+    #         cells.append(cell.toProtoObj())
+    #     rt.cell.extend(cells)
+    #     return rt
+
     @property
     def translator(self) -> FormulaTranslator | None:
         return self.translatorGetter(self.name)

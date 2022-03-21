@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import MagicMock
 
 from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.address.CellAddresses import CellAddresses
@@ -9,6 +10,15 @@ from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 
 class EventWorksheet_test(unittest.TestCase):
+    def test_toProtoObj(self):
+        s = WorksheetImp(translatorGetter = MagicMock(), name = "oldName")
+        ss = EventWorksheet(s)
+        ss.cell("@A1").value=123
+        ss.cell("@B3").value=333
+        o = ss.toProtoObj()
+        self.assertEqual("oldName",o.name)
+        self.assertEqual(s.cell("@A1").toProtoObj(),o.cell[0])
+        self.assertEqual(s.cell("@B3").toProtoObj(),o.cell[1])
 
     @staticmethod
     def transGetter(name):

@@ -1,5 +1,5 @@
-from bicp_document_structure.common.ToJsonStr import ToJson
 from bicp_document_structure.message.P6MessageHeader import P6MessageHeader
+from bicp_document_structure.util.ToJson import ToJson
 
 
 class P6Message(ToJson):

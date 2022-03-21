@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import MagicMock
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.DataCell import DataCell
@@ -13,11 +14,12 @@ from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 class WriteBackCellTest(unittest.TestCase):
 
-
-    # def setUp(self) -> None:
-    #     super().setUp()
-    #     self.s = WorksheetImp2(name="s3",translatorGetter = self.transGetter)
-
+    def test_toProtoObj(self):
+        c1 = DataCell(CellIndex(1, 1),
+                      MagicMock(),
+                      123)
+        writeBackCell = WriteBackCell(c1,MagicMock())
+        self.assertEqual(c1.toProtoObj(),writeBackCell.toProtoObj())
 
     def test_Cell(self):
         def transGetter(name):

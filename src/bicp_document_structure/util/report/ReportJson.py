@@ -1,7 +1,7 @@
 import json
 from typing import Any
 
-from bicp_document_structure.common.ToJsonStr import ToJson
+from bicp_document_structure.util.ToJson import ToJson
 from bicp_document_structure.util.report.ReportJsonStrMaker import ReportJsonStrMaker
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Result import Result

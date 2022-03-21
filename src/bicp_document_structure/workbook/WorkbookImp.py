@@ -40,9 +40,9 @@ class WorkbookImp(Workbook):
         # translator dict key = [sheetName, workbook key]
         self._translatorDict: dict[Tuple[str, WorkbookKey], FormulaTranslator] = {}
         # create translators
-        for sheet in self.__sheetDict.values():
-            self._translatorDict[(sheet.name,self.__key)] = FormulaTranslators.standardWbWs(sheet.name, self.__key)
-
+        # for sheet in self.__sheetDict.values():
+        #     self._translatorDict[(sheet.name,self.__key)] = FormulaTranslators.standardWbWs(sheet.name, self.__key)
+    #
     @staticmethod
     def __makeOrderDict(sheetDict: dict) -> dict:
         o = 0
@@ -130,9 +130,9 @@ class WorkbookImp(Workbook):
             self.__sheetDict[newSheetName] = targetSheet
             # update translator map
             oldTranslatorDictKey = (oldName, self.workbookKey)
-            newTranslatorDictKey = (newSheetName,self.workbookKey)
-            self._translatorDict.pop(oldTranslatorDictKey)
-            self._translatorDict[newTranslatorDictKey] = FormulaTranslators.standardWbWs(newSheetName, self.workbookKey)
+            # delete old cached translator. New translator will be lazily created when it is queried.
+            if oldTranslatorDictKey in self._translatorDict.keys():
+                self._translatorDict.pop(oldTranslatorDictKey)
             return Ok(None)
 
     def getWorksheet(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:

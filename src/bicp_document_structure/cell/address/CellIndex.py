@@ -1,4 +1,5 @@
 from bicp_document_structure.cell.address.CellAddress import CellAddress
+from bicp_document_structure.message.proto.DocPM_pb2 import CellAddressProto
 from bicp_document_structure.util.AlphabetBaseNumberSystem import AlphabetBaseNumberSystem
 
 
@@ -8,6 +9,12 @@ class CellIndex(CellAddress):
     def __init__(self, colIndex: int, rowIndex: int):
         self.__rowIndex = rowIndex
         self.__colIndex = colIndex
+
+    def toProtoObj(self)->CellAddressProto:
+        addr = CellAddressProto()
+        addr.row = self.rowIndex
+        addr.col = self.colIndex
+        return addr
 
     @property
     def rowIndex(self) -> int:
