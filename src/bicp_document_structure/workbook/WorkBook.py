@@ -3,7 +3,10 @@ from abc import ABC
 from pathlib import Path
 from typing import Optional, Union
 
+from google.protobuf.struct_pb2 import NullValue
+
 from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
+from bicp_document_structure.message.proto.Common_pb2 import NullableString
 from bicp_document_structure.message.proto.DocPM_pb2 import WorkbookProto
 from bicp_document_structure.util.CanCheckEmpty import CanCheckEmpty
 from bicp_document_structure.util.ToJson import ToJson
@@ -22,10 +25,12 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto],ABC):
     def toProtoObj(self) -> WorkbookProto:
         rt = WorkbookProto()
         rt.name = default(self.name,"")
+        pathStr = NullableString()
         if self.path is None:
-            rt.path = ""
+            pathStr.null = NullValue.NULL_VALUE
         else:
-            rt.path = str(self.path.absolute())
+            pathStr.str = str(self.path.absolute())
+        rt.path.CopyFrom(pathStr)
         sheets = []
         for sheet in self.worksheets:
             sheets.append(sheet.toProtoObj())

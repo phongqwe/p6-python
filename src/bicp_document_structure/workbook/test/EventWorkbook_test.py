@@ -13,13 +13,13 @@ class EventWorkbook_test(unittest.TestCase):
         s1, s2, s3, w1, d = self.makeTestObj()
         o = w1.toProtoObj()
         self.assertEqual(w1.name, o.name)
-        self.assertEqual("", str(o.path))
+        self.assertEqual("null",o.path.WhichOneof("kind") )
         self.assertEqual(s1.toProtoObj(),o.worksheet[0])
         self.assertEqual(s2.toProtoObj(),o.worksheet[1])
         self.assertEqual(s3.toProtoObj(),o.worksheet[2])
         w1.path = Path("someFile.qwe")
         o2 = w1.toProtoObj()
-        self.assertEqual(str(w1.path.absolute()),o2.path)
+        self.assertEqual(str(w1.path.absolute()),o2.path.str)
         print(str(w1.path.absolute()))
 
     @staticmethod

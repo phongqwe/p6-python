@@ -72,3 +72,19 @@ class BugTests_test(unittest.TestCase):
         book.renameWorksheet("Sheet1","Sheet1x")
         print(book.listWorksheet())
         thread.join()
+
+    def test_reaction(self):
+        app = getApp()
+        port = findNewSocketPort()
+        context = getApp().zContext
+        thread = self.startREPServerOnThread(True, port, context)
+        socket = context.socket(zmq.REQ)
+        socket.connect(f"tcp://localhost:{port}")
+        getApp().socketProvider.updateREQSocketForUIUpdating(socket)
+
+        w1 = app.createNewWorkbook("w1")
+        s1 = w1.createNewWorksheet("s1")
+        c1 = s1.cell("@A1")
+        c1.value = 1
+
+        thread.join()

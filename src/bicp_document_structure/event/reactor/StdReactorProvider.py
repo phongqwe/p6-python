@@ -48,7 +48,6 @@ class StdReactorProvider(ReactorProvider):
             socket = socketProvider.reqSocketForUIUpdating()
             if socket is not None:
                 replyRs = MessageSender.sendREQ_Proto(
-                # replyRs = MessageSender.sendREQ(
                     socket = socket,
                     msg = P6Message(
                         header = P6MessageHeader(str(uuid.uuid4()), event),
@@ -119,7 +118,7 @@ class StdReactorProvider(ReactorProvider):
         if socketProvider is not None:
             socket = socketProvider.reqSocketForUIUpdating()
             if socket is not None:
-                replyRs = MessageSender.sendREQ(
+                replyRs = MessageSender.sendREQ_Proto(
                     socket = socket,
                     msg = P6Message(
                         header = P6MessageHeader(str(uuid.uuid4()), event),
