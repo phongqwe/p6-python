@@ -110,7 +110,8 @@ class WorkbookImp(Workbook):
     def getWorksheetByIndex(self, index: int) -> Optional[Worksheet]:
         typeCheck(index, "index", int)
         if 0 <= index < self.sheetCount:
-            rt: Worksheet = list(self.__sheetDict.items())[index][1]
+            # rt: Worksheet = list(self.__sheetDict.items())[index][1]
+            rt: Worksheet = list(self.__sheetDict.values())[index]
             return rt
         else:
             return None

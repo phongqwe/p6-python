@@ -7,8 +7,10 @@ class Bench(unittest.TestCase):
 
         return x+y
     def test_z(self):
-        s = str(None)
-        print(s is None)
-        print(s)
+        z = {
+            "1":"1bv"
+        }
+        print("1" in z.keys())
+        print("1bv" in z)
 
 
