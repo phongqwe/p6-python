@@ -56,6 +56,9 @@ class WorkbookImp_test(unittest.TestCase):
             self.assertIsNone(w.getTranslator(oldName))
         self.assertIsNotNone(w.getTranslator(newName))
         self.assertIsNotNone(s1.translator)
+        # ensure that sheet index is not changed after name changed
+        self.assertEqual(w.getWorksheetByIndex(0).name,newName)
+
 
     def test_constructor(self):
         s1, s2, s3, w, sheetDict = self.makeTestObj()

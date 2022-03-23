@@ -30,19 +30,17 @@ class WorkbookImp(Workbook):
             sheetDict = ODict()
         else:
             typeCheck(sheetDict, "sheetDict", OrderedDict)
-        self.__sheetDict:OrderedDict[str,Worksheet] = sheetDict
+        self._byNameSheetDict: OrderedDict[str, Worksheet] = sheetDict
+        self._indexSheetList:list[Worksheet] = list(self._byNameSheetDict.values())
 
         self.__activeSheet = None
         if self.sheetCount != 0:
-            self.__activeSheet = list(self.__sheetDict.values())[0]
+            self.__activeSheet = list(self._byNameSheetDict.values())[0]
         self.__nameCount = 0
 
         # translator dict key = [sheetName, workbook key]
         self._translatorDict: dict[Tuple[str, WorkbookKey], FormulaTranslator] = {}
-        # create translators
-        # for sheet in self.__sheetDict.values():
-        #     self._translatorDict[(sheet.name,self.__key)] = FormulaTranslators.standardWbWs(sheet.name, self.__key)
-    #
+
     @staticmethod
     def __makeOrderDict(sheetDict: dict) -> dict:
         o = 0
@@ -67,7 +65,7 @@ class WorkbookImp(Workbook):
 
     @property
     def worksheets(self) -> list[Worksheet]:
-        return list(self.__sheetDict.values())
+        return self._indexSheetList
 
     @property
     def workbookKey(self) -> WorkbookKey:
@@ -102,16 +100,15 @@ class WorkbookImp(Workbook):
 
     def getWorksheetByName(self, name: str) -> Optional[Worksheet]:
         typeCheck(name, "name", str)
-        if name in self.__sheetDict.keys():
-            return self.__sheetDict[name]
+        if name in self._byNameSheetDict.keys():
+            return self._byNameSheetDict[name]
         else:
             return None
 
     def getWorksheetByIndex(self, index: int) -> Optional[Worksheet]:
         typeCheck(index, "index", int)
         if 0 <= index < self.sheetCount:
-            # rt: Worksheet = list(self.__sheetDict.items())[index][1]
-            rt: Worksheet = list(self.__sheetDict.values())[index]
+            rt: Worksheet = self._indexSheetList[index]
             return rt
         else:
             return None
@@ -127,8 +124,8 @@ class WorkbookImp(Workbook):
             oldName = targetSheet.name
             targetSheet.rename(newSheetName)
             # update sheet dict
-            self.__sheetDict.pop(oldName)
-            self.__sheetDict[newSheetName] = targetSheet
+            self._byNameSheetDict.pop(oldName)
+            self._byNameSheetDict[newSheetName] = targetSheet
             # update translator map
             oldTranslatorDictKey = (oldName, self.workbookKey)
             # delete old cached translator. New translator will be lazily created when it is queried.
@@ -147,7 +144,7 @@ class WorkbookImp(Workbook):
 
     @property
     def sheetCount(self) -> int:
-        return len(self.__sheetDict)
+        return len(self._byNameSheetDict)
 
     @property
     def path(self) -> Path:
@@ -165,7 +162,7 @@ class WorkbookImp(Workbook):
     def name(self, newName: str):
         self.workbookKey = WorkbookKeys.fromNameAndPath(newName, self.workbookKey.filePath)
 
-    def _generateNewSheetName(self)->str:
+    def _generateNewSheetName(self) -> str:
         newSheetName = "Sheet" + str(self.__nameCount)
         while self.getWorksheetByName(newSheetName) is not None:
             self.__nameCount += 1
@@ -184,14 +181,19 @@ class WorkbookImp(Workbook):
                 )
             )
         newSheet = WorksheetImp(name = newSheetName, translatorGetter = self.getTranslator)
-        self.__sheetDict[newSheetName] = newSheet
+        # store new sheet in name map
+        self._byNameSheetDict[newSheetName] = newSheet
+        # store in index list
+        self._indexSheetList.append(newSheet)
         return Ok(newSheet)
 
     def removeWorksheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
         typeCheck(sheetName, "sheetName", str)
-        if sheetName in self.__sheetDict.keys():
-            rt: Worksheet = self.__sheetDict[sheetName]
-            del self.__sheetDict[sheetName]
+        if sheetName in self._byNameSheetDict.keys():
+            rt: Worksheet = self._byNameSheetDict[sheetName]
+            del self._byNameSheetDict[sheetName]
+            if rt in self._indexSheetList:
+                self._indexSheetList.remove(rt)
             return Ok(rt)
         else:
             return Err(
@@ -203,8 +205,10 @@ class WorkbookImp(Workbook):
 
     def removeWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
         typeCheck(index, "index", int)
-        if 0 <= index < len(self.__sheetDict):
-            name: str = list(self.__sheetDict.items())[index][0]
+        if 0 <= index < self.sheetCount:
+            sheet:Worksheet = self._indexSheetList[index]
+            self._indexSheetList.pop(index)
+            name: str = sheet.name
             return self.removeWorksheetByNameRs(name)
         else:
             return Err(
