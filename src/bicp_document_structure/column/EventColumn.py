@@ -5,8 +5,8 @@ from bicp_document_structure.cell.EventCell import EventCell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.column.Column import Column
 from bicp_document_structure.column.ColumnWrapper import ColumnWrapper
-from bicp_document_structure.event.P6Event import P6Event
-from bicp_document_structure.event.P6Events import P6Events
+from bicp_document_structure.message.event.P6Event import P6Event
+from bicp_document_structure.message.event.P6Events import P6Events
 from bicp_document_structure.range.EventRange import EventRange
 from bicp_document_structure.range.Range import Range
 

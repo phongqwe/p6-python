@@ -22,6 +22,12 @@ from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto],ABC):
 
+    def getIndexOfWorksheet(self,sheetName:str)->int:
+        for (index, sheet) in enumerate(self.worksheets):
+            if sheet.name == sheetName:
+                return index
+        return -1
+
     def toProtoObj(self) -> WorkbookProto:
         rt = WorkbookProto()
         rt.name = default(self.name,"")

@@ -5,12 +5,12 @@ from typing import Optional, Union, Any
 from bicp_document_structure.app.errors.AppErrors import AppErrors
 from bicp_document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
 from bicp_document_structure.cell.Cell import Cell
-from bicp_document_structure.event.P6Event import P6Event
-from bicp_document_structure.event.reactor.EventReactorContainer import EventReactorContainer
-from bicp_document_structure.event.reactor.eventData.CellEventData import CellEventData
-from bicp_document_structure.event.reactor.eventData.RangeEventData import RangeEventData
-from bicp_document_structure.event.reactor.eventData.WorkbookEventData import WorkbookEventData
-from bicp_document_structure.event.reactor.eventData.WorksheetEventData import WorksheetEventData
+from bicp_document_structure.message.event.P6Event import P6Event
+from bicp_document_structure.message.event.reactor.EventReactorContainer import EventReactorContainer
+from bicp_document_structure.message.event.reactor.eventData.CellEventData import CellEventData
+from bicp_document_structure.message.event.reactor.eventData import RangeEventData
+from bicp_document_structure.message.event.reactor.eventData.WorkbookEventData import WorkbookEventData
+from bicp_document_structure.message.event.reactor.eventData.WorksheetEventData import WorksheetEventData
 from bicp_document_structure.file.loader.P6FileLoader import P6FileLoader
 from bicp_document_structure.file.loader.P6FileLoaderErrors import P6FileLoaderErrors
 from bicp_document_structure.file.saver.P6FileSaver import P6FileSaver
@@ -33,6 +33,7 @@ class App(ABC):
     """
     this class represents the state of the app.
     """
+
     @property
     def zContext(self):
         """zmq context"""
@@ -255,7 +256,7 @@ class App(ABC):
         wb = self.getWorkbook(wbKey)
         alreadyHasThisWorkbook = wb is not None
         if not alreadyHasThisWorkbook:
-            loadResult: Result[Workbook,ErrorReport] = self._fileLoader.load(filePath)
+            loadResult: Result[Workbook, ErrorReport] = self._fileLoader.load(filePath)
             if loadResult.isOk():
                 newWb: Workbook = loadResult.value
                 eventNewWb = self._makeEventWb(newWb)
@@ -295,8 +296,8 @@ class App(ABC):
     def _onRangeEvent(self, wb: Workbook, ws: Worksheet, r: Range, event: P6Event):
         self.eventReactorContainer.triggerReactorsFor(event, RangeEventData(wb, ws, r, event))
 
-    def _onWorksheetEvent(self, wb: Workbook, ws: Worksheet, event: P6Event):
-        self.eventReactorContainer.triggerReactorsFor(event, WorksheetEventData(wb, ws, event))
+    def _onWorksheetEvent(self, worksheetEventData: WorksheetEventData):
+        self.eventReactorContainer.triggerReactorsFor(worksheetEventData.event, worksheetEventData)
 
     def _onWorkbookEvent(self, wb: Workbook, event: P6Event):
         self.eventReactorContainer.triggerReactorsFor(event, WorkbookEventData(wb, event))

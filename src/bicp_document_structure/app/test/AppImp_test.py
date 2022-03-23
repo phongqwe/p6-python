@@ -9,8 +9,8 @@ import zmq
 from bicp_document_structure.app.App import App
 from bicp_document_structure.app.AppImp import AppImp
 from bicp_document_structure.cell.address.CellIndex import CellIndex
-from bicp_document_structure.event.P6Events import P6Events
-from bicp_document_structure.event.reactor.EventReactorFactory import EventReactorFactory
+from bicp_document_structure.message.event.P6Events import P6Events
+from bicp_document_structure.message.event.reactor.EventReactorFactory import EventReactorFactory
 from bicp_document_structure.util.for_test.TestUtils import findNewSocketPort
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.key.WorkbookKeyImp import WorkbookKeyImp

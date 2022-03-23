@@ -2,8 +2,9 @@ from functools import partial
 from typing import Callable, Optional, Union
 
 from bicp_document_structure.cell.Cell import Cell
-from bicp_document_structure.event.P6Event import P6Event
-from bicp_document_structure.event.P6Events import P6Events
+from bicp_document_structure.message.event.P6Event import P6Event
+from bicp_document_structure.message.event.P6Events import P6Events
+from bicp_document_structure.message.event.reactor.eventData.WorksheetEventData import WorksheetEventData
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Ok import Ok
@@ -17,13 +18,13 @@ from bicp_document_structure.worksheet.Worksheet import Worksheet
 class EventWorkbook(WorkbookWrapper):
     def __init__(self, innerWorkbook: Workbook,
                  onCellEvent: Callable[[Workbook, Worksheet, Cell, P6Event], None] = None,
-                 onWorksheetEvent: Callable[[Workbook, Worksheet, P6Event], None] = None,
+                 onWorksheetEvent: Callable[[WorksheetEventData], None] = None,
                  onRangeEvent: Callable[[Workbook, Worksheet, Range, P6Event], None] = None,
                  onWorkbookEvent: Callable[[Workbook, P6Event], None] = None,
                  ):
         super().__init__(innerWorkbook)
         self.__onCellChange: Callable[[Workbook, Worksheet, Cell, P6Event], None] = onCellEvent
-        self.__onWorksheetEvent: Callable[[Workbook, Worksheet, P6Event], None] = onWorksheetEvent
+        self.__onWorksheetEvent: Callable[[WorksheetEventData], None] = onWorksheetEvent
         self.__onRangeEvent: Callable[[Workbook, Worksheet, Range, P6Event], None] = onRangeEvent
         self.__onWorkbookEvent: Callable[[Workbook, P6Event], None] = onWorkbookEvent
 
@@ -95,13 +96,19 @@ class EventWorkbook(WorkbookWrapper):
     def renameWorksheet(self, oldSheetNameOrIndex: str | int, newSheetName: str):
         rs = self.renameWorksheetRs(oldSheetNameOrIndex, newSheetName)
         if rs.isOk():
-            self.__onWorksheetEvent(self,self.getWorksheet(newSheetName),P6Events.Worksheet.RenameOk)
+            oldName = oldSheetNameOrIndex
+            index = self.getIndexOfWorksheet(newSheetName)
+            supportData = P6Events.Worksheet.RenameOk.Data(self.workbookKey, oldName, newSheetName, index)
+            data = WorksheetEventData(
+                workbook = self,
+                worksheet = self.getWorksheet(newSheetName),
+                event = P6Events.Worksheet.RenameOk.event,
+                supportData = supportData)
+            self.__onWorksheetEvent(data)
         else:
-            self.__onWorksheetEvent(self, self.getWorksheet(newSheetName), P6Events.Worksheet.RenameFail)
+            data = WorksheetEventData(self, self.getWorksheet(newSheetName), P6Events.Worksheet.RenameFail)
+            self.__onWorksheetEvent(data)
 
     def renameWorksheetRs(self, oldSheetNameOrIndex: str | int, newSheetName: str) -> Result[None, ErrorReport]:
         rs = self._innerWorkbook.renameWorksheetRs(oldSheetNameOrIndex, newSheetName)
         return rs
-
-
-

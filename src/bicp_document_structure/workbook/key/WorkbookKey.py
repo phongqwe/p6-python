@@ -2,12 +2,31 @@ from abc import ABC
 from pathlib import Path
 from typing import Tuple
 
+from google.protobuf.struct_pb2 import NullValue
 
-class WorkbookKey(ABC):
+from bicp_document_structure.message.proto.Common_pb2 import NullableString
+
+from bicp_document_structure.message.proto.DocPM_pb2 import WorkbookKeyProto
+from bicp_document_structure.util.ToProto import ToProto, P
+
+
+class WorkbookKey(ToProto[WorkbookKeyProto],ABC):
     """
     An identifier class for identifying workbook.
     Each workbook as a unique WorkbookKey
     """
+
+    def toProtoObj(self) -> WorkbookKeyProto:
+        rt = WorkbookKeyProto()
+        rt.name = self.fileName
+        pathStr = NullableString()
+        if self.filePath is None:
+            pathStr.null = NullValue.NULL_VALUE
+        else:
+            pathStr.str = str(self.filePath.absolute())
+        rt.path.CopyFrom(pathStr)
+        return rt
+
     @property
     def filePath(self) -> Path:
         raise NotImplementedError()

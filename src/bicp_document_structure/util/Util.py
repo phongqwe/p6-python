@@ -11,7 +11,7 @@ def typeCheck(target, targetName: str, expectedType):
     if isinstance(target, expectedType):
         return
     else:
-        raise ValueError(targetName + " is {act}. It must be {rt}".format(act=type(target), rt=str(expectedType)))
+        raise ValueError(targetName + " is {act}. It must be {rt}".format(act = type(target), rt = str(expectedType)))
 
 
 def multiTypeCheck(target, targetName: str, expectedTypeList: List):
@@ -26,14 +26,18 @@ def multiTypeCheck(target, targetName: str, expectedTypeList: List):
             return
 
     typeListStr = ", ".join(list(map(lambda t: str(t), expectedTypeList)))
-    raise ValueError("{tn} must be one of these type {typeList}".format(tn=targetName, typeList=typeListStr))
+    raise ValueError("{tn} must be one of these type {typeList}".format(tn = targetName, typeList = typeListStr))
 
-def default(something:Optional[Any],defaultValue:Any):
+
+def default(something: Optional[Any], defaultValue: Any):
     if something is None:
         return defaultValue
     else:
         return something
+
+
 def makeGetter(result):
     def getter():
         return result
+
     return getter

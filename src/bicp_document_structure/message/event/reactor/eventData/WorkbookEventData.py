@@ -1,5 +1,5 @@
-from bicp_document_structure.event.P6Event import P6Event
-from bicp_document_structure.event.reactor.eventData.WithWorkbookData import WithWorkbookData
+from bicp_document_structure.message.event.P6Event import P6Event
+from bicp_document_structure.message.event.reactor.eventData.WithWorkbookData import WithWorkbookData
 from bicp_document_structure.util.ToJson import ToJson
 from bicp_document_structure.workbook.WorkBook import Workbook
 

@@ -2,11 +2,14 @@ import threading
 import unittest
 
 import zmq
+from bicp_document_structure.message.proto.P6MsgPM_pb2 import P6MessageProto
 
 from bicp_document_structure.app.GlobalScope import setIPythonGlobals
 from bicp_document_structure.app.UserFunctions import *
 # these 2 imports must be keep for the formula script to be able to run
 from bicp_document_structure.app.worksheet_functions.WorksheetFunctions import WorksheetFunctions
+from bicp_document_structure.message.proto.DocPM_pb2 import RenameWorksheetOkProto
+from bicp_document_structure.util.ProtoUtils import ProtoUtils
 from bicp_document_structure.util.for_test.TestUtils import findNewSocketPort
 from bicp_document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 
@@ -44,40 +47,51 @@ class BugTests_test(unittest.TestCase):
         print(c4.value)
         s1.toJsonStr()
 
-    def startREPServer(self, isOk, port, zContext):
+    def startREPServer(self, isOk, port, zContext,onReceive):
         repSocket = zContext.socket(zmq.REP)
         repSocket.bind(f"tcp://*:{port}")
         receive = repSocket.recv()
-        print(f"Server received: \n{receive}")
+        onReceive(receive)
         if isOk:
             repSocket.send("ok".encode())
         else:
             repSocket.send("fail".encode())
         repSocket.close()
 
-    def startREPServerOnThread(self, isOk, port, zContext) -> threading.Thread:
-        thread = threading.Thread(target = self.startREPServer, args = [isOk, port, zContext])
+    def startREPServerOnThread(self, isOk, port, zContext,onReceive) -> threading.Thread:
+        thread = threading.Thread(target = self.startREPServer, args = [isOk, port, zContext,onReceive])
         thread.start()
         return thread
 
-    def test_rename_bug(self):
+    def test_rename(self):
         app = getApp()
         port = findNewSocketPort()
         context = getApp().zContext
-        thread = self.startREPServerOnThread(True, port, context)
+        def onReceive(data):
+            msg = P6MessageProto()
+            msg.ParseFromString(data)
+            dataObj = RenameWorksheetOkProto()
+            dataObj.ParseFromString(ProtoUtils.byteProtoFromStr(msg.data))
+            self.assertEqual("Sheet1",dataObj.oldName)
+            self.assertEqual("Sheet1x",dataObj.newName)
+            self.assertEqual("Book1",dataObj.workbookKey.name)
+            self.assertEqual("null",dataObj.workbookKey.path.WhichOneof("kind"))
+            print(dataObj)
+        thread = self.startREPServerOnThread(True, port, context,onReceive)
         book = getWorkbook("Book1")
         socket = context.socket(zmq.REQ)
         socket.connect(f"tcp://localhost:{port}")
         getApp().socketProvider.updateREQSocketForUIUpdating(socket)
         book.renameWorksheet("Sheet1","Sheet1x")
-        print(book.listWorksheet())
         thread.join()
 
     def test_reaction(self):
         app = getApp()
         port = findNewSocketPort()
         context = getApp().zContext
-        thread = self.startREPServerOnThread(True, port, context)
+        def onReceive(data):
+            print(data)
+        thread = self.startREPServerOnThread(True, port, context,onReceive)
         socket = context.socket(zmq.REQ)
         socket.connect(f"tcp://localhost:{port}")
         getApp().socketProvider.updateREQSocketForUIUpdating(socket)

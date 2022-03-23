@@ -1,8 +1,8 @@
 from abc import ABC
 from typing import TypeVar, Generic
 
-from bicp_document_structure.event.P6Event import P6Event
-from bicp_document_structure.event.reactor.EventReactor import EventReactor
+from bicp_document_structure.message.event.P6Event import P6Event
+from bicp_document_structure.message.event.reactor.EventReactor import EventReactor
 from bicp_document_structure.util.CanCheckEmpty import CanCheckEmpty
 
 D = TypeVar("D")

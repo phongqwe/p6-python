@@ -1,8 +1,8 @@
 import unittest
 
-from bicp_document_structure.event.P6Event import P6Event
-from bicp_document_structure.event.reactor.EventReactor import EventReactor
-from bicp_document_structure.event.reactor.MutableEventReactorContainer import MutableEventReactorContainer
+from bicp_document_structure.message.event.P6Event import P6Event
+from bicp_document_structure.message.event.reactor.EventReactor import EventReactor
+from bicp_document_structure.message.event.reactor.MutableEventReactorContainer import MutableEventReactorContainer
 
 
 class DummyReactor(EventReactor[int]):

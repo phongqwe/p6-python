@@ -1,7 +1,7 @@
 from typing import Callable
 
-from bicp_document_structure.event.reactor.EventReactor import EventReactor
-from bicp_document_structure.event.reactor.eventData.CellEventData import CellEventData
+from bicp_document_structure.message.event.reactor.EventReactor import EventReactor
+from bicp_document_structure.message.event.reactor.eventData.CellEventData import CellEventData
 
 
 class CellReactor(EventReactor[CellEventData]):

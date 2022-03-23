@@ -3,7 +3,7 @@ from collections import OrderedDict
 from pathlib import Path
 
 from bicp_document_structure.cell.Cell import Cell
-from bicp_document_structure.event.P6Event import P6Event
+from bicp_document_structure.message.event.P6Event import P6Event
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookImp import WorkbookImp

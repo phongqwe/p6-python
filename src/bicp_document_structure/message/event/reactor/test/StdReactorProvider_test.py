@@ -3,8 +3,8 @@ import unittest
 
 import zmq
 
-from bicp_document_structure.event.reactor.StdReactorProvider import StdReactorProvider
-from bicp_document_structure.event.reactor.eventData.CellEventData import CellEventData
+from bicp_document_structure.message.event.reactor.StdReactorProvider import StdReactorProvider
+from bicp_document_structure.message.event.reactor.eventData.CellEventData import CellEventData
 from bicp_document_structure.message.SocketProviderImp import SocketProviderImp
 from bicp_document_structure.util.for_test.TestUtils import findNewSocketPort
 from bicp_document_structure.workbook.EventWorkbook import EventWorkbook
@@ -29,12 +29,6 @@ class StdReactorProvider_test(unittest.TestCase):
         thread = threading.Thread(target = self.startREPServer, args = [isOk, zContext])
         thread.start()
         return thread
-
-    # def z(self):
-    #     context = zmq.Context.instance()
-    #     socket = context.socket(zmq.REQ)
-    #     socket.connect("tcp://localhost:6000")
-    #     getApp().socketProvider.updateREQSocketForUIUpdating(socket)
 
     def test_integration_test_default_reactor_ok(self):
         # start mock server

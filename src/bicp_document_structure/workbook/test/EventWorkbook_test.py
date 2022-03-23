@@ -74,7 +74,7 @@ class EventWorkbook_test(unittest.TestCase):
     def testRename(self):
         s1, s2, s3, w1, d = self.makeTestObj()
         self.a = 0
-        def cb(wb, ws, e):
+        def cb(data):
             self.a += 1
         ewb = EventWorkbook(w1,onWorksheetEvent = cb)
         ewb.renameWorksheet(s1.name, "newName")

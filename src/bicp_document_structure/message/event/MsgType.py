@@ -14,3 +14,4 @@ class MsgType(Enum):
     RangeReRun="range_rerun"
     WorksheetReRun="worksheet_rerun"
     WorkbookReRun="workbook_rerun"
+

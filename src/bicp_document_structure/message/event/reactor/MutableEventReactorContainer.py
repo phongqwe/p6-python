@@ -1,8 +1,8 @@
 from typing import TypeVar
 
-from bicp_document_structure.event.P6Event import P6Event
-from bicp_document_structure.event.reactor.EventReactor import EventReactor
-from bicp_document_structure.event.reactor.EventReactorContainer import EventReactorContainer, D
+from bicp_document_structure.message.event.P6Event import P6Event
+from bicp_document_structure.message.event.reactor.EventReactor import EventReactor
+from bicp_document_structure.message.event.reactor.EventReactorContainer import EventReactorContainer, D
 
 D = TypeVar("D")
 

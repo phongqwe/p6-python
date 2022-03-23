@@ -7,7 +7,7 @@ from bicp_document_structure.cell.CellJson import CellJson
 from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.address.CellAddressJson import CellAddressJson
 from bicp_document_structure.cell.address.CellIndex import CellIndex
-from bicp_document_structure.event.P6Events import P6Events
+from bicp_document_structure.message.event.P6Events import P6Events
 from bicp_document_structure.message.P6Message import P6Message
 from bicp_document_structure.message.P6MessageHeader import P6MessageHeader
 from bicp_document_structure.message.proto.DocPM_pb2 import CellProto

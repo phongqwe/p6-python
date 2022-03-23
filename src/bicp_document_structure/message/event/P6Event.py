@@ -1,11 +1,11 @@
 
 class P6Event:
     """
-    Contain description of an event, serve as a tag of sort
+        P6Event needs to be this complex because in the future, there will be a needed for coded events
     """
-    def __init__(self, name:str,code:str,msgRepresentation:str=""):
+    def __init__(self, description:str, code:str, msgRepresentation:str= ""):
         self._code = code
-        self._name = name
+        self._name = description
         self._msgRepresentation = msgRepresentation
 
     @property
@@ -13,7 +13,7 @@ class P6Event:
         return self._msgRepresentation
 
     @property
-    def name(self) -> str:
+    def description(self) -> str:
         return self._name
 
     @property
@@ -21,10 +21,10 @@ class P6Event:
         return self._code
 
     def __hash__(self):
-        return hash(self.name)
+        return hash(self.code)
 
     def __eq__(self, other):
         if isinstance(other, P6Event):
-            return self.name == other.name
+            return self.code == other.code
         else:
             return False

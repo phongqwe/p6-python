@@ -1,14 +1,14 @@
 import uuid
 from typing import Callable
 
-from bicp_document_structure.event.reactor.CellReactor import CellReactor
-from bicp_document_structure.event.reactor.RangeReactor import RangeReactor
-from bicp_document_structure.event.reactor.WorkbookReactor import WorkbookReactor
-from bicp_document_structure.event.reactor.WorksheetReactor import WorksheetReactor
-from bicp_document_structure.event.reactor.eventData.CellEventData import CellEventData
-from bicp_document_structure.event.reactor.eventData.RangeEventData import RangeEventData
-from bicp_document_structure.event.reactor.eventData.WorkbookEventData import WorkbookEventData
-from bicp_document_structure.event.reactor.eventData.WorksheetEventData import WorksheetEventData
+from bicp_document_structure.message.event.reactor.CellReactor import CellReactor
+from bicp_document_structure.message.event.reactor.RangeReactor import RangeReactor
+from bicp_document_structure.message.event.reactor.WorkbookReactor import WorkbookReactor
+from bicp_document_structure.message.event.reactor.WorksheetReactor import WorksheetReactor
+from bicp_document_structure.message.event.reactor.eventData.CellEventData import CellEventData
+from bicp_document_structure.message.event.reactor.eventData.RangeEventData import RangeEventData
+from bicp_document_structure.message.event.reactor.eventData.WorkbookEventData import WorkbookEventData
+from bicp_document_structure.message.event.reactor.eventData.WorksheetEventData import WorksheetEventData
 
 
 class EventReactorFactory:

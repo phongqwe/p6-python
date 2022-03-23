@@ -1,9 +1,9 @@
 from abc import ABC
 
-from bicp_document_structure.event.reactor.CellReactor import CellReactor
-from bicp_document_structure.event.reactor.RangeReactor import RangeReactor
-from bicp_document_structure.event.reactor.WorkbookReactor import WorkbookReactor
-from bicp_document_structure.event.reactor.WorksheetReactor import WorksheetReactor
+from bicp_document_structure.message.event.reactor.CellReactor import CellReactor
+from bicp_document_structure.message.event.reactor.RangeReactor import RangeReactor
+from bicp_document_structure.message.event.reactor.WorkbookReactor import WorkbookReactor
+from bicp_document_structure.message.event.reactor.WorksheetReactor import WorksheetReactor
 
 
 class ReactorProvider(ABC):
