@@ -11,12 +11,11 @@ from google.protobuf import symbol_database as _symbol_database
 
 _sym_db = _symbol_database.Default()
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0c\x43ommon.proto\x12\x1d\x63om.github.xadkile.p6.app.msg\x1a\x1cgoogle/protobuf/struct.proto\"S\n\x0eNullableString\x12*\n\x04null\x18\x01 \x01(\x0e\x32\x1a.google.protobuf.NullValueH\x00\x12\r\n\x03str\x18\x02 \x01(\tH\x00\x42\x06\n\x04kind\"A\n\x02M1\x12;\n\x04strX\x18\x01 \x01(\x0b\x32-.com.github.xadkile.p6.app.msg.NullableStringb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0c\x43ommon.proto\x12\x1d\x63om.github.xadkile.p6.app.msg\x1a\x1cgoogle/protobuf/struct.proto\"S\n\x0eNullableString\x12*\n\x04null\x18\x01 \x01(\x0e\x32\x1a.google.protobuf.NullValueH\x00\x12\r\n\x03str\x18\x02 \x01(\tH\x00\x42\x06\n\x04kindb\x06proto3')
 
 
 
 _NULLABLESTRING = DESCRIPTOR.message_types_by_name['NullableString']
-_M1 = DESCRIPTOR.message_types_by_name['M1']
 NullableString = _reflection.GeneratedProtocolMessageType('NullableString', (_message.Message,), {
   'DESCRIPTOR' : _NULLABLESTRING,
   '__module__' : 'Common_pb2'
@@ -24,18 +23,9 @@ NullableString = _reflection.GeneratedProtocolMessageType('NullableString', (_me
   })
 _sym_db.RegisterMessage(NullableString)
 
-M1 = _reflection.GeneratedProtocolMessageType('M1', (_message.Message,), {
-  'DESCRIPTOR' : _M1,
-  '__module__' : 'Common_pb2'
-  # @@protoc_insertion_point(class_scope:com.github.xadkile.p6.app.msg.M1)
-  })
-_sym_db.RegisterMessage(M1)
-
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   _NULLABLESTRING._serialized_start=77
   _NULLABLESTRING._serialized_end=160
-  _M1._serialized_start=162
-  _M1._serialized_end=227
 # @@protoc_insertion_point(module_scope)
