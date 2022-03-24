@@ -17,4 +17,5 @@ class P6MessageHeaderTest(unittest.TestCase):
         expected = P6MessageHeaderProto()
         expected.ParseFromString(hd.toProtoBytes())
         self.assertEqual(hd.msgId,expected.msgId)
-        self.assertEqual(hd.eventType.msgRepresentation,expected.eventType)
+        self.assertEqual(hd.eventType.name, expected.eventType.name)
+        self.assertEqual(hd.eventType.code,expected.eventType.code)

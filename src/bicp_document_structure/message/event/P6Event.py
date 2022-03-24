@@ -1,19 +1,25 @@
+from bicp_document_structure.util.ToProto import ToProto, P
 
-class P6Event:
+from bicp_document_structure.message.proto.P6MsgPM_pb2 import P6EventProto
+
+
+class P6Event(ToProto[P6EventProto]):
     """
         P6Event needs to be this complex because in the future, there will be a needed for coded events
     """
-    def __init__(self, description:str, code:str, msgRepresentation:str= ""):
+
+    def toProtoObj(self) -> P6EventProto:
+        rt = P6EventProto()
+        rt.code = self.code
+        rt.name = self.name
+        return rt
+
+    def __init__(self, code:str, name:str= ""):
         self._code = code
-        self._name = description
-        self._msgRepresentation = msgRepresentation
+        self._name = name
 
     @property
-    def msgRepresentation(self):
-        return self._msgRepresentation
-
-    @property
-    def description(self) -> str:
+    def name(self):
         return self._name
 
     @property

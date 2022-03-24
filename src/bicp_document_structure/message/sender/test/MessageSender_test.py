@@ -79,7 +79,7 @@ class MessageSenderREQTest(unittest.TestCase):
         socket.close()
         thread.join()
 
-    messageObjProto = P6Message(
+    messageForProto = P6Message(
         header = P6MessageHeader("id1", P6Events.Cell.UpdateValue),
         content = DataCell(
             value = "cell value",
@@ -106,7 +106,7 @@ class MessageSenderREQTest(unittest.TestCase):
         thread.start()
         socket = context.socket(zmq.REQ)
         socket.connect(f"tcp://localhost:{port}")
-        reply = MessageSender.sendREQ_Proto(socket, MessageSenderREQTest.messageObjProto)
+        reply = MessageSender.sendREQ_Proto(socket, MessageSenderREQTest.messageForProto)
         self.assertTrue(isinstance(reply, Ok))
         socket.close()
         thread.join()

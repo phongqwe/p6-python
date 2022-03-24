@@ -14,12 +14,20 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rP6MsgPM.proto\x12$com.github.xadkile.message.api.proto\"8\n\x14P6MessageHeaderProto\x12\r\n\x05msgId\x18\x01 \x01(\t\x12\x11\n\teventType\x18\x02 \x01(\t\"j\n\x0eP6MessageProto\x12J\n\x06header\x18\x01 \x01(\x0b\x32:.com.github.xadkile.message.api.proto.P6MessageHeaderProto\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\tb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rP6MsgPM.proto\x12$com.github.xadkile.message.api.proto\"*\n\x0cP6EventProto\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\"l\n\x14P6MessageHeaderProto\x12\r\n\x05msgId\x18\x01 \x01(\t\x12\x45\n\teventType\x18\x02 \x01(\x0b\x32\x32.com.github.xadkile.message.api.proto.P6EventProto\"j\n\x0eP6MessageProto\x12J\n\x06header\x18\x01 \x01(\x0b\x32:.com.github.xadkile.message.api.proto.P6MessageHeaderProto\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\tb\x06proto3')
 
 
 
+_P6EVENTPROTO = DESCRIPTOR.message_types_by_name['P6EventProto']
 _P6MESSAGEHEADERPROTO = DESCRIPTOR.message_types_by_name['P6MessageHeaderProto']
 _P6MESSAGEPROTO = DESCRIPTOR.message_types_by_name['P6MessageProto']
+P6EventProto = _reflection.GeneratedProtocolMessageType('P6EventProto', (_message.Message,), {
+  'DESCRIPTOR' : _P6EVENTPROTO,
+  '__module__' : 'P6MsgPM_pb2'
+  # @@protoc_insertion_point(class_scope:com.github.xadkile.message.api.proto.P6EventProto)
+  })
+_sym_db.RegisterMessage(P6EventProto)
+
 P6MessageHeaderProto = _reflection.GeneratedProtocolMessageType('P6MessageHeaderProto', (_message.Message,), {
   'DESCRIPTOR' : _P6MESSAGEHEADERPROTO,
   '__module__' : 'P6MsgPM_pb2'
@@ -37,8 +45,10 @@ _sym_db.RegisterMessage(P6MessageProto)
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _P6MESSAGEHEADERPROTO._serialized_start=55
-  _P6MESSAGEHEADERPROTO._serialized_end=111
-  _P6MESSAGEPROTO._serialized_start=113
-  _P6MESSAGEPROTO._serialized_end=219
+  _P6EVENTPROTO._serialized_start=55
+  _P6EVENTPROTO._serialized_end=97
+  _P6MESSAGEHEADERPROTO._serialized_start=99
+  _P6MESSAGEHEADERPROTO._serialized_end=207
+  _P6MESSAGEPROTO._serialized_start=209
+  _P6MESSAGEPROTO._serialized_end=315
 # @@protoc_insertion_point(module_scope)

@@ -14,7 +14,7 @@ class P6MessageHeader(ToJson,ToProto[P6MessageHeaderProto]):
     def toProtoObj(self) -> P6MessageHeaderProto:
         rt = P6MessageHeaderProto()
         rt.msgId = self._msgId
-        rt.eventType = self._msgType.msgRepresentation
+        rt.eventType.CopyFrom(self._msgType.toProtoObj())
         return rt
 
     @property
@@ -28,5 +28,5 @@ class P6MessageHeader(ToJson,ToProto[P6MessageHeaderProto]):
     def toJsonDict(self) -> dict:
         return {
             "msgId":self.msgId,
-            "eventType":self.eventType.msgRepresentation
+            "eventType":self.eventType.name
         }
