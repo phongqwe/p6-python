@@ -296,11 +296,11 @@ class App(ABC):
     def _onRangeEvent(self, wb: Workbook, ws: Worksheet, r: Range, event: P6Event):
         self.eventReactorContainer.triggerReactorsFor(event, RangeEventData(wb, ws, r, event))
 
-    def _onWorksheetEvent(self, worksheetEventData: WorksheetEventData):
-        self.eventReactorContainer.triggerReactorsFor(worksheetEventData.event, worksheetEventData)
+    def _onWorksheetEvent(self, data: WorksheetEventData):
+        self.eventReactorContainer.triggerReactorsFor(data.event, data)
 
-    def _onWorkbookEvent(self, wb: Workbook, event: P6Event):
-        self.eventReactorContainer.triggerReactorsFor(event, WorkbookEventData(wb, event))
+    def _onWorkbookEvent(self, data: WorkbookEventData):
+        self.eventReactorContainer.triggerReactorsFor(data.event, data)
 
     @property
     def socketProvider(self) -> SocketProvider | None:
@@ -315,6 +315,7 @@ class App(ABC):
         raise NotImplementedError
 
     def _makeEventWb(self, workbook: Workbook | Optional[Workbook]) -> Optional[EventWorkbook]:
+        """wrap a workbook inside an EventWorkbook, give it event callbacks"""
         if workbook is not None:
             if isinstance(workbook, EventWorkbook):
                 return workbook

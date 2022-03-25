@@ -11,7 +11,7 @@ from bicp_document_structure.app.AppImp import AppImp
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.message.event.P6Events import P6Events
 from bicp_document_structure.message.event.reactor.EventReactorFactory import EventReactorFactory
-from bicp_document_structure.util.for_test.TestUtils import findNewSocketPort
+from bicp_document_structure.util.for_test.TestUtils import findNewSocketPort, startREPServerOnThread
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.key.WorkbookKeyImp import WorkbookKeyImp
 
@@ -23,22 +23,6 @@ class AppImp_test(unittest.TestCase):
         super().setUp()
         self.app = AppImp()
         self.aa = 0
-
-    def startREPServer(self, isOk, context):
-        repSocket = context.socket(zmq.REP)
-        repSocket.bind(f"tcp://*:{port}")
-        receive = repSocket.recv()
-        print(f"Server received: \n{receive}")
-        if isOk:
-            repSocket.send("ok".encode())
-        else:
-            repSocket.send("fail".encode())
-        repSocket.close()
-
-    def startREPServerOnThread(self, isOk, context) -> threading.Thread:
-        thread = threading.Thread(target = self.startREPServer, args = [isOk, context])
-        thread.start()
-        return thread
 
     def test_createNewWorkbook(self):
         app = self.app
@@ -192,7 +176,7 @@ class AppImp_test(unittest.TestCase):
         app = AppImp()
 
         app.eventReactorContainer.addReactor(
-            P6Events.Cell.UpdateValue,
+            P6Events.Cell.UpdateValueEvent,
             EventReactorFactory.makeCellReactor(self.onCellChange))
         fileName = "file.txt"
 
@@ -216,7 +200,7 @@ class AppImp_test(unittest.TestCase):
             self.ze = 123
 
         app.eventReactorContainer.addReactor(
-            P6Events.Cell.UpdateValue,
+            P6Events.Cell.UpdateValueEvent,
             EventReactorFactory.makeCellReactor(reactor))
         wb = app.createNewWorkbook("bookz1")
         wb.createNewWorksheet("sheetz1")
@@ -231,6 +215,7 @@ class AppImp_test(unittest.TestCase):
         self.assertIsNotNone(wb.getWorksheet(0))
 
     def test_event_listener_on_newly_created_workbook(self):
+        """test event triggering on an newly created workbook"""
         def cwb(app: App):
             wb = app.createNewWorkbook("book1")
             return wb
@@ -238,6 +223,7 @@ class AppImp_test(unittest.TestCase):
         self._test_event_onWb(cwb)
 
     def test_event_listener_on_already_created_wb(self):
+        """test event triggering on an already-created workbook"""
         def cwb(app: App):
             app.createNewWorkbook("book1")
             wb = app.getWorkbook("book1")
@@ -246,6 +232,7 @@ class AppImp_test(unittest.TestCase):
         self._test_event_onWb(cwb)
 
     def test_event_listener_getWorkbookByIndex(self):
+        """test event triggering on workbook returned by getWorkbookByIndex"""
         def cwb(app: App):
             app.createNewWorkbook("book1")
             wb = app.getWorkbookByIndex(0)
@@ -254,6 +241,7 @@ class AppImp_test(unittest.TestCase):
         self._test_event_onWb(cwb)
 
     def test_event_listener_getWorkbookByName(self):
+        """test event triggering on workbook returned by getWorkbookByName"""
         def cwb(app: App):
             app.createNewWorkbook("book1")
             wb = app.getWorkbookByName("book1")
@@ -262,6 +250,7 @@ class AppImp_test(unittest.TestCase):
         self._test_event_onWb(cwb)
 
     def test_event_listener_getWorkbookByKey(self):
+        """test event triggering on workbook return by getWorkbookByKey"""
         def cwb(app: App):
             app.createNewWorkbook("book1")
             wb = app.getWorkbookByKey(WorkbookKeyImp(
@@ -273,10 +262,15 @@ class AppImp_test(unittest.TestCase):
         self._test_event_onWb(cwb)
 
     def _test_event_onWb(self, wbCreator: Callable[[App], Workbook]):
+        """
+        test if the correct callback is triggered when a cell is changed
+        wbCreator is a function that create a workbook.
+        """
         app = AppImp()
         app.eventReactorContainer.addReactor(
-            P6Events.Cell.UpdateValue,
-            EventReactorFactory.makeCellReactor(self.onCellChange ))
+            P6Events.Cell.UpdateValueEvent,
+            EventReactorFactory.makeCellReactor(self.onCellChange))
+
         wb = wbCreator(app)
         sheet = wb.createNewWorksheet("sheet1")
         cell = sheet.cell(CellIndex(1, 1))

@@ -18,7 +18,7 @@ class P6MessageTest(unittest.TestCase):
             formula="=1234",
             address=CellAddressJson(1, 34)
         )
-        hd = P6MessageHeader("id1", P6Events.Cell.UpdateValue)
+        hd = P6MessageHeader("id1", P6Events.Cell.UpdateValueEvent)
         msg = P6Message(
             header=hd,
             content=contentObj
@@ -35,7 +35,7 @@ class P6MessageTest(unittest.TestCase):
             formula="=1234",
             address=CellIndex(1, 34)
         )
-        hd = P6MessageHeader("id1", P6Events.Cell.UpdateValue)
+        hd = P6MessageHeader("id1", P6Events.Cell.UpdateValueEvent)
         msg = P6Message(
             header=hd,
             content=contentObj

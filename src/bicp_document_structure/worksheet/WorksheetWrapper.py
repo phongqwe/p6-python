@@ -15,6 +15,9 @@ class WorksheetWrapper(Worksheet,ABC):
     def __init__(self, innerWorksheet: Worksheet):
         self._innerSheet: Worksheet = innerWorksheet
 
+    def rename(self, newName: str):
+        self._innerSheet.rename(newName)
+
     @property
     def translator(self) -> FormulaTranslator:
         return self._innerSheet.translator

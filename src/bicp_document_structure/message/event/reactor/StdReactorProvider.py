@@ -2,6 +2,9 @@ import uuid
 from functools import partial
 from typing import Callable
 
+from bicp_document_structure.message.P6Message import P6Message
+from bicp_document_structure.message.P6MessageHeader import P6MessageHeader
+from bicp_document_structure.message.SocketProvider import SocketProvider
 from bicp_document_structure.message.event.P6Event import P6Event
 from bicp_document_structure.message.event.P6Events import P6Events
 from bicp_document_structure.message.event.reactor.CellReactor import CellReactor
@@ -13,9 +16,6 @@ from bicp_document_structure.message.event.reactor.WorkbookReactor import Workbo
 from bicp_document_structure.message.event.reactor.WorksheetReactor import WorksheetReactor
 from bicp_document_structure.message.event.reactor.eventData.WithWorkbookData import WithWorkbookData
 from bicp_document_structure.message.event.reactor.eventData.WorkbookEventData import WorkbookEventData
-from bicp_document_structure.message.P6Message import P6Message
-from bicp_document_structure.message.P6MessageHeader import P6MessageHeader
-from bicp_document_structure.message.SocketProvider import SocketProvider
 from bicp_document_structure.message.event.reactor.eventData.WorksheetEventData import WorksheetEventData
 from bicp_document_structure.message.sender.MessageSender import MessageSender
 
@@ -37,6 +37,7 @@ class StdReactorProvider(ReactorProvider):
         self.__worksheetRenameFail: WorksheetReactor | None = None
 
         self.__workbookReRun: WorkbookReactor | None = None
+
     def stdCallback(self, event: P6Event, data: WithWorkbookData):
         """
         rerun the whole workbook, serialize the workbook to json, then send the json in a zmq message to a predesignated socket.
@@ -56,9 +57,18 @@ class StdReactorProvider(ReactorProvider):
                 if replyRs.isErr():
                     raise replyRs.err.toException()
 
+    def createNewWorksheet(self) -> WorkbookReactor:
+        def cb(wbEventData: WorkbookEventData):
+            event = P6Events.Workbook.CreateNewWorksheet.event
+            msg = StdReactorProvider.__createP6Msg(event, wbEventData.data)
+            self._send(msg)
+
+        reactor = EventReactorFactory.makeWorkbookReactor(cb)
+        return reactor
+
     def cellUpdateValue(self) -> CellReactor:
         if self.__cellUpdateValue is None:
-            event = P6Events.Cell.UpdateValue
+            event = P6Events.Cell.UpdateValueEvent
             self.__cellUpdateValue = EventReactorFactory.makeCellReactor(partial(self.stdCallback, event))
         return self.__cellUpdateValue
 
@@ -96,16 +106,17 @@ class StdReactorProvider(ReactorProvider):
 
     def worksheetRenameOk(self) -> WorksheetReactor:
         if self.__worksheetRenameOk is None:
-            def cb(data:WorksheetEventData):
-                supportData:P6Events.Worksheet.RenameOk.Data = data.supportData
+            def cb(data: WorksheetEventData):
+                eventData: P6Events.Worksheet.RenameOk.Data = data.supportData
                 msg = P6Message(
                     header = P6MessageHeader(str(uuid.uuid4()), data.event),
-                    content = supportData)
+                    content = eventData)
                 self._send(msg)
+
             self.__worksheetRenameOk = EventReactorFactory.makeWorksheetReactor(cb)
         return self.__worksheetRenameOk
 
-    def _send(self,p6Msg:P6Message):
+    def _send(self, p6Msg: P6Message):
         socketProvider = self.__socketProvider()
         if socketProvider is not None:
             socket = socketProvider.reqSocketForUIUpdating()
@@ -115,3 +126,10 @@ class StdReactorProvider(ReactorProvider):
                     msg = p6Msg)
                 if replyRs.isErr():
                     raise replyRs.err.toException()
+
+    @staticmethod
+    def __createP6Msg(event, data):
+        msg = P6Message(
+            header = P6MessageHeader(str(uuid.uuid4()), event),
+            content = data)
+        return msg

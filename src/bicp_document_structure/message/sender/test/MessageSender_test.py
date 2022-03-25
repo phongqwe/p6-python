@@ -48,7 +48,7 @@ def startREPServerProto(isOk, context, onReceive):
 
 class MessageSenderREQTest(unittest.TestCase):
     messageObj = P6Message(
-        header = P6MessageHeader("id1", P6Events.Cell.UpdateValue),
+        header = P6MessageHeader("id1", P6Events.Cell.UpdateValueEvent),
         content = CellJson(
             value = "cell value",
             script = "cell script",
@@ -80,7 +80,7 @@ class MessageSenderREQTest(unittest.TestCase):
         thread.join()
 
     messageForProto = P6Message(
-        header = P6MessageHeader("id1", P6Events.Cell.UpdateValue),
+        header = P6MessageHeader("id1", P6Events.Cell.UpdateValueEvent),
         content = DataCell(
             value = "cell value",
             script = "cell script",

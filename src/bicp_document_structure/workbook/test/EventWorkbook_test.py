@@ -1,14 +1,31 @@
 import unittest
 from collections import OrderedDict
 from pathlib import Path
+from unittest.mock import MagicMock
 
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
+from bicp_document_structure.message.event.reactor.eventData.WorkbookEventData import WorkbookEventData
 from bicp_document_structure.workbook.EventWorkbook import EventWorkbook
 from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
 from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 
 class EventWorkbook_test(unittest.TestCase):
+
+    def test_trigger_callback_when_create_new_worksheet(self):
+        s1, s2, s3, w1, d = self.makeTestObj()
+        self.x=0
+        def onWbEvent(eventData:WorkbookEventData):
+            self.x=1
+        eventWb = EventWorkbook(
+            innerWorkbook = w1,
+            onWorkbookEvent = onWbEvent
+        )
+        newWb = eventWb.createNewWorksheet("SheetX")
+        self.assertEqual(1,self.x)
+        self.assertEqual("SheetX",newWb.name)
+
+
     def test_toProtoObj(self):
         s1, s2, s3, w1, d = self.makeTestObj()
         o = w1.toProtoObj()
@@ -43,7 +60,7 @@ class EventWorkbook_test(unittest.TestCase):
         self.a=0
         def cb(wb,ws,cell,e):
             self.a+=1
-        eventWb = EventWorkbook(w,cb)
+        eventWb = EventWorkbook(w,cb,onWorkbookEvent = MagicMock())
         s1 =eventWb.createNewWorksheet("s1")
         c1 =s1.cell("@A1")
         c1.value=123

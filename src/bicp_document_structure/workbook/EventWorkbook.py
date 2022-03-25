@@ -4,7 +4,9 @@ from typing import Callable, Optional, Union
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.message.event.P6Event import P6Event
 from bicp_document_structure.message.event.P6Events import P6Events
+from bicp_document_structure.message.event.reactor.eventData.WorkbookEventData import WorkbookEventData
 from bicp_document_structure.message.event.reactor.eventData.WorksheetEventData import WorksheetEventData
+from bicp_document_structure.message.proto.DocPM_pb2 import CreateNewWorksheetProto
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Ok import Ok
@@ -20,13 +22,14 @@ class EventWorkbook(WorkbookWrapper):
                  onCellEvent: Callable[[Workbook, Worksheet, Cell, P6Event], None] = None,
                  onWorksheetEvent: Callable[[WorksheetEventData], None] = None,
                  onRangeEvent: Callable[[Workbook, Worksheet, Range, P6Event], None] = None,
-                 onWorkbookEvent: Callable[[Workbook, P6Event], None] = None,
+                 onWorkbookEvent: Callable[[WorkbookEventData], None] = None,
                  ):
         super().__init__(innerWorkbook)
         self.__onCellChange: Callable[[Workbook, Worksheet, Cell, P6Event], None] = onCellEvent
         self.__onWorksheetEvent: Callable[[WorksheetEventData], None] = onWorksheetEvent
         self.__onRangeEvent: Callable[[Workbook, Worksheet, Range, P6Event], None] = onRangeEvent
-        self.__onWorkbookEvent: Callable[[Workbook, P6Event], None] = onWorkbookEvent
+        self.__onWorkbookEvent: Callable[[WorkbookEventData], None] = onWorkbookEvent
+        self._iwb = self._innerWorkbook
 
     @property
     def worksheets(self) -> list[Worksheet]:
@@ -65,18 +68,33 @@ class EventWorkbook(WorkbookWrapper):
         else:
             return s
 
-    def createNewWorksheetRs(self, newSheetName: Optional[str] = None) -> Result[Worksheet, ErrorReport]:
-        """wrap the result worksheet in event worksheet, so that it can propagate event"""
-        s = self._innerWorkbook.createNewWorksheetRs(newSheetName)
-        if s.isOk():
-            return Ok(self.__wrapInEventWorksheet(s.value))
+    def createNewWorksheet(self, newSheetName: Optional[str]) -> Worksheet:
+        rs = self.createNewWorksheetRs(newSheetName)
+        if rs.isOk():
+            return rs.value
         else:
-            return s
+            raise rs.err.toException()
+
+    def createNewWorksheetRs(self, newSheetName: Optional[str] = None) -> Result[Worksheet, ErrorReport]:
+        rs = self._iwb.createNewWorksheetRs(newSheetName)
+        if rs.isOk():
+            newWorksheet = rs.value
+            data = P6Events.Workbook.CreateNewWorksheet.Data(self.workbookKey, newWorksheet.name)
+            wbEventData = WorkbookEventData(
+                workbook = self,
+                event = P6Events.Workbook.CreateNewWorksheet.event,
+                data = data)
+            if self.__onWorkbookEvent is not None:
+                self.__onWorkbookEvent(wbEventData)
+            # wrap the result worksheet in event worksheet, so that it can propagate event
+            return Ok(self.__wrapInEventWorksheet(newWorksheet))
+        else:
+            return rs
 
     def reRun(self):
         self._innerWorkbook.reRun()
         if self.__onWorkbookEvent is not None:
-            self.__onWorkbookEvent(self._innerWorkbook, P6Events.Workbook.ReRun)
+            self.__onWorkbookEvent(WorkbookEventData(self._iwb,P6Events.Workbook.ReRun))
 
     def __wrapInEventWorksheet(self, sheet: Worksheet) -> Worksheet:
         onCellEvent = self.__partialWithNoneCheck(self.__onCellChange)

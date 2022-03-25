@@ -7,6 +7,8 @@ from bicp_document_structure.message.event.reactor.WorksheetReactor import Works
 
 
 class ReactorProvider(ABC):
+    def createNewWorksheet(self)->WorkbookReactor:
+        raise NotImplementedError()
 
     def cellUpdateValue(self) -> CellReactor:
         raise NotImplementedError()
