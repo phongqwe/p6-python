@@ -7,6 +7,7 @@ Important note: the content of global scope is decided by the init script run by
     + WorksheetFunctions.py
 """
 
+
 def getGlobals():
     """this is the __main__ globals() """
     if "_ipython_global_" in getP6Globals():
@@ -14,9 +15,11 @@ def getGlobals():
     else:
         return None
 
+
 def getP6Globals():
     """this is the global of p6, bound to GlobalScope module"""
     return globals()
+
 
 def setIPythonGlobals(ipythonGlobal):
     """store a reference to __main__ globals() inside p6 global"""

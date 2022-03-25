@@ -6,17 +6,17 @@ from bicp_document_structure.app.App import App
 from bicp_document_structure.app.errors.AppErrors import AppErrors
 from bicp_document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
 from bicp_document_structure.app.workbook_container.WorkbookContainerImp import WorkbookContainerImp
-from bicp_document_structure.message.event.P6Events import P6Events
-from bicp_document_structure.message.event.reactor.EventReactorContainer import EventReactorContainer
-from bicp_document_structure.message.event.reactor.EventReactorContainers import EventReactorContainers
-from bicp_document_structure.message.event.reactor.StdReactorProvider import StdReactorProvider
-from bicp_document_structure.message.event.reactor.eventData.CellEventData import CellEventData
 from bicp_document_structure.file.loader.P6FileLoader import P6FileLoader
 from bicp_document_structure.file.loader.P6FileLoaders import P6FileLoaders
 from bicp_document_structure.file.saver.P6FileSaver import P6FileSaver
 from bicp_document_structure.file.saver.P6FileSavers import P6FileSavers
 from bicp_document_structure.message.SocketProvider import SocketProvider
 from bicp_document_structure.message.SocketProviderImp import SocketProviderImp
+from bicp_document_structure.message.event.P6Events import P6Events
+from bicp_document_structure.message.event.reactor.EventReactorContainer import EventReactorContainer
+from bicp_document_structure.message.event.reactor.EventReactorContainers import EventReactorContainers
+from bicp_document_structure.message.event.reactor.StdReactorProvider import StdReactorProvider
+from bicp_document_structure.message.event.reactor.eventData.CellEventData import CellEventData
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Err import Err
 from bicp_document_structure.util.result.Ok import Ok
@@ -152,7 +152,7 @@ class AppImp(App):
             return None
 
     def createDefaultNewWorkbookRs(self, name: str | None = None) -> Result[Workbook, ErrorReport]:
-        newWbRs:Result[Workbook, ErrorReport] = self.createNewWorkbookRs(name)
+        newWbRs: Result[Workbook, ErrorReport] = self.createNewWorkbookRs(name)
         if newWbRs.isOk():
             wb = newWbRs.value
             wb.createNewWorksheetRs()

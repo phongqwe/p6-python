@@ -4,18 +4,11 @@ from typing import Optional, Union, Any
 
 from bicp_document_structure.app.errors.AppErrors import AppErrors
 from bicp_document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
-from bicp_document_structure.cell.Cell import Cell
-from bicp_document_structure.message.event.P6Event import P6Event
-from bicp_document_structure.message.event.reactor.EventReactorContainer import EventReactorContainer
-from bicp_document_structure.message.event.reactor.eventData.CellEventData import CellEventData
-from bicp_document_structure.message.event.reactor.eventData import RangeEventData
-from bicp_document_structure.message.event.reactor.eventData.WorkbookEventData import WorkbookEventData
-from bicp_document_structure.message.event.reactor.eventData.WorksheetEventData import WorksheetEventData
 from bicp_document_structure.file.loader.P6FileLoader import P6FileLoader
 from bicp_document_structure.file.loader.P6FileLoaderErrors import P6FileLoaderErrors
 from bicp_document_structure.file.saver.P6FileSaver import P6FileSaver
 from bicp_document_structure.message.SocketProvider import SocketProvider
-from bicp_document_structure.range.Range import Range
+from bicp_document_structure.message.event.reactor.EventReactorContainer import EventReactorContainer
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.report.error.ErrorReports import ErrorReports
 from bicp_document_structure.util.result.Err import Err
@@ -282,10 +275,7 @@ class App(ABC):
     def listWorkbook(self):
         rt = ""
         for (i, book) in enumerate(self.wbContainer.books()):
-            rt += "{num}. {wbName}\n".format(
-                num = str(i),
-                wbName = book.name
-            )
+            rt += f"{str(i)}. {book.name}\n"
         if not rt:
             rt = "No workbook"
         print(rt)
@@ -308,6 +298,8 @@ class App(ABC):
             if isinstance(workbook, EventWorkbook):
                 return workbook
             else:
-                return EventWorkbook.create(innerWorkbook = workbook,reactorContainer = self.eventReactorContainer)
+                return EventWorkbook.create(
+                    innerWorkbook = workbook,
+                    reactorContainer = self.eventReactorContainer)
         else:
             return None
