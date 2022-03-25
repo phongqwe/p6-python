@@ -4,9 +4,11 @@ from typing import Callable, Optional, Union
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.message.event.P6Event import P6Event
 from bicp_document_structure.message.event.P6Events import P6Events
+from bicp_document_structure.message.event.reactor.EventReactorContainer import EventReactorContainer
+from bicp_document_structure.message.event.reactor.eventData.CellEventData import CellEventData
+from bicp_document_structure.message.event.reactor.eventData.RangeEventData import RangeEventData
 from bicp_document_structure.message.event.reactor.eventData.WorkbookEventData import WorkbookEventData
 from bicp_document_structure.message.event.reactor.eventData.WorksheetEventData import WorksheetEventData
-from bicp_document_structure.message.proto.DocPM_pb2 import CreateNewWorksheetProto
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Ok import Ok
@@ -18,6 +20,10 @@ from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 
 class EventWorkbook(WorkbookWrapper):
+    """
+    The reason EventReactorContainer is not injected here directly because they can
+    """
+
     def __init__(self, innerWorkbook: Workbook,
                  onCellEvent: Callable[[Workbook, Worksheet, Cell, P6Event], None] = None,
                  onWorksheetEvent: Callable[[WorksheetEventData], None] = None,
@@ -30,6 +36,28 @@ class EventWorkbook(WorkbookWrapper):
         self.__onRangeEvent: Callable[[Workbook, Worksheet, Range, P6Event], None] = onRangeEvent
         self.__onWorkbookEvent: Callable[[WorkbookEventData], None] = onWorkbookEvent
         self._iwb = self._innerWorkbook
+
+    @staticmethod
+    def create(innerWorkbook: Workbook, reactorContainer: EventReactorContainer) -> 'EventWorkbook':
+        def onCell(wb, ws, c, e):
+            reactorContainer.triggerReactorsFor(e, CellEventData(wb, ws, c, e))
+
+        def onWorkbook(data: WorkbookEventData):
+            reactorContainer.triggerReactorsFor(data.event, data)
+
+        def onWorksheet(data: WorksheetEventData):
+            reactorContainer.triggerReactorsFor(data.event, data)
+
+        def onRange(wb, ws, r, e):
+            reactorContainer.triggerReactorsFor(e, RangeEventData(wb, ws, r, e))
+
+        return EventWorkbook(
+            innerWorkbook = innerWorkbook,
+            onCellEvent = onCell,
+            onWorksheetEvent = onWorksheet,
+            onRangeEvent = onRange,
+            onWorkbookEvent = onWorkbook,
+        )
 
     @property
     def worksheets(self) -> list[Worksheet]:
@@ -94,7 +122,7 @@ class EventWorkbook(WorkbookWrapper):
     def reRun(self):
         self._innerWorkbook.reRun()
         if self.__onWorkbookEvent is not None:
-            self.__onWorkbookEvent(WorkbookEventData(self._iwb,P6Events.Workbook.ReRun))
+            self.__onWorkbookEvent(WorkbookEventData(self._iwb, P6Events.Workbook.ReRun))
 
     def __wrapInEventWorksheet(self, sheet: Worksheet) -> Worksheet:
         onCellEvent = self.__partialWithNoneCheck(self.__onCellChange)

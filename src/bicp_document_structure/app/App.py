@@ -290,18 +290,6 @@ class App(ABC):
             rt = "No workbook"
         print(rt)
 
-    def _onCellEvent(self, wb: Workbook, ws: Worksheet, c: Cell, e: P6Event):
-        self.eventReactorContainer.triggerReactorsFor(e, CellEventData(wb, ws, c, e))
-
-    def _onRangeEvent(self, wb: Workbook, ws: Worksheet, r: Range, event: P6Event):
-        self.eventReactorContainer.triggerReactorsFor(event, RangeEventData(wb, ws, r, event))
-
-    def _onWorksheetEvent(self, data: WorksheetEventData):
-        self.eventReactorContainer.triggerReactorsFor(data.event, data)
-
-    def _onWorkbookEvent(self, data: WorkbookEventData):
-        self.eventReactorContainer.triggerReactorsFor(data.event, data)
-
     @property
     def socketProvider(self) -> SocketProvider | None:
         raise NotImplementedError
@@ -320,12 +308,6 @@ class App(ABC):
             if isinstance(workbook, EventWorkbook):
                 return workbook
             else:
-                return EventWorkbook(
-                    innerWorkbook = workbook,
-                    onCellEvent = self._onCellEvent,
-                    onRangeEvent = self._onRangeEvent,
-                    onWorksheetEvent = self._onWorksheetEvent,
-                    onWorkbookEvent = self._onWorkbookEvent,
-                )
+                return EventWorkbook.create(innerWorkbook = workbook,reactorContainer = self.eventReactorContainer)
         else:
             return None
