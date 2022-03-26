@@ -62,7 +62,6 @@ class StdReactorProvider(ReactorProvider):
             event = P6Events.Workbook.CreateNewWorksheet.event
             msg = StdReactorProvider.__createP6Msg(event, wbEventData.data)
             self._send(msg)
-
         reactor = EventReactorFactory.makeWorkbookReactor(cb)
         return reactor
 
