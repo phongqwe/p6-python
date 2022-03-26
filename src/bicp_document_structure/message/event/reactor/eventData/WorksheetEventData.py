@@ -9,11 +9,12 @@ from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 class WorksheetEventData(ToJson, WithWorkbookData):
 
-    def __init__(self, workbook: Workbook, worksheet: Worksheet, event: P6Event, supportData: Any = None):
+    def __init__(self, workbook: Workbook, worksheet: Worksheet, event: P6Event, supportData: Any = None, isError:bool=False):
         self._workbook = workbook
         self.worksheet = worksheet
         self.event = event
         self.supportData: Any = supportData
+        self.isError = isError
 
     @property
     def workbook(self):

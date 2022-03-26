@@ -3,19 +3,41 @@ from collections import OrderedDict
 from pathlib import Path
 from unittest.mock import MagicMock
 
+from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from bicp_document_structure.message.event.reactor.eventData.WorkbookEventData import WorkbookEventData
+from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
+from bicp_document_structure.util.result.Err import Err
 from bicp_document_structure.workbook.EventWorkbook import EventWorkbook
+from bicp_document_structure.workbook.WorkbookErrors import WorkbookErrors
 from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
 from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 
 class EventWorkbook_test(unittest.TestCase):
 
+    def test_trigger_callback_when_create_new_worksheet_fail(self):
+        self.x = 0
+        def onWbEvent(eventData: WorkbookEventData):
+            self.assertTrue(eventData.isError)
+            self.assertEqual("SheetX",eventData.data.wsName)
+            self.x = 1
+        mockFunction = MagicMock()
+        mockFunction.return_value = Err(ErrorReport(WorkbookErrors.WorksheetAlreadyExist.header,WorkbookErrors.WorksheetAlreadyExist.Data("nameX")))
+        mockWb = MagicMock()
+        mockWb.createNewWorksheetRs = mockFunction
+        eventWb = EventWorkbook(
+            innerWorkbook = mockWb,
+            onWorkbookEvent = onWbEvent)
+        with self.assertRaises(Exception):
+            eventWb.createNewWorksheet("SheetX")
+            self.assertEqual(1, self.x)
+
     def test_trigger_callback_when_create_new_worksheet(self):
         s1, s2, s3, w1, d = self.makeTestObj()
         self.x=0
         def onWbEvent(eventData:WorkbookEventData):
+            self.assertFalse(eventData.isError)
             self.x=1
         eventWb = EventWorkbook(
             innerWorkbook = w1,

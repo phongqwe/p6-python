@@ -1,6 +1,6 @@
 import uuid
 from functools import partial
-from typing import Callable
+from typing import Callable, Any
 
 from bicp_document_structure.message.P6Message import P6Message
 from bicp_document_structure.message.P6MessageHeader import P6MessageHeader
@@ -52,7 +52,7 @@ class StdReactorProvider(ReactorProvider):
                 replyRs = MessageSender.sendREQ_Proto(
                     socket = socket,
                     msg = P6Message(
-                        header = P6MessageHeader(str(uuid.uuid4()), event),
+                        header = P6MessageHeader(str(uuid.uuid4()), event,False),
                         content = wb))
                 if replyRs.isErr():
                     raise replyRs.err.toException()
@@ -60,8 +60,9 @@ class StdReactorProvider(ReactorProvider):
     def createNewWorksheet(self) -> WorkbookReactor:
         def cb(wbEventData: WorkbookEventData):
             event = P6Events.Workbook.CreateNewWorksheet.event
-            msg = StdReactorProvider.__createP6Msg(event, wbEventData.data)
+            msg = StdReactorProvider.__createP6Msg(event, wbEventData.data,wbEventData.isError)
             self._send(msg)
+
         reactor = EventReactorFactory.makeWorkbookReactor(cb)
         return reactor
 
@@ -108,7 +109,7 @@ class StdReactorProvider(ReactorProvider):
             def cb(data: WorksheetEventData):
                 eventData: P6Events.Worksheet.RenameOk.Data = data.supportData
                 msg = P6Message(
-                    header = P6MessageHeader(str(uuid.uuid4()), data.event),
+                    header = P6MessageHeader(str(uuid.uuid4()), data.event,data.isError),
                     content = eventData)
                 self._send(msg)
 
@@ -127,8 +128,12 @@ class StdReactorProvider(ReactorProvider):
                     raise replyRs.err.toException()
 
     @staticmethod
-    def __createP6Msg(event, data):
+    def __createP6Msg(event, data:Any, isError:bool):
         msg = P6Message(
-            header = P6MessageHeader(str(uuid.uuid4()), event),
+            header = P6MessageHeader(
+                msgId = str(uuid.uuid4()),
+                eventType = event,
+                isError = isError
+            ),
             content = data)
         return msg

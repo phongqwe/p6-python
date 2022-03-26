@@ -1,4 +1,5 @@
-from bicp_document_structure.message.event.data.CreateNewWorksheetData import CreateNewWorksheetData
+from bicp_document_structure.message.event.data.CreateNewWorksheetData import CreateNewWorksheetData, \
+    CreateNewWorksheetFailData
 from bicp_document_structure.message.event.data.RenameWorksheetOkData import RenameWorksheetOkData
 
 from bicp_document_structure.message.event.P6Event import P6Event
@@ -36,4 +37,3 @@ class P6Events:
         class CreateNewWorksheet:
             event = P6Event(f"{WBE}3","create new worksheet")
             Data = CreateNewWorksheetData
-

@@ -10,10 +10,14 @@ from bicp_document_structure.workbook.WorkBook import Workbook
 
 class WorkbookEventData(ToJson,WithWorkbookData):
 
-    def __init__(self, workbook: Workbook,event:P6Event, data:Any = None):
+    def __init__(self, workbook: Workbook,event:P6Event, isError:bool=False,data:Any = None):
         self._workbook = workbook
         self.event = event
         self.data = data
+        self._isError = isError
+    @property
+    def isError(self)->bool:
+        return self._isError
 
     @property
     def workbook(self):

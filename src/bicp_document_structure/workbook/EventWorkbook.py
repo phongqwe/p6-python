@@ -105,16 +105,21 @@ class EventWorkbook(WorkbookWrapper):
 
     def createNewWorksheetRs(self, newSheetName: Optional[str] = None) -> Result[Worksheet, ErrorReport]:
         rs = self._iwb.createNewWorksheetRs(newSheetName)
+
+        name = str(newSheetName)
         if rs.isOk():
-            newWorksheet = rs.value
-            data = P6Events.Workbook.CreateNewWorksheet.Data(self.workbookKey, newWorksheet.name)
+            name = rs.value.name
+
+        if self.__onWorkbookEvent is not None:
             wbEventData = WorkbookEventData(
                 workbook = self,
+                isError = rs.isErr(),
                 event = P6Events.Workbook.CreateNewWorksheet.event,
-                data = data)
-            if self.__onWorkbookEvent is not None:
-                self.__onWorkbookEvent(wbEventData)
-            # wrap the result worksheet in event worksheet, so that it can propagate event
+                data = P6Events.Workbook.CreateNewWorksheet.Data(self.workbookKey, name))
+            self.__onWorkbookEvent(wbEventData)
+
+        if rs.isOk():
+            newWorksheet = rs.value
             return Ok(self.__wrapInEventWorksheet(newWorksheet))
         else:
             return rs

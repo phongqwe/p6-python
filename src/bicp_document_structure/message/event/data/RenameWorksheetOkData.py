@@ -4,11 +4,12 @@ from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
 
 
 class RenameWorksheetOkData(ToProto[RenameWorksheetOkProto]):
-    def __init__(self, workbookKey: WorkbookKey, oldName, newName, index):
+    def __init__(self, workbookKey: WorkbookKey, oldName:str, newName:str, index:int, isError:bool = False):
         self.workbookKey = workbookKey
         self.oldName = oldName
         self.index = index
         self.newName = newName
+        self.isError = isError
 
     def toProtoObj(self) -> RenameWorksheetOkProto:
         rt = RenameWorksheetOkProto()
