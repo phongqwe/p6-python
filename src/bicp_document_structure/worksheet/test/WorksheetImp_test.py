@@ -15,12 +15,12 @@ class WorksheetImp_test(unittest.TestCase):
 
     def test_toProtoObj(self):
         s = WorksheetImp(translatorGetter = MagicMock(), name = "oldName")
-        s.cell("@A1").value=123
-        s.cell("@B3").value=333
+        s.cell("@A1").value = 123
+        s.cell("@B3").value = 333
         o = s.toProtoObj()
-        self.assertEqual("oldName",o.name)
-        self.assertEqual(s.cell("@A1").toProtoObj(),o.cell[0])
-        self.assertEqual(s.cell("@B3").toProtoObj(),o.cell[1])
+        self.assertEqual("oldName", o.name)
+        self.assertEqual(s.cell("@A1").toProtoObj(), o.cell[0])
+        self.assertEqual(s.cell("@B3").toProtoObj(), o.cell[1])
         print(s.toProtoStr())
 
     @staticmethod
@@ -28,9 +28,9 @@ class WorksheetImp_test(unittest.TestCase):
         return FormulaTranslators.mock()
 
     def testRename(self):
-        s = WorksheetImp(translatorGetter = self.transGetter,name="oldName")
+        s = WorksheetImp(translatorGetter = self.transGetter, name = "oldName")
         s.rename("newName")
-        self.assertEqual("newName",s.name)
+        self.assertEqual("newName", s.name)
 
     def test_cell(self):
         s = WorksheetImp(translatorGetter = self.transGetter)
@@ -71,13 +71,13 @@ class WorksheetImp_test(unittest.TestCase):
     def test_hasCellAt(self):
         s = WorksheetImp(translatorGetter = self.transGetter)
         self.assertFalse(s.hasCellAt(CellIndex(1, 1)))
-        s.addCell(DataCell(CellIndex(1, 1), translatorGetter = self.transGetterForCell,value=123, script = "script"))
+        s.addCell(DataCell(CellIndex(1, 1), translatorGetter = self.transGetterForCell, value = 123, script = "script"))
         self.assertTrue(s.hasCellAt(CellIndex(1, 1)))
 
     def test_getCell(self):
         s = WorksheetImp(translatorGetter = self.transGetter)
         cellAddr = CellIndex(12, 12)
-        cell = DataCell(cellAddr,self.transGetterForCell)
+        cell = DataCell(cellAddr, self.transGetterForCell)
         s.addCell(cell)
         self.assertEqual(cell, s.getOrMakeCell(cellAddr))
 

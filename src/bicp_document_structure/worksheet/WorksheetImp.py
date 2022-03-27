@@ -13,6 +13,9 @@ from bicp_document_structure.range.address.RangeAddress import RangeAddress
 from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
 from bicp_document_structure.util.AddressParser import AddressParser
 from bicp_document_structure.util.Util import typeCheck
+from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
+from bicp_document_structure.util.result.Ok import Ok
+from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 from bicp_document_structure.worksheet.WorksheetConst import WorksheetConst
 from bicp_document_structure.worksheet.WorksheetJson import WorksheetJson
@@ -22,7 +25,6 @@ class WorksheetImp(Worksheet):
     def __init__(self,
                  translatorGetter: Callable[[str], FormulaTranslator],
                  name = "",
-
                  ):
         # key = col index
         self._colDict: dict[int, list[Cell]] = {}
@@ -44,15 +46,6 @@ class WorksheetImp(Worksheet):
 
     ### >> Worksheet << ###
 
-    # def toProtoObj(self) -> WorksheetProto:
-    #     rt = WorksheetProto()
-    #     rt.name = self.name
-    #     cells = []
-    #     for cell in self.cells:
-    #         cells.append(cell.toProtoObj())
-    #     rt.cell.extend(cells)
-    #     return rt
-
     @property
     def translator(self) -> FormulaTranslator | None:
         return self.translatorGetter(self.name)
@@ -61,8 +54,12 @@ class WorksheetImp(Worksheet):
     def name(self) -> str:
         return self.__name
 
-    def rename(self, newName: str):
+    def internalRename(self, newName: str):
         self.__name = newName
+
+    def renameRs(self, newName: str):
+        self.internalRename(newName)
+        return Ok(None)
 
     def toJson(self) -> WorksheetJson:
         cellJsons = []

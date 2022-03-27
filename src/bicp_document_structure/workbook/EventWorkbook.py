@@ -16,6 +16,7 @@ from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookWrapper import WorkbookWrapper
 from bicp_document_structure.worksheet.EventWorksheet import EventWorksheet
+from bicp_document_structure.worksheet.OverrideRenameWorksheet import OverrideRenameWorksheet
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 
@@ -140,7 +141,8 @@ class EventWorkbook(WorkbookWrapper):
         onCellEvent = self.__partialWithNoneCheck(self.__onCellChange)
         onSheetEvent = self.__partialWithNoneCheck(self.__onWorksheetEvent)
         onRangeEvent = self.__partialWithNoneCheck(self.__onRangeEvent)
-        return EventWorksheet(sheet,
+        # update rename function
+        return EventWorksheet(OverrideRenameWorksheet(sheet, renameFunction = self.renameWorksheetRs),
                               onCellEvent = onCellEvent,
                               onWorksheetEvent = onSheetEvent,
                               onRangeEvent = onRangeEvent)

@@ -37,7 +37,6 @@ class WorkbookErrors:
                     self.name = nameOrIndex
                 if isinstance(nameOrIndex, int):
                     self.index = nameOrIndex
-
             def __str__(self):
                 return json.dumps(self.__dict__)
 

@@ -1,12 +1,10 @@
 import unittest
-from collections import OrderedDict
 from pathlib import Path
 from unittest.mock import MagicMock
 
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from bicp_document_structure.message.event.P6Events import P6Events
 from bicp_document_structure.message.event.reactor.eventData.WorkbookEventData import WorkbookEventData
-from bicp_document_structure.message.event.reactor.eventData.WorksheetEventData import WorksheetEventData
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Err import Err
 from bicp_document_structure.workbook.EventWorkbook import EventWorkbook
@@ -16,12 +14,50 @@ from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 
 class EventWorkbook_test(unittest.TestCase):
+    def test_rename_onWorksheet(self):
+        self.x = 0
+        newName = "newName"
+        oldName = "oldName"
+        self.eventData: WorkbookEventData[P6Events.Workbook.Rename.Data] | None = None
+
+        def onWbEvent(eventData: WorkbookEventData[P6Events.Workbook.Rename.Data]):
+            self.x = 1
+            self.eventData = eventData
+
+        wb = WorkbookImp(name = "wb1")
+        wb.createNewWorksheetRs(oldName)
+        eventWb = EventWorkbook(wb, onWorkbookEvent = onWbEvent)
+        sheet = eventWb.getWorksheet(oldName)
+        sheet.renameRs(newName)
+        print(sheet.name)
+        self.assertEqual(1, self.x)
+
+
+    def test_renameWorksheet_callback_ok(self):
+        self.x = 0
+        newName = "newName"
+        oldName = "oldName"
+        self.eventData: WorkbookEventData[P6Events.Workbook.Rename.Data] | None = None
+
+        def onWbEvent(eventData: WorkbookEventData[P6Events.Workbook.Rename.Data]):
+            self.x = 1
+            self.eventData = eventData
+
+        mockWb = WorkbookImp(name = "wb1")
+        mockWb.createNewWorksheetRs(oldName)
+        sheet = mockWb.getWorksheet(oldName)
+        eventWb = EventWorkbook(mockWb, onWorkbookEvent = onWbEvent)
+        rs = eventWb.renameWorksheetRs(oldName, newName)
+        self.assertTrue(rs.isOk())
+        self.assertEqual(newName, sheet.name)
+
 
     def test_renameWorksheet_callback_fail(self):
         self.x = 0
         newName = "newName"
         oldName = "oldName"
         self.eventData: WorkbookEventData[P6Events.Workbook.Rename.Data] | None = None
+
         def onWbEvent(eventData: WorkbookEventData[P6Events.Workbook.Rename.Data]):
             self.x = 1
             self.eventData = eventData
@@ -107,12 +143,8 @@ class EventWorkbook_test(unittest.TestCase):
         s1 = WorksheetImp(name = "s1", translatorGetter = self.transGetter)
         s2 = WorksheetImp(name = "s2", translatorGetter = self.transGetter)
         s3 = WorksheetImp(name = "s3", translatorGetter = self.transGetter)
-        d = OrderedDict({
-            s1.name: s1,
-            s2.name: s2,
-            s3.name: s3
-        })
-        w1 = WorkbookImp("w1", sheetDict = d)
+        d = [s1, s2, s3]
+        w1 = WorkbookImp("w1", sheetList = d)
         return s1, s2, s3, w1, d
 
     def test_constructor(self):
@@ -150,11 +182,13 @@ class EventWorkbook_test(unittest.TestCase):
         c4.value = "mmm"
         self.assertEqual(6, self.a)
 
-    def testRename(self):
+    def test_Rename(self):
         s1, s2, s3, w1, d = self.makeTestObj()
         self.a = 0
+
         def cb(data):
             self.a += 1
+
         ewb = EventWorkbook(w1, onWorkbookEvent = cb)
         ewb.renameWorksheet(s1.name, "newName")
         self.assertEqual(1, self.a)

@@ -6,6 +6,8 @@ from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.address.RangeAddress import RangeAddress
+from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
+from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 from bicp_document_structure.worksheet.WorksheetJson import WorksheetJson
 
@@ -15,15 +17,16 @@ class WorksheetWrapper(Worksheet,ABC):
     def __init__(self, innerWorksheet: Worksheet):
         self._innerSheet: Worksheet = innerWorksheet
 
-    def rename(self, newName: str):
-        self._innerSheet.rename(newName)
-
     @property
     def translator(self) -> FormulaTranslator:
         return self._innerSheet.translator
     @property
     def name(self) -> str:
         return self._innerSheet.name
+
+    @property
+    def size(self) -> int:
+        return self._innerSheet.size
 
     def toJson(self) -> WorksheetJson:
         return self._innerSheet.toJson()
@@ -78,3 +81,10 @@ class WorksheetWrapper(Worksheet,ABC):
     @property
     def innerSheet(self):
         return self._innerSheet
+
+    def internalRename(self, newName: str):
+        self._innerSheet.internalRename(newName)
+
+    def renameRs(self, newName: str) -> Result[None, ErrorReport]:
+        return self._innerSheet.renameRs(newName)
+

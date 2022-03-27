@@ -8,6 +8,8 @@ from bicp_document_structure.message.proto.DocProto_pb2 import WorksheetProto
 from bicp_document_structure.util.ToJson import ToJson
 from bicp_document_structure.util.ToProto import ToProto
 from bicp_document_structure.util.report.ReportJsonStrMaker import ReportJsonStrMaker
+from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
+from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.worksheet.UserFriendlyWorksheet import UserFriendlyWorksheet
 from bicp_document_structure.worksheet.WorksheetJson import WorksheetJson
 
@@ -45,4 +47,12 @@ class Worksheet(UserFriendlyCellContainer,
             "name":self.name
         })
     def rename(self,newName:str):
+        rs = self.renameRs(newName)
+        if rs.isErr():
+            raise rs.err.toException()
+
+    def internalRename(self, newName:str):
+        raise NotImplementedError
+
+    def renameRs(self,newName:str)->Result[None,ErrorReport]:
         raise NotImplementedError()
