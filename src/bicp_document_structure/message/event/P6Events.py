@@ -1,5 +1,4 @@
-from bicp_document_structure.message.event.data.CreateNewWorksheetData import CreateNewWorksheetData, \
-    CreateNewWorksheetFailData
+from bicp_document_structure.message.event.data.CreateNewWorksheetData import CreateNewWorksheetData
 from bicp_document_structure.message.event.data.RenameWorksheetOkData import RenameWorksheetOkData
 
 from bicp_document_structure.message.event.P6Event import P6Event
@@ -25,7 +24,6 @@ class P6Events:
             event = P6Event(f"{WSE}1","worksheet_rename_ok")
             Data = RenameWorksheetOkData
 
-        RenameFail = P6Event(f"{WSE}2","worksheet_rename_fail")
 
     class Range:
         ReRun = P6Event(f"{RE}0",MsgType.RangeReRun.value)

@@ -1,5 +1,5 @@
 from bicp_document_structure.cell.address.CellAddress import CellAddress
-from bicp_document_structure.message.proto.DocPM_pb2 import CellAddressProto
+from bicp_document_structure.message.proto.DocProto_pb2 import CellAddressProto
 from bicp_document_structure.util.AlphabetBaseNumberSystem import AlphabetBaseNumberSystem
 
 

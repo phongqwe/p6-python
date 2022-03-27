@@ -15,11 +15,12 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0c\x43ommon.proto\x12\x1d\x63om.github.xadkile.p6.app.msg\x1a\x1cgoogle/protobuf/struct.proto\"S\n\x0eNullableString\x12*\n\x04null\x18\x01 \x01(\x0e\x32\x1a.google.protobuf.NullValueH\x00\x12\r\n\x03str\x18\x02 \x01(\tH\x00\x42\x06\n\x04kindb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0c\x43ommon.proto\x12\x1d\x63om.github.xadkile.p6.app.msg\x1a\x1cgoogle/protobuf/struct.proto\"S\n\x0eNullableString\x12*\n\x04null\x18\x01 \x01(\x0e\x32\x1a.google.protobuf.NullValueH\x00\x12\r\n\x03str\x18\x02 \x01(\tH\x00\x42\x06\n\x04kind\";\n\x10\x45rrorReportProto\x12\x11\n\terrorCode\x18\x01 \x01(\t\x12\x14\n\x0c\x65rrorMessage\x18\x02 \x01(\tb\x06proto3')
 
 
 
 _NULLABLESTRING = DESCRIPTOR.message_types_by_name['NullableString']
+_ERRORREPORTPROTO = DESCRIPTOR.message_types_by_name['ErrorReportProto']
 NullableString = _reflection.GeneratedProtocolMessageType('NullableString', (_message.Message,), {
   'DESCRIPTOR' : _NULLABLESTRING,
   '__module__' : 'Common_pb2'
@@ -27,9 +28,18 @@ NullableString = _reflection.GeneratedProtocolMessageType('NullableString', (_me
   })
 _sym_db.RegisterMessage(NullableString)
 
+ErrorReportProto = _reflection.GeneratedProtocolMessageType('ErrorReportProto', (_message.Message,), {
+  'DESCRIPTOR' : _ERRORREPORTPROTO,
+  '__module__' : 'Common_pb2'
+  # @@protoc_insertion_point(class_scope:com.github.xadkile.p6.app.msg.ErrorReportProto)
+  })
+_sym_db.RegisterMessage(ErrorReportProto)
+
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   _NULLABLESTRING._serialized_start=77
   _NULLABLESTRING._serialized_end=160
+  _ERRORREPORTPROTO._serialized_start=162
+  _ERRORREPORTPROTO._serialized_end=221
 # @@protoc_insertion_point(module_scope)

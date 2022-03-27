@@ -13,23 +13,21 @@ _sym_db = _symbol_database.Default()
 
 
 from . import Common_pb2 as Common__pb2
-from . import DocPM_pb2 as DocPM__pb2
-z = Common__pb2
-z2 = DocPM__pb2
-
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x13WorkbookProto.proto\x12\x1d\x63om.github.xadkile.p6.app.msg\x1a\x0c\x43ommon.proto\x1a\x0b\x44ocPM.proto\"\x8f\x01\n\x16RenameWorksheetOkProto\x12\x44\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32/.com.github.xadkile.p6.app.msg.WorkbookKeyProto\x12\x0f\n\x07oldName\x18\x02 \x01(\t\x12\r\n\x05index\x18\x03 \x01(\x05\x12\x0f\n\x07newName\x18\x04 \x01(\t\"y\n\x17\x43reateNewWorksheetProto\x12\x44\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32/.com.github.xadkile.p6.app.msg.WorkbookKeyProto\x12\x18\n\x10newWorksheetName\x18\x02 \x01(\t\"}\n\x1b\x43reateNewWorksheetFailProto\x12\x44\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32/.com.github.xadkile.p6.app.msg.WorkbookKeyProto\x12\x18\n\x10newWorksheetName\x18\x02 \x01(\tb\x06proto3')
+from . import DocProto_pb2 as DocProto__pb2
 
 
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x13WorkbookProto.proto\x12\x1d\x63om.github.xadkile.p6.app.msg\x1a\x0c\x43ommon.proto\x1a\x0e\x44ocProto.proto\"\x8d\x01\n\x14RenameWorksheetProto\x12\x44\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32/.com.github.xadkile.p6.app.msg.WorkbookKeyProto\x12\x0f\n\x07oldName\x18\x02 \x01(\t\x12\r\n\x05index\x18\x03 \x01(\x05\x12\x0f\n\x07newName\x18\x04 \x01(\t\"\xd0\x01\n\x17\x43reateNewWorksheetProto\x12\x44\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32/.com.github.xadkile.p6.app.msg.WorkbookKeyProto\x12\x18\n\x10newWorksheetName\x18\x02 \x01(\t\x12\x0f\n\x07isError\x18\x03 \x01(\x08\x12\x44\n\x0b\x65rrorReport\x18\x04 \x01(\x0b\x32/.com.github.xadkile.p6.app.msg.ErrorReportProtob\x06proto3')
 
-_RENAMEWORKSHEETOKPROTO = DESCRIPTOR.message_types_by_name['RenameWorksheetOkProto']
+
+
+_RENAMEWORKSHEETPROTO = DESCRIPTOR.message_types_by_name['RenameWorksheetProto']
 _CREATENEWWORKSHEETPROTO = DESCRIPTOR.message_types_by_name['CreateNewWorksheetProto']
-_CREATENEWWORKSHEETFAILPROTO = DESCRIPTOR.message_types_by_name['CreateNewWorksheetFailProto']
-RenameWorksheetOkProto = _reflection.GeneratedProtocolMessageType('RenameWorksheetOkProto', (_message.Message,), {
-  'DESCRIPTOR' : _RENAMEWORKSHEETOKPROTO,
+RenameWorksheetProto = _reflection.GeneratedProtocolMessageType('RenameWorksheetProto', (_message.Message,), {
+  'DESCRIPTOR' : _RENAMEWORKSHEETPROTO,
   '__module__' : 'WorkbookProto_pb2'
-  # @@protoc_insertion_point(class_scope:com.github.xadkile.p6.app.msg.RenameWorksheetOkProto)
+  # @@protoc_insertion_point(class_scope:com.github.xadkile.p6.app.msg.RenameWorksheetProto)
   })
-_sym_db.RegisterMessage(RenameWorksheetOkProto)
+_sym_db.RegisterMessage(RenameWorksheetProto)
 
 CreateNewWorksheetProto = _reflection.GeneratedProtocolMessageType('CreateNewWorksheetProto', (_message.Message,), {
   'DESCRIPTOR' : _CREATENEWWORKSHEETPROTO,
@@ -38,20 +36,11 @@ CreateNewWorksheetProto = _reflection.GeneratedProtocolMessageType('CreateNewWor
   })
 _sym_db.RegisterMessage(CreateNewWorksheetProto)
 
-CreateNewWorksheetFailProto = _reflection.GeneratedProtocolMessageType('CreateNewWorksheetFailProto', (_message.Message,), {
-  'DESCRIPTOR' : _CREATENEWWORKSHEETFAILPROTO,
-  '__module__' : 'WorkbookProto_pb2'
-  # @@protoc_insertion_point(class_scope:com.github.xadkile.p6.app.msg.CreateNewWorksheetFailProto)
-  })
-_sym_db.RegisterMessage(CreateNewWorksheetFailProto)
-
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _RENAMEWORKSHEETOKPROTO._serialized_start=82
-  _RENAMEWORKSHEETOKPROTO._serialized_end=225
-  _CREATENEWWORKSHEETPROTO._serialized_start=227
-  _CREATENEWWORKSHEETPROTO._serialized_end=348
-  _CREATENEWWORKSHEETFAILPROTO._serialized_start=350
-  _CREATENEWWORKSHEETFAILPROTO._serialized_end=475
+  _RENAMEWORKSHEETPROTO._serialized_start=85
+  _RENAMEWORKSHEETPROTO._serialized_end=226
+  _CREATENEWWORKSHEETPROTO._serialized_start=229
+  _CREATENEWWORKSHEETPROTO._serialized_end=437
 # @@protoc_insertion_point(module_scope)

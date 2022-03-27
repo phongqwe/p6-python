@@ -13,10 +13,6 @@ class P6Message(ToJson,ToProto[P6MessageProto]):
         self._header: P6MessageHeader = header
 
     @property
-    def isError(self):
-        return self._header.isError
-
-    @property
     def content(self):
         return self._content
 

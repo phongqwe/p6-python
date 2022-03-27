@@ -1,7 +1,7 @@
 from abc import ABC
 
 from bicp_document_structure.cell.address.CellAddressJson import CellAddressJson
-from bicp_document_structure.message.proto.DocPM_pb2 import CellAddressProto
+from bicp_document_structure.message.proto.DocProto_pb2 import CellAddressProto
 from bicp_document_structure.util.ToProto import ToProto
 
 

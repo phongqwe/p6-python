@@ -10,7 +10,7 @@ from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.message.event.P6Events import P6Events
 from bicp_document_structure.message.P6Message import P6Message
 from bicp_document_structure.message.P6MessageHeader import P6MessageHeader
-from bicp_document_structure.message.proto.DocPM_pb2 import CellProto
+from bicp_document_structure.message.proto.DocProto_pb2 import CellProto
 from bicp_document_structure.message.proto.P6MsgPM_pb2 import P6MessageProto
 from bicp_document_structure.message.sender.MessageSender import MessageSender
 from bicp_document_structure.util.for_test.TestUtils import findNewSocketPort
@@ -48,7 +48,7 @@ def startREPServerProto(isOk, context, onReceive):
 
 class MessageSenderREQTest(unittest.TestCase):
     messageObj = P6Message(
-        header = P6MessageHeader("id1", P6Events.Cell.UpdateValueEvent,False),
+        header = P6MessageHeader("id1", P6Events.Cell.UpdateValueEvent),
         content = CellJson(
             value = "cell value",
             script = "cell script",
@@ -80,7 +80,7 @@ class MessageSenderREQTest(unittest.TestCase):
         thread.join()
 
     messageForProto = P6Message(
-        header = P6MessageHeader("id1", P6Events.Cell.UpdateValueEvent,False),
+        header = P6MessageHeader("id1", P6Events.Cell.UpdateValueEvent),
         content = DataCell(
             value = "cell value",
             script = "cell script",

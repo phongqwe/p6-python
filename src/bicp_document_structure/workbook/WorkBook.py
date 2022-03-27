@@ -7,7 +7,7 @@ from google.protobuf.struct_pb2 import NullValue
 
 from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from bicp_document_structure.message.proto.Common_pb2 import NullableString
-from bicp_document_structure.message.proto.DocPM_pb2 import WorkbookProto
+from bicp_document_structure.message.proto.DocProto_pb2 import WorkbookProto
 from bicp_document_structure.util.CanCheckEmpty import CanCheckEmpty
 from bicp_document_structure.util.ToJson import ToJson
 from bicp_document_structure.util.ToProto import ToProto

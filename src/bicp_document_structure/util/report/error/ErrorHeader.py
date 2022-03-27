@@ -14,3 +14,9 @@ class ErrorHeader(ToJson):
 ErrorCode: {errorCode},
 Description: {errorDescription}
 """.format(errorCode=self.errorCode,errorDescription=self.errorDescription)
+
+    def __eq__(self, other):
+        if isinstance(other,ErrorHeader):
+            return self.errorCode == other.errorCode
+        else:
+            return False

@@ -52,17 +52,15 @@ class StdReactorProvider(ReactorProvider):
                 replyRs = MessageSender.sendREQ_Proto(
                     socket = socket,
                     msg = P6Message(
-                        header = P6MessageHeader(str(uuid.uuid4()), event,False),
+                        header = P6MessageHeader(str(uuid.uuid4()), event),
                         content = wb))
                 if replyRs.isErr():
                     raise replyRs.err.toException()
 
     def createNewWorksheet(self) -> WorkbookReactor:
         def cb(wbEventData: WorkbookEventData):
-            event = P6Events.Workbook.CreateNewWorksheet.event
-            msg = StdReactorProvider.__createP6Msg(event, wbEventData.data,wbEventData.isError)
+            msg = StdReactorProvider.__createP6Msg(wbEventData.event, wbEventData.data)
             self._send(msg)
-
         reactor = EventReactorFactory.makeWorkbookReactor(cb)
         return reactor
 
@@ -107,12 +105,11 @@ class StdReactorProvider(ReactorProvider):
     def worksheetRenameOk(self) -> WorksheetReactor:
         if self.__worksheetRenameOk is None:
             def cb(data: WorksheetEventData):
-                eventData: P6Events.Worksheet.RenameOk.Data = data.supportData
+                eventData: P6Events.Worksheet.RenameOk.Data = data.data
                 msg = P6Message(
-                    header = P6MessageHeader(str(uuid.uuid4()), data.event,data.isError),
+                    header = P6MessageHeader(str(uuid.uuid4()), data.event),
                     content = eventData)
                 self._send(msg)
-
             self.__worksheetRenameOk = EventReactorFactory.makeWorksheetReactor(cb)
         return self.__worksheetRenameOk
 
@@ -128,12 +125,11 @@ class StdReactorProvider(ReactorProvider):
                     raise replyRs.err.toException()
 
     @staticmethod
-    def __createP6Msg(event, data:Any, isError:bool):
+    def __createP6Msg(event, data:Any):
         msg = P6Message(
             header = P6MessageHeader(
                 msgId = str(uuid.uuid4()),
                 eventType = event,
-                isError = isError
             ),
             content = data)
         return msg

@@ -1,17 +1,17 @@
 import json
 from typing import Union, Optional
 
+from bicp_document_structure.util.ToRepStr import ToRepStr
 from bicp_document_structure.util.report.error.ErrorHeader import ErrorHeader
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 
-errPrefix = "workbookError_"
+WBErr = "WBErr"
 
 
 class WorkbookErrors:
     class WorksheetAlreadyExist:
-        header = ErrorHeader(errPrefix + "1", "worksheet already exist")
-
-        class Data:
+        header = ErrorHeader(f"{WBErr}1", "worksheet already exist")
+        class Data(ToRepStr):
             def __init__(self, nameOrIndex: Union[str, int]):
                 self.name = None
                 self.index = None
@@ -20,10 +20,14 @@ class WorkbookErrors:
                 if isinstance(nameOrIndex, int):
                     self.index = nameOrIndex
 
-            def __str__(self):
-                return json.dumps(self.__dict__)
+            def repStr(self)->str:
+                if self.name is not None:
+                    return f"Can't create worksheet \"{self.name}\". It already exists"
+                else:
+                    return "Can't create new worksheet"
+
     class WorksheetNotExist:
-        header = ErrorHeader(errPrefix + "2", "worksheet not exist")
+        header = ErrorHeader(f"{WBErr}2", "worksheet not exist")
 
         class Data:
             def __init__(self, nameOrIndex: Union[str, int]):
