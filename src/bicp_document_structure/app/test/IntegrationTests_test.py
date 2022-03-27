@@ -29,6 +29,28 @@ class IntegrationTest_test(unittest.TestCase):
         getActiveWorkbook().createNewWorksheet("Sheet1")
         self.wb = getWorkbook("Book1")
 
+    def test_scenario_x(self):
+        port = findNewSocketPort()
+        zContext = getApp().zContext
+
+        def onReceive(rawMsg):
+            msg = P6MessageProto()
+            msg.ParseFromString(rawMsg)
+            print(msg)
+
+        thread = startREPServerOnThread(True, port, zContext, onReceive)
+        socket = self.createSocket(zContext, port)
+        getApp().socketProvider.updateREQSocketForUIUpdating(socket)
+        s1 = self.wb.getWorksheet("Sheet1")
+        s1.cell((1,1)).value = 1
+        s1.cell((1,2)).value = 2
+        s1.cell((1,3)).formula= "=SUM(A1:A2)"
+        s1.cell((1,4)).value= "b"
+
+        sendClose(socket)
+        thread.join()
+
+
     def test_create_new_workbook(self):
         port = findNewSocketPort()
         zContext = getApp().zContext

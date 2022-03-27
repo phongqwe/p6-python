@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rP6MsgPM.proto\x12$com.github.xadkile.message.api.proto\"*\n\x0cP6EventProto\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\"l\n\x14P6MessageHeaderProto\x12\r\n\x05msgId\x18\x01 \x01(\t\x12\x45\n\teventType\x18\x02 \x01(\x0b\x32\x32.com.github.xadkile.message.api.proto.P6EventProto\"j\n\x0eP6MessageProto\x12J\n\x06header\x18\x01 \x01(\x0b\x32:.com.github.xadkile.message.api.proto.P6MessageHeaderProto\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\tb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rP6MsgPM.proto\x12$com.github.xadkile.message.api.proto\"*\n\x0cP6EventProto\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\"l\n\x14P6MessageHeaderProto\x12\r\n\x05msgId\x18\x01 \x01(\t\x12\x45\n\teventType\x18\x02 \x01(\x0b\x32\x32.com.github.xadkile.message.api.proto.P6EventProto\"j\n\x0eP6MessageProto\x12J\n\x06header\x18\x01 \x01(\x0b\x32:.com.github.xadkile.message.api.proto.P6MessageHeaderProto\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\x62\x06proto3')
 
 
 

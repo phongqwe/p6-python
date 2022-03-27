@@ -59,6 +59,6 @@ class P6Message(ToJson,ToProto[P6MessageProto]):
         rt.header.CopyFrom(self.header.toProtoObj())
         content = self.content
         if isinstance(self.content, ToProto):
-            content = self.content.toProtoStr()
+            content = self.content.toProtoBytes()
         rt.data = content
         return rt

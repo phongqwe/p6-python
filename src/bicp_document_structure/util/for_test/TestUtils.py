@@ -17,7 +17,7 @@ def startREPServer(isOk, port, zContext, onReceive):
 
     while True:
         receive = repSocket.recv()
-        if str(receive, "utf-8") == "close":
+        if receive == b"close":
             break
         onReceive(receive)
         if isOk:
