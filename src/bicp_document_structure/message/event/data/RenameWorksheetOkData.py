@@ -5,7 +5,7 @@ from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
 
 
-class RenameWorksheetOkData(ToProto[RenameWorksheetProto]):
+class RenameWorksheetData(ToProto[RenameWorksheetProto]):
     def __init__(self, workbookKey: WorkbookKey, oldName:str, newName:str, index:int, isError:bool = False, errorReport:ErrorReport|None = None):
         self.workbookKey = workbookKey
         self.oldName = oldName

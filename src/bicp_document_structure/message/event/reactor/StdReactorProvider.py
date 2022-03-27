@@ -102,12 +102,12 @@ class StdReactorProvider(ReactorProvider):
                 partial(self.stdCallback, event))
         return self.__worksheetReRun
 
-    def worksheetRename(self) -> WorksheetReactor:
+    def worksheetRename(self) -> WorkbookReactor:
         if self.__worksheetRenameReactor is None:
-            def cb(eventData: WorksheetEventData):
+            def cb(eventData: WorkbookEventData):
                 msg = self.__createP6Msg(eventData.event, eventData.data)
                 self._send(msg)
-            self.__worksheetRenameReactor = EventReactorFactory.makeWorksheetReactor(cb)
+            self.__worksheetRenameReactor = EventReactorFactory.makeWorkbookReactor(cb)
         return self.__worksheetRenameReactor
 
     def _send(self, p6Msg: P6Message):

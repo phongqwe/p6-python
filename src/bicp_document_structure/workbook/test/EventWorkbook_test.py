@@ -21,8 +21,8 @@ class EventWorkbook_test(unittest.TestCase):
         self.x = 0
         newName = "newName"
         oldName = "oldName"
-        self.eventData: WorksheetEventData[P6Events.Worksheet.Rename.Data] | None = None
-        def onWSEvent(eventData: WorksheetEventData[P6Events.Worksheet.Rename.Data]):
+        self.eventData: WorkbookEventData[P6Events.Workbook.Rename.Data] | None = None
+        def onWbEvent(eventData: WorkbookEventData[P6Events.Workbook.Rename.Data]):
             self.x = 1
             self.eventData = eventData
 
@@ -34,7 +34,7 @@ class EventWorkbook_test(unittest.TestCase):
         mockWb = MagicMock()
         mockWb.renameWorksheetRs = mockRenameFunction
 
-        eventWb = EventWorkbook(mockWb, onWorksheetEvent = onWSEvent)
+        eventWb = EventWorkbook(mockWb, onWorkbookEvent = onWbEvent)
         eventWb.renameWorksheetRs(oldName, newName)
         self.assertTrue(self.eventData.isError)
         self.assertEqual(newName, self.eventData.data.newName)
@@ -153,10 +153,8 @@ class EventWorkbook_test(unittest.TestCase):
     def testRename(self):
         s1, s2, s3, w1, d = self.makeTestObj()
         self.a = 0
-
         def cb(data):
             self.a += 1
-
-        ewb = EventWorkbook(w1, onWorksheetEvent = cb)
+        ewb = EventWorkbook(w1, onWorkbookEvent = cb)
         ewb.renameWorksheet(s1.name, "newName")
         self.assertEqual(1, self.a)

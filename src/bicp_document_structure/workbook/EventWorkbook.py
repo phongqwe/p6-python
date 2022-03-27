@@ -163,22 +163,20 @@ class EventWorkbook(WorkbookWrapper):
         if rs.isOk():
             oldName = oldSheetNameOrIndex
             index = self.getIndexOfWorksheet(newSheetName)
-            eventData: WorksheetEventData[P6Events.Worksheet.Rename.Data] = WorksheetEventData(
+            eventData: WorkbookEventData[P6Events.Workbook.Rename.Data] = WorkbookEventData(
                 workbook = self,
-                worksheet = self.getWorksheet(newSheetName),
-                event = P6Events.Worksheet.Rename.event,
+                event = P6Events.Workbook.Rename.event,
                 isError = False,
-                data = P6Events.Worksheet.Rename.Data(self.workbookKey, oldName, newSheetName, index,False,None)
+                data = P6Events.Workbook.Rename.Data(self.workbookKey, oldName, newSheetName, index,False,None)
             )
-            self.__onWorksheetEvent(eventData)
+            self.__onWorkbookEvent(eventData)
             return Ok(None)
         else:
-            eventData: WorksheetEventData = WorksheetEventData(
+            eventData: WorkbookEventData = WorkbookEventData(
                 workbook = self,
-                worksheet = self.getWorksheet(oldSheetNameOrIndex),
-                event = P6Events.Worksheet.Rename.event,
+                event = P6Events.Workbook.Rename.event,
                 isError = True,
-                data = P6Events.Worksheet.Rename.Data(
+                data = P6Events.Workbook.Rename.Data(
                     workbookKey = self.workbookKey,
                     oldName = oldSheetNameOrIndex,
                     newName = newSheetName,
@@ -186,5 +184,5 @@ class EventWorkbook(WorkbookWrapper):
                     isError = True,
                     errorReport = rs.err)
             )
-            self.__onWorksheetEvent(eventData)
+            self.__onWorkbookEvent(eventData)
             return rs

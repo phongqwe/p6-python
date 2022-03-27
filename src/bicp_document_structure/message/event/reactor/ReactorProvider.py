@@ -28,7 +28,7 @@ class ReactorProvider(ABC):
     def worksheetReRun(self) -> WorksheetReactor:
         raise NotImplementedError()
 
-    def worksheetRename(self) -> WorksheetReactor:
+    def worksheetRename(self) -> WorkbookReactor:
         raise NotImplementedError()
 
     def workbookReRun(self) -> WorkbookReactor:
