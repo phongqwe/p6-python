@@ -9,6 +9,8 @@ class Bench(unittest.TestCase):
 
         return x+y
     def test_z(self):
-        z = CreateNewWorksheetProto()
+        z = r"C\":\Users\Administrator\bin"
+        z = r"abcde"[1:-1]
+        print(z)
 
 

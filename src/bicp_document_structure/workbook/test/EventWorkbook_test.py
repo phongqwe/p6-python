@@ -18,9 +18,9 @@ class EventWorkbook_test(unittest.TestCase):
         self.x = 0
         newName = "newName"
         oldName = "oldName"
-        self.eventData: WorkbookEventData[P6Events.Workbook.Rename.Data] | None = None
+        self.eventData: WorkbookEventData[P6Events.Worksheet.Rename.Data] | None = None
 
-        def onWbEvent(eventData: WorkbookEventData[P6Events.Workbook.Rename.Data]):
+        def onWbEvent(eventData: WorkbookEventData[P6Events.Worksheet.Rename.Data]):
             self.x = 1
             self.eventData = eventData
 
@@ -37,9 +37,9 @@ class EventWorkbook_test(unittest.TestCase):
         self.x = 0
         newName = "newName"
         oldName = "oldName"
-        self.eventData: WorkbookEventData[P6Events.Workbook.Rename.Data] | None = None
+        self.eventData: WorkbookEventData[P6Events.Worksheet.Rename.Data] | None = None
 
-        def onWbEvent(eventData: WorkbookEventData[P6Events.Workbook.Rename.Data]):
+        def onWbEvent(eventData: WorkbookEventData[P6Events.Worksheet.Rename.Data]):
             self.x = 1
             self.eventData = eventData
 
@@ -56,9 +56,9 @@ class EventWorkbook_test(unittest.TestCase):
         self.x = 0
         newName = "newName"
         oldName = "oldName"
-        self.eventData: WorkbookEventData[P6Events.Workbook.Rename.Data] | None = None
+        self.eventData: WorkbookEventData[P6Events.Worksheet.Rename.Data] | None = None
 
-        def onWbEvent(eventData: WorkbookEventData[P6Events.Workbook.Rename.Data]):
+        def onWbEvent(eventData: WorkbookEventData[P6Events.Worksheet.Rename.Data]):
             self.x = 1
             self.eventData = eventData
 
