@@ -17,17 +17,14 @@ from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 class EventWorkbook_test(unittest.TestCase):
 
-    def test_event_when_rename_fail(self):
+    def test_renameWorksheet_callback_fail(self):
         self.x = 0
         newName = "newName"
         oldName = "oldName"
-
-        def onWSEvent(eventData: WorksheetEventData[P6Events.Worksheet.RenameOk.Data]):
-            # TODO fix this, these assertion won't trigger exception if they fail
+        self.eventData: WorksheetEventData[P6Events.Worksheet.Rename.Data] | None = None
+        def onWSEvent(eventData: WorksheetEventData[P6Events.Worksheet.Rename.Data]):
             self.x = 1
-            self.assertTrue(eventData.isError)
-            self.assertEqual(newName, eventData.data.newName)
-            self.assertEqual(oldName, eventData.data.oldName)
+            self.eventData = eventData
 
         mockRenameFunction = MagicMock()
         mockRenameFunction.return_value = Err(ErrorReport(
@@ -39,15 +36,22 @@ class EventWorkbook_test(unittest.TestCase):
 
         eventWb = EventWorkbook(mockWb, onWorksheetEvent = onWSEvent)
         eventWb.renameWorksheetRs(oldName, newName)
+        self.assertTrue(self.eventData.isError)
+        self.assertEqual(newName, self.eventData.data.newName)
+        self.assertEqual(oldName, self.eventData.data.oldName)
+        self.assertIsNotNone(self.eventData.data.errorReport)
+        print(self.eventData.data.errorReport.toProtoObj())
 
-    def test_trigger_callback_when_create_new_worksheet_fail(self):
+    def test_createNewWorksheet_callback_fail(self):
         self.x = 0
-        self.errorReport: ErrorReport = None
-        self.eventData: WorkbookEventData = None
+        self.errorReport: ErrorReport | None = None
+        self.eventData: WorkbookEventData | None = None
+
         def onWbEvent(eventData: WorkbookEventData):
             self.eventData = eventData.data
             self.errorReport = eventData.data.errorReport
             self.x = 1
+
         mockFunction = MagicMock()
         mockFunction.return_value = Err(
             ErrorReport(
@@ -65,12 +69,12 @@ class EventWorkbook_test(unittest.TestCase):
         self.assertTrue(self.eventData.isError)
         print(self.errorReport.toProtoObj())
 
-    def test_trigger_callback_when_create_new_worksheet(self):
+    def test_createNewWorksheet_callback_ok(self):
         s1, s2, s3, w1, d = self.makeTestObj()
         self.x = 0
 
         def onWbEvent(eventData: WorkbookEventData):
-            self.assertFalse(eventData.isError)
+            self.eventData = eventData
             self.x = 1
 
         eventWb = EventWorkbook(
@@ -80,6 +84,7 @@ class EventWorkbook_test(unittest.TestCase):
         newWb = eventWb.createNewWorksheet("SheetX")
         self.assertEqual(1, self.x)
         self.assertEqual("SheetX", newWb.name)
+        self.assertFalse(self.eventData.isError)
 
     def test_toProtoObj(self):
         s1, s2, s3, w1, d = self.makeTestObj()

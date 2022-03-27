@@ -13,7 +13,6 @@ _sym_db = _symbol_database.Default()
 
 
 from . import Common_pb2 as Common__pb2
-z = Common__pb2
 
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0e\x44ocProto.proto\x12\x1d\x63om.github.xadkile.p6.app.msg\x1a\x0c\x43ommon.proto\",\n\x10\x43\x65llAddressProto\x12\x0b\n\x03\x63ol\x18\x01 \x01(\x05\x12\x0b\n\x03row\x18\x02 \x01(\x05\"}\n\tCellProto\x12\r\n\x05value\x18\x01 \x01(\t\x12\x0f\n\x07\x66ormula\x18\x02 \x01(\t\x12\x0e\n\x06script\x18\x03 \x01(\t\x12@\n\x07\x61\x64\x64ress\x18\x04 \x01(\x0b\x32/.com.github.xadkile.p6.app.msg.CellAddressProto\"V\n\x0eWorksheetProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x36\n\x04\x63\x65ll\x18\x02 \x03(\x0b\x32(.com.github.xadkile.p6.app.msg.CellProto\"\x9c\x01\n\rWorkbookProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12;\n\x04path\x18\x02 \x01(\x0b\x32-.com.github.xadkile.p6.app.msg.NullableString\x12@\n\tworksheet\x18\x03 \x03(\x0b\x32-.com.github.xadkile.p6.app.msg.WorksheetProto\"]\n\x10WorkbookKeyProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12;\n\x04path\x18\x02 \x01(\x0b\x32-.com.github.xadkile.p6.app.msg.NullableStringb\x06proto3')

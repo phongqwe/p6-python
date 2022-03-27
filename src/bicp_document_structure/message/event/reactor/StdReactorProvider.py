@@ -33,7 +33,7 @@ class StdReactorProvider(ReactorProvider):
         self.__rangeReRun: RangeReactor | None = None
 
         self.__worksheetReRun: WorksheetReactor | None = None
-        self.__worksheetRenameOk: WorksheetReactor | None = None
+        self.__worksheetRenameReactor: WorksheetReactor | None = None
         self.__worksheetRenameFail: WorksheetReactor | None = None
 
         self.__workbookReRun: WorkbookReactor | None = None
@@ -102,16 +102,13 @@ class StdReactorProvider(ReactorProvider):
                 partial(self.stdCallback, event))
         return self.__worksheetReRun
 
-    def worksheetRenameOk(self) -> WorksheetReactor:
-        if self.__worksheetRenameOk is None:
-            def cb(data: WorksheetEventData):
-                eventData: P6Events.Worksheet.RenameOk.Data = data.data
-                msg = P6Message(
-                    header = P6MessageHeader(str(uuid.uuid4()), data.event),
-                    content = eventData)
+    def worksheetRename(self) -> WorksheetReactor:
+        if self.__worksheetRenameReactor is None:
+            def cb(eventData: WorksheetEventData):
+                msg = self.__createP6Msg(eventData.event, eventData.data)
                 self._send(msg)
-            self.__worksheetRenameOk = EventReactorFactory.makeWorksheetReactor(cb)
-        return self.__worksheetRenameOk
+            self.__worksheetRenameReactor = EventReactorFactory.makeWorksheetReactor(cb)
+        return self.__worksheetRenameReactor
 
     def _send(self, p6Msg: P6Message):
         socketProvider = self.__socketProvider()

@@ -20,7 +20,7 @@ class P6Events:
 
     class Worksheet:
         ReRun = P6Event(f"{WSE}0", MsgType.WorksheetReRun.value)
-        class RenameOk:
+        class Rename:
             event = P6Event(f"{WSE}1","worksheet_rename_ok")
             Data = RenameWorksheetOkData
 

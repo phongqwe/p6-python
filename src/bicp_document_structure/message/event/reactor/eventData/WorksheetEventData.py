@@ -19,6 +19,7 @@ class WorksheetEventData(ToJson, WithWorkbookData,Generic[D]):
         self.worksheet = worksheet
         self.event = event
         self.data: D = data
+        # TODO remove isError, duplication
         self.isError = isError
 
     @property

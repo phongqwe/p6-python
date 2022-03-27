@@ -121,17 +121,26 @@ class WorkbookImp(Workbook):
                 WorkbookErrors.WorksheetNotExist.Data(oldSheetNameOrIndex)
             ))
         else:
-            oldName = targetSheet.name
-            targetSheet.rename(newSheetName)
-            # update sheet dict
-            self._byNameSheetDict.pop(oldName)
-            self._byNameSheetDict[newSheetName] = targetSheet
-            # update translator map
-            oldTranslatorDictKey = (oldName, self.workbookKey)
-            # delete old cached translator. New translator will be lazily created when it is queried.
-            if oldTranslatorDictKey in self._translatorDict.keys():
-                self._translatorDict.pop(oldTranslatorDictKey)
-            return Ok(None)
+            if targetSheet.name == newSheetName:
+                return Ok(None)
+            newNameNotMapToExistingSheet = self.getWorksheet(newSheetName) is None
+            if newNameNotMapToExistingSheet:
+                oldName = targetSheet.name
+                targetSheet.rename(newSheetName)
+                # update sheet dict
+                self._byNameSheetDict.pop(oldName)
+                self._byNameSheetDict[newSheetName] = targetSheet
+                # update translator map
+                oldTranslatorDictKey = (oldName, self.workbookKey)
+                # delete old cached translator. New translator will be lazily created when it is queried.
+                if oldTranslatorDictKey in self._translatorDict.keys():
+                    self._translatorDict.pop(oldTranslatorDictKey)
+                return Ok(None)
+            else:
+                return Err(ErrorReport(
+                    WorkbookErrors.WorksheetAlreadyExist.header,
+                    WorkbookErrors.WorksheetNotExist.Data(newSheetName)
+                ))
 
     def getWorksheet(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
         if isinstance(nameOrIndex, str):

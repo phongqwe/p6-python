@@ -16,7 +16,7 @@ from . import Common_pb2 as Common__pb2
 from . import DocProto_pb2 as DocProto__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x13WorkbookProto.proto\x12\x1d\x63om.github.xadkile.p6.app.msg\x1a\x0c\x43ommon.proto\x1a\x0e\x44ocProto.proto\"\x8d\x01\n\x14RenameWorksheetProto\x12\x44\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32/.com.github.xadkile.p6.app.msg.WorkbookKeyProto\x12\x0f\n\x07oldName\x18\x02 \x01(\t\x12\r\n\x05index\x18\x03 \x01(\x05\x12\x0f\n\x07newName\x18\x04 \x01(\t\"\xd0\x01\n\x17\x43reateNewWorksheetProto\x12\x44\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32/.com.github.xadkile.p6.app.msg.WorkbookKeyProto\x12\x18\n\x10newWorksheetName\x18\x02 \x01(\t\x12\x0f\n\x07isError\x18\x03 \x01(\x08\x12\x44\n\x0b\x65rrorReport\x18\x04 \x01(\x0b\x32/.com.github.xadkile.p6.app.msg.ErrorReportProtob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x13WorkbookProto.proto\x12\x1d\x63om.github.xadkile.p6.app.msg\x1a\x0c\x43ommon.proto\x1a\x0e\x44ocProto.proto\"\xe4\x01\n\x14RenameWorksheetProto\x12\x44\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32/.com.github.xadkile.p6.app.msg.WorkbookKeyProto\x12\x0f\n\x07oldName\x18\x02 \x01(\t\x12\r\n\x05index\x18\x03 \x01(\x05\x12\x0f\n\x07newName\x18\x04 \x01(\t\x12\x0f\n\x07isError\x18\x05 \x01(\x08\x12\x44\n\x0b\x65rrorReport\x18\x06 \x01(\x0b\x32/.com.github.xadkile.p6.app.msg.ErrorReportProto\"\xd0\x01\n\x17\x43reateNewWorksheetProto\x12\x44\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32/.com.github.xadkile.p6.app.msg.WorkbookKeyProto\x12\x18\n\x10newWorksheetName\x18\x02 \x01(\t\x12\x0f\n\x07isError\x18\x03 \x01(\x08\x12\x44\n\x0b\x65rrorReport\x18\x04 \x01(\x0b\x32/.com.github.xadkile.p6.app.msg.ErrorReportProtob\x06proto3')
 
 
 
@@ -40,7 +40,7 @@ if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   _RENAMEWORKSHEETPROTO._serialized_start=85
-  _RENAMEWORKSHEETPROTO._serialized_end=226
-  _CREATENEWWORKSHEETPROTO._serialized_start=229
-  _CREATENEWWORKSHEETPROTO._serialized_end=437
+  _RENAMEWORKSHEETPROTO._serialized_end=313
+  _CREATENEWWORKSHEETPROTO._serialized_start=316
+  _CREATENEWWORKSHEETPROTO._serialized_end=524
 # @@protoc_insertion_point(module_scope)
