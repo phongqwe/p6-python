@@ -32,25 +32,27 @@ class EventServerImp_test(unittest.TestCase):
         super().setUp()
         self.port = findNewSocketPort()
         port = self.port
-        self.sv = EventServerImp(port)
+        self.sv = EventServerImp(port, False)
         self.socket = zmq.Context.instance().socket(zmq.REQ)
         self.socket.connect(f"tcp://localhost:{port}")
-
         self.x = None
+        self.sv.start()
+
+    def tearDown(self) -> None:
+        super().tearDown()
+        self.sv.stop()
+        self.socket.close()
 
     def test_server_operation(self):
         sv = self.sv
         socket = self.socket
-        sv.start()
         socket.send(bytes("z", "utf-8"))
         o = socket.recv()
         print(o)
-        sv.stop()
 
     def test_handleOk(self):
         sv = self.sv
         socket = self.socket
-        sv.start()
 
         def cb(dt):
             self.x = 1
@@ -63,12 +65,10 @@ class EventServerImp_test(unittest.TestCase):
         )
         o = socket.recv()
         self.assertEqual(1, self.x)
-        sv.stop()
 
     def test_handle_noHandler(self):
         sv = self.sv
         socket = self.socket
-        sv.start()
 
         def cb(dt):
             self.x = 1
@@ -86,14 +86,12 @@ class EventServerImp_test(unittest.TestCase):
         self.assertEqual(input.header, res.header)
         errReportProto = ErrorReportProto()
         errReportProto.ParseFromString(res.data)
-        self.assertEqual(EventServerErrors.NoReactor.header.errorCode,errReportProto.errorCode)
+        self.assertEqual(EventServerErrors.NoReactor.header.errorCode, errReportProto.errorCode)
         self.assertEqual(None, self.x)
-        sv.stop()
 
     def test_handle_CatchAll(self):
         sv = self.sv
         socket = self.socket
-        sv.start()
 
         def cb(dt):
             raise Exception("x")
@@ -110,9 +108,7 @@ class EventServerImp_test(unittest.TestCase):
         self.assertNotEqual(input.header, res.header)
         errReportProto = ErrorReportProto()
         errReportProto.ParseFromString(res.data)
-        self.assertEqual(EventServerErrors.ExceptionError.header.errorCode,errReportProto.errorCode)
-        sv.stop()
-
+        self.assertEqual(EventServerErrors.ExceptionError.header.errorCode, errReportProto.errorCode)
 
 
 if __name__ == '__main__':

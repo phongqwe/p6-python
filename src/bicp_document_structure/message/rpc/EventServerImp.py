@@ -39,14 +39,14 @@ class EventServerImp(EventServer):
             self._socket = repSocket
             while self._isRunning:
                 recv = repSocket.recv()
-                try:
+                try: # try to catch all exceptions to prevent this server from crashing
                     p6MsgProto = P6MessageProto()
                     p6MsgProto.ParseFromString(recv)
                     p6Msg: P6Message = P6Message.fromProto(p6MsgProto)
                     reactor: EventReactor[P6Message, ToProto] | None = self.getReactorsForEvent(p6Msg.header.eventType)
                     if reactor is not None:
                         # no reactor for the request event -> return error
-                        outputBytes = reactor.react(p6Msg).toProtoBytes()
+                        outputBytes:bytes = reactor.react(p6Msg).toProtoBytes()
                         p6Res = P6Response(
                             header = p6Msg.header,
                             data = outputBytes,
@@ -59,7 +59,8 @@ class EventServerImp(EventServer):
                             data = ErrorReport(
                                 header = EventServerErrors.NoReactor.header,
                                 data = EventServerErrors.NoReactor.Data(p6Msg.header.eventType)),
-                            status = P6Response.Status.ERROR)
+                            status = P6Response.Status.ERROR
+                        )
                         repSocket.send(p6Res.toProtoBytes())
                 except Exception as e:
                     # catch-all response
@@ -108,9 +109,12 @@ class EventServerImp(EventServer):
 
     def stop(self):
         self._isRunning = False
-        self._thread.join()
+        if self._thread is not None:
+            self._thread.join()
+            self._thread = None
         if self._socket is not None:
             self._socket.close()
+            self._socket = None
 
     def getReactorsForEvent(self, event: P6Event) -> EventReactor[P6Message, ToProto] | None:
         return self._reactorDict.get(event)
