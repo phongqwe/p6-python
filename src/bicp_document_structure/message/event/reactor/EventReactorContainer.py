@@ -8,11 +8,11 @@ from bicp_document_structure.util.CanCheckEmpty import CanCheckEmpty
 D = TypeVar("D")
 class EventReactorContainer(Generic[D],CanCheckEmpty,ABC):
 
-    def getReactorsForEvent(self, event: P6Event) -> list[EventReactor[D]]:
+    def getReactorsForEvent(self, event: P6Event) -> list[EventReactor]:
         """get all reactors mapped to an event"""
         raise NotImplementedError()
 
-    def addReactor(self, event: P6Event, reactor: EventReactor[D])->"EventReactorContainer":
+    def addReactor(self, event: P6Event, reactor: EventReactor)->"EventReactorContainer":
         """
         add a reactor for an event
         :return a EventReactorContainer
@@ -42,6 +42,6 @@ class EventReactorContainer(Generic[D],CanCheckEmpty,ABC):
 
     def triggerReactorsFor(self,event:P6Event, data:D):
         """trigger all reactor of an event with a piece of data"""
-        reactorList:list[EventReactor[D]] = self.getReactorsForEvent(event)
+        reactorList:list[EventReactor] = self.getReactorsForEvent(event)
         for reactor in reactorList:
             reactor.react(data)

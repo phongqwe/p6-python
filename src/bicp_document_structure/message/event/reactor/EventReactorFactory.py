@@ -1,6 +1,7 @@
 import uuid
-from typing import Callable
+from typing import Callable, TypeVar, Any
 
+from bicp_document_structure.message.event.reactor.BaseReactor import BasicReactor
 from bicp_document_structure.message.event.reactor.CellReactor import CellReactor
 from bicp_document_structure.message.event.reactor.RangeReactor import RangeReactor
 from bicp_document_structure.message.event.reactor.WorkbookReactor import WorkbookReactor
@@ -31,3 +32,7 @@ class EventReactorFactory:
     def makeWorkbookReactor(callback: Callable[[WorkbookEventData], None]) -> WorkbookReactor:
         """create a workbook reactor with randomize uuid4 id"""
         return WorkbookReactor(str(uuid.uuid4()), callback)
+    @staticmethod
+    def makeBasicReactor(callback: Callable[[Any], Any]) -> BasicReactor[Any,Any]:
+        """create a workbook reactor with randomize uuid4 id"""
+        return BasicReactor(str(uuid.uuid4()), callback)

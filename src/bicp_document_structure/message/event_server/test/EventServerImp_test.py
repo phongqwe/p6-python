@@ -9,8 +9,8 @@ from bicp_document_structure.message.event.P6Events import P6Events
 from bicp_document_structure.message.event.reactor.EventReactor import EventReactor
 from bicp_document_structure.message.proto.Common_pb2 import ErrorReportProto
 from bicp_document_structure.message.proto.P6MsgPM_pb2 import P6ResponseProto
-from bicp_document_structure.message.rpc.EventServerErrors import EventServerErrors
-from bicp_document_structure.message.rpc.EventServerImp import EventServerImp
+from bicp_document_structure.message.event_server.EventServerErrors import EventServerErrors
+from bicp_document_structure.message.event_server.EventServerImp import EventServerImp
 from bicp_document_structure.util.for_test.TestUtils import findNewSocketPort, MockToProto
 
 
@@ -43,7 +43,7 @@ class EventServerImp_test(unittest.TestCase):
         self.sv.stop()
         self.socket.close()
 
-    def test_server_operation(self):
+    def test___(self):
         socket = self.socket
         socket.send(bytes("z", "utf-8"))
         o = socket.recv()

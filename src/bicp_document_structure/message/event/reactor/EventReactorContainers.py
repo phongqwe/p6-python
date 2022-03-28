@@ -10,7 +10,7 @@ D = TypeVar("D")
 
 class EventReactorContainers:
     @staticmethod
-    def mutable(initDict: dict[P6Event, dict[str, EventReactor[D]]] | None = None) -> EventReactorContainer:
+    def mutable(initDict: dict[P6Event, dict[str, EventReactor]] | None = None) -> EventReactorContainer:
         if initDict is None:
             initDict = dict()
         return MutableEventReactorContainer(initDict)

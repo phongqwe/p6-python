@@ -9,19 +9,19 @@ D = TypeVar("D")
 
 class MutableEventReactorContainer(EventReactorContainer[D]):
 
-    def __init__(self, innerDict: dict[P6Event, dict[str, EventReactor[D]]] | None = None):
+    def __init__(self, innerDict: dict[P6Event, dict[str, EventReactor]] | None = None):
         if innerDict is None:
             innerDict = dict()
-        self._dict: dict[P6Event, dict[str, EventReactor[D]]] = innerDict
+        self._dict: dict[P6Event, dict[str, EventReactor]] = innerDict
 
-    def getReactorsForEvent(self, event: P6Event) -> list[EventReactor[D]]:
+    def getReactorsForEvent(self, event: P6Event) -> list[EventReactor]:
         rt = self._dict.get(event)
         if rt is not None:
             return list(rt.values())
         else:
             return list()
 
-    def addReactor(self, event: P6Event, reactor: EventReactor[D]) -> "MutableEventReactorContainer":
+    def addReactor(self, event: P6Event, reactor: EventReactor) -> "MutableEventReactorContainer":
         reactorMap = self._dict.get(event, dict())
         reactorMap[reactor.id] = reactor
         self._dict[event] = reactorMap

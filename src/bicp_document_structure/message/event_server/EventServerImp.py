@@ -8,8 +8,8 @@ from bicp_document_structure.message.event.P6Event import P6Event
 from bicp_document_structure.message.event.P6Events import P6Events
 from bicp_document_structure.message.event.reactor.EventReactor import EventReactor
 from bicp_document_structure.message.proto.P6MsgPM_pb2 import P6MessageProto
-from bicp_document_structure.message.rpc.EventServer import EventServer
-from bicp_document_structure.message.rpc.EventServerErrors import EventServerErrors
+from bicp_document_structure.message.event_server.EventServer import EventServer
+from bicp_document_structure.message.event_server.EventServerErrors import EventServerErrors
 from bicp_document_structure.util.ToProto import ToProto
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 
@@ -72,28 +72,6 @@ class EventServerImp(EventServer):
                         ),
                         status = P6Response.Status.ERROR)
                     repSocket.send(p6Res.toProtoBytes())
-
-            # request = RenameRequestProto()
-            # request.ParseFromString(receive)
-            # wbKey : WorkbookKey = WorkbookKeys.fromProto(request.workbookKey)
-            # oldName = request.oldName
-            # newName = request.newName
-            # wb = getWorkbook(wbKey)
-            # renameRs:Result[None,ErrorReport] = wb.renameWorksheetRs(oldName, newName)
-            #
-            # rt = RenameWorksheetProto()
-            # rt.workbookKey.CopyFrom(request.workbookKey)
-            # rt.oldName = oldName
-            # rt.newName = newName
-            #
-            # if renameRs.isOk():
-            #     rt.index = wb.getIndexOfWorksheet(newName)
-            #     rt.isError = False
-            # else:
-            #     rt.isError = True
-            #     rt.errorReport.CopyFrom(renameRs.err.toProtoObj())
-            # rtBytes = rt.SerializeToString()
-            # repSocket.send(rtBytes)
 
         # the main logic runs a blocking operation, so I keep it in a daemon thread so that I can kill the main logic by killing its parent thread which does not have any blocking operation
         def run():
