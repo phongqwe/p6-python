@@ -4,7 +4,7 @@ from bicp_document_structure.message.event.reactor.EventReactor import EventReac
 from bicp_document_structure.message.event.reactor.eventData.RangeEventData import RangeEventData
 
 
-class RangeReactor(EventReactor[RangeEventData]):
+class RangeReactor(EventReactor[RangeEventData,None]):
 
 
     def __init__(self, reactorId: str, callback: Callable[[RangeEventData], None]):

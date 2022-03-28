@@ -14,13 +14,15 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rP6MsgPM.proto\x12$com.github.xadkile.message.api.proto\"*\n\x0cP6EventProto\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\"l\n\x14P6MessageHeaderProto\x12\r\n\x05msgId\x18\x01 \x01(\t\x12\x45\n\teventType\x18\x02 \x01(\x0b\x32\x32.com.github.xadkile.message.api.proto.P6EventProto\"j\n\x0eP6MessageProto\x12J\n\x06header\x18\x01 \x01(\x0b\x32:.com.github.xadkile.message.api.proto.P6MessageHeaderProto\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rP6MsgPM.proto\x12$com.github.xadkile.message.api.proto\"*\n\x0cP6EventProto\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\"l\n\x14P6MessageHeaderProto\x12\r\n\x05msgId\x18\x01 \x01(\t\x12\x45\n\teventType\x18\x02 \x01(\x0b\x32\x32.com.github.xadkile.message.api.proto.P6EventProto\"j\n\x0eP6MessageProto\x12J\n\x06header\x18\x01 \x01(\x0b\x32:.com.github.xadkile.message.api.proto.P6MessageHeaderProto\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\"\xe3\x01\n\x0fP6ResponseProto\x12J\n\x06header\x18\x01 \x01(\x0b\x32:.com.github.xadkile.message.api.proto.P6MessageHeaderProto\x12L\n\x06status\x18\x02 \x01(\x0e\x32<.com.github.xadkile.message.api.proto.P6ResponseProto.Status\x12\x0c\n\x04\x64\x61ta\x18\x03 \x01(\x0c\"(\n\x06Status\x12\x0b\n\x07INVALID\x10\x00\x12\x06\n\x02OK\x10\x01\x12\t\n\x05\x45RROR\x10\x02\x62\x06proto3')
 
 
 
 _P6EVENTPROTO = DESCRIPTOR.message_types_by_name['P6EventProto']
 _P6MESSAGEHEADERPROTO = DESCRIPTOR.message_types_by_name['P6MessageHeaderProto']
 _P6MESSAGEPROTO = DESCRIPTOR.message_types_by_name['P6MessageProto']
+_P6RESPONSEPROTO = DESCRIPTOR.message_types_by_name['P6ResponseProto']
+_P6RESPONSEPROTO_STATUS = _P6RESPONSEPROTO.enum_types_by_name['Status']
 P6EventProto = _reflection.GeneratedProtocolMessageType('P6EventProto', (_message.Message,), {
   'DESCRIPTOR' : _P6EVENTPROTO,
   '__module__' : 'P6MsgPM_pb2'
@@ -42,6 +44,13 @@ P6MessageProto = _reflection.GeneratedProtocolMessageType('P6MessageProto', (_me
   })
 _sym_db.RegisterMessage(P6MessageProto)
 
+P6ResponseProto = _reflection.GeneratedProtocolMessageType('P6ResponseProto', (_message.Message,), {
+  'DESCRIPTOR' : _P6RESPONSEPROTO,
+  '__module__' : 'P6MsgPM_pb2'
+  # @@protoc_insertion_point(class_scope:com.github.xadkile.message.api.proto.P6ResponseProto)
+  })
+_sym_db.RegisterMessage(P6ResponseProto)
+
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
@@ -51,4 +60,8 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _P6MESSAGEHEADERPROTO._serialized_end=207
   _P6MESSAGEPROTO._serialized_start=209
   _P6MESSAGEPROTO._serialized_end=315
+  _P6RESPONSEPROTO._serialized_start=318
+  _P6RESPONSEPROTO._serialized_end=545
+  _P6RESPONSEPROTO_STATUS._serialized_start=505
+  _P6RESPONSEPROTO_STATUS._serialized_end=545
 # @@protoc_insertion_point(module_scope)

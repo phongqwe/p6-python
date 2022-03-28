@@ -8,6 +8,7 @@ WSE = "WSE"
 CE = "CE"
 RE = "RE"
 WBE = "WBE"
+ESE = "ESE"
 class P6Events:
     class Cell:
         class UpdateValue:
@@ -33,4 +34,5 @@ class P6Events:
         class CreateNewWorksheet:
             event = P6Event(f"{WBE}3","create new worksheet")
             Data = CreateNewWorksheetData
-
+    class EventServer:
+        Unknown = P6Event(f"{ESE}0", "Unknown event")

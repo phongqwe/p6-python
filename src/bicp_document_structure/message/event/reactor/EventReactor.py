@@ -1,19 +1,15 @@
 from abc import ABC
 from typing import TypeVar, Generic
 
-D = TypeVar("D")
+I = TypeVar("I")
+O = TypeVar("O")
 
-
-class EventReactor(Generic[D], ABC):
+class EventReactor(Generic[I,O], ABC):
     """a listener class"""
 
     @property
     def id(self) -> str:
         raise NotImplementedError()
 
-    # @property
-    # def event(self) -> P6Event:
-    #     raise NotImplementedError()
-
-    def react(self, data: D):
+    def react(self, data: I)->O:
         raise NotImplementedError()

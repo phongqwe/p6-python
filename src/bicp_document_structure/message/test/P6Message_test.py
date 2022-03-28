@@ -22,7 +22,7 @@ class P6MessageTest(unittest.TestCase):
         hd = P6MessageHeader("id1", P6Events.Cell.UpdateValueEvent)
         msg = P6Message(
             header=hd,
-            content=contentObj
+            data =contentObj
         )
 
         expected = P6MessageProto()

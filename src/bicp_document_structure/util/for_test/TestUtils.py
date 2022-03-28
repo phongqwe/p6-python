@@ -2,6 +2,7 @@ import socket
 import threading
 
 import zmq
+from bicp_document_structure.util.ToProto import ToProto, P
 
 
 def findNewSocketPort():
@@ -34,3 +35,13 @@ def startREPServerOnThread(isOk, port, zContext, onReceive) -> threading.Thread:
 
 def sendClose(_socket):
     _socket.send("close".encode())
+
+class MockToProto(ToProto):
+    def __init__(self,str):
+        self.str = str
+    def toProtoObj(self):
+        raise NotImplementedError
+
+    def toProtoBytes(self):
+        return self.str
+

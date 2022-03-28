@@ -8,7 +8,18 @@ class P6MessageHeader(ToProto[P6MessageHeaderProto]):
 
     def __init__(self, msgId: str, eventType: P6Event):
         self._msgId = msgId
-        self._msgType = eventType
+        self._msgType:P6Event = eventType
+
+    @staticmethod
+    def fromProto(proto:P6MessageHeaderProto)->'P6MessageHeader':
+        rt = P6MessageHeader(
+            msgId = proto.msgId,
+            eventType = P6Event(
+                code = proto.eventType.code,
+                name = proto.eventType.name
+            )
+        )
+        return rt
 
     def toProtoObj(self) -> P6MessageHeaderProto:
         rt = P6MessageHeaderProto()
@@ -21,5 +32,11 @@ class P6MessageHeader(ToProto[P6MessageHeaderProto]):
         return self._msgId
 
     @property
-    def eventType(self):
+    def eventType(self)->P6Event:
         return self._msgType
+
+    def __eq__(self, other):
+        if isinstance(other,P6MessageHeader):
+            return self.msgId == other.msgId and self.eventType == other.eventType
+        else:
+            return False

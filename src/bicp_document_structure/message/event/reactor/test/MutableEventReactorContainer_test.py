@@ -5,7 +5,7 @@ from bicp_document_structure.message.event.reactor.EventReactor import EventReac
 from bicp_document_structure.message.event.reactor.MutableEventReactorContainer import MutableEventReactorContainer
 
 
-class DummyReactor(EventReactor[int]):
+class DummyReactor(EventReactor[int,None]):
     def __init__(self, rid):
         self.rid = rid
 

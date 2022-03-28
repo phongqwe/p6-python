@@ -1,0 +1,126 @@
+import threading
+
+import zmq
+
+from bicp_document_structure.message.P6Message import P6Message
+from bicp_document_structure.message.P6Response import P6Response
+from bicp_document_structure.message.event.P6Event import P6Event
+from bicp_document_structure.message.event.P6Events import P6Events
+from bicp_document_structure.message.event.reactor.EventReactor import EventReactor
+from bicp_document_structure.message.proto.P6MsgPM_pb2 import P6MessageProto
+from bicp_document_structure.message.rpc.EventServer import EventServer
+from bicp_document_structure.message.rpc.EventServerErrors import EventServerErrors
+from bicp_document_structure.util.ToProto import ToProto
+from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
+
+
+def startRenameServer():
+    server = EventServerImp()
+    server.start()
+    return server
+
+
+class EventServerImp(EventServer):
+
+    def __init__(self, port: int, isDaemon:bool = True):
+        self._port = port
+        self._isRunning = False
+        self._thread = None
+        self._reactorDict: dict[P6Event, EventReactor[P6Message,ToProto]] = {}
+        self._socket = None
+        self._isDaemon = isDaemon
+
+    def start(self):
+        def daemonRun():
+            zContext = zmq.Context.instance()
+            repSocket = zContext.socket(zmq.REP)
+            repSocket.bind(f"tcp://*:{self._port}")
+            self._isRunning = True
+            self._socket = repSocket
+            while self._isRunning:
+                recv = repSocket.recv()
+                try:
+                    p6MsgProto = P6MessageProto()
+                    p6MsgProto.ParseFromString(recv)
+                    p6Msg: P6Message = P6Message.fromProto(p6MsgProto)
+                    reactor: EventReactor[P6Message, ToProto] | None = self.getReactorsForEvent(p6Msg.header.eventType)
+                    if reactor is not None:
+                        # no reactor for the request event -> return error
+                        outputBytes = reactor.react(p6Msg).toProtoBytes()
+                        p6Res = P6Response(
+                            header = p6Msg.header,
+                            data = outputBytes,
+                            status = P6Response.Status.OK)
+                        repSocket.send(p6Res.toProtoBytes())
+                    else:
+                        # has reactor -> return reactor result
+                        p6Res = P6Response(
+                            header = p6Msg.header,
+                            data = ErrorReport(
+                                header = EventServerErrors.NoReactor.header,
+                                data = EventServerErrors.NoReactor.Data(p6Msg.header.eventType)),
+                            status = P6Response.Status.ERROR)
+                        repSocket.send(p6Res.toProtoBytes())
+                except Exception as e:
+                    # catch-all response
+                    p6Res = P6Response.create(
+                        event = P6Events.EventServer.Unknown,
+                        data = ErrorReport(
+                            header = EventServerErrors.ExceptionError.header,
+                            data = EventServerErrors.ExceptionError.Data(e)
+                        ),
+                        status = P6Response.Status.ERROR)
+                    repSocket.send(p6Res.toProtoBytes())
+
+            # request = RenameRequestProto()
+            # request.ParseFromString(receive)
+            # wbKey : WorkbookKey = WorkbookKeys.fromProto(request.workbookKey)
+            # oldName = request.oldName
+            # newName = request.newName
+            # wb = getWorkbook(wbKey)
+            # renameRs:Result[None,ErrorReport] = wb.renameWorksheetRs(oldName, newName)
+            #
+            # rt = RenameWorksheetProto()
+            # rt.workbookKey.CopyFrom(request.workbookKey)
+            # rt.oldName = oldName
+            # rt.newName = newName
+            #
+            # if renameRs.isOk():
+            #     rt.index = wb.getIndexOfWorksheet(newName)
+            #     rt.isError = False
+            # else:
+            #     rt.isError = True
+            #     rt.errorReport.CopyFrom(renameRs.err.toProtoObj())
+            # rtBytes = rt.SerializeToString()
+            # repSocket.send(rtBytes)
+
+        # the main logic runs a blocking operation, so I keep it in a daemon thread so that I can kill the main logic by killing its parent thread which does not have any blocking operation
+        def run():
+            daemonThread = threading.Thread(target = daemonRun)
+            daemonThread.daemon = True
+            daemonThread.start()
+            while self._isRunning:
+                pass
+
+        self._thread = threading.Thread(target = run)
+        self._thread.daemon = self._isDaemon
+        self._thread.start()
+
+    def stop(self):
+        self._isRunning = False
+        self._thread.join()
+        if self._socket is not None:
+            self._socket.close()
+
+    def getReactorsForEvent(self, event: P6Event) -> EventReactor[P6Message, ToProto] | None:
+        return self._reactorDict.get(event)
+
+    def addReactor(self, event: P6Event, reactor: EventReactor[P6Message, ToProto]):
+        self._reactorDict[event] = reactor
+
+    def removeReactorsForEvent(self, event: P6Event):
+        if event in self._reactorDict.keys():
+            self._reactorDict.pop(event)
+
+    def isEmpty(self) -> bool:
+        return len(self._reactorDict) == 0

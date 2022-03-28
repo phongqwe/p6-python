@@ -4,7 +4,7 @@ from bicp_document_structure.message.event.reactor.EventReactor import EventReac
 from bicp_document_structure.message.event.reactor.eventData.ColEventData import ColEventData
 
 
-class ColumnReactor(EventReactor[ColEventData]):
+class ColumnReactor(EventReactor[ColEventData,None]):
 
     def __init__(self, reactorId: str, callback: Callable[[ColEventData], None]):
         self._id = reactorId

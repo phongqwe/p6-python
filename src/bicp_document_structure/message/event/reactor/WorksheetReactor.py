@@ -4,7 +4,7 @@ from bicp_document_structure.message.event.reactor.EventReactor import EventReac
 from bicp_document_structure.message.event.reactor.eventData.WorksheetEventData import WorksheetEventData
 
 
-class WorksheetReactor(EventReactor[WorksheetEventData]):
+class WorksheetReactor(EventReactor[WorksheetEventData,None]):
 
     def __init__(self, reactorId: str, callback: Callable[[WorksheetEventData], None]):
         self._id = reactorId

@@ -53,7 +53,7 @@ class StdReactorProvider(ReactorProvider):
                     socket = socket,
                     msg = P6Message(
                         header = P6MessageHeader(str(uuid.uuid4()), event),
-                        content = wb))
+                        data = wb))
                 if replyRs.isErr():
                     raise replyRs.err.toException()
 
@@ -128,5 +128,5 @@ class StdReactorProvider(ReactorProvider):
                 msgId = str(uuid.uuid4()),
                 eventType = event,
             ),
-            content = data)
+            data = data)
         return msg

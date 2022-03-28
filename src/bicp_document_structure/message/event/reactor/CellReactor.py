@@ -4,7 +4,7 @@ from bicp_document_structure.message.event.reactor.EventReactor import EventReac
 from bicp_document_structure.message.event.reactor.eventData.CellEventData import CellEventData
 
 
-class CellReactor(EventReactor[CellEventData]):
+class CellReactor(EventReactor[CellEventData,None]):
 
     # @property
     # def event(self) -> P6Event:
