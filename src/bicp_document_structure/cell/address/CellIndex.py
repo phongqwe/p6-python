@@ -10,7 +10,7 @@ class CellIndex(CellAddress):
         self.__rowIndex = rowIndex
         self.__colIndex = colIndex
 
-    def toProtoObj(self)->CellAddressProto:
+    def toProtoObj(self) -> CellAddressProto:
         addr = CellAddressProto()
         addr.row = self.rowIndex
         addr.col = self.colIndex
@@ -25,15 +25,13 @@ class CellIndex(CellAddress):
         return self.__colIndex
 
     def __str__(self):
-        return "C({col}:{row})".format(col=self.__colIndex, row=self.__rowIndex)
+        return "C({col}:{row})".format(col = self.__colIndex, row = self.__rowIndex)
 
     @property
-    def label(self)->str:
-        return "@"+self.rawLabel
+    def label(self) -> str:
+        return "@" + self.rawLabel
 
     @property
     def rawLabel(self) -> str:
         colLabel = AlphabetBaseNumberSystem.fromDecimal(self.colIndex)
-        return "{cl}{rl}".format(cl=colLabel, rl=str(self.rowIndex))
-
-
+        return "{cl}{rl}".format(cl = colLabel, rl = str(self.rowIndex))

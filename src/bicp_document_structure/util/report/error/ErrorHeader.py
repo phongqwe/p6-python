@@ -1,9 +1,7 @@
 from bicp_document_structure.util.ToJson import ToJson
 
 
-class ErrorHeader(ToJson):
-    def toJsonDict(self) -> dict:
-        return self.__dict__
+class ErrorHeader:
 
     def __init__(self,errorCode:str, errorDescription:str):
         self.errorCode = errorCode

@@ -9,16 +9,13 @@ from bicp_document_structure.util.report.error.ErrorHeader import ErrorHeader
 
 class ErrorReport(ToProto[ErrorReportProto]):
 
-    def __init__(self, header: ErrorHeader, data: Any | ToJson | ToProto | ToRepStr, loc: str = ""):
+    def __init__(self, header: ErrorHeader, data: Any | ToProto | ToRepStr, loc: str = ""):
         self.header = header
         self.data = data
         self.loc = loc
 
     def toException(self):
-        exceptionObject = self.data
-        if isinstance(self.data, ToJson):
-            exceptionObject = self.data.toJsonDict()
-        return Exception(exceptionObject)
+        return Exception(str(self.data))
 
     def _makeRepStr(self) -> str:
         if isinstance(self.data, ToRepStr):

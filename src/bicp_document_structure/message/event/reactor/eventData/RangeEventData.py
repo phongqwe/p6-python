@@ -6,7 +6,7 @@ from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 
-class RangeEventData(ToJson,WithWorkbookData):
+class RangeEventData(WithWorkbookData):
 
     def __init__(self, workbook: Workbook, worksheet: Worksheet, targetRange: Range,event:P6Event):
         self.range = targetRange
@@ -17,10 +17,3 @@ class RangeEventData(ToJson,WithWorkbookData):
     @property
     def workbook(self):
         return self._workbook
-
-    def toJsonDict(self) -> dict:
-        return {
-            "rangeAddress": self.range.rangeAddress.label,
-            "workbook": self.workbook.name,
-            "worksheet":self.worksheet.name,
-        }

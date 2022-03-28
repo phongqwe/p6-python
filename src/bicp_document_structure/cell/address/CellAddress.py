@@ -5,7 +5,7 @@ from bicp_document_structure.message.proto.DocProto_pb2 import CellAddressProto
 from bicp_document_structure.util.ToProto import ToProto
 
 
-class CellAddress(ToProto[CellAddressProto],ABC):
+class CellAddress(ToProto[CellAddressProto], ABC):
     """
     an interface representing a position of a cell, including row and column index
     """
@@ -30,20 +30,21 @@ class CellAddress(ToProto[CellAddressProto],ABC):
 
     def toJson(self) -> CellAddressJson:
         """return a json object"""
-        return CellAddressJson(self.colIndex,self.rowIndex)
+        return CellAddressJson(self.colIndex, self.rowIndex)
 
     @property
-    def label(self)->str:
+    def label(self) -> str:
         """:return label of this cell address in correct format (eg: @A1), that can be used to refer to this address directly"""
         raise NotImplementedError()
 
     @property
-    def rawLabel(self)->str:
+    def rawLabel(self) -> str:
         """:return label of this cell address in raw format (eg: A1), that can NOT be used to refer to this address directly"""
         raise NotImplementedError()
 
     def __hash__(self) -> int:
-        key = (self.colIndex,self.rowIndex)
+        key = (self.colIndex, self.rowIndex)
         return hash(key)
-    def toTuple(self)->(int,int):
+
+    def toTuple(self) -> (int, int):
         return self.colIndex, self.rowIndex

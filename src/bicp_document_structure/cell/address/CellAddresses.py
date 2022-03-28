@@ -15,8 +15,8 @@ class CellAddresses:
     __labelPattern = re.compile("@[A-Za-z]+[1-9][0-9]*")
 
     @staticmethod
-    def addressFromJson(json:Union[CellAddressJson,str])->CellAddress:
-        return CellIndex(json.col,json.row)
+    def addressFromJson(json: Union[CellAddressJson, str]) -> CellAddress:
+        return CellIndex(json.col, json.row)
 
     @staticmethod
     def addressFromLabel(address: str) -> CellAddress:
@@ -45,7 +45,7 @@ class CellAddresses:
         return CellIndex(0, 0)
 
     @staticmethod
-    def __checkCellAddressFormat(address: str) -> Result[None,ErrorReport]:
+    def __checkCellAddressFormat(address: str) -> Result[None, ErrorReport]:
         """
         check address format
         :param address: must be like "@[A-Za-z]+[1-9][0-9]*" eg: "@A1", "@ABC123"
@@ -62,7 +62,7 @@ class CellAddresses:
                     return Err(
                         ValueError(
                             "Cell address \"{cdr}\" does not match the required pattern: {pt}"
-                                .format(cdr=address,
-                                        pt=str(CellAddresses.__labelPattern.pattern))))
+                                .format(cdr = address,
+                                        pt = str(CellAddresses.__labelPattern.pattern))))
             else:
                 return Err(ValueError("Cell address must start with \"@\""))

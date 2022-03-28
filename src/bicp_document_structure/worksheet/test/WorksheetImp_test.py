@@ -105,7 +105,8 @@ class WorksheetImp_test(unittest.TestCase):
         s = WorksheetImp(translatorGetter = self.transGetter)
         s.addCell(cell1)
         s.addCell(cell2)
-        self.assertEqual([cell1, cell2], s.cells)
+        self.assertTrue(cell1 in s.cells)
+        self.assertTrue(cell2 in s.cells)
         s.removeCell(cellAddr1)
         self.assertEqual([cell2], s.cells)
 

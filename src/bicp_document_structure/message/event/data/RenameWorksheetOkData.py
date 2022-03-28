@@ -1,4 +1,4 @@
-from bicp_document_structure.message.proto.WorkbookProto_pb2 import RenameWorksheetProto
+from bicp_document_structure.message.proto.WorkbookProtoMsg_pb2 import RenameWorksheetProto
 
 from bicp_document_structure.util.ToProto import ToProto
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport

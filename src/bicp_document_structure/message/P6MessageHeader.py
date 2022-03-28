@@ -4,7 +4,7 @@ from bicp_document_structure.util.ToJson import ToJson
 from bicp_document_structure.util.ToProto import ToProto
 
 
-class P6MessageHeader(ToJson, ToProto[P6MessageHeaderProto]):
+class P6MessageHeader(ToProto[P6MessageHeaderProto]):
 
     def __init__(self, msgId: str, eventType: P6Event):
         self._msgId = msgId
@@ -23,9 +23,3 @@ class P6MessageHeader(ToJson, ToProto[P6MessageHeaderProto]):
     @property
     def eventType(self):
         return self._msgType
-
-    def toJsonDict(self) -> dict:
-        return {
-            "msgId": self.msgId,
-            "eventType": self.eventType.name
-        }

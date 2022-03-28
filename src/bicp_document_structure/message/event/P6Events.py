@@ -30,9 +30,6 @@ class P6Events:
     class Workbook:
         ReRun = P6Event(f"{WBE}0",MsgType.WorkbookReRun.value)
         RemoveWorksheet = P6Event(f"{WBE}1","remove worksheet")
-        # class Rename:
-        #     event = P6Event(f"{WBE}2","rename worksheet")
-        #     Data = RenameWorksheetData
         class CreateNewWorksheet:
             event = P6Event(f"{WBE}3","create new worksheet")
             Data = CreateNewWorksheetData

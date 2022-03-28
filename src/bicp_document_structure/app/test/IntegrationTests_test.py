@@ -7,7 +7,7 @@ from bicp_document_structure.app.GlobalScope import setIPythonGlobals
 from bicp_document_structure.app.UserFunctions import *
 # these 2 imports must be keep for the formula script to be able to run
 from bicp_document_structure.app.worksheet_functions.WorksheetFunctions import WorksheetFunctions
-from bicp_document_structure.message.proto.WorkbookProto_pb2 import RenameWorksheetProto, CreateNewWorksheetProto
+from bicp_document_structure.message.proto.WorkbookProtoMsg_pb2 import RenameWorksheetProto, CreateNewWorksheetProto
 from bicp_document_structure.message.proto.P6MsgPM_pb2 import P6MessageProto
 from bicp_document_structure.util.ProtoUtils import ProtoUtils
 from bicp_document_structure.util.for_test.TestUtils import findNewSocketPort, startREPServerOnThread, sendClose

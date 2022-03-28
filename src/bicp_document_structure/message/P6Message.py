@@ -6,10 +6,10 @@ from bicp_document_structure.util.ToJson import ToJson
 from bicp_document_structure.util.ToProto import ToProto
 
 
-class P6Message(ToJson,ToProto[P6MessageProto]):
+class P6Message(ToProto[P6MessageProto]):
 
-    def __init__(self, header: P6MessageHeader, content: ToJson | ToProto| str):
-        self._content: ToJson | ToProto |str= content
+    def __init__(self, header: P6MessageHeader, content: ToProto | str | bytes):
+        self._content: ToProto | str | bytes = content
         self._header: P6MessageHeader = header
 
     @property
@@ -19,40 +19,6 @@ class P6Message(ToJson,ToProto[P6MessageProto]):
     @property
     def header(self):
         return self._header
-
-    def toJsonDict(self) -> dict:
-        content =self.content
-
-        if isinstance(self.content, ToJson):
-            content = self.content.toJsonStr()
-
-        return {
-            "header": self.header.toJsonDict(),
-            "content": {
-                "data": content
-            }
-        }
-
-    def toProtoJsonDict(self) -> dict:
-        content =self.content
-        if isinstance(self.content, ToProto):
-            content = self.content.toProtoBytes()
-        return {
-            "header": self.header.toJsonDict(),
-            "content": {
-                "data": content
-            }
-        }
-
-    def toProtoJsonStr(self) -> str:
-        """ only convert the inner data structure into proto, p6msg structure is still in json"""
-        return json.dumps(self.toProtoJsonDict())
-
-    def toBytes(self):
-        return bytes(self.toJsonStr().encode("UTF-8"))
-
-    def toProtoJsonBytes(self):
-        return bytes(self.toProtoJsonStr().encode("UTF-8"))
 
     def toProtoObj(self):
         rt = P6MessageProto()
