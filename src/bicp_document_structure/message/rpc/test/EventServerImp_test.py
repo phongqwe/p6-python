@@ -44,7 +44,6 @@ class EventServerImp_test(unittest.TestCase):
         self.socket.close()
 
     def test_server_operation(self):
-        sv = self.sv
         socket = self.socket
         socket.send(bytes("z", "utf-8"))
         o = socket.recv()
