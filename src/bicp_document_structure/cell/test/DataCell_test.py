@@ -27,20 +27,9 @@ class DataCellTest(unittest.TestCase):
         self.assertEqual("", o.value)
         self.assertEqual("", o.script)
         self.assertEqual("", o.formula)
-        bt1 = c1.toProtoStr()
-        # step1: convert proto str to string
-        # step 2: store it whereever I want
-
-        # step 3: parse it to byte array and use it on the other end.
-        d = {
-
-            "v":bt1
-        }
-        jsonStr=json.dumps(d)
-        parsedJson = json.loads(jsonStr)
-        protoStr = bytes(parsedJson["v"].encode("utf-8"))
+        bt1 = c1.toProtoBytes()
         c2 = CellProto()
-        c2.ParseFromString(protoStr)
+        c2.ParseFromString(bt1)
         print(c2)
 
 

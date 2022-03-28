@@ -21,7 +21,7 @@ class WorksheetImp_test(unittest.TestCase):
         self.assertEqual("oldName", o.name)
         self.assertEqual(s.cell("@A1").toProtoObj(), o.cell[0])
         self.assertEqual(s.cell("@B3").toProtoObj(), o.cell[1])
-        print(s.toProtoStr())
+        print(s)
 
     @staticmethod
     def transGetter(name):

@@ -10,12 +10,3 @@ class P6MessageHeaderTest(unittest.TestCase):
         hd=P6MessageHeader("id1", P6Events.Cell.UpdateValueEvent)
         print(hd.toJsonStr())
         self.assertEqual("""{"msgId": "id1", "eventType": "cell_value_update"}""",hd.toJsonStr())
-
-    def test_toProtoStr(self):
-        hd = P6MessageHeader("id1", P6Events.Cell.UpdateValueEvent)
-        print(hd.toProtoStr())
-        expected = P6MessageHeaderProto()
-        expected.ParseFromString(hd.toProtoBytes())
-        self.assertEqual(hd.msgId,expected.msgId)
-        self.assertEqual(hd.eventType.name, expected.eventType.name)
-        self.assertEqual(hd.eventType.code,expected.eventType.code)

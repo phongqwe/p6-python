@@ -95,9 +95,8 @@ class MessageSenderREQTest(unittest.TestCase):
             proto.ParseFromString(data)
             print("receive proto:")
             print(proto)
-            dataRaw = proto.data
             data = CellProto()
-            data.ParseFromString(bytes(dataRaw,"utf-8"))
+            data.ParseFromString(proto.data)
             print("*data:")
             print(data)
 

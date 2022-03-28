@@ -44,4 +44,3 @@ class P6MessageTest(unittest.TestCase):
         expected = P6MessageProto()
         expected.ParseFromString(msg.toProtoBytes())
         self.assertEqual(msg.header.toProtoObj(),expected.header)
-        self.assertEqual(contentObj.toProtoStr(),expected.data)

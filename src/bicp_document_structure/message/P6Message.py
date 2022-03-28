@@ -36,7 +36,7 @@ class P6Message(ToJson,ToProto[P6MessageProto]):
     def toProtoJsonDict(self) -> dict:
         content =self.content
         if isinstance(self.content, ToProto):
-            content = self.content.toProtoStr()
+            content = self.content.toProtoBytes()
         return {
             "header": self.header.toJsonDict(),
             "content": {

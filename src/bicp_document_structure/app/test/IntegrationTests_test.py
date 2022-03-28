@@ -59,7 +59,7 @@ class IntegrationTest_test(unittest.TestCase):
             msg = P6MessageProto()
             msg.ParseFromString(rawMsg)
             protoObj = CreateNewWorksheetProto()
-            protoObj.ParseFromString(ProtoUtils.byteProtoFromStr(msg.data))
+            protoObj.ParseFromString(msg.data)
             self.assertEqual("SheetX", protoObj.newWorksheetName)
             print(protoObj)
 
@@ -103,7 +103,7 @@ class IntegrationTest_test(unittest.TestCase):
             msg = P6MessageProto()
             msg.ParseFromString(data)
             dataObj = RenameWorksheetProto()
-            dataObj.ParseFromString(ProtoUtils.byteProtoFromStr(msg.data))
+            dataObj.ParseFromString(msg.data)
             self.assertEqual("Sheet1", dataObj.oldName)
             self.assertEqual("Sheet1x", dataObj.newName)
             self.assertEqual("Book1", dataObj.workbookKey.name)
