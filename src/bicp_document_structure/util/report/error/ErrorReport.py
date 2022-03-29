@@ -1,6 +1,7 @@
 from typing import Any
 
 from bicp_document_structure.message.proto.Common_pb2 import ErrorReportProto
+from bicp_document_structure.util.ToException import ToException
 from bicp_document_structure.util.ToJson import ToJson
 from bicp_document_structure.util.ToProto import ToProto
 from bicp_document_structure.util.ToRepStr import ToRepStr
@@ -14,8 +15,11 @@ class ErrorReport(ToProto[ErrorReportProto]):
         self.data = data
         self.loc = loc
 
-    def toException(self):
-        return Exception(str(self.data))
+    def toException(self)->Exception:
+        if isinstance(self.data,ToException):
+            return self.data.toException()
+        else:
+            return Exception(str(self.data))
 
     def _makeRepStr(self) -> str:
         if isinstance(self.data, ToRepStr):

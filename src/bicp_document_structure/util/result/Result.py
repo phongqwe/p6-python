@@ -1,3 +1,4 @@
+from abc import ABC
 from typing import TypeVar, Generic
 
 V = TypeVar("V")
@@ -18,7 +19,6 @@ class Result(Generic[V, E]):
             return self.value
         else:
             return self.err
-
 
     def isOk(self):
         return self.value is not None

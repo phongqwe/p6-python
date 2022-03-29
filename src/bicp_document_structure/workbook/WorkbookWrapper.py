@@ -3,14 +3,16 @@ from pathlib import Path
 from typing import Union, Optional
 
 from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
+from bicp_document_structure.message.proto.DocProto_pb2 import WorkbookProto
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.workbook.WorkBook import Workbook
+from bicp_document_structure.workbook.WorkbookJson import WorkbookJson
 from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 
-class WorkbookWrapper(Workbook,ABC):
+class WorkbookWrapper(Workbook):
 
     def __init__(self,innerWorkbook:Workbook):
         self._innerWorkbook = innerWorkbook
@@ -47,13 +49,13 @@ class WorkbookWrapper(Workbook,ABC):
     def setActiveWorksheet(self, indexOrName: Union[int, str]):
         self._innerWorkbook.setActiveWorksheet(indexOrName)
 
-    def getWorksheetByName(self, name: str) -> Optional[Worksheet]:
+    def getWorksheetByName(self, name: str) -> Worksheet:
         return self._innerWorkbook.getWorksheetByName(name)
 
-    def getWorksheetByIndex(self, index: int) -> Optional[Worksheet]:
+    def getWorksheetByIndex(self, index: int) -> Worksheet:
         return self._innerWorkbook.getWorksheetByIndex(index)
 
-    def getWorksheet(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
+    def getWorksheet(self, nameOrIndex: Union[str, int]) -> Worksheet:
         return self._innerWorkbook.getWorksheet(nameOrIndex)
 
     @property
@@ -97,3 +99,23 @@ class WorkbookWrapper(Workbook,ABC):
             return self._innerWorkbook == o
         else:
             return False
+
+
+    def getWorksheetByNameRs(self, name: str) -> Result[Worksheet, ErrorReport]:
+        return self._innerWorkbook.getWorksheetByNameRs(name)
+
+    def getWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
+        return self._innerWorkbook.getWorksheetByIndexRs(index)
+
+    def getWorksheetRs(self, nameOrIndex: Union[str, int]) -> Result[Worksheet, ErrorReport]:
+        return self._innerWorkbook.getWorksheetRs(nameOrIndex)
+
+    def getWorksheetByNameOrNone(self, name: str) -> Worksheet | None:
+        return self._innerWorkbook.getWorksheetByNameOrNone(name)
+
+    def getWorksheetByIndexOrNone(self, index: int) -> Optional[Worksheet]:
+        return self._innerWorkbook.getWorksheetByIndexOrNone(index)
+
+    def getWorksheetOrNone(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
+        return self._innerWorkbook.getWorksheetOrNone(nameOrIndex)
+

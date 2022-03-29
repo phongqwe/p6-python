@@ -114,31 +114,31 @@ class AppImp_test(unittest.TestCase):
         # x: load a valid file with result function
         loadRs0 = app.loadWorkbookRs(fileName)
         self.assertTrue(loadRs0.isOk())
-        self.assertIsNotNone(app.getWorkbook(0))
+        self.assertIsNotNone(app.getWorkbookOrNone(0))
 
         # x: load an invalid file with result function
         app = AppImp()
         loadRs2 = app.loadWorkbookRs("invalid file")
         self.assertTrue(loadRs2.isErr())
-        self.assertIsNone(app.getWorkbook(0))
+        self.assertIsNone(app.getWorkbookOrNone(0))
 
         # x: load valid file with normal function
         app = AppImp()
         app.loadWorkbook(fileName)
-        self.assertIsNotNone(app.getWorkbook(0))
+        self.assertIsNotNone(app.getWorkbookOrNone(0))
 
         # x: load invalid file with normal function
         app = AppImp()
         with self.assertRaises(Exception):
             app.loadWorkbook("invalid file")
-        self.assertIsNone(app.getWorkbook(0))
+        self.assertIsNone(app.getWorkbookOrNone(0))
 
     def test_closeWorkbook(self):
         app = self.app
         app.createNewWorkbook("Book1")
         self.assertIsNotNone(app.getWorkbook("Book1"))
         app.closeWorkbook("Book1")
-        self.assertIsNone(app.getWorkbook("Book1"))
+        self.assertIsNone(app.getWorkbookOrNone("Book1"))
 
         app.createNewWorkbook("Book2")
         self.assertIsNotNone(app.getWorkbook("Book2"))
@@ -154,7 +154,7 @@ class AppImp_test(unittest.TestCase):
         app.refreshContainer()
         loadRs = app.forceLoadWorkbookRs("file.txt")
         self.assertTrue(loadRs.isOk())
-        self.assertNotEqual(wb, app.getWorkbook("workbookName"))
+        self.assertNotEqual(wb, app.getWorkbookOrNone("workbookName"))
 
     def test_listBook(self):
         app = self.app
@@ -212,7 +212,7 @@ class AppImp_test(unittest.TestCase):
         app = AppImp()
         wb = app.createDefaultNewWorkbook()
         self.assertTrue(wb.isNotEmpty())
-        self.assertIsNotNone(wb.getWorksheet(0))
+        self.assertIsNotNone(wb.getWorksheetOrNone(0))
 
     def test_event_listener_on_newly_created_workbook(self):
         """test event triggering on an newly created workbook"""

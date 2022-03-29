@@ -13,6 +13,7 @@ from bicp_document_structure.range.Range import Range
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Ok import Ok
 from bicp_document_structure.util.result.Result import Result
+from bicp_document_structure.util.result.Results import Results
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookWrapper import WorkbookWrapper
 from bicp_document_structure.worksheet.EventWorksheet import EventWorksheet
@@ -73,29 +74,50 @@ class EventWorkbook(WorkbookWrapper):
         activeSheet = self._innerWorkbook.activeWorksheet
         return self.__wrapInEventWorksheet(activeSheet)
 
-    def getWorksheetByName(self, name: str) -> Optional[Worksheet]:
+    def getWorksheetByName(self, name: str) -> Worksheet:
         """wrap the result worksheet in event worksheet, so that it can propagate event"""
         sheet = self._innerWorkbook.getWorksheetByName(name)
-        if sheet is not None:
-            return self.__wrapInEventWorksheet(sheet)
-        else:
-            return sheet
+        return self.__wrapInEventWorksheet(sheet)
 
-    def getWorksheetByIndex(self, index: int) -> Optional[Worksheet]:
+    def getWorksheetByIndex(self, index: int) -> Worksheet:
         """wrap the result worksheet in event worksheet, so that it can propagate event"""
         s = self._innerWorkbook.getWorksheetByIndex(index)
-        if s is not None:
-            return self.__wrapInEventWorksheet(s)
-        else:
-            return s
+        return self.__wrapInEventWorksheet(s)
 
-    def getWorksheet(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
+    def getWorksheet(self, nameOrIndex: Union[str, int]) -> Worksheet:
         """wrap the result worksheet in event worksheet, so that it can propagate event"""
         s = self._innerWorkbook.getWorksheet(nameOrIndex)
-        if s is not None:
-            return self.__wrapInEventWorksheet(s)
+        return self.__wrapInEventWorksheet(s)
+
+    def __handleWsRs(self,rs:Result[Worksheet, ErrorReport]):
+        if rs.isOk():
+            return Ok(self.__wrapInEventWorksheet(rs.value))
         else:
-            return s
+            return rs
+
+    def getWorksheetByNameRs(self, name: str) -> Result[Worksheet, ErrorReport]:
+        rs = self._iwb.getWorksheetByNameRs(name)
+        return self.__handleWsRs(rs)
+
+    def getWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
+        rs = self._iwb.getWorksheetByIndexRs(index)
+        return self.__handleWsRs(rs)
+
+    def getWorksheetRs(self, nameOrIndex: Union[str, int]) -> Result[Worksheet, ErrorReport]:
+        rs = self._iwb.getWorksheetRs(nameOrIndex)
+        return self.__handleWsRs(rs)
+
+    def getWorksheetByNameOrNone(self, name: str) -> Worksheet | None:
+        rs = self.getWorksheetByNameRs(name)
+        return Results.extractOrNone(rs)
+
+    def getWorksheetByIndexOrNone(self, index: int) -> Optional[Worksheet]:
+        rs = self.getWorksheetByIndexRs(index)
+        return Results.extractOrNone(rs)
+
+    def getWorksheetOrNone(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
+        rs = self.getWorksheetRs(nameOrIndex)
+        return Results.extractOrNone(rs)
 
     def createNewWorksheet(self, newSheetName: Optional[str]) -> Worksheet:
         rs = self.createNewWorksheetRs(newSheetName)

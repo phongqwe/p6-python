@@ -59,17 +59,3 @@ class P6FileLoaderErrors:
                     "path":str(self.path)
                 })
 
-    @staticmethod
-    def toException(errorReport: ErrorReport) -> Optional[Exception]:
-        if errorReport.header == P6FileLoaderErrors.AlreadyLoad.header \
-                or errorReport.header == P6FileLoaderErrors.FileNotExist.header\
-                or errorReport.header == P6FileLoaderErrors.UnableToReadFile.header\
-                or errorReport.header == P6FileLoaderErrors.UnableToOpenFile.header:
-            return ValueError(
-                "{hd}\n{dt}".format(
-                    hd=str(errorReport.header),
-                    dt=str(errorReport.data.path)
-                )
-            )
-        else:
-            return None

@@ -25,8 +25,9 @@ class EventServerReactors_test(unittest.TestCase):
         self.wb = getWorkbook("Book1")
         self.s1 = self.wb.getWorksheet("Sheet1")
         self.s2 = self.wb.getWorksheet("Sheet2")
-
-        self.er = EventServerReactors()
+        def wbGetter(identity):
+            return getApp().getBareWorkbookRs(identity)
+        self.er = EventServerReactors(wbGetter)
 
     def test_renameReactor_Ok(self):
         reactor: BasicReactor[P6Message, RenameWorksheetProto] = self.er.renameWorksheet()
@@ -78,7 +79,7 @@ class EventServerReactors_test(unittest.TestCase):
         self.assertTrue(self.s1.name, out.oldName)
         self.assertEqual(out.workbookKey, self.wb.workbookKey.toProtoObj())
         errReport = out.errorReport
-        self.assertEqual(WorkbookErrors.WorksheetAlreadyExist.header.errorCode, errReport.errorCode)
+        self.assertEqual(WorkbookErrors.WorksheetAlreadyExistReport.header.errorCode, errReport.errorCode)
 
 
 if __name__ == '__main__':

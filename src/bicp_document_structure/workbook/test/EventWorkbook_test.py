@@ -64,8 +64,8 @@ class EventWorkbook_test(unittest.TestCase):
 
         mockRenameFunction = MagicMock()
         mockRenameFunction.return_value = Err(ErrorReport(
-            WorkbookErrors.WorksheetNotExist.header,
-            WorkbookErrors.WorksheetNotExist.Data(oldName)
+            WorkbookErrors.WorksheetNotExistReport.header,
+            WorkbookErrors.WorksheetNotExistReport.Data(oldName)
         ))
         mockWb = MagicMock()
         mockWb.renameWorksheetRs = mockRenameFunction
@@ -91,8 +91,8 @@ class EventWorkbook_test(unittest.TestCase):
         mockFunction = MagicMock()
         mockFunction.return_value = Err(
             ErrorReport(
-                header = WorkbookErrors.WorksheetAlreadyExist.header,
-                data = WorkbookErrors.WorksheetAlreadyExist.Data("SheetX")))
+                header = WorkbookErrors.WorksheetAlreadyExistReport.header,
+                data = WorkbookErrors.WorksheetAlreadyExistReport.Data("SheetX")))
         mockWb = MagicMock()
         mockWb.createNewWorksheetRs = mockFunction
         eventWb = EventWorkbook(
@@ -100,7 +100,7 @@ class EventWorkbook_test(unittest.TestCase):
             onWorkbookEvent = onWbEvent)
         eventWb.createNewWorksheetRs("SheetX")
         self.assertEqual(1, self.x)
-        self.assertEqual(WorkbookErrors.WorksheetAlreadyExist.header, self.errorReport.header)
+        self.assertEqual(WorkbookErrors.WorksheetAlreadyExistReport.header, self.errorReport.header)
         self.assertEqual("SheetX", self.errorReport.data.name)
         self.assertTrue(self.eventData.isError)
         print(self.errorReport.toProtoObj())

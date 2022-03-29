@@ -1,6 +1,6 @@
-import json
 from typing import Union, Optional
 
+from bicp_document_structure.util.ToException import ToException
 from bicp_document_structure.util.ToRepStr import ToRepStr
 from bicp_document_structure.util.report.error.ErrorHeader import ErrorHeader
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
@@ -9,9 +9,10 @@ WBErr = "WBErr"
 
 
 class WorkbookErrors:
-    class WorksheetAlreadyExist:
+    class WorksheetAlreadyExistReport(ErrorReport):
         header = ErrorHeader(f"{WBErr}1", "worksheet already exist")
-        class Data(ToRepStr):
+
+        class Data(ToRepStr, ToException):
             def __init__(self, nameOrIndex: Union[str, int]):
                 self.name = None
                 self.index = None
@@ -20,16 +21,26 @@ class WorkbookErrors:
                 if isinstance(nameOrIndex, int):
                     self.index = nameOrIndex
 
-            def repStr(self)->str:
+            def repStr(self) -> str:
                 if self.name is not None:
                     return f"Can't create worksheet \"{self.name}\". It already exists"
                 else:
                     return "Can't create new worksheet"
 
-    class WorksheetNotExist:
+            def toException(self) -> Exception:
+                return Exception(
+                    f"{WorkbookErrors.WorksheetAlreadyExistReport.header.errorCode}:{self.repStr()}"
+                )
+        def __init__(self,nameOrIndex: Union[str, int]):
+            super().__init__(
+                WorkbookErrors.WorksheetAlreadyExistReport.header,
+                WorkbookErrors.WorksheetAlreadyExistReport.Data(nameOrIndex)
+            )
+
+    class WorksheetNotExistReport(ErrorReport):
         header = ErrorHeader(f"{WBErr}2", "worksheet not exist")
 
-        class Data:
+        class Data(ToRepStr, ToException):
             def __init__(self, nameOrIndex: Union[str, int]):
                 self.name = None
                 self.index = None
@@ -37,25 +48,19 @@ class WorkbookErrors:
                     self.name = nameOrIndex
                 if isinstance(nameOrIndex, int):
                     self.index = nameOrIndex
-            def __str__(self):
-                return json.dumps(self.__dict__)
 
-    @staticmethod
-    def toException(errReport: ErrorReport) -> Optional[Exception]:
-        match errReport.header:
-            case WorkbookErrors.WorksheetAlreadyExist.header:
+            def __str__(self):
+                return self.repStr()
+
+            def repStr(self) -> str:
+                return f"Worksheet \"{self.name}\" does not exist"
+
+            def toException(self) -> Exception:
                 return ValueError(
-                    "{hd}\n{data}".format(
-                        hd=str(WorkbookErrors.WorksheetAlreadyExist.header),
-                        data=str(errReport.data)
-                    )
+                    f"{WorkbookErrors.WorksheetAlreadyExistReport.header.errorCode}:{self.repStr()}"
                 )
-            case WorkbookErrors.WorksheetNotExist.header:
-                return ValueError(
-                    "{hd}\n{data}".format(
-                        hd = str(WorkbookErrors.WorksheetAlreadyExist.header),
-                        data = str(errReport.data)
-                    )
-                )
-            case _:
-                return None
+        def __init__(self,nameOrIndex: Union[str, int]):
+            super().__init__(
+                WorkbookErrors.WorksheetNotExistReport.header,
+                WorkbookErrors.WorksheetNotExistReport.Data(nameOrIndex)
+            )

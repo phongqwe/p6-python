@@ -13,16 +13,15 @@ from bicp_document_structure.util.ToJson import ToJson
 from bicp_document_structure.util.ToProto import ToProto
 from bicp_document_structure.util.Util import default
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
-from bicp_document_structure.util.report.error.ErrorReports import ErrorReports
 from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.workbook.WorkbookJson import WorkbookJson
 from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 
-class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto],ABC):
+class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
 
-    def getIndexOfWorksheet(self,sheetName:str)->int:
+    def getIndexOfWorksheet(self, sheetName: str) -> int:
         for (index, sheet) in enumerate(self.worksheets):
             if sheet.name == sheetName:
                 return index
@@ -30,7 +29,7 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto],ABC):
 
     def toProtoObj(self) -> WorkbookProto:
         rt = WorkbookProto()
-        rt.name = default(self.name,"")
+        rt.name = default(self.name, "")
         pathStr = NullableString()
         if self.path is None:
             pathStr.null = NullValue.NULL_VALUE
@@ -47,7 +46,7 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto],ABC):
         raise NotImplementedError()
 
     def haveSheet(self, sheetName: str) -> bool:
-        return self.getWorksheet(sheetName) is not None
+        return self.getWorksheetOrNone(sheetName) is not None
 
     def reRun(self):
         """rerun all worksheet in this workbook"""
@@ -57,7 +56,7 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto],ABC):
     def renameWorksheet(self, oldSheetNameOrIndex: str | int, newSheetName: str):
         rs = self.renameWorksheetRs(oldSheetNameOrIndex, newSheetName)
         if rs.isErr():
-            raise ErrorReports.toException(rs.err)
+            raise rs.err.toException()
 
     def renameWorksheetRs(self, oldSheetNameOrIndex: str | int, newSheetName: str) -> Result[None, ErrorReport]:
         raise NotImplementedError()
@@ -82,21 +81,47 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto],ABC):
     def setActiveWorksheet(self, indexOrName: Union[int, str]):
         raise NotImplementedError()
 
-    def getWorksheetByName(self, name: str) -> Optional[Worksheet]:
+    def getWorksheetByName(self, name: str) -> Worksheet:
         """
         :param name: sheet name
         :return: the sheet having that name or None if no such sheet exists
         """
         raise NotImplementedError()
 
-    def getWorksheetByIndex(self, index: int) -> Optional[Worksheet]:
+    def getWorksheetByNameRs(self, name: str) -> Result[Worksheet, ErrorReport]:
+        raise NotImplementedError()
+
+    def getWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
+        raise NotImplementedError()
+
+    def getWorksheetRs(self, nameOrIndex: Union[str, int]) -> Result[Worksheet, ErrorReport]:
+        raise NotImplementedError()
+
+    def getWorksheetByNameOrNone(self, name: str) -> Worksheet | None:
+        """
+        :param name: sheet name
+        :return: the sheet having that name or None if no such sheet exists
+        """
+        raise NotImplementedError()
+
+    def getWorksheetByIndex(self, index: int) -> Worksheet:
         """
         :param index: index of a sheet
         :return: the sheet at that index, or None if no such sheet exists
         """
         raise NotImplementedError()
 
-    def getWorksheet(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
+    def getWorksheetByIndexOrNone(self, index: int) -> Optional[Worksheet]:
+        """
+        :param index: index of a sheet
+        :return: the sheet at that index, or None if no such sheet exists
+        """
+        raise NotImplementedError()
+
+    def getWorksheetOrNone(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
+        raise NotImplementedError()
+
+    def getWorksheet(self, nameOrIndex: Union[str, int]) -> Worksheet:
         """
         get a sheet either by name or index
         :param nameOrIndex: name or index
@@ -135,7 +160,7 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto],ABC):
         if createRs.isOk():
             return createRs.value
         else:
-            raise ErrorReports.toException(createRs.err)
+            raise createRs.err.toException()
 
     def createNewWorksheetRs(self, newSheetName: Optional[str] = None) -> Result[Worksheet, ErrorReport]:
         """
@@ -151,7 +176,7 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto],ABC):
         if removeRs.isOk():
             return removeRs.value
         else:
-            raise ErrorReports.toException(removeRs.err)
+            raise removeRs.err.toException()
 
     def removeWorksheetByIndex(self, index: int) -> Optional[Worksheet]:
         """ remove sheet by index. If the target sheet does not exist, simply return"""
@@ -159,7 +184,7 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto],ABC):
         if removeRs.isOk():
             return removeRs.value
         else:
-            raise ErrorReports.toException(removeRs.err)
+            raise removeRs.err.toException()
 
     def removeWorksheet(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
         """ remove sheet by either index or name. If the target sheet does not exist, simply return"""
@@ -167,7 +192,7 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto],ABC):
         if removeRs.isOk():
             return removeRs.value
         else:
-            raise ErrorReports.toException(removeRs.err)
+            raise removeRs.err.toException()
 
     def removeWorksheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
         """ remove sheet by name. If the target sheet does not exist, simply return"""

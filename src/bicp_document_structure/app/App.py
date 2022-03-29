@@ -69,35 +69,50 @@ class App(ABC):
         """
         raise NotImplementedError()
 
-    def getWorkbookByIndex(self, index: int) -> Optional[Workbook]:
+    def getWorkbookByIndex(self, index: int) -> Workbook:
         """:return workbook at an index. The returned workbook is connected to all the reactors of this app"""
-        return self._makeEventWb(self.wbContainer.getWorkbookByIndex(index))
+        # return self._makeEventWb(self.wbContainer.getWorkbookByIndex(index))
+        return self.getWorkbook(index)
 
-    def getWorkbookByName(self, name: str) -> Optional[Workbook]:
+    def getWorkbookByName(self, name: str) -> Workbook:
         """:return workbook at a name. The returned workbook is connected to all the reactors of this app"""
-        return self._makeEventWb(self.wbContainer.getWorkbookByName(name))
+        # return self._makeEventWb(self.wbContainer.getWorkbookByName(name))
+        return self.getWorkbook(name)
 
-    def getWorkbookByKey(self, key: WorkbookKey) -> Optional[Workbook]:
+    def getWorkbookByKey(self, key: WorkbookKey) -> Workbook:
         """:return workbook at a key. The returned workbook is connected to all the reactors of this app"""
-        return self._makeEventWb(self.wbContainer.getWorkbookByKey(key))
+        # return self._makeEventWb(self.wbContainer.getWorkbookByKey(key))
+        return self.getWorkbook(key)
 
-    def getWorkbook(self, key: Union[str, int, WorkbookKey]) -> Optional[Workbook]:
-        """:return workbook at a key that is either a name, an index, or a WorkbookKey. The returned workbook is connected to all the reactors of this app"""
-        return self._makeEventWb(self.wbContainer.getWorkbook(key))
+    def getWorkbook(self, key: Union[str, int, WorkbookKey]) -> Workbook:
+        """:return workbook at a key that is either a name, an index, or a WorkbookKey. The returned workbook is connected to all the reactors of this app
+        :raise exception if the workbook is unavailable
+        """
+        # return self._makeEventWb(self.wbContainer.getWorkbook(key))
+        rs: Result[Workbook, ErrorReport] = self.getWorkbookRs(key)
+        return Results.extractOrRaise(rs)
+
+    def getWorkbookOrNone(self, key: Union[str, int, WorkbookKey]) -> Workbook:
+        """:return workbook at a key that is either a name, an index, or a WorkbookKey. The returned workbook is connected to all the reactors of this app. Return none if the workbook is not available"""
+        # return self._makeEventWb(self.wbContainer.getWorkbook(key))
+        rs: Result[Workbook, ErrorReport] = self.getWorkbookRs(key)
+        return Results.extractOrNone(rs)
 
     def getWorkbookRs(self, key: Union[str, int, WorkbookKey]) -> Result[Workbook, ErrorReport]:
         """:return workbook at a key that is either a name, an index, or a WorkbookKey. The returned workbook is connected to all the reactors of this app"""
-        wb = self.getWorkbook(key)
+        rs = self.getBareWorkbookRs(key)
+        if rs.isOk():
+            return Ok(self._makeEventWb(rs.value))
+        else:
+            return rs
+
+    def getBareWorkbookRs(self, key: Union[str, int, WorkbookKey]) -> Result[Workbook, ErrorReport]:
+        """:return workbook at a key that is either a name, an index, or a WorkbookKey. The returned workbook is NOT hooked to reactors """
+        wb = self.wbContainer.getWorkbook(key)
         if wb is not None:
             return Ok(wb)
         else:
-            return Err(
-                ErrorReport(
-                    header = AppErrors.WorkbookNotExist.header,
-                    data = AppErrors.WorkbookNotExist.Data(key),
-                )
-            )
-
+            return Err(AppErrors.WorkbookNotExist(key))
     def hasNoWorkbook(self) -> bool:
         """
         :return: true if this app does not have any workbook
@@ -136,7 +151,7 @@ class App(ABC):
         """close a workbook"""
         closeRs = self.closeWorkbookRs(nameOrIndexOrKey)
         if closeRs.isErr():
-            raise ErrorReports.toException(closeRs.err)
+            raise closeRs.err.toException()
 
     def closeWorkbookRs(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]) -> Result[WorkbookKey, ErrorReport]:
         """
@@ -157,7 +172,8 @@ class App(ABC):
             wb: Workbook = loadRs.value
             return wb
         else:
-            raise ErrorReports.toException(loadRs.err)
+            # raise ErrorReports.toException(loadRs.err)
+            raise loadRs.err.toException()
 
     def forceLoadWorkbookRs(self, filePath: Union[str, Path]) -> Result[Workbook, ErrorReport]:
         """
@@ -246,8 +262,8 @@ class App(ABC):
         """
         path = Path(filePath)
         wbKey = WorkbookKeyImp(path.name, path)
-        wb = self.getWorkbook(wbKey)
-        alreadyHasThisWorkbook = wb is not None
+        wbRs = self.getWorkbookRs(wbKey)
+        alreadyHasThisWorkbook = wbRs.isOk()
         if not alreadyHasThisWorkbook:
             loadResult: Result[Workbook, ErrorReport] = self._fileLoader.load(filePath)
             if loadResult.isOk():

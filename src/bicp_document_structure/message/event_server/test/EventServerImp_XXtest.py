@@ -47,7 +47,7 @@ class EventServerImp_test(unittest.TestCase):
         socket = self.socket
         socket.send(bytes("z", "utf-8"))
         o = socket.recv()
-        print(o)
+        # print(o)
 
     def test_handleOk(self):
         sv = self.sv
@@ -85,7 +85,7 @@ class EventServerImp_test(unittest.TestCase):
         self.assertEqual(input.header, res.header)
         errReportProto = ErrorReportProto()
         errReportProto.ParseFromString(res.data)
-        self.assertEqual(EventServerErrors.NoReactor.header.errorCode, errReportProto.errorCode)
+        self.assertEqual(EventServerErrors.NoReactorReport.header.errorCode, errReportProto.errorCode)
         self.assertEqual(None, self.x)
 
     def test_handle_CatchAll(self):
@@ -107,7 +107,7 @@ class EventServerImp_test(unittest.TestCase):
         self.assertNotEqual(input.header, res.header)
         errReportProto = ErrorReportProto()
         errReportProto.ParseFromString(res.data)
-        self.assertEqual(EventServerErrors.ExceptionError.header.errorCode, errReportProto.errorCode)
+        self.assertEqual(EventServerErrors.ExceptionErrorReport.header.errorCode, errReportProto.errorCode)
 
 
 if __name__ == '__main__':

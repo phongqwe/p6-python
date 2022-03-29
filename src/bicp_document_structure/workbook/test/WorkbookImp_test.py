@@ -47,8 +47,8 @@ class WorkbookImp_test(unittest.TestCase):
         newName = "newS1"
         w.renameWorksheet(s1.name, newName)
         self.assertEqual(newName, s1.name)
-        self.assertIsNone(w.getWorksheet(oldName))
-        self.assertIsNotNone(w.getWorksheet(newName))
+        self.assertIsNone(w.getWorksheetOrNone(oldName))
+        self.assertIsNotNone(w.getWorksheetOrNone(newName))
         with self.assertRaises(Exception):
             self.assertIsNone(w.getTranslator(oldName))
         self.assertIsNotNone(w.getTranslator(newName))
@@ -69,7 +69,7 @@ class WorkbookImp_test(unittest.TestCase):
         s1, s2, s3, w, sheetDict = self.makeTestObj()
         rs = w.renameWorksheetRs("invalid name", "new Name")
         self.assertTrue(rs.isErr())
-        self.assertEqual(WorkbookErrors.WorksheetNotExist.header, rs.err.header,"incorrect error header")
+        self.assertEqual(WorkbookErrors.WorksheetNotExistReport.header, rs.err.header, "incorrect error header")
         self.assertEqual("invalid name", rs.err.data.name, "incorrect error data")
 
     def test_renameWorksheetRs_InvalidNewName(self):
@@ -83,7 +83,7 @@ class WorkbookImp_test(unittest.TestCase):
         s1, s2, s3, w, sheetDict = self.makeTestObj()
         rs = w.renameWorksheetRs(s1.name,s2.name)
         self.assertTrue(rs.isErr())
-        self.assertEqual(WorkbookErrors.WorksheetAlreadyExist.header, rs.err.header,"incorrect error header")
+        self.assertEqual(WorkbookErrors.WorksheetAlreadyExistReport.header, rs.err.header, "incorrect error header")
         self.assertEqual(s2.name, rs.err.data.name, "incorrect error data")
 
     def test_renameWorksheetRs_SameName(self):
@@ -139,7 +139,7 @@ class WorkbookImp_test(unittest.TestCase):
         s4 = w1.createNewWorksheet("s4")
         self.assertEqual(s4, w1.getWorksheet("s4"))
 
-        with self.assertRaises(ValueError):
+        with self.assertRaises(Exception):
             w1.createNewWorksheet("s1")
 
     def test_CreateNewSheet_autoNaming(self):

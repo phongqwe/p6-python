@@ -39,15 +39,3 @@ class P6FileSaverErrors:
                     "path": str(self.path)
                 })
 
-    @staticmethod
-    def toException(errorReport: ErrorReport) -> Optional[Exception]:
-        if errorReport.header == P6FileSaverErrors.UnableToAccessPath.header \
-                or errorReport.header == P6FileSaverErrors.UnableToAccessPath.header:
-            return ValueError(
-                "{hd}\n{dt}".format(
-                    hd=str(errorReport.header),
-                    dt=str(errorReport.data.path)
-                )
-            )
-        else:
-            return None

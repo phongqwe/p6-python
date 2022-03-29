@@ -1,14 +1,15 @@
-from collections import OrderedDict as ODict
 from pathlib import Path
-from typing import Union, Optional, OrderedDict, Tuple
+from typing import Union, Optional, Tuple
 
 from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
+from bicp_document_structure.util.CommonError import CommonErrors
 from bicp_document_structure.util.Util import typeCheck
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Err import Err
 from bicp_document_structure.util.result.Ok import Ok
 from bicp_document_structure.util.result.Result import Result
+from bicp_document_structure.util.result.Results import Results
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookErrors import WorkbookErrors
 from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
@@ -44,8 +45,8 @@ class WorkbookImp(Workbook):
         # translator dict key = [sheetName, workbook key]
         self._translatorDict: dict[Tuple[str, WorkbookKey], FormulaTranslator] = {}
 
-
     ### >> Workbook << ###
+
     def getTranslator(self, sheetName: str) -> FormulaTranslator:
         if self.haveSheet(sheetName):
             key = (sheetName, self.__key)
@@ -93,20 +94,55 @@ class WorkbookImp(Workbook):
     def isEmpty(self) -> bool:
         return self.sheetCount == 0
 
-    def getWorksheetByName(self, name: str) -> Optional[Worksheet]:
+    def getWorksheetByNameRs(self, name: str) -> Result[Worksheet, ErrorReport]:
         typeCheck(name, "name", str)
-        if name in self._sheetDictByName.keys():
-            return self._sheetDictByName[name]
+        ws = self._sheetDictByName.get(name)
+        if ws is not None:
+            return Ok(ws)
         else:
-            return None
+            return Err(
+                ErrorReport(
+                    header = WorkbookErrors.WorksheetNotExistReport.header,
+                    data = WorkbookErrors.WorksheetNotExistReport.Data(name)
+                )
+            )
 
-    def getWorksheetByIndex(self, index: int) -> Optional[Worksheet]:
-        typeCheck(index, "index", int)
+    def getWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
         if 0 <= index < self.sheetCount:
             rt: Worksheet = self._sheetList[index]
-            return rt
+            return Ok(rt)
         else:
-            return None
+            return Err(WorkbookErrors.WorksheetNotExistReport(index))
+
+    def getWorksheetRs(self, nameOrIndex: Union[str, int]) -> Result[Worksheet, ErrorReport]:
+        if isinstance(nameOrIndex, str):
+            return self.getWorksheetByNameRs(nameOrIndex)
+        elif isinstance(nameOrIndex, int):
+            return self.getWorksheetByIndexRs(nameOrIndex)
+        else:
+            return Err(CommonErrors.WrongTypeReport("nameOrIndex", "str or int"))
+
+    def getWorksheetByNameOrNone(self, name: str) -> Worksheet | None:
+        return self._sheetDictByName.get(name)
+
+    def getWorksheetByIndexOrNone(self, index: int) -> Optional[Worksheet]:
+        rs = self.getWorksheetByIndexRs(index)
+        return Results.extractOrNone(rs)
+
+    def getWorksheetOrNone(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
+        return Results.extractOrNone(self.getWorksheetByNameRs(nameOrIndex))
+
+    def getWorksheet(self, nameOrIndex: Union[str, int]) -> Worksheet:
+        rs = self.getWorksheetRs(nameOrIndex)
+        return Results.extractOrRaise(rs)
+
+    def getWorksheetByName(self, name: str) -> Worksheet:
+        rs = self.getWorksheetByNameRs(name)
+        return Results.extractOrRaise(rs)
+
+    def getWorksheetByIndex(self, index: int) -> Worksheet:
+        rs = self.getWorksheetByIndexRs(index)
+        return Results.extractOrRaise(rs)
 
     def renameWorksheetRs(self, oldSheetNameOrIndex: str | int, newSheetName: str) -> Result[None, ErrorReport]:
         if len(newSheetName) == 0 or newSheetName is None:
@@ -114,16 +150,16 @@ class WorkbookImp(Workbook):
                 header = WorksheetErrors.IllegalName.header,
                 data = WorksheetErrors.IllegalName.Data(newSheetName)
             ))
-        targetSheet: Worksheet | None = self.getWorksheet(oldSheetNameOrIndex)
+        targetSheet: Worksheet | None = self.getWorksheetOrNone(oldSheetNameOrIndex)
         if targetSheet is None:
             return Err(ErrorReport(
-                WorkbookErrors.WorksheetNotExist.header,
-                WorkbookErrors.WorksheetNotExist.Data(oldSheetNameOrIndex)
+                WorkbookErrors.WorksheetNotExistReport.header,
+                WorkbookErrors.WorksheetNotExistReport.Data(oldSheetNameOrIndex)
             ))
         else:
             if targetSheet.name == newSheetName:
                 return Ok(None)
-            newNameNotMapToExistingSheet = self.getWorksheet(newSheetName) is None
+            newNameNotMapToExistingSheet = self.getWorksheetOrNone(newSheetName) is None
             if newNameNotMapToExistingSheet:
                 oldName = targetSheet.name
                 targetSheet.internalRename(newSheetName)
@@ -138,18 +174,9 @@ class WorkbookImp(Workbook):
                 return Ok(None)
             else:
                 return Err(ErrorReport(
-                    WorkbookErrors.WorksheetAlreadyExist.header,
-                    WorkbookErrors.WorksheetNotExist.Data(newSheetName)
+                    WorkbookErrors.WorksheetAlreadyExistReport.header,
+                    WorkbookErrors.WorksheetNotExistReport.Data(newSheetName)
                 ))
-
-    def getWorksheet(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
-        if isinstance(nameOrIndex, str):
-            return self.getWorksheetByName(nameOrIndex)
-        elif isinstance(nameOrIndex, int):
-            return self.getWorksheetByIndex(nameOrIndex)
-        else:
-            raise ValueError(
-                "nameOrIndex is of type {t}. nameOrIndex must be string or int.".format(t = str(type(nameOrIndex))))
 
     @property
     def sheetCount(self) -> int:
@@ -173,7 +200,7 @@ class WorkbookImp(Workbook):
 
     def _generateNewSheetName(self) -> str:
         newSheetName = "Sheet" + str(self.__nameCount)
-        while self.getWorksheetByName(newSheetName) is not None:
+        while self.getWorksheetByNameOrNone(newSheetName) is not None:
             self.__nameCount += 1
             newSheetName = "Sheet" + str(self.__nameCount)
         return newSheetName
@@ -185,13 +212,13 @@ class WorkbookImp(Workbook):
         if self.haveSheet(newSheetName):
             return Err(
                 ErrorReport(
-                    header = WorkbookErrors.WorksheetAlreadyExist.header,
-                    data = WorkbookErrors.WorksheetAlreadyExist.Data(newSheetName)
+                    header = WorkbookErrors.WorksheetAlreadyExistReport.header,
+                    data = WorkbookErrors.WorksheetAlreadyExistReport.Data(newSheetName)
                 )
             )
         newSheet = WorksheetImp(
             name = newSheetName,
-            translatorGetter = self.getTranslator,)
+            translatorGetter = self.getTranslator, )
         # store new sheet in name map
         self._sheetDictByName[newSheetName] = newSheet
         # store in index list
@@ -209,23 +236,23 @@ class WorkbookImp(Workbook):
         else:
             return Err(
                 ErrorReport(
-                    header = WorkbookErrors.WorksheetAlreadyExist.header,
-                    data = WorkbookErrors.WorksheetAlreadyExist.Data(sheetName),
+                    header = WorkbookErrors.WorksheetAlreadyExistReport.header,
+                    data = WorkbookErrors.WorksheetAlreadyExistReport.Data(sheetName),
                 )
             )
 
     def removeWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
         typeCheck(index, "index", int)
         if 0 <= index < self.sheetCount:
-            sheet:Worksheet = self._sheetList[index]
+            sheet: Worksheet = self._sheetList[index]
             self._sheetList.pop(index)
             name: str = sheet.name
             return self.removeWorksheetByNameRs(name)
         else:
             return Err(
                 ErrorReport(
-                    header = WorkbookErrors.WorksheetAlreadyExist.header,
-                    data = WorkbookErrors.WorksheetAlreadyExist.Data(index),
+                    header = WorkbookErrors.WorksheetAlreadyExistReport.header,
+                    data = WorkbookErrors.WorksheetAlreadyExistReport.Data(index),
                 )
             )
 

@@ -10,6 +10,7 @@ from bicp_document_structure.message.event.reactor.EventReactor import EventReac
 from bicp_document_structure.message.proto.P6MsgPM_pb2 import P6MessageProto
 from bicp_document_structure.message.event_server.EventServer import EventServer
 from bicp_document_structure.message.event_server.EventServerErrors import EventServerErrors
+from bicp_document_structure.util.CommonError import CommonErrors
 from bicp_document_structure.util.ToProto import ToProto
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 
@@ -31,12 +32,12 @@ class EventServerImp(EventServer):
         self._isDaemon = isDaemon
 
     def start(self):
+        zContext = zmq.Context.instance()
+        repSocket = zContext.socket(zmq.REP)
+        repSocket.bind(f"tcp://*:{self._port}")
+        self._isRunning = True
+        self._socket = repSocket
         def daemonRun():
-            zContext = zmq.Context.instance()
-            repSocket = zContext.socket(zmq.REP)
-            repSocket.bind(f"tcp://*:{self._port}")
-            self._isRunning = True
-            self._socket = repSocket
             while self._isRunning:
                 recv = repSocket.recv()
                 try: # try to catch all exceptions to prevent this server from crashing
@@ -56,9 +57,7 @@ class EventServerImp(EventServer):
                         # has reactor -> return reactor result
                         p6Res = P6Response(
                             header = p6Msg.header,
-                            data = ErrorReport(
-                                header = EventServerErrors.NoReactor.header,
-                                data = EventServerErrors.NoReactor.Data(p6Msg.header.eventType)),
+                            data = EventServerErrors.NoReactorReport(p6Msg.header.eventType),
                             status = P6Response.Status.ERROR
                         )
                         repSocket.send(p6Res.toProtoBytes())
@@ -66,10 +65,7 @@ class EventServerImp(EventServer):
                     # catch-all response
                     p6Res = P6Response.create(
                         event = P6Events.EventServer.Unknown,
-                        data = ErrorReport(
-                            header = EventServerErrors.ExceptionError.header,
-                            data = EventServerErrors.ExceptionError.Data(e)
-                        ),
+                        data = CommonErrors.ExceptionErrorReport(e),
                         status = P6Response.Status.ERROR)
                     repSocket.send(p6Res.toProtoBytes())
 

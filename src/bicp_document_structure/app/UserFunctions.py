@@ -66,12 +66,11 @@ def getActiveSheet() -> Optional[Worksheet]:
 def setActiveSheet(indexOrName: Union[str, int]):
     wb: Optional[Workbook] = getActiveWorkbook()
     if wb is None:
-        raise ErrorReports.toException(
-            ErrorReport(
+        raise ErrorReport(
                 header = AppErrors.WorkbookNotExist.header,
                 data = AppErrors.WorkbookNotExist.Data(indexOrName)
-            )
-        )
+            ).toException()
+
     wb.setActiveWorksheet(indexOrName)
 
 
