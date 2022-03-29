@@ -28,15 +28,14 @@ class EventServerImp(EventServer):
         self._isRunning = False
         self._thread = None
         self._reactorDict: dict[P6Event, EventReactor[P6Message,ToProto]] = {}
-        self._socket = None
         self._isDaemon = isDaemon
+        zContext = zmq.Context.instance()
+        self._socket = zContext.socket(zmq.REP)
+        self._socket.bind(f"tcp://*:{self._port}")
 
     def start(self):
-        zContext = zmq.Context.instance()
-        repSocket = zContext.socket(zmq.REP)
-        repSocket.bind(f"tcp://*:{self._port}")
         self._isRunning = True
-        self._socket = repSocket
+        repSocket = self._socket
         def daemonRun():
             while self._isRunning:
                 recv = repSocket.recv()
@@ -63,7 +62,7 @@ class EventServerImp(EventServer):
                         repSocket.send(p6Res.toProtoBytes())
                 except Exception as e:
                     # catch-all response
-                    p6Res = P6Response.create(
+                    p6Res:P6Response = P6Response.create(
                         event = P6Events.EventServer.Unknown,
                         data = CommonErrors.ExceptionErrorReport(e),
                         status = P6Response.Status.ERROR)
@@ -86,9 +85,9 @@ class EventServerImp(EventServer):
         if self._thread is not None:
             self._thread.join()
             self._thread = None
-        if self._socket is not None:
-            self._socket.close()
-            self._socket = None
+        # if self._socket is not None:
+        #     self._socket.close()
+        #     self._socket = None
 
     def getReactorsForEvent(self, event: P6Event) -> EventReactor[P6Message, ToProto] | None:
         return self._reactorDict.get(event)

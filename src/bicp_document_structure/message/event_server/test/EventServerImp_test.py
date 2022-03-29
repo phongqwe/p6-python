@@ -11,6 +11,7 @@ from bicp_document_structure.message.proto.Common_pb2 import ErrorReportProto
 from bicp_document_structure.message.proto.P6MsgPM_pb2 import P6ResponseProto
 from bicp_document_structure.message.event_server.EventServerErrors import EventServerErrors
 from bicp_document_structure.message.event_server.EventServerImp import EventServerImp
+from bicp_document_structure.util.CommonError import CommonErrors
 from bicp_document_structure.util.for_test.TestUtils import findNewSocketPort, MockToProto
 
 
@@ -32,7 +33,7 @@ class EventServerImp_test(unittest.TestCase):
         super().setUp()
         self.port = findNewSocketPort()
         port = self.port
-        self.sv = EventServerImp(port, False)
+        self.sv = EventServerImp(port, True)
         self.socket = zmq.Context.instance().socket(zmq.REQ)
         self.socket.connect(f"tcp://localhost:{port}")
         self.x = None
@@ -43,11 +44,11 @@ class EventServerImp_test(unittest.TestCase):
         self.sv.stop()
         self.socket.close()
 
-    def test___(self):
+    def test_malformed_msg(self):
         socket = self.socket
         socket.send(bytes("z", "utf-8"))
         o = socket.recv()
-        # print(o)
+        print(o)
 
     def test_handleOk(self):
         sv = self.sv
@@ -80,6 +81,7 @@ class EventServerImp_test(unittest.TestCase):
         o = socket.recv()
         resProto = P6ResponseProto()
         resProto.ParseFromString(o)
+        print(resProto)
         res = P6Response.fromProto(resProto)
         self.assertEqual(P6Response.Status.ERROR, res.status)
         self.assertEqual(input.header, res.header)
@@ -87,6 +89,7 @@ class EventServerImp_test(unittest.TestCase):
         errReportProto.ParseFromString(res.data)
         self.assertEqual(EventServerErrors.NoReactorReport.header.errorCode, errReportProto.errorCode)
         self.assertEqual(None, self.x)
+        # time.sleep(1)
 
     def test_handle_CatchAll(self):
         sv = self.sv
@@ -107,7 +110,7 @@ class EventServerImp_test(unittest.TestCase):
         self.assertNotEqual(input.header, res.header)
         errReportProto = ErrorReportProto()
         errReportProto.ParseFromString(res.data)
-        self.assertEqual(EventServerErrors.ExceptionErrorReport.header.errorCode, errReportProto.errorCode)
+        self.assertEqual(CommonErrors.ExceptionErrorReport.header.errorCode, errReportProto.errorCode)
 
 
 if __name__ == '__main__':
