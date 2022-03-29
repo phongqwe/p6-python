@@ -57,7 +57,7 @@ class IntegrationTest_test(unittest.TestCase):
         zContext = getApp().zContext
 
         def onReceive(rawMsg):
-            msg = P6MessageProto()
+            msg = P6ResponseProto()
             msg.ParseFromString(rawMsg)
             protoObj = CreateNewWorksheetProto()
             protoObj.ParseFromString(msg.data)

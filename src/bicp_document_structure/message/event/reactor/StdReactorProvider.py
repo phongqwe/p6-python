@@ -60,8 +60,11 @@ class StdReactorProvider(ReactorProvider):
 
     def createNewWorksheet(self) -> WorkbookReactor:
         def cb(wbEventData: WorkbookEventData):
-            msg = StdReactorProvider.__createP6Msg(wbEventData.event, wbEventData.data)
-            self._send(msg)
+            status = P6Response.Status.OK
+            if wbEventData.isError:
+                status = P6Response.Status.ERROR
+            msg = StdReactorProvider.__createP6Response(wbEventData.event, wbEventData.data,status)
+            self._sendRes(msg)
         reactor = EventReactorFactory.makeWorkbookReactor(cb)
         return reactor
 
@@ -70,18 +73,21 @@ class StdReactorProvider(ReactorProvider):
             event = P6Events.Cell.UpdateValueEvent
             self.__cellUpdateValue = EventReactorFactory.makeCellReactor(partial(self.stdCallback, event))
         return self.__cellUpdateValue
+        # raise NotImplementedError()
 
     def cellUpdateScript(self) -> CellReactor:
         if self.__cellUpdateScript is None:
             event = P6Events.Cell.UpdateScript
             self.__cellUpdateScript = EventReactorFactory.makeCellReactor(partial(self.stdCallback, event))
         return self.__cellUpdateScript
+        # raise NotImplementedError()
 
     def cellUpdateFormula(self) -> CellReactor:
         if self.__cellFormulaUpdate is None:
             event = P6Events.Cell.UpdateFormula
             self.__cellFormulaUpdate = EventReactorFactory.makeCellReactor(partial(self.stdCallback, event))
         return self.__cellFormulaUpdate
+        # raise NotImplementedError()
 
     def cellClearScriptResult(self) -> CellReactor:
         if self.__cellClearScriptResult is None:
@@ -89,21 +95,24 @@ class StdReactorProvider(ReactorProvider):
             self.__cellClearScriptResult = EventReactorFactory.makeCellReactor(
                 partial(self.stdCallback, event))
         return self.__cellClearScriptResult
+        # raise NotImplementedError()
 
     def rangeReRun(self) -> RangeReactor:
         if self.__rangeReRun is None:
             event = P6Events.Range.ReRun
             self.__rangeReRun = EventReactorFactory.makeRangeReactor(partial(self.stdCallback, event))
         return self.__rangeReRun
+        # raise NotImplementedError()
 
     def worksheetReRun(self) -> WorksheetReactor:
+        # raise NotImplementedError()
         if self.__worksheetReRun is None:
             event = P6Events.Worksheet.ReRun
             self.__worksheetReRun = EventReactorFactory.makeRangeReactor(
                 partial(self.stdCallback, event))
         return self.__worksheetReRun
 
-    def worksheetRenameNEW(self) -> WorkbookReactor:
+    def worksheetRename(self) -> WorkbookReactor:
         if self.__worksheetRenameReactor is None:
             def cb(eventData: WorkbookEventData):
                 if not eventData.isError:
@@ -111,14 +120,6 @@ class StdReactorProvider(ReactorProvider):
                 else:
                     msg = self.__createP6Response(eventData.event,eventData.data,P6Response.Status.ERROR)
                 self._sendRes(msg)
-            self.__worksheetRenameReactor = EventReactorFactory.makeWorkbookReactor(cb)
-        return self.__worksheetRenameReactor
-
-    def worksheetRename(self) -> WorkbookReactor:
-        if self.__worksheetRenameReactor is None:
-            def cb(eventData: WorkbookEventData):
-                msg = self.__createP6Msg(eventData.event, eventData.data)
-                self._send(msg)
             self.__worksheetRenameReactor = EventReactorFactory.makeWorkbookReactor(cb)
         return self.__worksheetRenameReactor
 
