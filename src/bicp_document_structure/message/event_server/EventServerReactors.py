@@ -1,5 +1,11 @@
 from typing import Callable
 
+from bicp_document_structure.message.event.data.RenameWorksheetOkData import RenameWorksheetData
+from bicp_document_structure.message.event.reactor.EventReactor import EventReactor
+from bicp_document_structure.message.proto.WorksheetProtoMsg_pb2 import RenameWorksheetProto, \
+    RenameWorksheetRequestProto
+from bicp_document_structure.util.ToProto import ToProto
+
 from bicp_document_structure.message.P6Message import P6Message
 from bicp_document_structure.message.event.reactor.BaseReactor import BasicReactor
 from bicp_document_structure.message.event.reactor.CellReactor import CellReactor
@@ -7,7 +13,6 @@ from bicp_document_structure.message.event.reactor.EventReactorFactory import Ev
 from bicp_document_structure.message.event.reactor.RangeReactor import RangeReactor
 from bicp_document_structure.message.event.reactor.WorkbookReactor import WorkbookReactor
 from bicp_document_structure.message.event.reactor.WorksheetReactor import WorksheetReactor
-from bicp_document_structure.message.proto.WorkbookProtoMsg_pb2 import RenameRequestProto, RenameWorksheetProto
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.workbook.WorkBook import Workbook
@@ -78,39 +83,50 @@ class EventServerReactors:
     #         self.__worksheetReRun = EventReactorFactory.makeRangeReactor(
     #             partial(self.stdCallback, event))
     #     return self.__worksheetReRun
-
     #
 
-    def renameWorksheet(self) -> BasicReactor[P6Message, RenameWorksheetProto]:
+    def renameWorksheet(self) -> BasicReactor[P6Message, RenameWorksheetData]:
         if self.__worksheetRenameReactor is None:
             def cb(p6Msg: P6Message) -> RenameWorksheetProto:
                 receive = p6Msg.data
 
-                request = RenameRequestProto()
-                request.ParseFromString(receive)
-                wbKey: WorkbookKey = WorkbookKeys.fromProto(request.workbookKey)
-                oldName = request.oldName
-                newName = request.newName
-
-                outProto = RenameWorksheetProto()
-                outProto.workbookKey.CopyFrom(request.workbookKey)
-                outProto.oldName = oldName
-                outProto.newName = newName
+                protoRequest = RenameWorksheetRequestProto()
+                protoRequest.ParseFromString(receive)
+                wbKey: WorkbookKey = WorkbookKeys.fromProto(protoRequest.workbookKey)
+                oldName = protoRequest.oldName
+                newName = protoRequest.newName
 
                 getWbRs: Result[Workbook, ErrorReport] = self._wbGetter(wbKey)
+
                 if getWbRs.isOk():
                     wb: Workbook = getWbRs.value
                     renameRs: Result[None, ErrorReport] = wb.renameWorksheetRs(oldName, newName)
                     if renameRs.isOk():
-                        outProto.index = wb.getIndexOfWorksheet(newName)
-                        outProto.isError = False
+                        out = RenameWorksheetData(
+                            workbookKey = wbKey,
+                            oldName = oldName,
+                            newName = newName,
+                            index = wb.getIndexOfWorksheet(newName),
+                            isError = False,
+                        )
+                        return out
                     else:
-                        outProto.isError = True
-                        outProto.errorReport.CopyFrom(renameRs.err.toProtoObj())
-                    return outProto
+                        out = RenameWorksheetData(
+                            workbookKey = wbKey,
+                            oldName = oldName,
+                            newName = newName,
+                            isError = True,
+                            errorReport = renameRs.err
+                        )
+                        return out
                 else:
-                    outProto.isError = True
-                    outProto.errorReport.CopyFrom(getWbRs.err.toProtoObj())
+                    out = RenameWorksheetData(
+                        workbookKey = wbKey,
+                        newName = newName,
+                        oldName = oldName,
+                        isError = True,
+                        errorReport = getWbRs.err)
+                    return out
 
             self.__worksheetRenameReactor = EventReactorFactory.makeBasicReactor(cb)
         return self.__worksheetRenameReactor

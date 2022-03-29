@@ -1,4 +1,5 @@
 import zmq
+from bicp_document_structure.util.ToProto import ToProto
 from zmq import Socket
 
 from bicp_document_structure.message.P6Message import P6Message
@@ -12,7 +13,7 @@ from bicp_document_structure.util.result.Result import Result
 class MessageSender:
 
     @staticmethod
-    def sendREQ_Proto(socket: Socket, msg: P6Message) -> Result[None, ErrorReport]:
+    def sendREQ_Proto(socket: Socket, msg: ToProto) -> Result[None, ErrorReport]:
         """
         send a P6Message on a REQ socket and check for a boolean reply
         if reply is "ok", then the request is considered success, return err otherwise

@@ -33,11 +33,11 @@ class EventServerImp_test(unittest.TestCase):
         super().setUp()
         self.port = findNewSocketPort()
         port = self.port
-        self.sv = EventServerImp(port, True)
+        self.sv = EventServerImp(True)
         self.socket = zmq.Context.instance().socket(zmq.REQ)
         self.socket.connect(f"tcp://localhost:{port}")
         self.x = None
-        self.sv.start()
+        self.sv.start(port)
 
     def tearDown(self) -> None:
         super().tearDown()

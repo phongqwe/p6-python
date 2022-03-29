@@ -9,6 +9,7 @@ from bicp_document_structure.file.loader.P6FileLoaderErrors import P6FileLoaderE
 from bicp_document_structure.file.saver.P6FileSaver import P6FileSaver
 from bicp_document_structure.message.SocketProvider import SocketProvider
 from bicp_document_structure.message.event.reactor.EventReactorContainer import EventReactorContainer
+from bicp_document_structure.message.event_server.EventServer import EventServer
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.report.error.ErrorReports import ErrorReports
 from bicp_document_structure.util.result.Err import Err
@@ -298,15 +299,19 @@ class App(ABC):
 
     @property
     def socketProvider(self) -> SocketProvider | None:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @socketProvider.setter
     def socketProvider(self, socketProvider: SocketProvider | None):
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def eventReactorContainer(self) -> EventReactorContainer:
-        raise NotImplementedError
+        raise NotImplementedError()
+
+    @property
+    def eventServer(self)->EventServer:
+        raise NotImplementedError()
 
     def _makeEventWb(self, workbook: Workbook | Optional[Workbook]) -> Optional[EventWorkbook]:
         """wrap a workbook inside an EventWorkbook, give it event callbacks"""

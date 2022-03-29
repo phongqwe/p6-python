@@ -9,3 +9,9 @@ class SocketProvider(ABC):
 
     def updateREQSocketForUIUpdating(self, newSocket: Socket | None):
         raise NotImplementedError()
+
+    # def eventServerPort(self)->int:
+    #     raise NotImplementedError()
+    #
+    # def updateEventServerPort(self,port):
+    #     raise NotImplementedError()

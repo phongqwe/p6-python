@@ -1,3 +1,5 @@
+from bicp_document_structure.util.ToProto import ToProto
+
 from bicp_document_structure.message.event.data.CreateNewWorksheetData import CreateNewWorksheetData
 from bicp_document_structure.message.event.data.RenameWorksheetOkData import RenameWorksheetData
 
@@ -24,6 +26,8 @@ class P6Events:
         class Rename:
             event = P6Event(f"{WSE}1","rename worksheet")
             Data = RenameWorksheetData
+            # class Response(ToProto[Rename]):
+
 
     class Range:
         ReRun = P6Event(f"{RE}0",MsgType.RangeReRun.value)

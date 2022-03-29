@@ -17,6 +17,9 @@ from bicp_document_structure.message.event.reactor.EventReactorContainer import 
 from bicp_document_structure.message.event.reactor.EventReactorContainers import EventReactorContainers
 from bicp_document_structure.message.event.reactor.StdReactorProvider import StdReactorProvider
 from bicp_document_structure.message.event.reactor.eventData.CellEventData import CellEventData
+from bicp_document_structure.message.event_server.EventServer import EventServer
+from bicp_document_structure.message.event_server.EventServerImp import EventServerImp
+from bicp_document_structure.message.event_server.EventServerReactors import EventServerReactors
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Err import Err
 from bicp_document_structure.util.result.Ok import Ok
@@ -68,17 +71,29 @@ class AppImp(App):
         self.__reactorProvider = StdReactorProvider(self._getSocketProvider)
         self.__zcontext = zmq.Context.instance()
         self.initBaseReactor()
+        self._eventServer = EventServerImp(isDaemon = True)
+        self._eventServerReactors = EventServerReactors(self.getBareWorkbookRs)
+        self.initEventServerReactor()
 
     @property
     def zContext(self):
         return self.__zcontext
+
+    @property
+    def eventServer(self) -> EventServer:
+        return self._eventServer
+
+    def initEventServerReactor(self):
+        self._eventServer.addReactor(
+            event = P6Events.Worksheet.Rename.event,
+            reactor = self._eventServerReactors.renameWorksheet())
 
     def initBaseReactor(self):
         """create base reactors """
         container = self.__reactorContainer
         provider = self.__reactorProvider
         container.addReactor(P6Events.Cell.UpdateValueEvent, provider.cellUpdateValue())
-        container.addReactor(P6Events.Worksheet.Rename.event, provider.worksheetRename())
+        container.addReactor(P6Events.Worksheet.Rename.event, provider.worksheetRenameNEW())
         container.addReactor(P6Events.Workbook.CreateNewWorksheet.event, provider.createNewWorksheet())
 
     @property

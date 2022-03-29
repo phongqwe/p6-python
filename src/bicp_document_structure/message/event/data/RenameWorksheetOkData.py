@@ -1,12 +1,11 @@
-from bicp_document_structure.message.proto.WorkbookProtoMsg_pb2 import RenameWorksheetProto
-
+from bicp_document_structure.message.proto.WorksheetProtoMsg_pb2 import RenameWorksheetProto
 from bicp_document_structure.util.ToProto import ToProto
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
 
 
 class RenameWorksheetData(ToProto[RenameWorksheetProto]):
-    def __init__(self, workbookKey: WorkbookKey, oldName:str, newName:str, index:int, isError:bool = False, errorReport:ErrorReport|None = None):
+    def __init__(self, workbookKey: WorkbookKey, oldName:str, newName:str, index:int=-1, isError:bool = False, errorReport:ErrorReport|None = None):
         self.workbookKey = workbookKey
         self.oldName = oldName
         self.index = index

@@ -30,6 +30,7 @@ def startREPServer(isOk, port, zContext, onReceive):
 
 def startREPServerOnThread(isOk, port, zContext, onReceive) -> threading.Thread:
     thread = threading.Thread(target = startREPServer, args = [isOk, port, zContext, onReceive])
+    thread.daemon = True
     thread.start()
     return thread
 

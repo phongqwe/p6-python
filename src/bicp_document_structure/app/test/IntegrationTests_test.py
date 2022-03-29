@@ -7,8 +7,9 @@ from bicp_document_structure.app.GlobalScope import setIPythonGlobals
 from bicp_document_structure.app.UserFunctions import *
 # these 2 imports must be keep for the formula script to be able to run
 from bicp_document_structure.app.worksheet_functions.WorksheetFunctions import WorksheetFunctions
-from bicp_document_structure.message.proto.WorkbookProtoMsg_pb2 import RenameWorksheetProto, CreateNewWorksheetProto
-from bicp_document_structure.message.proto.P6MsgPM_pb2 import P6MessageProto
+from bicp_document_structure.message.proto.WorkbookProtoMsg_pb2 import CreateNewWorksheetProto
+from bicp_document_structure.message.proto.P6MsgPM_pb2 import P6MessageProto, P6ResponseProto
+from bicp_document_structure.message.proto.WorksheetProtoMsg_pb2 import RenameWorksheetProto
 from bicp_document_structure.util.ProtoUtils import ProtoUtils
 from bicp_document_structure.util.for_test.TestUtils import findNewSocketPort, startREPServerOnThread, sendClose
 from bicp_document_structure.workbook.key.WorkbookKeys import WorkbookKeys
@@ -95,12 +96,11 @@ class IntegrationTest_test(unittest.TestCase):
         s1.toJsonStr()
 
     def test_rename(self):
-        app = getApp()
         port = findNewSocketPort()
         context = getApp().zContext
 
         def onReceive(data):
-            msg = P6MessageProto()
+            msg = P6ResponseProto()
             msg.ParseFromString(data)
             dataObj = RenameWorksheetProto()
             dataObj.ParseFromString(msg.data)

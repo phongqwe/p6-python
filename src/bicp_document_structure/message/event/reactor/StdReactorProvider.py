@@ -4,6 +4,7 @@ from typing import Callable, Any
 
 from bicp_document_structure.message.P6Message import P6Message
 from bicp_document_structure.message.P6MessageHeader import P6MessageHeader
+from bicp_document_structure.message.P6Response import P6Response
 from bicp_document_structure.message.SocketProvider import SocketProvider
 from bicp_document_structure.message.event.P6Event import P6Event
 from bicp_document_structure.message.event.P6Events import P6Events
@@ -102,6 +103,17 @@ class StdReactorProvider(ReactorProvider):
                 partial(self.stdCallback, event))
         return self.__worksheetReRun
 
+    def worksheetRenameNEW(self) -> WorkbookReactor:
+        if self.__worksheetRenameReactor is None:
+            def cb(eventData: WorkbookEventData):
+                if not eventData.isError:
+                    msg = self.__createP6Response(eventData.event, eventData.data)
+                else:
+                    msg = self.__createP6Response(eventData.event,eventData.data,P6Response.Status.ERROR)
+                self._sendRes(msg)
+            self.__worksheetRenameReactor = EventReactorFactory.makeWorkbookReactor(cb)
+        return self.__worksheetRenameReactor
+
     def worksheetRename(self) -> WorkbookReactor:
         if self.__worksheetRenameReactor is None:
             def cb(eventData: WorkbookEventData):
@@ -121,8 +133,37 @@ class StdReactorProvider(ReactorProvider):
                 if replyRs.isErr():
                     raise replyRs.err.toException()
 
+    def _sendRes(self, p6Res: P6Response):
+        socketProvider = self.__socketProvider()
+        if socketProvider is not None:
+            socket = socketProvider.reqSocketForUIUpdating()
+            if socket is not None:
+                replyRs = MessageSender.sendREQ_Proto(
+                    socket = socket,
+                    msg = p6Res)
+                if replyRs.isErr():
+                    raise replyRs.err.toException()
+
     @staticmethod
-    def __createP6Msg(event, data:Any):
+    def __createP6Response(event,data:Any,status:P6Response.Status = P6Response.Status.OK):
+        res = P6Response(
+            header = P6MessageHeader(
+                msgId = str(uuid.uuid4()),
+                eventType = event,
+            ),
+            status = status,
+            data = data
+        )
+        return res
+        # msg = P6Message(
+        #     header = P6MessageHeader(
+        #         msgId = str(uuid.uuid4()),
+        #         eventType = event,
+        #     ),
+        #     data = data)
+        # return msg
+    @staticmethod
+    def __createP6Msg(event,data:Any,):
         msg = P6Message(
             header = P6MessageHeader(
                 msgId = str(uuid.uuid4()),

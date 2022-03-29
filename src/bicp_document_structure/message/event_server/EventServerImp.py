@@ -7,53 +7,49 @@ from bicp_document_structure.message.P6Response import P6Response
 from bicp_document_structure.message.event.P6Event import P6Event
 from bicp_document_structure.message.event.P6Events import P6Events
 from bicp_document_structure.message.event.reactor.EventReactor import EventReactor
-from bicp_document_structure.message.proto.P6MsgPM_pb2 import P6MessageProto
 from bicp_document_structure.message.event_server.EventServer import EventServer
 from bicp_document_structure.message.event_server.EventServerErrors import EventServerErrors
+from bicp_document_structure.message.proto.P6MsgPM_pb2 import P6MessageProto
 from bicp_document_structure.util.CommonError import CommonErrors
 from bicp_document_structure.util.ToProto import ToProto
-from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
-
-
-def startRenameServer():
-    server = EventServerImp()
-    server.start()
-    return server
 
 
 class EventServerImp(EventServer):
 
-    def __init__(self, port: int, isDaemon:bool = True):
-        self._port = port
+    def __init__(self, isDaemon: bool = True):
+        self._port = None
         self._isRunning = False
         self._thread = None
-        self._reactorDict: dict[P6Event, EventReactor[P6Message,ToProto]] = {}
+        self._reactorDict: dict[P6Event, EventReactor[P6Message, ToProto]] = {}
         self._isDaemon = isDaemon
+        self._socket = None
+
+    def start(self,port:int):
+        self._port = port
         zContext = zmq.Context.instance()
         self._socket = zContext.socket(zmq.REP)
         self._socket.bind(f"tcp://*:{self._port}")
-
-    def start(self):
         self._isRunning = True
         repSocket = self._socket
+
         def daemonRun():
             while self._isRunning:
                 recv = repSocket.recv()
-                try: # try to catch all exceptions to prevent this server from crashing
+                try:  # try to catch all exceptions to prevent this server from crashing
                     p6MsgProto = P6MessageProto()
                     p6MsgProto.ParseFromString(recv)
                     p6Msg: P6Message = P6Message.fromProto(p6MsgProto)
                     reactor: EventReactor[P6Message, ToProto] | None = self.getReactorsForEvent(p6Msg.header.eventType)
                     if reactor is not None:
-                        # no reactor for the request event -> return error
-                        outputBytes:bytes = reactor.react(p6Msg).toProtoBytes()
+                        # has reactor -> return reactor result
+                        outputBytes: bytes = reactor.react(p6Msg).toProtoBytes()
                         p6Res = P6Response(
                             header = p6Msg.header,
                             data = outputBytes,
                             status = P6Response.Status.OK)
                         repSocket.send(p6Res.toProtoBytes())
                     else:
-                        # has reactor -> return reactor result
+                        # no reactor for the request event -> return error
                         p6Res = P6Response(
                             header = p6Msg.header,
                             data = EventServerErrors.NoReactorReport(p6Msg.header.eventType),
@@ -62,7 +58,7 @@ class EventServerImp(EventServer):
                         repSocket.send(p6Res.toProtoBytes())
                 except Exception as e:
                     # catch-all response
-                    p6Res:P6Response = P6Response.create(
+                    p6Res: P6Response = P6Response.create(
                         event = P6Events.EventServer.Unknown,
                         data = CommonErrors.ExceptionErrorReport(e),
                         status = P6Response.Status.ERROR)
