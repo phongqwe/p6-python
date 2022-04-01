@@ -2,13 +2,13 @@ from functools import partial
 from typing import Callable, Optional, Union
 
 from bicp_document_structure.cell.Cell import Cell
-from bicp_document_structure.message.event.P6Event import P6Event
-from bicp_document_structure.message.event.P6Events import P6Events
-from bicp_document_structure.message.event.reactor.EventReactorContainer import EventReactorContainer
-from bicp_document_structure.message.event.reactor.eventData.CellEventData import CellEventData
-from bicp_document_structure.message.event.reactor.eventData.RangeEventData import RangeEventData
-from bicp_document_structure.message.event.reactor.eventData.WorkbookEventData import WorkbookEventData
-from bicp_document_structure.message.event.reactor.eventData.WorksheetEventData import WorksheetEventData
+from bicp_document_structure.communication.event.P6Event import P6Event
+from bicp_document_structure.communication.event.P6Events import P6Events
+from bicp_document_structure.communication.event.reactor.EventReactorContainer import EventReactorContainer
+from bicp_document_structure.communication.event.reactor.eventData.CellEventData import CellEventData
+from bicp_document_structure.communication.event.reactor.eventData.RangeEventData import RangeEventData
+from bicp_document_structure.communication.event.reactor.eventData.WorkbookEventData import WorkbookEventData
+from bicp_document_structure.communication.event.reactor.eventData.WorksheetEventData import WorksheetEventData
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Ok import Ok
@@ -140,7 +140,7 @@ class EventWorkbook(WorkbookWrapper):
                     workbook = self,
                     isError = rs.isErr(),
                     event = P6Events.Workbook.CreateNewWorksheet.event,
-                    data = P6Events.Workbook.CreateNewWorksheet.Data(self.workbookKey, name))
+                    data = P6Events.Workbook.CreateNewWorksheet.Response(self.workbookKey, name))
                 self.__onWorkbookEvent(wbEventData)
             return Ok(self.__wrapInEventWorksheet(newWorksheet))
         else:
@@ -150,7 +150,7 @@ class EventWorkbook(WorkbookWrapper):
                     workbook = self,
                     isError = rs.isErr(),
                     event = P6Events.Workbook.CreateNewWorksheet.event,
-                    data = P6Events.Workbook.CreateNewWorksheet.Data(self.workbookKey, name, True, errReport))
+                    data = P6Events.Workbook.CreateNewWorksheet.Response(self.workbookKey, name, True, errReport))
                 self.__onWorkbookEvent(wbEventData)
             return rs
 
@@ -185,11 +185,11 @@ class EventWorkbook(WorkbookWrapper):
     def renameWorksheetRs(self, oldSheetNameOrIndex: str | int, newSheetName: str) -> Result[None, ErrorReport]:
         rs = self._iwb.renameWorksheetRs(oldSheetNameOrIndex, newSheetName)
         event = P6Events.Worksheet.Rename.event
-        DataClass = P6Events.Worksheet.Rename.Data
+        DataClass = P6Events.Worksheet.Rename.Response
         if rs.isOk():
             oldName = oldSheetNameOrIndex
             index = self.getIndexOfWorksheet(newSheetName)
-            eventData: WorkbookEventData[P6Events.Worksheet.Rename.Data] = WorkbookEventData(
+            eventData: WorkbookEventData[P6Events.Worksheet.Rename.Response] = WorkbookEventData(
                 workbook = self,
                 event = event,
                 isError = False,

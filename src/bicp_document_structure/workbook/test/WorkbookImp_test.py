@@ -4,7 +4,7 @@ from pathlib import Path
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
-from bicp_document_structure.message.event.P6Event import P6Event
+from bicp_document_structure.communication.event.P6Event import P6Event
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.WorkbookErrors import WorkbookErrors
 from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
@@ -76,7 +76,7 @@ class WorkbookImp_test(unittest.TestCase):
         s1, s2, s3, w, sheetDict = self.makeTestObj()
         rs = w.renameWorksheetRs(s1.name,"")
         self.assertTrue(rs.isErr())
-        self.assertEqual(WorksheetErrors.IllegalName.header, rs.err.header,"incorrect error header")
+        self.assertEqual(WorksheetErrors.IllegalNameReport.header, rs.err.header, "incorrect error header")
         self.assertEqual("", rs.err.data.name, "incorrect error data")
 
     def test_renameWorksheetRs_NameOfOtherSheet(self):

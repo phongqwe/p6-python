@@ -1,4 +1,4 @@
-from bicp_document_structure.message.proto.Common_pb2 import NullableString
+from bicp_document_structure.communication.proto.Common_pb2 import NullableString
 
 
 class ProtoUtils:

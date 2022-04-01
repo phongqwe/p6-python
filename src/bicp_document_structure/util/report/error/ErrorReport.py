@@ -1,6 +1,6 @@
 from typing import Any
 
-from bicp_document_structure.message.proto.Common_pb2 import ErrorReportProto
+from bicp_document_structure.communication.proto.Common_pb2 import ErrorReportProto
 from bicp_document_structure.util.ToException import ToException
 from bicp_document_structure.util.ToJson import ToJson
 from bicp_document_structure.util.ToProto import ToProto

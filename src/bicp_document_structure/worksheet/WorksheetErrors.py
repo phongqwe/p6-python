@@ -1,13 +1,15 @@
 from bicp_document_structure.util.ToRepStr import ToRepStr
 
 from bicp_document_structure.util.report.error.ErrorHeader import ErrorHeader
+from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 
 WSErr = "WSErr"
 
 
 class WorksheetErrors:
-    class IllegalName:
+    class IllegalNameReport(ErrorReport):
         header = ErrorHeader(f"{WSErr}1", "Illegal worksheet name")
+
         class Data(ToRepStr):
             def __init__(self, name: str | None):
                 self.name: str | None = name
@@ -17,3 +19,8 @@ class WorksheetErrors:
                     return "Sheet can't be null"
                 else:
                     return "Sheet name must not be empty"
+
+        def __init__(self, name: str | None):
+            super().__init__(
+                WorksheetErrors.IllegalNameReport.header,
+                WorksheetErrors.IllegalNameReport.Data(name))

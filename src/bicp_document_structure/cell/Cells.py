@@ -8,7 +8,7 @@ from bicp_document_structure.cell.WriteBackCell import WriteBackCell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.cell_container.MutableCellContainer import MutableCellContainer
-from bicp_document_structure.message.event.P6Event import P6Event
+from bicp_document_structure.communication.event.P6Event import P6Event
 from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 
 

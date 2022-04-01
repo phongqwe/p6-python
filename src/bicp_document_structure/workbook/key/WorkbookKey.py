@@ -4,9 +4,9 @@ from typing import Tuple
 
 from google.protobuf.struct_pb2 import NullValue
 
-from bicp_document_structure.message.proto.Common_pb2 import NullableString
+from bicp_document_structure.communication.proto.Common_pb2 import NullableString
 
-from bicp_document_structure.message.proto.DocProto_pb2 import WorkbookKeyProto
+from bicp_document_structure.communication.proto.DocProto_pb2 import WorkbookKeyProto
 from bicp_document_structure.util.ToProto import ToProto, P
 
 

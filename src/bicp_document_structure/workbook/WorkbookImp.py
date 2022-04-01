@@ -147,8 +147,8 @@ class WorkbookImp(Workbook):
     def renameWorksheetRs(self, oldSheetNameOrIndex: str | int, newSheetName: str) -> Result[None, ErrorReport]:
         if len(newSheetName) == 0 or newSheetName is None:
             return Err(ErrorReport(
-                header = WorksheetErrors.IllegalName.header,
-                data = WorksheetErrors.IllegalName.Data(newSheetName)
+                header = WorksheetErrors.IllegalNameReport.header,
+                data = WorksheetErrors.IllegalNameReport.Data(newSheetName)
             ))
         targetSheet: Worksheet | None = self.getWorksheetOrNone(oldSheetNameOrIndex)
         if targetSheet is None:
@@ -199,6 +199,7 @@ class WorkbookImp(Workbook):
         self.workbookKey = WorkbookKeys.fromNameAndPath(newName, self.workbookKey.filePath)
 
     def _generateNewSheetName(self) -> str:
+        # TODO this generator function is inconsistent with the front end logic, fix it
         newSheetName = "Sheet" + str(self.__nameCount)
         while self.getWorksheetByNameOrNone(newSheetName) is not None:
             self.__nameCount += 1
@@ -207,6 +208,9 @@ class WorkbookImp(Workbook):
 
     def createNewWorksheetRs(self, newSheetName: Optional[str] = None) -> Result[Worksheet, ErrorReport]:
         if newSheetName is None:
+            newSheetName = self._generateNewSheetName()
+
+        if len(newSheetName) == 0:
             newSheetName = self._generateNewSheetName()
 
         if self.haveSheet(newSheetName):

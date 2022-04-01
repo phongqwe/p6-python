@@ -2,8 +2,8 @@ from typing import Callable
 
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.WrapperCell import WrapperCell
-from bicp_document_structure.message.event.P6Event import P6Event
-from bicp_document_structure.message.event.P6Events import P6Events
+from bicp_document_structure.communication.event.P6Event import P6Event
+from bicp_document_structure.communication.event.P6Events import P6Events
 
 
 class EventCell(WrapperCell):

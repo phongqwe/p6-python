@@ -2,9 +2,9 @@ import unittest
 
 from bicp_document_structure.app.GlobalScope import setIPythonGlobals
 from bicp_document_structure.app.UserFunctions import *
-from bicp_document_structure.message.event.P6Events import P6Events
-from bicp_document_structure.message.event.reactor.EventReactorFactory import EventReactorFactory
-from bicp_document_structure.message.event.reactor.eventData.CellEventData import CellEventData
+from bicp_document_structure.communication.event.P6Events import P6Events
+from bicp_document_structure.communication.event.reactor.EventReactorFactory import EventReactorFactory
+from bicp_document_structure.communication.event.reactor.eventData.CellEventData import CellEventData
 
 
 class UserFunctions_test(unittest.TestCase):

@@ -3,8 +3,8 @@ from pathlib import Path
 from unittest.mock import MagicMock
 
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
-from bicp_document_structure.message.event.P6Events import P6Events
-from bicp_document_structure.message.event.reactor.eventData.WorkbookEventData import WorkbookEventData
+from bicp_document_structure.communication.event.P6Events import P6Events
+from bicp_document_structure.communication.event.reactor.eventData.WorkbookEventData import WorkbookEventData
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Err import Err
 from bicp_document_structure.workbook.EventWorkbook import EventWorkbook
@@ -18,9 +18,9 @@ class EventWorkbook_test(unittest.TestCase):
         self.x = 0
         newName = "newName"
         oldName = "oldName"
-        self.eventData: WorkbookEventData[P6Events.Worksheet.Rename.Data] | None = None
+        self.eventData: WorkbookEventData[P6Events.Worksheet.Rename.Response] | None = None
 
-        def onWbEvent(eventData: WorkbookEventData[P6Events.Worksheet.Rename.Data]):
+        def onWbEvent(eventData: WorkbookEventData[P6Events.Worksheet.Rename.Response]):
             self.x = 1
             self.eventData = eventData
 
@@ -37,9 +37,9 @@ class EventWorkbook_test(unittest.TestCase):
         self.x = 0
         newName = "newName"
         oldName = "oldName"
-        self.eventData: WorkbookEventData[P6Events.Worksheet.Rename.Data] | None = None
+        self.eventData: WorkbookEventData[P6Events.Worksheet.Rename.Response] | None = None
 
-        def onWbEvent(eventData: WorkbookEventData[P6Events.Worksheet.Rename.Data]):
+        def onWbEvent(eventData: WorkbookEventData[P6Events.Worksheet.Rename.Response]):
             self.x = 1
             self.eventData = eventData
 
@@ -56,9 +56,9 @@ class EventWorkbook_test(unittest.TestCase):
         self.x = 0
         newName = "newName"
         oldName = "oldName"
-        self.eventData: WorkbookEventData[P6Events.Worksheet.Rename.Data] | None = None
+        self.eventData: WorkbookEventData[P6Events.Worksheet.Rename.Response] | None = None
 
-        def onWbEvent(eventData: WorkbookEventData[P6Events.Worksheet.Rename.Data]):
+        def onWbEvent(eventData: WorkbookEventData[P6Events.Worksheet.Rename.Response]):
             self.x = 1
             self.eventData = eventData
 
