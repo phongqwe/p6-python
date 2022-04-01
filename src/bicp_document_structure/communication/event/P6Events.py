@@ -24,7 +24,7 @@ class P6Events:
         ClearScriptResult = P6Event(f"{CE}3", MsgType.CellClearScriptResult.value)
 
         class Update:
-            event = P6Event(f"{CE}4", "cell update event")
+            event = P6Event(f"{CE}4", "cell update")
             Response = CellUpdateCommonResponse
             Request = CellUpdateRequest
 

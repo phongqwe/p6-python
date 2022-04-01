@@ -91,7 +91,11 @@ class AppImp(App):
             reactor = er.renameWorksheet())
         evSv.addReactor(
             event = P6Events.Workbook.CreateNewWorksheet.event,
-            reactor = er.createNewWorksheet()
+            reactor = er.createNewWorksheetReactor()
+        )
+        evSv.addReactor(
+            event = P6Events.Cell.Update.event,
+            reactor = er.cellUpdateValueReactor()
         )
 
     def initBaseReactor(self):

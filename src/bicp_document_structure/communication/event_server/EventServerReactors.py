@@ -4,6 +4,7 @@ from typing import Callable
 from bicp_document_structure.communication.event.P6Events import P6Events
 from bicp_document_structure.communication.event.data.response.RenameWorksheetData import RenameWorksheetResponseData
 from bicp_document_structure.communication.event.reactor.EventReactor import EventReactor
+from bicp_document_structure.communication.event_server.reactors.CellUpdateReactor import CellUpdateReactor
 from bicp_document_structure.communication.event_server.reactors.CreateNewWorksheetReactor import \
     CreateNewWorksheetReactor
 from bicp_document_structure.communication.proto.WorkbookProtos_pb2 import CreateNewWorksheetRequestProto
@@ -42,15 +43,13 @@ class EventServerReactors:
 
         self.__workbookReRun: WorkbookReactor | None = None
 
-    def createNewWorksheet(self) -> EventReactor[bytes, P6Events.Workbook.CreateNewWorksheet.Response]:
+    def createNewWorksheetReactor(self) -> EventReactor[bytes, P6Events.Workbook.CreateNewWorksheet.Response]:
         reactor = CreateNewWorksheetReactor(str(uuid.uuid4()),self._wbGetter)
         return reactor
 
-    # def cellUpdateValue(self) -> CellReactor:
-    #     if self.__cellUpdateValue is None:
-    #         event = P6Events.Cell.UpdateValueEvent
-    #         self.__cellUpdateValue = EventReactorFactory.makeCellReactor(partial(self.stdCallback, event))
-    #     return self.__cellUpdateValue
+    def cellUpdateValueReactor(self) -> CellUpdateReactor:
+        reactor = CellUpdateReactor(str(uuid.uuid4()),self._wbGetter)
+        return reactor
 
     # def cellUpdateScript(self) -> CellReactor:
     #     if self.__cellUpdateScript is None:

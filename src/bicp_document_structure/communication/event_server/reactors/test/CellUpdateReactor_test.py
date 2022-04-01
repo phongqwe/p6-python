@@ -87,7 +87,10 @@ class CellUpdateReactor_test(unittest.TestCase):
         self.assertFalse(outObj.isError)
         self.assertIsNone(outObj.errorReport)
         self.assertIsNotNone(outObj.newWorkbook)
+        outProto = (outObj.newWorkbook.toProtoObj())
+        print(outProto)
         self.assertEqual(3, outObj.newWorkbook.getWorksheetOrNone("Sheet1").cell((1, 1)).value)
+        self.assertEqual("3", outProto.worksheet[0].cell[0].displayValue)
 
 
 if __name__ == '__main__':
