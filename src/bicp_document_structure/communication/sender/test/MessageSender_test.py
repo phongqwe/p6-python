@@ -8,8 +8,8 @@ from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.communication.P6Message import P6Message
 from bicp_document_structure.communication.P6MessageHeader import P6MessageHeader
 from bicp_document_structure.communication.event.P6Events import P6Events
-from bicp_document_structure.communication.proto.DocProto_pb2 import CellProto
-from bicp_document_structure.communication.proto.P6MsgPM_pb2 import P6MessageProto
+from bicp_document_structure.communication.proto.DocProtos_pb2 import CellProto
+from bicp_document_structure.communication.proto.P6MsgProtos_pb2 import P6MessageProto
 from bicp_document_structure.communication.sender.MessageSender import MessageSender
 from bicp_document_structure.util.for_test.TestUtils import findNewSocketPort
 

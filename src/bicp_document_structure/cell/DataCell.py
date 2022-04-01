@@ -7,7 +7,7 @@ from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.util.CellUtil import convertExceptionToStr
 from bicp_document_structure.code_executor.CodeExecutor import CodeExecutor
 from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
-from bicp_document_structure.communication.proto.DocProto_pb2 import CellProto
+from bicp_document_structure.communication.proto.DocProtos_pb2 import CellProto
 from bicp_document_structure.util.Util import default
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Result import Result

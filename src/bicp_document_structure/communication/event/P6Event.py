@@ -1,6 +1,6 @@
 from bicp_document_structure.util.ToProto import ToProto, P
 
-from bicp_document_structure.communication.proto.P6MsgPM_pb2 import P6EventProto
+from bicp_document_structure.communication.proto.P6MsgProtos_pb2 import P6EventProto
 
 
 class P6Event(ToProto[P6EventProto]):

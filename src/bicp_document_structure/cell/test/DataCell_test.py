@@ -6,7 +6,7 @@ from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.EventCell import EventCell
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
-from bicp_document_structure.communication.proto.DocProto_pb2 import CellProto
+from bicp_document_structure.communication.proto.DocProtos_pb2 import CellProto
 from bicp_document_structure.util.Util import makeGetter
 from bicp_document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 

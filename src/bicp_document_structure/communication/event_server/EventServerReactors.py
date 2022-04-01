@@ -6,8 +6,8 @@ from bicp_document_structure.communication.event.data.response.RenameWorksheetDa
 from bicp_document_structure.communication.event.reactor.EventReactor import EventReactor
 from bicp_document_structure.communication.event_server.reactors.CreateNewWorksheetReactor import \
     CreateNewWorksheetReactor
-from bicp_document_structure.communication.proto.WorkbookProtoMsg_pb2 import CreateNewWorksheetRequestProto
-from bicp_document_structure.communication.proto.WorksheetProtoMsg_pb2 import RenameWorksheetResponseProto, \
+from bicp_document_structure.communication.proto.WorkbookProtos_pb2 import CreateNewWorksheetRequestProto
+from bicp_document_structure.communication.proto.WorksheetProtos_pb2 import RenameWorksheetResponseProto, \
     RenameWorksheetRequestProto
 
 from bicp_document_structure.communication.P6Message import P6Message

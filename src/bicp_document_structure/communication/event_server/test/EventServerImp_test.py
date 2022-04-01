@@ -7,8 +7,8 @@ from bicp_document_structure.communication.P6Message import P6Message
 from bicp_document_structure.communication.event_server.response.P6Response import P6Response
 from bicp_document_structure.communication.event.P6Events import P6Events
 from bicp_document_structure.communication.event.reactor.EventReactor import EventReactor
-from bicp_document_structure.communication.proto.Common_pb2 import ErrorReportProto
-from bicp_document_structure.communication.proto.P6MsgPM_pb2 import P6ResponseProto
+from bicp_document_structure.communication.proto.CommonProtos_pb2 import ErrorReportProto
+from bicp_document_structure.communication.proto.P6MsgProtos_pb2 import P6ResponseProto
 from bicp_document_structure.communication.event_server.EventServerErrors import EventServerErrors
 from bicp_document_structure.communication.event_server.EventServerImp import EventServerImp
 from bicp_document_structure.util.CommonError import CommonErrors

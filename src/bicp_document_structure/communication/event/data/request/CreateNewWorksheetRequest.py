@@ -1,4 +1,4 @@
-from bicp_document_structure.communication.proto.WorkbookProtoMsg_pb2 import CreateNewWorksheetRequestProto
+from bicp_document_structure.communication.proto.WorkbookProtos_pb2 import CreateNewWorksheetRequestProto
 from bicp_document_structure.util.ToProto import ToProto
 from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
 from bicp_document_structure.workbook.key.WorkbookKeys import WorkbookKeys

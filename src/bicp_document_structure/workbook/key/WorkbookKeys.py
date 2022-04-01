@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from bicp_document_structure.communication.proto.DocProto_pb2 import WorkbookKeyProto
+from bicp_document_structure.communication.proto.DocProtos_pb2 import WorkbookKeyProto
 from bicp_document_structure.util.ProtoUtils import ProtoUtils
 from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
 from bicp_document_structure.workbook.key.WorkbookKeyImp import WorkbookKeyImp

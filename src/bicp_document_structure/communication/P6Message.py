@@ -2,7 +2,7 @@ import uuid
 from typing import Any
 
 from bicp_document_structure.communication.P6MessageHeader import P6MessageHeader
-from bicp_document_structure.communication.proto.P6MsgPM_pb2 import P6MessageProto
+from bicp_document_structure.communication.proto.P6MsgProtos_pb2 import P6MessageProto
 from bicp_document_structure.util.ToProto import ToProto
 
 

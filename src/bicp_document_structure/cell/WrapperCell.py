@@ -3,7 +3,7 @@ from abc import ABC
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.CellJson import CellJson
 from bicp_document_structure.cell.address.CellAddress import CellAddress
-from bicp_document_structure.communication.proto.DocProto_pb2 import CellProto
+from bicp_document_structure.communication.proto.DocProtos_pb2 import CellProto
 
 
 class WrapperCell(Cell, ABC):

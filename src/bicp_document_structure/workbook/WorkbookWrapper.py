@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Union, Optional
 
 from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
-from bicp_document_structure.communication.proto.DocProto_pb2 import WorkbookProto
+from bicp_document_structure.communication.proto.DocProtos_pb2 import WorkbookProto
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.workbook.WorkBook import Workbook

@@ -6,7 +6,7 @@ from bicp_document_structure.communication.P6Message import P6Message
 from bicp_document_structure.communication.event.P6Events import P6Events
 from bicp_document_structure.communication.event.reactor.BaseReactor import BasicReactor
 from bicp_document_structure.communication.event_server.EventServerReactors import EventServerReactors
-from bicp_document_structure.communication.proto.WorksheetProtoMsg_pb2 import RenameWorksheetResponseProto, RenameWorksheetRequestProto
+from bicp_document_structure.communication.proto.WorksheetProtos_pb2 import RenameWorksheetResponseProto, RenameWorksheetRequestProto
 from bicp_document_structure.util.result.Ok import Ok
 from bicp_document_structure.workbook.WorkbookErrors import WorkbookErrors
 from bicp_document_structure.workbook.WorkbookImp import WorkbookImp

@@ -1,5 +1,5 @@
 from bicp_document_structure.communication.event.P6Event import P6Event
-from bicp_document_structure.communication.proto.P6MsgPM_pb2 import P6MessageHeaderProto
+from bicp_document_structure.communication.proto.P6MsgProtos_pb2 import P6MessageHeaderProto
 from bicp_document_structure.util.ToJson import ToJson
 from bicp_document_structure.util.ToProto import ToProto
 

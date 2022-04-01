@@ -3,7 +3,7 @@ from typing import Callable
 from bicp_document_structure.communication.event.P6Events import P6Events
 from bicp_document_structure.communication.event.reactor.BaseReactor import BasicReactor
 from bicp_document_structure.communication.event.reactor.EventReactor import EventReactor, I, O
-from bicp_document_structure.communication.proto.WorkbookProtoMsg_pb2 import CreateNewWorksheetRequestProto
+from bicp_document_structure.communication.proto.WorkbookProtos_pb2 import CreateNewWorksheetRequestProto
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.workbook.WorkBook import Workbook

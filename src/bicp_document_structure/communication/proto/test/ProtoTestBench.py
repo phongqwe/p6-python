@@ -1,6 +1,6 @@
 import unittest
 
-from bicp_document_structure.communication.proto.DocProto_pb2 import CellAddressProto
+from bicp_document_structure.communication.proto.DocProtos_pb2 import CellAddressProto
 
 
 class ProtoTestBench(unittest.TestCase):
