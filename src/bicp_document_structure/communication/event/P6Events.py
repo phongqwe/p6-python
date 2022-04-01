@@ -1,7 +1,7 @@
 from bicp_document_structure.communication.event.data.request.CreateNewWorksheetRequest import CreateNewWorksheetRequest
 from bicp_document_structure.communication.event.data.request.RenameWorksheetRequest import RenameWorksheetRequest
-from bicp_document_structure.communication.event.data.response.CreateNewWorksheetData import CreateNewWorksheetData
-from bicp_document_structure.communication.event.data.response.RenameWorksheetData import RenameWorksheetData
+from bicp_document_structure.communication.event.data.response.CreateNewWorksheetData import CreateNewWorksheetResponseData
+from bicp_document_structure.communication.event.data.response.RenameWorksheetData import RenameWorksheetResponseData
 
 from bicp_document_structure.communication.event.P6Event import P6Event
 from bicp_document_structure.communication.event.MsgType import MsgType
@@ -25,7 +25,7 @@ class P6Events:
         ReRun = P6Event(f"{WSE}0", MsgType.WorksheetReRun.value)
         class Rename:
             event = P6Event(f"{WSE}1","rename worksheet")
-            Response = RenameWorksheetData
+            Response = RenameWorksheetResponseData
             Request = RenameWorksheetRequest
 
 
@@ -38,7 +38,7 @@ class P6Events:
         RemoveWorksheet = P6Event(f"{WBE}1","remove worksheet")
         class CreateNewWorksheet:
             event = P6Event(f"{WBE}3","create new worksheet")
-            Response = CreateNewWorksheetData
+            Response = CreateNewWorksheetResponseData
             Request = CreateNewWorksheetRequest
 
     class EventServer:

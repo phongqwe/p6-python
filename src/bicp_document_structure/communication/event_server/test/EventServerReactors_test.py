@@ -6,7 +6,7 @@ from bicp_document_structure.communication.P6Message import P6Message
 from bicp_document_structure.communication.event.P6Events import P6Events
 from bicp_document_structure.communication.event.reactor.BaseReactor import BasicReactor
 from bicp_document_structure.communication.event_server.EventServerReactors import EventServerReactors
-from bicp_document_structure.communication.proto.WorksheetProtoMsg_pb2 import RenameWorksheetProto, RenameWorksheetRequestProto
+from bicp_document_structure.communication.proto.WorksheetProtoMsg_pb2 import RenameWorksheetResponseProto, RenameWorksheetRequestProto
 from bicp_document_structure.util.result.Ok import Ok
 from bicp_document_structure.workbook.WorkbookErrors import WorkbookErrors
 from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
@@ -26,7 +26,7 @@ class EventServerReactors_test(unittest.TestCase):
         self.er = EventServerReactors(wbGetter)
 
     def test_renameReactor_Ok(self):
-        reactor: BasicReactor[P6Message, RenameWorksheetProto] = self.er.renameWorksheet()
+        reactor: BasicReactor[P6Message, RenameWorksheetResponseProto] = self.er.renameWorksheet()
         inputData = RenameWorksheetRequestProto()
         inputData.workbookKey.CopyFrom(WorkbookKeys.fromNameAndPath("Book1", None).toProtoObj())
         inputData.oldName = self.s1.name
@@ -40,7 +40,7 @@ class EventServerReactors_test(unittest.TestCase):
         self.assertEqual(out.workbookKey, self.wb.workbookKey)
 
     def test_renameReactor_Fail_EmpyNewName(self):
-        reactor: BasicReactor[P6Message, RenameWorksheetProto] = self.er.renameWorksheet()
+        reactor: BasicReactor[P6Message, RenameWorksheetResponseProto] = self.er.renameWorksheet()
         inputData = RenameWorksheetRequestProto()
         inputData.workbookKey.CopyFrom(WorkbookKeys.fromNameAndPath("Book1", None).toProtoObj())
         inputData.oldName = self.s1.name
@@ -56,7 +56,7 @@ class EventServerReactors_test(unittest.TestCase):
         self.assertEqual(WorksheetErrors.IllegalNameReport.header, errReport.header)
 
     def test_renameReactor_Fail_CollidingName(self):
-        reactor: BasicReactor[P6Message, RenameWorksheetProto] = self.er.renameWorksheet()
+        reactor: BasicReactor[P6Message, RenameWorksheetResponseProto] = self.er.renameWorksheet()
         inputData = RenameWorksheetRequestProto()
         inputData.workbookKey.CopyFrom(self.wb.workbookKey.toProtoObj())
         inputData.oldName = self.s1.name

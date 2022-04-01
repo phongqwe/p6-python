@@ -16,12 +16,12 @@ from . import Common_pb2 as Common__pb2
 from . import DocProto_pb2 as DocProto__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x16WorkbookProtoMsg.proto\x12\x19\x63om.emeraldblast.p6.proto\x1a\x0c\x43ommon.proto\x1a\x0e\x44ocProto.proto\"|\n\x1e\x43reateNewWorksheetRequestProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x18\n\x10newWorksheetName\x18\x02 \x01(\t\"\xc8\x01\n\x17\x43reateNewWorksheetProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x18\n\x10newWorksheetName\x18\x02 \x01(\t\x12\x0f\n\x07isError\x18\x03 \x01(\x08\x12@\n\x0b\x65rrorReport\x18\x04 \x01(\x0b\x32+.com.emeraldblast.p6.proto.ErrorReportProtob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x16WorkbookProtoMsg.proto\x12\x19\x63om.emeraldblast.p6.proto\x1a\x0c\x43ommon.proto\x1a\x0e\x44ocProto.proto\"|\n\x1e\x43reateNewWorksheetRequestProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x18\n\x10newWorksheetName\x18\x02 \x01(\t\"\xd0\x01\n\x1f\x43reateNewWorksheetResponseProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x18\n\x10newWorksheetName\x18\x02 \x01(\t\x12\x0f\n\x07isError\x18\x03 \x01(\x08\x12@\n\x0b\x65rrorReport\x18\x04 \x01(\x0b\x32+.com.emeraldblast.p6.proto.ErrorReportProtob\x06proto3')
 
 
 
 _CREATENEWWORKSHEETREQUESTPROTO = DESCRIPTOR.message_types_by_name['CreateNewWorksheetRequestProto']
-_CREATENEWWORKSHEETPROTO = DESCRIPTOR.message_types_by_name['CreateNewWorksheetProto']
+_CREATENEWWORKSHEETRESPONSEPROTO = DESCRIPTOR.message_types_by_name['CreateNewWorksheetResponseProto']
 CreateNewWorksheetRequestProto = _reflection.GeneratedProtocolMessageType('CreateNewWorksheetRequestProto', (_message.Message,), {
   'DESCRIPTOR' : _CREATENEWWORKSHEETREQUESTPROTO,
   '__module__' : 'WorkbookProtoMsg_pb2'
@@ -29,18 +29,18 @@ CreateNewWorksheetRequestProto = _reflection.GeneratedProtocolMessageType('Creat
   })
 _sym_db.RegisterMessage(CreateNewWorksheetRequestProto)
 
-CreateNewWorksheetProto = _reflection.GeneratedProtocolMessageType('CreateNewWorksheetProto', (_message.Message,), {
-  'DESCRIPTOR' : _CREATENEWWORKSHEETPROTO,
+CreateNewWorksheetResponseProto = _reflection.GeneratedProtocolMessageType('CreateNewWorksheetResponseProto', (_message.Message,), {
+  'DESCRIPTOR' : _CREATENEWWORKSHEETRESPONSEPROTO,
   '__module__' : 'WorkbookProtoMsg_pb2'
-  # @@protoc_insertion_point(class_scope:com.emeraldblast.p6.proto.CreateNewWorksheetProto)
+  # @@protoc_insertion_point(class_scope:com.emeraldblast.p6.proto.CreateNewWorksheetResponseProto)
   })
-_sym_db.RegisterMessage(CreateNewWorksheetProto)
+_sym_db.RegisterMessage(CreateNewWorksheetResponseProto)
 
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   _CREATENEWWORKSHEETREQUESTPROTO._serialized_start=83
   _CREATENEWWORKSHEETREQUESTPROTO._serialized_end=207
-  _CREATENEWWORKSHEETPROTO._serialized_start=210
-  _CREATENEWWORKSHEETPROTO._serialized_end=410
+  _CREATENEWWORKSHEETRESPONSEPROTO._serialized_start=210
+  _CREATENEWWORKSHEETRESPONSEPROTO._serialized_end=418
 # @@protoc_insertion_point(module_scope)

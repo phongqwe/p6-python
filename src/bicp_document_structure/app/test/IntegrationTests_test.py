@@ -7,9 +7,9 @@ from bicp_document_structure.app.GlobalScope import setIPythonGlobals
 from bicp_document_structure.app.UserFunctions import *
 # these 2 imports must be keep for the formula script to be able to run
 from bicp_document_structure.app.worksheet_functions.WorksheetFunctions import WorksheetFunctions
-from bicp_document_structure.communication.proto.WorkbookProtoMsg_pb2 import CreateNewWorksheetProto
 from bicp_document_structure.communication.proto.P6MsgPM_pb2 import P6MessageProto, P6ResponseProto
-from bicp_document_structure.communication.proto.WorksheetProtoMsg_pb2 import RenameWorksheetProto
+from bicp_document_structure.communication.proto.WorkbookProtoMsg_pb2 import CreateNewWorksheetResponseProto
+from bicp_document_structure.communication.proto.WorksheetProtoMsg_pb2 import RenameWorksheetResponseProto
 from bicp_document_structure.util.ProtoUtils import ProtoUtils
 from bicp_document_structure.util.for_test.TestUtils import findNewSocketPort, startREPServerOnThread, sendClose
 from bicp_document_structure.workbook.key.WorkbookKeys import WorkbookKeys
@@ -59,7 +59,7 @@ class IntegrationTest_test(unittest.TestCase):
         def onReceive(rawMsg):
             msg = P6ResponseProto()
             msg.ParseFromString(rawMsg)
-            protoObj = CreateNewWorksheetProto()
+            protoObj = CreateNewWorksheetResponseProto()
             protoObj.ParseFromString(msg.data)
             self.assertEqual("SheetX", protoObj.newWorksheetName)
             print(protoObj)
@@ -102,7 +102,7 @@ class IntegrationTest_test(unittest.TestCase):
         def onReceive(data):
             msg = P6ResponseProto()
             msg.ParseFromString(data)
-            dataObj = RenameWorksheetProto()
+            dataObj = RenameWorksheetResponseProto()
             dataObj.ParseFromString(msg.data)
             self.assertEqual("Sheet1", dataObj.oldName)
             self.assertEqual("Sheet1x", dataObj.newName)

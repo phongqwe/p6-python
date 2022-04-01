@@ -1,6 +1,6 @@
 import unittest
 
-from bicp_document_structure.communication.proto.WorkbookProtoMsg_pb2 import CreateNewWorksheetProto
+from bicp_document_structure.communication.proto.WorkbookProtoMsg_pb2 import RenameWorksheetResponseProto
 
 
 class Bench(unittest.TestCase):

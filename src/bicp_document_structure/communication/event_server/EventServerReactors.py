@@ -2,12 +2,12 @@ import uuid
 from typing import Callable
 
 from bicp_document_structure.communication.event.P6Events import P6Events
-from bicp_document_structure.communication.event.data.response.RenameWorksheetData import RenameWorksheetData
+from bicp_document_structure.communication.event.data.response.RenameWorksheetData import RenameWorksheetResponseData
 from bicp_document_structure.communication.event.reactor.EventReactor import EventReactor
 from bicp_document_structure.communication.event_server.reactors.CreateNewWorksheetReactor import \
     CreateNewWorksheetReactor
 from bicp_document_structure.communication.proto.WorkbookProtoMsg_pb2 import CreateNewWorksheetRequestProto
-from bicp_document_structure.communication.proto.WorksheetProtoMsg_pb2 import RenameWorksheetProto, \
+from bicp_document_structure.communication.proto.WorksheetProtoMsg_pb2 import RenameWorksheetResponseProto, \
     RenameWorksheetRequestProto
 
 from bicp_document_structure.communication.P6Message import P6Message
@@ -37,7 +37,7 @@ class EventServerReactors:
         self.__rangeReRun: RangeReactor | None = None
 
         self.__worksheetReRun: WorksheetReactor | None = None
-        self.__worksheetRenameReactor: WorkbookReactor[P6Message, RenameWorksheetProto] | None = None
+        self.__worksheetRenameReactor: WorkbookReactor[P6Message, RenameWorksheetResponseProto] | None = None
         self.__worksheetRenameFail: WorksheetReactor | None = None
 
         self.__workbookReRun: WorkbookReactor | None = None
@@ -85,9 +85,9 @@ class EventServerReactors:
     #     return self.__worksheetReRun
     #
 
-    def renameWorksheet(self) -> EventReactor[bytes, RenameWorksheetData]:
+    def renameWorksheet(self) -> EventReactor[bytes, RenameWorksheetResponseData]:
         if self.__worksheetRenameReactor is None:
-            def cb(data:bytes) -> RenameWorksheetProto:
+            def cb(data:bytes) -> RenameWorksheetResponseProto:
                 # receive = p6Msg.data
 
                 protoRequest = RenameWorksheetRequestProto()
@@ -103,7 +103,7 @@ class EventServerReactors:
                     wb: Workbook = getWbRs.value
                     renameRs: Result[None, ErrorReport] = wb.renameWorksheetRs(oldName, newName)
                     if renameRs.isOk():
-                        out = RenameWorksheetData(
+                        out = RenameWorksheetResponseData(
                             workbookKey = wbKey,
                             oldName = oldName,
                             newName = newName,
@@ -112,7 +112,7 @@ class EventServerReactors:
                         )
                         return out
                     else:
-                        out = RenameWorksheetData(
+                        out = RenameWorksheetResponseData(
                             workbookKey = wbKey,
                             oldName = oldName,
                             newName = newName,
@@ -121,7 +121,7 @@ class EventServerReactors:
                         )
                         return out
                 else:
-                    out = RenameWorksheetData(
+                    out = RenameWorksheetResponseData(
                         workbookKey = wbKey,
                         newName = newName,
                         oldName = oldName,
