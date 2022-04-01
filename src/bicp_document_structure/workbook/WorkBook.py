@@ -29,13 +29,7 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
 
     def toProtoObj(self) -> WorkbookProto:
         rt = WorkbookProto()
-        rt.name = default(self.name, "")
-        pathStr = NullableString()
-        if self.path is None:
-            pathStr.null = NullValue.NULL_VALUE
-        else:
-            pathStr.str = str(self.path.absolute())
-        rt.path.CopyFrom(pathStr)
+        rt.workbookKey.CopyFrom(self.workbookKey.toProtoObj())
         sheets = []
         for sheet in self.worksheets:
             sheets.append(sheet.toProtoObj())

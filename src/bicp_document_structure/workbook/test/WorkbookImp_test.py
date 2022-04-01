@@ -19,15 +19,15 @@ class WorkbookImp_test(unittest.TestCase):
     def test_toProtoObj(self):
         s1, s2, s3, w1, d = self.makeTestObj()
         o = w1.toProtoObj()
-        self.assertEqual(w1.name, o.name)
-        self.assertEqual("null", o.path.WhichOneof("kind"))
+        self.assertEqual(w1.name, o.workbookKey.name)
+        self.assertEqual("null", o.workbookKey.path.WhichOneof("kind"))
         self.assertEqual(s1.toProtoObj(), o.worksheet[0])
         self.assertEqual(s2.toProtoObj(), o.worksheet[1])
         self.assertEqual(s3.toProtoObj(), o.worksheet[2])
         w1.path = Path("someFile.qwe")
         o2 = w1.toProtoObj()
-        self.assertEqual("str", o2.path.WhichOneof("kind"))
-        self.assertEqual(str(w1.path.absolute()), o2.path.str)
+        self.assertEqual("str", o2.workbookKey.path.WhichOneof("kind"))
+        self.assertEqual(str(w1.path.absolute()), o2.workbookKey.path.str)
 
     @staticmethod
     def transGetter(name):

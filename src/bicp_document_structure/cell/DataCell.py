@@ -56,9 +56,9 @@ class DataCell(Cell):
         cellProto = CellProto()
         cellProto.address.CopyFrom(self.address.toProtoObj())
         if self.__value is not None:
-            cellProto.value = str(self.__value)
+            cellProto.displayValue = str(self.__value)
         else:
-            cellProto.value = ""
+            cellProto.displayValue = ""
 
         cellProto.script = default(self.__script,"")
         cellProto.formula = default(self.__formula,"")

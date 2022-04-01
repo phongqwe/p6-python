@@ -4,6 +4,7 @@ from typing import Union
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.address.CellAddressJson import CellAddressJson
 from bicp_document_structure.cell.address.CellIndex import CellIndex
+from bicp_document_structure.communication.proto.DocProtos_pb2 import CellAddressProto
 from bicp_document_structure.util.AlphabetBaseNumberSystem import AlphabetBaseNumberSystem
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Err import Err
@@ -13,6 +14,11 @@ from bicp_document_structure.util.result.Result import Result
 
 class CellAddresses:
     __labelPattern = re.compile("@[A-Za-z]+[1-9][0-9]*")
+
+
+    @staticmethod
+    def fromProto(proto:CellAddressProto):
+        return CellIndex(proto.col, proto.row)
 
     @staticmethod
     def addressFromJson(json: Union[CellAddressJson, str]) -> CellAddress:
@@ -42,7 +48,13 @@ class CellAddresses:
 
     @staticmethod
     def zero() -> CellAddress:
+        """A special, invalid cell address"""
         return CellIndex(0, 0)
+
+    @staticmethod
+    def fromRowCol(row:int,col:int) -> CellAddress:
+        """A special, invalid cell address"""
+        return CellIndex(col, row)
 
     @staticmethod
     def __checkCellAddressFormat(address: str) -> Result[None, ErrorReport]:

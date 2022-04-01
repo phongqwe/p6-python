@@ -16,31 +16,31 @@ from . import CommonProtos_pb2 as CommonProtos__pb2
 from . import DocProtos_pb2 as DocProtos__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10\x43\x65llProtos.proto\x12\x19\x63om.emeraldblast.p6.proto\x1a\x12\x43ommonProtos.proto\x1a\x0f\x44ocProtos.proto\"\xc7\x01\n\x1b\x43\x65llUpdateValueRequestProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x02 \x01(\t\x12@\n\x0b\x63\x65llAddress\x18\x03 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\x12\r\n\x05value\x18\x04 \x01(\t\"\xf8\x01\n\x1c\x43\x65llUpdateValueResponseProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x02 \x01(\t\x12@\n\x0b\x63\x65llAddress\x18\x03 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\x12=\n\x0bnewWorkbook\x18\x04 \x01(\x0b\x32(.com.emeraldblast.p6.proto.WorkbookProtob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10\x43\x65llProtos.proto\x12\x19\x63om.emeraldblast.p6.proto\x1a\x12\x43ommonProtos.proto\x1a\x0f\x44ocProtos.proto\"\xd3\x01\n\x16\x43\x65llUpdateRequestProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x02 \x01(\t\x12@\n\x0b\x63\x65llAddress\x18\x03 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\x12\r\n\x05value\x18\x04 \x01(\t\x12\x0f\n\x07\x66ormula\x18\x05 \x01(\t\"\xb1\x01\n\x1d\x43\x65llUpdateCommonResponseProto\x12=\n\x0bnewWorkbook\x18\x01 \x01(\x0b\x32(.com.emeraldblast.p6.proto.WorkbookProto\x12\x0f\n\x07isError\x18\x02 \x01(\x08\x12@\n\x0b\x65rrorReport\x18\x03 \x01(\x0b\x32+.com.emeraldblast.p6.proto.ErrorReportProtob\x06proto3')
 
 
 
-_CELLUPDATEVALUEREQUESTPROTO = DESCRIPTOR.message_types_by_name['CellUpdateValueRequestProto']
-_CELLUPDATEVALUERESPONSEPROTO = DESCRIPTOR.message_types_by_name['CellUpdateValueResponseProto']
-CellUpdateValueRequestProto = _reflection.GeneratedProtocolMessageType('CellUpdateValueRequestProto', (_message.Message,), {
-  'DESCRIPTOR' : _CELLUPDATEVALUEREQUESTPROTO,
+_CELLUPDATEREQUESTPROTO = DESCRIPTOR.message_types_by_name['CellUpdateRequestProto']
+_CELLUPDATECOMMONRESPONSEPROTO = DESCRIPTOR.message_types_by_name['CellUpdateCommonResponseProto']
+CellUpdateRequestProto = _reflection.GeneratedProtocolMessageType('CellUpdateRequestProto', (_message.Message,), {
+  'DESCRIPTOR' : _CELLUPDATEREQUESTPROTO,
   '__module__' : 'CellProtos_pb2'
-  # @@protoc_insertion_point(class_scope:com.emeraldblast.p6.proto.CellUpdateValueRequestProto)
+  # @@protoc_insertion_point(class_scope:com.emeraldblast.p6.proto.CellUpdateRequestProto)
   })
-_sym_db.RegisterMessage(CellUpdateValueRequestProto)
+_sym_db.RegisterMessage(CellUpdateRequestProto)
 
-CellUpdateValueResponseProto = _reflection.GeneratedProtocolMessageType('CellUpdateValueResponseProto', (_message.Message,), {
-  'DESCRIPTOR' : _CELLUPDATEVALUERESPONSEPROTO,
+CellUpdateCommonResponseProto = _reflection.GeneratedProtocolMessageType('CellUpdateCommonResponseProto', (_message.Message,), {
+  'DESCRIPTOR' : _CELLUPDATECOMMONRESPONSEPROTO,
   '__module__' : 'CellProtos_pb2'
-  # @@protoc_insertion_point(class_scope:com.emeraldblast.p6.proto.CellUpdateValueResponseProto)
+  # @@protoc_insertion_point(class_scope:com.emeraldblast.p6.proto.CellUpdateCommonResponseProto)
   })
-_sym_db.RegisterMessage(CellUpdateValueResponseProto)
+_sym_db.RegisterMessage(CellUpdateCommonResponseProto)
 
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _CELLUPDATEVALUEREQUESTPROTO._serialized_start=85
-  _CELLUPDATEVALUEREQUESTPROTO._serialized_end=284
-  _CELLUPDATEVALUERESPONSEPROTO._serialized_start=287
-  _CELLUPDATEVALUERESPONSEPROTO._serialized_end=535
+  _CELLUPDATEREQUESTPROTO._serialized_start=85
+  _CELLUPDATEREQUESTPROTO._serialized_end=296
+  _CELLUPDATECOMMONRESPONSEPROTO._serialized_start=299
+  _CELLUPDATECOMMONRESPONSEPROTO._serialized_end=476
 # @@protoc_insertion_point(module_scope)

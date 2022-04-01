@@ -16,7 +16,7 @@ class DataCellTest(unittest.TestCase):
         c1 = DataCell(CellIndex(1, 1), MagicMock(), 123, "formula", "script")
         o = c1.toProtoObj()
         self.assertEqual(c1.address.toProtoObj(), o.address)
-        self.assertEqual("123", o.value)
+        self.assertEqual("123", o.displayValue)
         self.assertEqual("script", o.script)
         self.assertEqual("formula", o.formula)
 
@@ -24,7 +24,7 @@ class DataCellTest(unittest.TestCase):
         c1 = DataCell(CellIndex(1, 1), MagicMock())
         o = c1.toProtoObj()
         self.assertEqual(c1.address.toProtoObj(), o.address)
-        self.assertEqual("", o.value)
+        self.assertEqual("", o.displayValue)
         self.assertEqual("", o.script)
         self.assertEqual("", o.formula)
         bt1 = c1.toProtoBytes()

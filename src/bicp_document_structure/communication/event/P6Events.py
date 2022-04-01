@@ -1,5 +1,7 @@
+from bicp_document_structure.communication.event.data.request.CellUpdateRequest import CellUpdateRequest
 from bicp_document_structure.communication.event.data.request.CreateNewWorksheetRequest import CreateNewWorksheetRequest
 from bicp_document_structure.communication.event.data.request.RenameWorksheetRequest import RenameWorksheetRequest
+from bicp_document_structure.communication.event.data.response.CellUpdateCommonResponse import CellUpdateCommonResponse
 from bicp_document_structure.communication.event.data.response.CreateNewWorksheetData import CreateNewWorksheetResponseData
 from bicp_document_structure.communication.event.data.response.RenameWorksheetData import RenameWorksheetResponseData
 
@@ -20,6 +22,11 @@ class P6Events:
         UpdateScript = P6Event(f"{CE}1", MsgType.CellUpdateScript.value)
         UpdateFormula = P6Event(f"{CE}2", MsgType.CellUpdateFormula.value)
         ClearScriptResult = P6Event(f"{CE}3", MsgType.CellClearScriptResult.value)
+
+        class Update:
+            event = P6Event(f"{CE}4", "cell update event")
+            Response = CellUpdateCommonResponse
+            Request = CellUpdateRequest
 
     class Worksheet:
         ReRun = P6Event(f"{WSE}0", MsgType.WorksheetReRun.value)
