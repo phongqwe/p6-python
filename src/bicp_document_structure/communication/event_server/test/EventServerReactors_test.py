@@ -1,9 +1,6 @@
 import unittest
 
-from bicp_document_structure.app.GlobalScope import setIPythonGlobals
-from bicp_document_structure.app.UserFunctions import startApp, restartApp, getApp, getActiveWorkbook, getWorkbook
-from bicp_document_structure.communication.P6Message import P6Message
-from bicp_document_structure.communication.event.P6Events import P6Events
+from bicp_document_structure.communication.event_server.msg.P6Message import P6Message
 from bicp_document_structure.communication.event.reactor.BaseReactor import BasicReactor
 from bicp_document_structure.communication.event_server.EventServerReactors import EventServerReactors
 from bicp_document_structure.communication.proto.WorksheetProtos_pb2 import RenameWorksheetResponseProto, RenameWorksheetRequestProto

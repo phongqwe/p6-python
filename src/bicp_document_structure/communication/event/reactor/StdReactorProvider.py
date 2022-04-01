@@ -2,8 +2,9 @@ import uuid
 from functools import partial
 from typing import Callable, Any
 
-from bicp_document_structure.communication.P6Message import P6Message
-from bicp_document_structure.communication.P6MessageHeader import P6MessageHeader
+from bicp_document_structure.communication.event_server.msg.P6Message import P6Message
+from bicp_document_structure.communication.event_server.msg.P6MessageHeader import P6MessageHeader
+from bicp_document_structure.communication.event.reactor.eventData.CellEventData import CellEventData
 from bicp_document_structure.communication.event_server.response.P6Response import P6Response
 from bicp_document_structure.communication.SocketProvider import SocketProvider
 from bicp_document_structure.communication.event.P6Event import P6Event
@@ -68,11 +69,13 @@ class StdReactorProvider(ReactorProvider):
         return reactor
 
     def cellUpdateValue(self) -> CellReactor:
-        if self.__cellUpdateValue is None:
-            event = P6Events.Cell.UpdateValueEvent
-            self.__cellUpdateValue = EventReactorFactory.makeCellReactor(partial(self.stdCallback, event))
-        return self.__cellUpdateValue
+        # if self.__cellUpdateValue is None:
+        #     event = P6Events.Cell.Update.event
+        #     self.__cellUpdateValue = EventReactorFactory.makeCellReactor(partial(self.stdCallback, event))
+        # return self.__cellUpdateValue
         # raise NotImplementedError()
+        def cb(cellEventData:CellEventData):
+            pass
 
     def cellUpdateScript(self) -> CellReactor:
         if self.__cellUpdateScript is None:
@@ -155,13 +158,6 @@ class StdReactorProvider(ReactorProvider):
             data = data
         )
         return res
-        # msg = P6Message(
-        #     header = P6MessageHeader(
-        #         msgId = str(uuid.uuid4()),
-        #         eventType = event,
-        #     ),
-        #     data = data)
-        # return msg
     @staticmethod
     def __createP6Msg(event,data:Any,):
         msg = P6Message(

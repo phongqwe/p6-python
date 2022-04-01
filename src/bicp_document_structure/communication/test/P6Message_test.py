@@ -1,12 +1,10 @@
 import unittest
 
-from bicp_document_structure.cell.CellJson import CellJson
 from bicp_document_structure.cell.DataCell import DataCell
-from bicp_document_structure.cell.address.CellAddressJson import CellAddressJson
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.communication.event.P6Events import P6Events
-from bicp_document_structure.communication.P6Message import P6Message
-from bicp_document_structure.communication.P6MessageHeader import P6MessageHeader
+from bicp_document_structure.communication.event_server.msg.P6Message import P6Message
+from bicp_document_structure.communication.event_server.msg.P6MessageHeader import P6MessageHeader
 from bicp_document_structure.communication.proto.P6MsgProtos_pb2 import P6MessageProto
 
 

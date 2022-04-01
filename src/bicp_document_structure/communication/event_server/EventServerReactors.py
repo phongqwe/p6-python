@@ -7,12 +7,10 @@ from bicp_document_structure.communication.event.reactor.EventReactor import Eve
 from bicp_document_structure.communication.event_server.reactors.CellUpdateReactor import CellUpdateReactor
 from bicp_document_structure.communication.event_server.reactors.CreateNewWorksheetReactor import \
     CreateNewWorksheetReactor
-from bicp_document_structure.communication.proto.WorkbookProtos_pb2 import CreateNewWorksheetRequestProto
 from bicp_document_structure.communication.proto.WorksheetProtos_pb2 import RenameWorksheetResponseProto, \
     RenameWorksheetRequestProto
 
-from bicp_document_structure.communication.P6Message import P6Message
-from bicp_document_structure.communication.event.reactor.BaseReactor import BasicReactor
+from bicp_document_structure.communication.event_server.msg.P6Message import P6Message
 from bicp_document_structure.communication.event.reactor.CellReactor import CellReactor
 from bicp_document_structure.communication.event.reactor.EventReactorFactory import EventReactorFactory
 from bicp_document_structure.communication.event.reactor.RangeReactor import RangeReactor
@@ -22,7 +20,6 @@ from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
-from bicp_document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 
 
 class EventServerReactors:

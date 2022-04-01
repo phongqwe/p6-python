@@ -1,6 +1,6 @@
 import unittest
 
-from bicp_document_structure.communication.P6MessageHeader import P6MessageHeader
+from bicp_document_structure.communication.event_server.msg.P6MessageHeader import P6MessageHeader
 from bicp_document_structure.communication.event_server.response.P6Response import P6Response
 from bicp_document_structure.communication.event.P6Events import P6Events
 

@@ -2,7 +2,7 @@ import threading
 
 import zmq
 
-from bicp_document_structure.communication.P6Message import P6Message
+from bicp_document_structure.communication.event_server.msg.P6Message import P6Message
 from bicp_document_structure.communication.event_server.response.P6Response import P6Response
 from bicp_document_structure.communication.event.P6Event import P6Event
 from bicp_document_structure.communication.event.P6Events import P6Events

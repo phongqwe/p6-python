@@ -2,7 +2,6 @@ import zmq
 from bicp_document_structure.util.ToProto import ToProto
 from zmq import Socket
 
-from bicp_document_structure.communication.P6Message import P6Message
 from bicp_document_structure.communication.sender.MessageSenderErrors import MessageSenderErrors
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Err import Err

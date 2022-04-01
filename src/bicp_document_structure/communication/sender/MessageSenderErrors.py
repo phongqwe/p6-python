@@ -1,6 +1,6 @@
 import json
 
-from bicp_document_structure.communication.P6Message import P6Message
+from bicp_document_structure.communication.event_server.msg.P6Message import P6Message
 from bicp_document_structure.util.report.error.ErrorHeader import ErrorHeader
 
 errPrefix = "MessageSenderError "

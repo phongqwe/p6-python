@@ -21,7 +21,7 @@ class EventCell(WrapperCell):
     def value(self, newValue):
         self._innerCell.value = newValue
         if self.__onCellEvent is not None:
-            self.__onCellEvent(self._innerCell, P6Events.Cell.UpdateValueEvent)
+            self.__onCellEvent(self._innerCell, P6Events.Cell.Update.event)
 
     @WrapperCell.script.setter
     def script(self, newScript: str):
@@ -33,7 +33,7 @@ class EventCell(WrapperCell):
         if self.script is not None:
             super().runScript(globalScope, localScope)
             if self.__onCellEvent is not None:
-                self.__onCellEvent(self._innerCell, P6Events.Cell.UpdateValueEvent)
+                self.__onCellEvent(self._innerCell, P6Events.Cell.Update.event)
 
     def setScriptAndRun(self, newScript, globalScope = None, localScope = None):
         self._innerCell.script = newScript
