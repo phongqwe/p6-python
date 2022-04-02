@@ -6,12 +6,9 @@ from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from bicp_document_structure.communication.event.P6Event import P6Event
 from bicp_document_structure.workbook.WorkBook import Workbook
-from bicp_document_structure.workbook.WorkbookErrors import WorkbookErrors
 from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
 from bicp_document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from bicp_document_structure.worksheet.Worksheet import Worksheet
-from bicp_document_structure.worksheet.WorksheetErrors import WorksheetErrors
-from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 
 class WorkbookImp_test(unittest.TestCase):
@@ -36,54 +33,7 @@ class WorkbookImp_test(unittest.TestCase):
         s3 = w1.createNewWorksheet("s3")
         return s1,s2,s3,w1
 
-    def test_rename(self):
-        s1, s2, s3, w = self.makeTestObj()
-        oldName = s1.name
-        newName = "newS1"
-        w.renameWorksheet(s1.name, newName)
-        self.assertEqual(newName, s1.name)
-        self.assertIsNone(w.getWorksheetOrNone(oldName))
-        self.assertIsNotNone(w.getWorksheetOrNone(newName))
-        with self.assertRaises(Exception):
-            self.assertIsNone(w.getTranslator(oldName))
-        self.assertIsNotNone(w.getTranslator(newName))
-        self.assertIsNotNone(s1.translator)
-        # ensure that sheet index is not changed after name changed
-        self.assertEqual(w.getWorksheetByIndex(0).name, newName)
 
-    def test_renameWorksheetRs_Ok(self):
-        s1, s2, s3, w = self.makeTestObj()
-        newName = "newS1"
-        rs = w.renameWorksheetRs(s1.name, newName)
-        self.assertTrue(rs.isOk())
-        self.assertEqual(newName, s1.name, "Worksheet name is not the new name")
-        self.assertEqual(s1, w.getWorksheet(0), "Worksheet index was affected by changing name")
-
-    def test_renameWorksheetRs_InvalidTarget(self):
-        s1, s2, s3, w = self.makeTestObj()
-        rs = w.renameWorksheetRs("invalid name", "new Name")
-        self.assertTrue(rs.isErr())
-        self.assertEqual(WorkbookErrors.WorksheetNotExistReport.header, rs.err.header, "incorrect error header")
-        self.assertEqual("invalid name", rs.err.data.name, "incorrect error data")
-
-    def test_renameWorksheetRs_InvalidNewName(self):
-        s1, s2, s3, w = self.makeTestObj()
-        rs = w.renameWorksheetRs(s1.name,"")
-        self.assertTrue(rs.isErr())
-        self.assertEqual(WorksheetErrors.IllegalNameReport.header, rs.err.header, "incorrect error header")
-        self.assertEqual("", rs.err.data.name, "incorrect error data")
-
-    def test_renameWorksheetRs_NameOfOtherSheet(self):
-        s1, s2, s3, w = self.makeTestObj()
-        rs = w.renameWorksheetRs(s1.name,s2.name)
-        self.assertTrue(rs.isErr())
-        self.assertEqual(WorkbookErrors.WorksheetAlreadyExistReport.header, rs.err.header, "incorrect error header")
-        self.assertEqual(s2.name, rs.err.data.name, "incorrect error data")
-
-    def test_renameWorksheetRs_SameName(self):
-        s1, s2, s3, w = self.makeTestObj()
-        rs = w.renameWorksheetRs(s1.name,s1.name)
-        self.assertTrue(rs.isOk())
 
     def test_constructor(self):
         s1, s2, s3, w, = self.makeTestObj()

@@ -19,9 +19,14 @@ class DataCell(Cell):
     A Cell that holds some data.
     """
 
+    def bareScript(self) -> str:
+        return self.__script
+
+    def bareFormula(self) -> str:
+        return self.__formula
+
     def __init__(self,
                  address: CellAddress,
-                 translatorGetter: Callable[[], FormulaTranslator] | None = None,
                  value: Any = None,
                  formula: str = None,
                  script: str = None,
@@ -31,6 +36,13 @@ class DataCell(Cell):
         self.__addr: CellAddress = address
         self.__scriptAlreadyRun: bool = False
         self.__formula: str = formula
+
+        def translatorGetter():
+            if self.workbook is not None and self.worksheet is not None:
+                return self.workbook.getTranslator(self.worksheet.name)
+            else:
+                return None
+
         self.__translatorGetter: Callable[[], FormulaTranslator] | None = translatorGetter
         self.__ws: Worksheet | None = worksheet
 

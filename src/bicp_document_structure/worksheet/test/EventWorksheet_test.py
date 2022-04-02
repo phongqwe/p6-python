@@ -4,43 +4,85 @@ from unittest.mock import MagicMock
 from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.address.CellAddresses import CellAddresses
 from bicp_document_structure.cell.address.CellIndex import CellIndex
+from bicp_document_structure.communication.event.P6Events import P6Events
 from bicp_document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
 from bicp_document_structure.communication.internal_reactor.eventData.RangeEventData import RangeEventData
+from bicp_document_structure.communication.internal_reactor.eventData.WorkbookEventData import WorkbookEventData
 from bicp_document_structure.communication.internal_reactor.eventData.WorksheetEventData import WorksheetEventData
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
+from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
 from bicp_document_structure.worksheet.EventWorksheet import EventWorksheet
 from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 
 class EventWorksheet_test(unittest.TestCase):
+
+    def test_rename_onWorksheet(self):
+        self.x = 0
+        newName = "newName"
+        oldName = "oldName"
+        self.eventData: WorksheetEventData[P6Events.Worksheet.Rename.Response] | None = None
+
+        def onWbEvent(eventData: WorksheetEventData[P6Events.Worksheet.Rename.Response]):
+            self.x = 1
+            self.eventData = eventData
+
+        wb = WorkbookImp(name = "wb1")
+        s = wb.createNewWorksheet(oldName)
+        sheet = EventWorksheet(s, onWorksheetEvent = onWbEvent)
+        sheet.renameRs(newName)
+        print(sheet.name)
+        self.assertEqual(1, self.x)
+
+    def test_renameWorksheet_callback_ok(self):
+        self.x = 0
+        newName = "newName"
+        oldName = "oldName"
+        self.eventData: WorksheetEventData[P6Events.Worksheet.Rename.Response] | None = None
+
+        def onWbEvent(eventData: WorksheetEventData[P6Events.Worksheet.Rename.Response]):
+            self.x = 1
+            self.eventData = eventData
+
+        mockWb = WorkbookImp(name = "wb1")
+        s = mockWb.createNewWorksheet(oldName)
+        sheet = EventWorksheet(s, onWorksheetEvent = onWbEvent)
+
+        rs = sheet.renameRs(newName)
+        self.assertTrue(rs.isOk())
+        self.assertEqual(newName, sheet.name)
+
     def test_toProtoObj(self):
-        s = WorksheetImp(translatorGetter = MagicMock(), name = "oldName")
+        s = WorksheetImp(name = "oldName", workbook = MagicMock())
+        wb = WorkbookImp("W")
+        wb.addWorksheet(s)
         ss = EventWorksheet(s)
-        ss.cell("@A1").value=123
-        ss.cell("@B3").value=333
+        ss.cell("@A1").value = 123
+        ss.cell("@B3").value = 333
         o = ss.toProtoObj()
-        self.assertEqual("oldName",o.name)
-        self.assertEqual(s.cell("@A1").toProtoObj(),o.cell[0])
-        self.assertEqual(s.cell("@B3").toProtoObj(),o.cell[1])
+        self.assertEqual("oldName", o.name)
+        self.assertEqual(s.cell("@A1").toProtoObj(), o.cell[0])
+        self.assertEqual(s.cell("@B3").toProtoObj(), o.cell[1])
 
     @staticmethod
     def transGetter(name):
         return FormulaTranslators.mock()
+
     def test_InvokingReactor(self):
-        sheet = WorksheetImp(name = "s3", translatorGetter = self.transGetter)
+        sheet = WorksheetImp(name = "s3", workbook = MagicMock())
         self.a = 0
 
-        def cb(data:CellEventData):
+        def cb(data: CellEventData):
             self.a += 1
 
         self.b = 0
 
-        def re(rangeEventData:RangeEventData):
+        def re(rangeEventData: RangeEventData):
             self.b += 1
 
         self.c = 0
 
-        def wse(data:WorksheetEventData):
+        def wse(data: WorksheetEventData):
             self.c += 1
 
         self.col = 0

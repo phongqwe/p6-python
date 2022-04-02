@@ -4,12 +4,10 @@ from pathlib import Path
 from typing import Optional, Union
 
 from bicp_document_structure.communication.proto.DocProtos_pb2 import WorkbookProto
-
 from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from bicp_document_structure.util.CanCheckEmpty import CanCheckEmpty
 from bicp_document_structure.util.ToJson import ToJson
 from bicp_document_structure.util.ToProto import ToProto
-from bicp_document_structure.util.Util import default
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.workbook.WorkbookJson import WorkbookJson
@@ -45,13 +43,13 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
         for sheet in self.worksheets:
             sheet.reRun()
 
-    def renameWorksheet(self, oldSheetNameOrIndex: str | int, newSheetName: str):
-        rs = self.renameWorksheetRs(oldSheetNameOrIndex, newSheetName)
-        if rs.isErr():
-            raise rs.err.toException()
-
-    def renameWorksheetRs(self, oldSheetNameOrIndex: str | int, newSheetName: str) -> Result[None, ErrorReport]:
-        raise NotImplementedError()
+    # def renameWorksheet(self, oldSheetNameOrIndex: str | int, newSheetName: str):
+    #     rs = self.renameWorksheetRs(oldSheetNameOrIndex, newSheetName)
+    #     if rs.isErr():
+    #         raise rs.err.toException()
+    #
+    # def renameWorksheetRs(self, oldSheetNameOrIndex: str | int, newSheetName: str) -> Result[None, ErrorReport]:
+    #     raise NotImplementedError()
 
     @property
     def worksheets(self) -> list[Worksheet]:
@@ -196,6 +194,19 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
 
     def removeWorksheetRs(self, nameOrIndex: Union[str, int]) -> Result[Worksheet, ErrorReport]:
         """ remove sheet by either index or name. If the target sheet does not exist, simply return"""
+        raise NotImplementedError()
+
+    def addWorksheet(self, ws: Worksheet):
+        addRs = self.addWorksheetRs(ws)
+        if addRs.isOk():
+            return
+        else:
+            raise addRs.err.toException()
+
+    def updateSheetName(self,oldName:str,ws: Worksheet):
+        raise NotImplementedError()
+
+    def addWorksheetRs(self, ws: Worksheet) -> Result[None, ErrorReport]:
         raise NotImplementedError()
 
     def toJson(self) -> WorkbookJson:

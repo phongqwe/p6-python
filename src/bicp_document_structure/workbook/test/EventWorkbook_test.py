@@ -15,69 +15,6 @@ from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 
 class EventWorkbook_test(unittest.TestCase):
-    def test_rename_onWorksheet(self):
-        self.x = 0
-        newName = "newName"
-        oldName = "oldName"
-        self.eventData: WorkbookEventData[P6Events.Worksheet.Rename.Response] | None = None
-
-        def onWbEvent(eventData: WorkbookEventData[P6Events.Worksheet.Rename.Response]):
-            self.x = 1
-            self.eventData = eventData
-
-        wb = WorkbookImp(name = "wb1")
-        wb.createNewWorksheetRs(oldName)
-        eventWb = EventWorkbook(wb, onWorkbookEvent = onWbEvent)
-        sheet = eventWb.getWorksheet(oldName)
-        sheet.renameRs(newName)
-        print(sheet.name)
-        self.assertEqual(1, self.x)
-
-
-    def test_renameWorksheet_callback_ok(self):
-        self.x = 0
-        newName = "newName"
-        oldName = "oldName"
-        self.eventData: WorkbookEventData[P6Events.Worksheet.Rename.Response] | None = None
-
-        def onWbEvent(eventData: WorkbookEventData[P6Events.Worksheet.Rename.Response]):
-            self.x = 1
-            self.eventData = eventData
-
-        mockWb = WorkbookImp(name = "wb1")
-        mockWb.createNewWorksheetRs(oldName)
-        sheet = mockWb.getWorksheet(oldName)
-        eventWb = EventWorkbook(mockWb, onWorkbookEvent = onWbEvent)
-        rs = eventWb.renameWorksheetRs(oldName, newName)
-        self.assertTrue(rs.isOk())
-        self.assertEqual(newName, sheet.name)
-
-
-    def test_renameWorksheet_callback_fail(self):
-        self.x = 0
-        newName = "newName"
-        oldName = "oldName"
-        self.eventData: WorkbookEventData[P6Events.Worksheet.Rename.Response] | None = None
-
-        def onWbEvent(eventData: WorkbookEventData[P6Events.Worksheet.Rename.Response]):
-            self.x = 1
-            self.eventData = eventData
-
-        mockRenameFunction = MagicMock()
-        mockRenameFunction.return_value = Err(ErrorReport(
-            WorkbookErrors.WorksheetNotExistReport.header,
-            WorkbookErrors.WorksheetNotExistReport.Data(oldName)
-        ))
-        mockWb = MagicMock()
-        mockWb.renameWorksheetRs = mockRenameFunction
-
-        eventWb = EventWorkbook(mockWb, onWorkbookEvent = onWbEvent)
-        eventWb.renameWorksheetRs(oldName, newName)
-        self.assertTrue(self.eventData.isError)
-        self.assertEqual(newName, self.eventData.data.newName)
-        self.assertEqual(oldName, self.eventData.data.oldName)
-        self.assertIsNotNone(self.eventData.data.errorReport)
-        print(self.eventData.data.errorReport.toProtoObj())
 
     def test_createNewWorksheet_callback_fail(self):
         self.x = 0
@@ -107,7 +44,7 @@ class EventWorkbook_test(unittest.TestCase):
         print(self.errorReport.toProtoObj())
 
     def test_createNewWorksheet_callback_ok(self):
-        s1, s2, s3, w1, d = self.makeTestObj()
+        s1, s2, s3, w1, = self.makeTestObj()
         self.x = 0
 
         def onWbEvent(eventData: WorkbookEventData):
@@ -124,7 +61,7 @@ class EventWorkbook_test(unittest.TestCase):
         self.assertFalse(self.eventData.isError)
 
     def test_toProtoObj(self):
-        s1, s2, s3, w1, d = self.makeTestObj()
+        s1, s2, s3, w1, = self.makeTestObj()
         o = w1.toProtoObj()
         self.assertEqual(w1.name, o.workbookKey.name)
         self.assertEqual("null", o.workbookKey.path.WhichOneof("kind"))
@@ -141,12 +78,11 @@ class EventWorkbook_test(unittest.TestCase):
         return FormulaTranslators.mock()
 
     def makeTestObj(self):
-        s1 = WorksheetImp(name = "s1", translatorGetter = self.transGetter)
-        s2 = WorksheetImp(name = "s2", translatorGetter = self.transGetter)
-        s3 = WorksheetImp(name = "s3", translatorGetter = self.transGetter)
-        d = [s1, s2, s3]
-        w1 = WorkbookImp("w1", sheetList = d)
-        return s1, s2, s3, w1, d
+        w1 = WorkbookImp("w1")
+        s1 = w1.createNewWorksheet("s1")
+        s2 = w1.createNewWorksheet("s2")
+        s3 = w1.createNewWorksheet("s3")
+        return s1, s2, s3, w1
 
     def test_constructor(self):
         w = WorkbookImp("w1")
@@ -183,13 +119,13 @@ class EventWorkbook_test(unittest.TestCase):
         c4.value = "mmm"
         self.assertEqual(6, self.a)
 
-    def test_Rename(self):
-        s1, s2, s3, w1, d = self.makeTestObj()
-        self.a = 0
-
-        def cb(data:WorkbookEventData):
-            self.a += 1
-
-        ewb = EventWorkbook(w1, onWorkbookEvent = cb)
-        ewb.renameWorksheet(s1.name, "newName")
-        self.assertEqual(1, self.a)
+    # def test_Rename(self):
+    #     s1, s2, s3, w1,  = self.makeTestObj()
+    #     self.a = 0
+    #
+    #     def cb(data:WorkbookEventData):
+    #         self.a += 1
+    #
+    #     ewb = EventWorkbook(w1, onWorkbookEvent = cb)
+        # ewb.renameWorksheet(s1.name, "newName")
+        # self.assertEqual(1, self.a)

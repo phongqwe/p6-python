@@ -68,6 +68,18 @@ class Cell(ToJson, ToProto[CellProto], ABC):
         """string representation of the object stored in this cell"""
         raise NotImplementedError()
 
+    def bareScript(self)->str:
+        """
+        :return: the bare script, may not be consistent with the result of running the formula of this cell.
+        """
+        raise NotImplementedError()
+
+    def bareFormula(self)->str:
+        """
+        :return: the bare formula, may not be consistent with the result of running the script of this cell.
+        """
+        raise NotImplementedError()
+
     def bareValue(self):
         """
         :return: the bare value, may not be consistent with the result of running the script of this cell.

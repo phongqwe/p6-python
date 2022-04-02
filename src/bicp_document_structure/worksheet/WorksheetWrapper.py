@@ -13,7 +13,7 @@ from bicp_document_structure.worksheet.Worksheet import Worksheet
 from bicp_document_structure.worksheet.WorksheetJson import WorksheetJson
 
 
-class WorksheetWrapper(Worksheet,ABC):
+class WorksheetWrapper(Worksheet):
 
     def __init__(self, innerWorksheet: Worksheet):
         self._innerSheet: Worksheet = innerWorksheet

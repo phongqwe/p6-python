@@ -8,6 +8,7 @@ from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.cell.test.MockContainer import MockCellContainer
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from bicp_document_structure.util.Util import makeGetter
+from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
 from bicp_document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
@@ -16,16 +17,14 @@ class WriteBackCellTest(unittest.TestCase):
 
     def test_toProtoObj(self):
         c1 = DataCell(CellIndex(1, 1),
-                      MagicMock(),
                       123)
         writeBackCell = WriteBackCell(c1,MagicMock())
         self.assertEqual(c1.toProtoObj(),writeBackCell.toProtoObj())
 
     def test_Cell(self):
-        def transGetter(name):
-            return FormulaTranslators.standardWbWs("s3",WorkbookKeys.fromNameAndPath("book1","path123"))
+        w = WorkbookImp("w")
+        s = w.createNewWorksheet("s3")
 
-        s = WorksheetImp(name= "s3", translatorGetter = transGetter)
         code = "x=1;y=x+2;y"
         eValue = 3
         address = CellIndex(1, 1)
@@ -45,9 +44,10 @@ class WriteBackCellTest(unittest.TestCase):
         self.assertEqual(eValue, anotherC.value)
 
     def test_wbCell(self):
-        cellContainer = MockCellContainer()
+        wb = WorkbookImp("wb")
+        cellContainer = wb.createNewWorksheet("Sheet1")
         address = CellIndex(1, 1)
-        c = WriteBackCell(DataCell(address,makeGetter(FormulaTranslators.mock())), cellContainer)
+        c = WriteBackCell(cellContainer.cell(address),cellContainer)
         self.assertFalse(cellContainer.hasCellAt(address))
 
         # cell is added when script is changed

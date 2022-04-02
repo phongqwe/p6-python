@@ -18,13 +18,12 @@ class Cells:
     """
 
     @staticmethod
-    def cellFromJson(cellJson: Union[CellJson, str],translatorGetter:Callable[[],FormulaTranslator]|None= None) -> Cell:
+    def cellFromJson(cellJson: Union[CellJson, str]) -> Cell:
         if isinstance(cellJson, str):
             cellJson = CellJson.fromJsonStr(cellJson)
 
         cell = DataCell(
             address = CellIndex(cellJson.address.col, cellJson.address.row),
-            translatorGetter = translatorGetter,
             value = cellJson.value,
             formula = cellJson.formula,
             script = cellJson.script,

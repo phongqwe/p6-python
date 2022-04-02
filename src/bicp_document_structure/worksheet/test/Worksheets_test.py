@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import MagicMock
 
 from bicp_document_structure.cell.CellJson import CellJson
 from bicp_document_structure.cell.address.CellAddressJson import CellAddressJson
@@ -24,7 +25,7 @@ class Worksheets_test(unittest.TestCase):
                 CellJson("value3", "script3", "formula3", CellAddressJson(3,4))
             ]
         )
-        sheet = Worksheets.wsFromJson(json,self.transGetter)
+        sheet = Worksheets.wsFromJson(json,workbook = MagicMock())
         self.assertTrue(isinstance(sheet,Worksheet))
         self.assertEqual(json.name,sheet.name)
         # cell12 = sheet.cell((1,2))

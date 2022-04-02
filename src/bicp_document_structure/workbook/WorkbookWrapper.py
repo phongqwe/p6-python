@@ -14,6 +14,12 @@ from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 class WorkbookWrapper(Workbook):
 
+    def updateSheetName(self, oldName: str, ws: Worksheet):
+        self._innerWorkbook.updateSheetName(oldName,ws)
+
+    def addWorksheetRs(self, ws: Worksheet) -> Result[None, ErrorReport]:
+        return self._innerWorkbook.addWorksheetRs(ws)
+
     def __init__(self,innerWorkbook:Workbook):
         self._innerWorkbook = innerWorkbook
 
@@ -24,11 +30,11 @@ class WorkbookWrapper(Workbook):
     def path(self) -> Path:
         return self._innerWorkbook.path
 
-    def renameWorksheet(self, oldSheetNameOrIndex: str | int, newSheetName: str):
-        return self._innerWorkbook.renameWorksheet(oldSheetNameOrIndex, newSheetName)
-
-    def renameWorksheetRs(self, oldSheetNameOrIndex: str | int, newSheetName: str) -> Result[None, ErrorReport]:
-        return self._innerWorkbook.renameWorksheetRs(oldSheetNameOrIndex, newSheetName)
+    # def renameWorksheet(self, oldSheetNameOrIndex: str | int, newSheetName: str):
+    #     return self._innerWorkbook.renameWorksheet(oldSheetNameOrIndex, newSheetName)
+    #
+    # def renameWorksheetRs(self, oldSheetNameOrIndex: str | int, newSheetName: str) -> Result[None, ErrorReport]:
+    #     return self._innerWorkbook.renameWorksheetRs(oldSheetNameOrIndex, newSheetName)
 
     @property
     def worksheets(self) -> list[Worksheet]:
