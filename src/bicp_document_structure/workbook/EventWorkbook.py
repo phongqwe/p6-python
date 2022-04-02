@@ -1,6 +1,10 @@
 from functools import partial
 from typing import Callable, Optional, Union
 
+from bicp_document_structure.communication.event.data.response.CellUpdateCommonResponse import CellUpdateCommonResponse
+
+from bicp_document_structure.communication.proto.CellProtos_pb2 import CellUpdateCommonResponseProto
+
 from bicp_document_structure.communication.event.P6Events import P6Events
 from bicp_document_structure.communication.event.reactor.EventReactorContainer import EventReactorContainer
 from bicp_document_structure.communication.event.reactor.eventData.CellEventData import CellEventData
@@ -166,7 +170,8 @@ class EventWorkbook(WorkbookWrapper):
             eventData.workbook = self._innerWorkbook
             if eventData.event == P6Events.Cell.Update.event:
                 eventData.workbook.reRun()
-                eventData.data = eventData.workbook
+                protoData = CellUpdateCommonResponse(eventData.workbook)
+                eventData.data = protoData
             if self.__onCellChange is not None:
                 self.__onCellChange(eventData)
 

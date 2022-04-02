@@ -2,6 +2,8 @@ import unittest
 from unittest.mock import MagicMock
 
 import zmq
+from bicp_document_structure.communication.proto.CellProtos_pb2 import CellUpdateCommonResponseProto
+
 from bicp_document_structure.communication.proto.P6MsgProtos_pb2 import P6ResponseProto
 
 from bicp_document_structure.communication.proto.DocProtos_pb2 import WorkbookProto
@@ -50,10 +52,9 @@ class StdReactorProvider_test(unittest.TestCase):
         def onReceive(data):
             p6Res = P6ResponseProto()
             p6Res.ParseFromString(data)
-
-            wbProto = WorkbookProto()
-            wbProto.ParseFromString(p6Res.data)
-            self.receiveObj = wbProto
+            receive = CellUpdateCommonResponseProto()
+            receive.ParseFromString(p6Res.data)
+            self.receiveObj = receive
 
         thread = startREPServerOnThread(True, port, self.context, onReceive)
         socket = self.context.socket(zmq.REQ)

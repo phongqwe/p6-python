@@ -31,4 +31,4 @@ class MessageSender:
             if replyStr.lower() == "ok":
                 return Ok(None)
             else:
-                return Err(MessageSenderErrors.FailToSend(str(msg.toProtoObj())))
+                return Err(MessageSenderErrors.FailToSend("Fail to send: "+str(msg.toProtoObj())))
