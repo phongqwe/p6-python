@@ -55,7 +55,7 @@ class DataCell(Cell):
     def toProtoObj(self) ->CellProto:
         cellProto = CellProto()
         cellProto.address.CopyFrom(self.address.toProtoObj())
-        vl = self.value
+        vl = self.__value
         if vl is not None:
             cellProto.displayValue = str(vl)
         else:

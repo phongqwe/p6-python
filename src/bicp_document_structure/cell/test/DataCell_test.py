@@ -5,6 +5,7 @@ from unittest.mock import MagicMock
 from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.EventCell import EventCell
 from bicp_document_structure.cell.address.CellIndex import CellIndex
+from bicp_document_structure.communication.event.reactor.eventData.CellEventData import CellEventData
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from bicp_document_structure.communication.proto.DocProtos_pb2 import CellProto
 from bicp_document_structure.util.Util import makeGetter
@@ -51,7 +52,7 @@ class DataCellTest(unittest.TestCase):
     def test_rerun(self):
         self.exCountA = 0
 
-        def increaseExCount(cell, mutationEvent):
+        def increaseExCount(eventData:CellEventData):
             self.exCountA += 1
 
         c2 = EventCell(DataCell(CellIndex(1, 1), MagicMock(), value = 123, script = "123"),
@@ -84,7 +85,7 @@ class DataCellTest(unittest.TestCase):
     def test_caching(self):
         self.exCount = 0
 
-        def increaseExCount(a, b):
+        def increaseExCount(data:CellEventData):
             self.exCount += 1
 
         c = EventCell(DataCell(CellIndex(1, 1), MagicMock()), onCellEvent = increaseExCount)

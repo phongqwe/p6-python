@@ -10,21 +10,24 @@ D = TypeVar("D")
 class WorksheetEventData(ToJson, WithWorkbookData,Generic[D]):
 
     def __init__(self,
-                 workbook: Workbook,
-                 worksheet: Worksheet,
-                 event: P6Event,
+                 workbook: Workbook=None,
+                 worksheet: Worksheet=None,
+                 event: P6Event=None,
                  data: D = None,
                  isError: bool = False):
         self._workbook = workbook
         self.worksheet = worksheet
         self.event = event
         self.data: D = data
-        # TODO remove isError, duplication
         self.isError = isError
 
     @property
     def workbook(self):
         return self._workbook
+
+    @workbook.setter
+    def workbook(self,wb):
+        self._workbook = wb
 
     def toJsonDict(self) -> dict:
         return {

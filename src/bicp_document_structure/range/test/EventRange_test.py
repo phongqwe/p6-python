@@ -3,6 +3,7 @@ from unittest.mock import MagicMock
 
 from bicp_document_structure.cell.address.CellAddresses import CellAddresses
 from bicp_document_structure.cell.address.CellIndex import CellIndex
+from bicp_document_structure.communication.event.reactor.eventData.CellEventData import CellEventData
 from bicp_document_structure.range.EventRange import EventRange
 from bicp_document_structure.range.RangeImp import RangeImp
 
@@ -17,9 +18,9 @@ class EventRangeTest(unittest.TestCase):
 
         self.a = 0
         self.b=0
-        def ce(cell,event):
+        def ce(cellEventData:CellEventData):
             self.a+=1
-        def re(range,event):
+        def re(rangeEventData):
             self.b+=1
 
         er = EventRange(r,ce,re)

@@ -19,9 +19,9 @@ class P6Events:
             event = P6Event(f"{CE}0", MsgType.CellUpdateValue.value)
         UpdateValueEvent = UpdateValue.event
 
-        UpdateScript = P6Event(f"{CE}1", MsgType.CellUpdateScript.value)
+        UpdateScriptEvent = P6Event(f"{CE}1", MsgType.CellUpdateScript.value)
         UpdateFormula = P6Event(f"{CE}2", MsgType.CellUpdateFormula.value)
-        ClearScriptResult = P6Event(f"{CE}3", MsgType.CellClearScriptResult.value)
+        ClearScriptResultEvent = P6Event(f"{CE}3", MsgType.CellClearScriptResult.value)
 
         class Update:
             event = P6Event(f"{CE}4", "cell update")

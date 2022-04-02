@@ -2,6 +2,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import MagicMock
 
+from bicp_document_structure.communication.event.reactor.eventData.CellEventData import CellEventData
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from bicp_document_structure.communication.event.P6Events import P6Events
 from bicp_document_structure.communication.event.reactor.eventData.WorkbookEventData import WorkbookEventData
@@ -151,10 +152,10 @@ class EventWorkbook_test(unittest.TestCase):
         w = WorkbookImp("w1")
         self.a = 0
 
-        def cb(wb, ws, cell, e):
+        def cellCallback(eventData:CellEventData):
             self.a += 1
 
-        eventWb = EventWorkbook(w, cb, onWorkbookEvent = MagicMock())
+        eventWb = EventWorkbook(w, cellCallback, onWorkbookEvent = MagicMock())
         s1 = eventWb.createNewWorksheet("s1")
         c1 = s1.cell("@A1")
         c1.value = 123
@@ -186,7 +187,7 @@ class EventWorkbook_test(unittest.TestCase):
         s1, s2, s3, w1, d = self.makeTestObj()
         self.a = 0
 
-        def cb(data):
+        def cb(data:WorkbookEventData):
             self.a += 1
 
         ewb = EventWorkbook(w1, onWorkbookEvent = cb)

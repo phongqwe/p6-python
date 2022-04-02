@@ -4,6 +4,9 @@ from unittest.mock import MagicMock
 from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.address.CellAddresses import CellAddresses
 from bicp_document_structure.cell.address.CellIndex import CellIndex
+from bicp_document_structure.communication.event.reactor.eventData.CellEventData import CellEventData
+from bicp_document_structure.communication.event.reactor.eventData.RangeEventData import RangeEventData
+from bicp_document_structure.communication.event.reactor.eventData.WorksheetEventData import WorksheetEventData
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from bicp_document_structure.worksheet.EventWorksheet import EventWorksheet
 from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
@@ -27,17 +30,17 @@ class EventWorksheet_test(unittest.TestCase):
         sheet = WorksheetImp(name = "s3", translatorGetter = self.transGetter)
         self.a = 0
 
-        def cb( ws, cell, event):
+        def cb(data:CellEventData):
             self.a += 1
 
         self.b = 0
 
-        def re(ws, re, event):
+        def re(rangeEventData:RangeEventData):
             self.b += 1
 
         self.c = 0
 
-        def wse( wse, event):
+        def wse(data:WorksheetEventData):
             self.c += 1
 
         self.col = 0

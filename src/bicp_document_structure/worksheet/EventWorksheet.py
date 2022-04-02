@@ -4,8 +4,10 @@ from typing import Callable, Tuple, Optional
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.EventCell import EventCell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
-from bicp_document_structure.communication.event.P6Event import P6Event
 from bicp_document_structure.communication.event.P6Events import P6Events
+from bicp_document_structure.communication.event.reactor.eventData.CellEventData import CellEventData
+from bicp_document_structure.communication.event.reactor.eventData.RangeEventData import RangeEventData
+from bicp_document_structure.communication.event.reactor.eventData.WorksheetEventData import WorksheetEventData
 from bicp_document_structure.range.EventRange import EventRange
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.address.RangeAddress import RangeAddress
@@ -17,14 +19,14 @@ from bicp_document_structure.worksheet.WorksheetWrapper import WorksheetWrapper
 class EventWorksheet(WorksheetWrapper):
     def __init__(self,
                  innerWorksheet: Worksheet,
-                 onCellEvent: Callable[[Worksheet, Cell, P6Event], None] = None,
-                 onWorksheetEvent: Callable[[Worksheet, P6Event], None] = None,
-                 onRangeEvent: Callable[[Worksheet, Range, P6Event], None] = None,
+                 onCellEvent: Callable[[CellEventData], None] = None,
+                 onWorksheetEvent: Callable[[WorksheetEventData], None] = None,
+                 onRangeEvent: Callable[[RangeEventData], None] = None,
                  ):
         super().__init__(innerWorksheet)
-        self.__onCellEvent: Callable[[Worksheet, Cell, P6Event], None] = onCellEvent
-        self.__onWorksheetEvent: Callable[[Worksheet, P6Event], None] = onWorksheetEvent
-        self.__onRangeEvent: Callable[[Worksheet, Range, P6Event], None] = onRangeEvent
+        self.__onCellEvent: Callable[[CellEventData], None] = onCellEvent
+        self.__onWorksheetEvent: Callable[[WorksheetEventData], None] = onWorksheetEvent
+        self.__onRangeEvent: Callable[[RangeEventData], None] = onRangeEvent
 
     def __makePartial(self, callback):
         """create a partial function from a function by setting the 1st arg = self._innerSheet"""
@@ -34,8 +36,8 @@ class EventWorksheet(WorksheetWrapper):
             return None
 
     def getOrMakeCell(self, address: CellAddress) -> Cell:
-        c:Cell = self._innerSheet.getOrMakeCell(address)
-        return self.__wrap(c)
+        c: Cell = self._innerSheet.getOrMakeCell(address)
+        return self._makeEventCell(c)
 
     def cell(self, address: str | CellAddress | Tuple[int, int]) -> Cell:
         parsedAddress = AddressParser.parseCellAddress(address)
@@ -44,28 +46,44 @@ class EventWorksheet(WorksheetWrapper):
     def getCell(self, address: CellAddress) -> Optional[Cell]:
         cell = self._innerSheet.getCell(address)
         if cell is not None:
-            return self.__wrap(cell)
+            return self._makeEventCell(cell)
         else:
             return cell
 
     def reRun(self):
         self._innerSheet.reRun()
         if self.__onWorksheetEvent is not None:
-            self.__onWorksheetEvent(self._innerSheet, P6Events.Worksheet.ReRun)
+            # incomplete data
+            eventData = WorksheetEventData(
+                worksheet = self._innerSheet,
+                event = P6Events.Worksheet.ReRun,
+            )
+            self.__onWorksheetEvent(eventData)
+
+    def _XonCellEvent(self, data: CellEventData):
+        data.worksheet = self._innerSheet
+        if self.__onCellEvent is not None:
+            self.__onCellEvent(data)
 
     def range(self, rangeAddress: str | RangeAddress | Tuple[CellAddress, CellAddress]) -> Range:
         rng = self._innerSheet.range(rangeAddress)
-        evRange = EventRange(rng,
-                             onCellEvent = self.__makePartial(self.__onCellEvent),
-                             onRangeEvent = self.__makePartial(self.__onRangeEvent),
-                             )
+
+        def onRangeEvent(data: RangeEventData):
+            data.worksheet = self._innerSheet
+            if self.__onRangeEvent is not None:
+                self.__onRangeEvent(data)
+
+        evRange = EventRange(
+            innerRange = rng,
+            onCellEvent = self._XonCellEvent,
+            onRangeEvent = onRangeEvent)
         return evRange
 
     @property
     def cells(self) -> list[Cell]:
         cs = self._innerSheet.cells
-        rt = list(map(lambda c: self.__wrap(c), cs))
+        rt = list(map(lambda c: self._makeEventCell(c), cs))
         return rt
 
-    def __wrap(self, cell: Cell) -> Cell:
-        return EventCell(cell, onCellEvent = self.__makePartial(self.__onCellEvent))
+    def _makeEventCell(self, cell: Cell) -> Cell:
+        return EventCell(cell, onCellEvent = self._XonCellEvent)

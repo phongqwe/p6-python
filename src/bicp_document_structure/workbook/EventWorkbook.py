@@ -1,15 +1,12 @@
 from functools import partial
 from typing import Callable, Optional, Union
 
-from bicp_document_structure.cell.Cell import Cell
-from bicp_document_structure.communication.event.P6Event import P6Event
 from bicp_document_structure.communication.event.P6Events import P6Events
 from bicp_document_structure.communication.event.reactor.EventReactorContainer import EventReactorContainer
 from bicp_document_structure.communication.event.reactor.eventData.CellEventData import CellEventData
 from bicp_document_structure.communication.event.reactor.eventData.RangeEventData import RangeEventData
 from bicp_document_structure.communication.event.reactor.eventData.WorkbookEventData import WorkbookEventData
 from bicp_document_structure.communication.event.reactor.eventData.WorksheetEventData import WorksheetEventData
-from bicp_document_structure.range.Range import Range
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Ok import Ok
 from bicp_document_structure.util.result.Result import Result
@@ -27,22 +24,22 @@ class EventWorkbook(WorkbookWrapper):
     """
 
     def __init__(self, innerWorkbook: Workbook,
-                 onCellEvent: Callable[[Workbook, Worksheet, Cell, P6Event], None] = None,
+                 onCellEvent: Callable[[CellEventData], None] = None,
                  onWorksheetEvent: Callable[[WorksheetEventData], None] = None,
-                 onRangeEvent: Callable[[Workbook, Worksheet, Range, P6Event], None] = None,
+                 onRangeEvent: Callable[[RangeEventData], None] = None,
                  onWorkbookEvent: Callable[[WorkbookEventData], None] = None,
                  ):
         super().__init__(innerWorkbook)
-        self.__onCellChange: Callable[[Workbook, Worksheet, Cell, P6Event], None] = onCellEvent
+        self.__onCellChange: Callable[[CellEventData], None] = onCellEvent
         self.__onWorksheetEvent: Callable[[WorksheetEventData], None] = onWorksheetEvent
-        self.__onRangeEvent: Callable[[Workbook, Worksheet, Range, P6Event], None] = onRangeEvent
+        self.__onRangeEvent: Callable[[RangeEventData], None] = onRangeEvent
         self.__onWorkbookEvent: Callable[[WorkbookEventData], None] = onWorkbookEvent
         self._iwb = self._innerWorkbook
 
     @staticmethod
     def create(innerWorkbook: Workbook, reactorContainer: EventReactorContainer) -> 'EventWorkbook':
-        def onCell(wb, ws, c, e):
-            reactorContainer.triggerReactorsFor(e, CellEventData(wb, ws, c, e))
+        def onCell(data: CellEventData):
+            reactorContainer.triggerReactorsFor(data.event, data)
 
         def onWorkbook(data: WorkbookEventData):
             reactorContainer.triggerReactorsFor(data.event, data)
@@ -50,8 +47,8 @@ class EventWorkbook(WorkbookWrapper):
         def onWorksheet(data: WorksheetEventData):
             reactorContainer.triggerReactorsFor(data.event, data)
 
-        def onRange(wb, ws, r, e):
-            reactorContainer.triggerReactorsFor(e, RangeEventData(wb, ws, r, e))
+        def onRange(data: RangeEventData):
+            reactorContainer.triggerReactorsFor(data.event, data)
 
         return EventWorkbook(
             innerWorkbook = innerWorkbook,
@@ -89,7 +86,7 @@ class EventWorkbook(WorkbookWrapper):
         s = self._innerWorkbook.getWorksheet(nameOrIndex)
         return self.__wrapInEventWorksheet(s)
 
-    def __handleWsRs(self,rs:Result[Worksheet, ErrorReport]):
+    def __handleWsRs(self, rs: Result[Worksheet, ErrorReport]):
         if rs.isOk():
             return Ok(self.__wrapInEventWorksheet(rs.value))
         else:
@@ -160,14 +157,30 @@ class EventWorkbook(WorkbookWrapper):
             self.__onWorkbookEvent(WorkbookEventData(self._iwb, P6Events.Workbook.ReRun))
 
     def __wrapInEventWorksheet(self, sheet: Worksheet) -> Worksheet:
-        onCellEvent = self.__partialWithNoneCheck(self.__onCellChange)
-        onSheetEvent = self.__partialWithNoneCheck(self.__onWorksheetEvent)
-        onRangeEvent = self.__partialWithNoneCheck(self.__onRangeEvent)
+        def onRangeEvent(data: RangeEventData):
+            data.workbook = self._innerWorkbook
+            if self.__onRangeEvent is not None:
+                self.__onRangeEvent(data)
+
+        def onCellEvent(eventData: CellEventData):
+            eventData.workbook = self._innerWorkbook
+            if eventData.event == P6Events.Cell.Update.event:
+                eventData.workbook.reRun()
+                eventData.data = eventData.workbook
+            if self.__onCellChange is not None:
+                self.__onCellChange(eventData)
+
+        def onSheetEvent(data: WorksheetEventData):
+            data.workbook = self._innerWorkbook
+            if self.__onWorksheetEvent is not None:
+                self.__onWorksheetEvent(data)
+
         # update rename function
-        return EventWorksheet(OverrideRenameWorksheet(sheet, renameFunction = self.renameWorksheetRs),
-                              onCellEvent = onCellEvent,
-                              onWorksheetEvent = onSheetEvent,
-                              onRangeEvent = onRangeEvent)
+        return EventWorksheet(
+            innerWorksheet = OverrideRenameWorksheet(sheet, renameFunction = self.renameWorksheetRs),
+            onCellEvent = onCellEvent,
+            onWorksheetEvent = onSheetEvent,
+            onRangeEvent = onRangeEvent)
 
     def __partialWithNoneCheck(self, callback):
         if callback is not None:
@@ -193,7 +206,7 @@ class EventWorkbook(WorkbookWrapper):
                 workbook = self,
                 event = event,
                 isError = False,
-                data = DataClass(self.workbookKey, oldName, newSheetName, index,False,None)
+                data = DataClass(self.workbookKey, oldName, newSheetName, index, False, None)
             )
             self.__onWorkbookEvent(eventData)
             return Ok(None)

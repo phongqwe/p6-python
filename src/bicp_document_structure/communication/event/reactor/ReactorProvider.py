@@ -10,16 +10,7 @@ class ReactorProvider(ABC):
     def createNewWorksheet(self)->WorkbookReactor:
         raise NotImplementedError()
 
-    def cellUpdateValue(self) -> CellReactor:
-        raise NotImplementedError()
-
-    def cellUpdateScript(self) -> CellReactor:
-        raise NotImplementedError()
-
-    def cellUpdateFormula(self) -> CellReactor:
-        raise NotImplementedError()
-
-    def cellClearScriptResult(self) -> CellReactor:
+    def cellUpdateReactor(self) -> CellReactor:
         raise NotImplementedError()
 
     def rangeReRun(self) -> RangeReactor:

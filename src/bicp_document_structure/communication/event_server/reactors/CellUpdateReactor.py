@@ -35,7 +35,7 @@ class CellUpdateReactor(EventReactor[bytes, ResponseClazz]):
                     cell.formula = request.formula
                 else:
                     pass # do nothing
-
+                wb.reRun()
                 return ResponseClazz(
                     newWorkbook = wb
                 )

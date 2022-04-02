@@ -1,11 +1,7 @@
 import uuid
 from functools import partial
-from typing import Callable, Any
+from typing import Callable
 
-from bicp_document_structure.communication.event_server.msg.P6Message import P6Message
-from bicp_document_structure.communication.event_server.msg.P6MessageHeader import P6MessageHeader
-from bicp_document_structure.communication.event.reactor.eventData.CellEventData import CellEventData
-from bicp_document_structure.communication.event_server.response.P6Response import P6Response
 from bicp_document_structure.communication.SocketProvider import SocketProvider
 from bicp_document_structure.communication.event.P6Event import P6Event
 from bicp_document_structure.communication.event.P6Events import P6Events
@@ -16,8 +12,13 @@ from bicp_document_structure.communication.event.reactor.RangeReactor import Ran
 from bicp_document_structure.communication.event.reactor.ReactorProvider import ReactorProvider
 from bicp_document_structure.communication.event.reactor.WorkbookReactor import WorkbookReactor
 from bicp_document_structure.communication.event.reactor.WorksheetReactor import WorksheetReactor
+from bicp_document_structure.communication.event.reactor.eventData.CellEventData import CellEventData
 from bicp_document_structure.communication.event.reactor.eventData.WithWorkbookData import WithWorkbookData
 from bicp_document_structure.communication.event.reactor.eventData.WorkbookEventData import WorkbookEventData
+from bicp_document_structure.communication.event_server.P6Messages import P6Messages
+from bicp_document_structure.communication.event_server.msg.P6Message import P6Message
+from bicp_document_structure.communication.event_server.msg.P6MessageHeader import P6MessageHeader
+from bicp_document_structure.communication.event_server.response.P6Response import P6Response
 from bicp_document_structure.communication.sender.MessageSender import MessageSender
 
 
@@ -39,6 +40,9 @@ class StdReactorProvider(ReactorProvider):
 
         self.__workbookReRun: WorkbookReactor | None = None
 
+    def workbookReRun(self) -> WorkbookReactor:
+        pass
+
     def stdCallback(self, event: P6Event, data: WithWorkbookData):
         """
         rerun the whole workbook, serialize the workbook to json, then send the json in a zmq message to a predesignated socket.
@@ -59,45 +63,31 @@ class StdReactorProvider(ReactorProvider):
                     raise replyRs.err.toException()
 
     def createNewWorksheet(self) -> WorkbookReactor:
-        def cb(wbEventData: WorkbookEventData):
+        def cb(data: WorkbookEventData):
             status = P6Response.Status.OK
-            if wbEventData.isError:
+            if data.isError:
                 status = P6Response.Status.ERROR
-            msg = StdReactorProvider.__createP6Response(wbEventData.event, wbEventData.data,status)
-            self._sendRes(msg)
+            msg = P6Messages.p6Response(data.event, data.data, status)
+            self._sendResponse(msg)
+
         reactor = EventReactorFactory.makeWorkbookReactor(cb)
         return reactor
 
-    def cellUpdateValue(self) -> CellReactor:
-        # if self.__cellUpdateValue is None:
-        #     event = P6Events.Cell.Update.event
-        #     self.__cellUpdateValue = EventReactorFactory.makeCellReactor(partial(self.stdCallback, event))
-        # return self.__cellUpdateValue
-        # raise NotImplementedError()
-        def cb(cellEventData:CellEventData):
-            pass
+    def cellUpdateReactor(self) -> CellReactor:
+        def cb(cellEventData: CellEventData):
+            status = P6Response.Status.OK
+            if cellEventData.isError:
+                status = P6Response.Status.ERROR
 
-    def cellUpdateScript(self) -> CellReactor:
-        if self.__cellUpdateScript is None:
-            event = P6Events.Cell.UpdateScript
-            self.__cellUpdateScript = EventReactorFactory.makeCellReactor(partial(self.stdCallback, event))
-        return self.__cellUpdateScript
-        # raise NotImplementedError()
+            p6Res = P6Messages.p6Response(
+                event = cellEventData.event,
+                data = cellEventData.data,
+                status = status)
 
-    def cellUpdateFormula(self) -> CellReactor:
-        if self.__cellFormulaUpdate is None:
-            event = P6Events.Cell.UpdateFormula
-            self.__cellFormulaUpdate = EventReactorFactory.makeCellReactor(partial(self.stdCallback, event))
-        return self.__cellFormulaUpdate
-        # raise NotImplementedError()
+            self._sendResponse(p6Res)
 
-    def cellClearScriptResult(self) -> CellReactor:
-        if self.__cellClearScriptResult is None:
-            event = P6Events.Cell.ClearScriptResult
-            self.__cellClearScriptResult = EventReactorFactory.makeCellReactor(
-                partial(self.stdCallback, event))
-        return self.__cellClearScriptResult
-        # raise NotImplementedError()
+        reactor = EventReactorFactory.makeCellReactor(cb)
+        return reactor
 
     def rangeReRun(self) -> RangeReactor:
         if self.__rangeReRun is None:
@@ -118,10 +108,11 @@ class StdReactorProvider(ReactorProvider):
         if self.__worksheetRenameReactor is None:
             def cb(eventData: WorkbookEventData):
                 if not eventData.isError:
-                    msg = self.__createP6Response(eventData.event, eventData.data)
+                    msg = P6Messages.p6Response(eventData.event, eventData.data)
                 else:
-                    msg = self.__createP6Response(eventData.event,eventData.data,P6Response.Status.ERROR)
-                self._sendRes(msg)
+                    msg = P6Messages.p6Response(eventData.event, eventData.data, P6Response.Status.ERROR)
+                self._sendResponse(msg)
+
             self.__worksheetRenameReactor = EventReactorFactory.makeWorkbookReactor(cb)
         return self.__worksheetRenameReactor
 
@@ -136,7 +127,7 @@ class StdReactorProvider(ReactorProvider):
                 if replyRs.isErr():
                     raise replyRs.err.toException()
 
-    def _sendRes(self, p6Res: P6Response):
+    def _sendResponse(self, p6Res: P6Response):
         socketProvider = self.__socketProvider()
         if socketProvider is not None:
             socket = socketProvider.reqSocketForUIUpdating()
@@ -146,24 +137,7 @@ class StdReactorProvider(ReactorProvider):
                     msg = p6Res)
                 if replyRs.isErr():
                     raise replyRs.err.toException()
-
-    @staticmethod
-    def __createP6Response(event,data:Any,status:P6Response.Status = P6Response.Status.OK):
-        res = P6Response(
-            header = P6MessageHeader(
-                msgId = str(uuid.uuid4()),
-                eventType = event,
-            ),
-            status = status,
-            data = data
-        )
-        return res
-    @staticmethod
-    def __createP6Msg(event,data:Any,):
-        msg = P6Message(
-            header = P6MessageHeader(
-                msgId = str(uuid.uuid4()),
-                eventType = event,
-            ),
-            data = data)
-        return msg
+            else:  # socket is None
+                pass  # do nothing
+        else:  # socket provider is None
+            pass  # do nothing

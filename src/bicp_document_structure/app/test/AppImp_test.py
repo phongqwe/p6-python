@@ -176,7 +176,7 @@ class AppImp_test(unittest.TestCase):
         app = AppImp()
 
         app.eventReactorContainer.addReactor(
-            P6Events.Cell.UpdateValueEvent,
+            P6Events.Cell.Update.event,
             EventReactorFactory.makeCellReactor(self.onCellChange))
         fileName = "file.txt"
 
@@ -200,7 +200,7 @@ class AppImp_test(unittest.TestCase):
             self.ze = 123
 
         app.eventReactorContainer.addReactor(
-            P6Events.Cell.UpdateValueEvent,
+            P6Events.Cell.Update.event,
             EventReactorFactory.makeCellReactor(reactor))
         wb = app.createNewWorkbook("bookz1")
         wb.createNewWorksheet("sheetz1")
@@ -268,7 +268,7 @@ class AppImp_test(unittest.TestCase):
         """
         app = AppImp()
         app.eventReactorContainer.addReactor(
-            P6Events.Cell.UpdateValueEvent,
+            P6Events.Cell.Update.event,
             EventReactorFactory.makeCellReactor(self.onCellChange))
 
         wb = wbCreator(app)
