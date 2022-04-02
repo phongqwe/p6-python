@@ -17,7 +17,7 @@ from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 class WorkbookImp_test(unittest.TestCase):
 
     def test_toProtoObj(self):
-        s1, s2, s3, w1, d = self.makeTestObj()
+        s1, s2, s3, w1 = self.makeTestObj()
         o = w1.toProtoObj()
         self.assertEqual(w1.name, o.workbookKey.name)
         self.assertEqual("null", o.workbookKey.path.WhichOneof("kind"))
@@ -29,20 +29,15 @@ class WorkbookImp_test(unittest.TestCase):
         self.assertEqual("str", o2.workbookKey.path.WhichOneof("kind"))
         self.assertEqual(str(w1.path.absolute()), o2.workbookKey.path.str)
 
-    @staticmethod
-    def transGetter(name):
-        return FormulaTranslators.mock()
-
     def makeTestObj(self):
-        s1 = WorksheetImp(name = "s1", translatorGetter = self.transGetter)
-        s2 = WorksheetImp(name = "s2", translatorGetter = self.transGetter)
-        s3 = WorksheetImp(name = "s3", translatorGetter = self.transGetter)
-        d = [s1,s2,s3]
-        w1 = WorkbookImp("w1", sheetList = d)
-        return s1, s2, s3, w1, d
+        w1 = WorkbookImp("w1")
+        s1 = w1.createNewWorksheet("s1")
+        s2 = w1.createNewWorksheet("s2")
+        s3 = w1.createNewWorksheet("s3")
+        return s1,s2,s3,w1
 
     def test_rename(self):
-        s1, s2, s3, w, sheetList = self.makeTestObj()
+        s1, s2, s3, w = self.makeTestObj()
         oldName = s1.name
         newName = "newS1"
         w.renameWorksheet(s1.name, newName)
@@ -57,8 +52,7 @@ class WorkbookImp_test(unittest.TestCase):
         self.assertEqual(w.getWorksheetByIndex(0).name, newName)
 
     def test_renameWorksheetRs_Ok(self):
-        s1, s2, s3, w, sheetDict = self.makeTestObj()
-        oldName = s1.name
+        s1, s2, s3, w = self.makeTestObj()
         newName = "newS1"
         rs = w.renameWorksheetRs(s1.name, newName)
         self.assertTrue(rs.isOk())
@@ -66,33 +60,33 @@ class WorkbookImp_test(unittest.TestCase):
         self.assertEqual(s1, w.getWorksheet(0), "Worksheet index was affected by changing name")
 
     def test_renameWorksheetRs_InvalidTarget(self):
-        s1, s2, s3, w, sheetDict = self.makeTestObj()
+        s1, s2, s3, w = self.makeTestObj()
         rs = w.renameWorksheetRs("invalid name", "new Name")
         self.assertTrue(rs.isErr())
         self.assertEqual(WorkbookErrors.WorksheetNotExistReport.header, rs.err.header, "incorrect error header")
         self.assertEqual("invalid name", rs.err.data.name, "incorrect error data")
 
     def test_renameWorksheetRs_InvalidNewName(self):
-        s1, s2, s3, w, sheetDict = self.makeTestObj()
+        s1, s2, s3, w = self.makeTestObj()
         rs = w.renameWorksheetRs(s1.name,"")
         self.assertTrue(rs.isErr())
         self.assertEqual(WorksheetErrors.IllegalNameReport.header, rs.err.header, "incorrect error header")
         self.assertEqual("", rs.err.data.name, "incorrect error data")
 
     def test_renameWorksheetRs_NameOfOtherSheet(self):
-        s1, s2, s3, w, sheetDict = self.makeTestObj()
+        s1, s2, s3, w = self.makeTestObj()
         rs = w.renameWorksheetRs(s1.name,s2.name)
         self.assertTrue(rs.isErr())
         self.assertEqual(WorkbookErrors.WorksheetAlreadyExistReport.header, rs.err.header, "incorrect error header")
         self.assertEqual(s2.name, rs.err.data.name, "incorrect error data")
 
     def test_renameWorksheetRs_SameName(self):
-        s1, s2, s3, w, sheetDict = self.makeTestObj()
+        s1, s2, s3, w = self.makeTestObj()
         rs = w.renameWorksheetRs(s1.name,s1.name)
         self.assertTrue(rs.isOk())
 
     def test_constructor(self):
-        s1, s2, s3, w, sheetDict = self.makeTestObj()
+        s1, s2, s3, w, = self.makeTestObj()
         d = [s1,s2,s3]
         w1 = WorkbookImp("w1", sheetList = d)
         self.assertFalse(w1.isEmpty())
@@ -101,7 +95,7 @@ class WorkbookImp_test(unittest.TestCase):
         self.assertEqual(s2, w1.getWorksheetByName(s2.name))
 
     def test_fromSheets(self):
-        s1, s2, s3, w1, sheetDict = self.makeTestObj()
+        s1, s2, s3, w1 = self.makeTestObj()
         self.assertEqual(s1, w1.getWorksheetByName(s1.name))
         self.assertEqual(s2, w1.getWorksheetByName(s2.name))
         self.assertEqual(s3, w1.getWorksheetByName(s3.name))
@@ -110,13 +104,13 @@ class WorkbookImp_test(unittest.TestCase):
         self.test_fromSheets()
 
     def test_getSheetByIndex(self):
-        s1, s2, s3, w1, sheetDict = self.makeTestObj()
+        s1, s2, s3, w1 = self.makeTestObj()
         self.assertEqual(s1, w1.getWorksheetByIndex(0))
         self.assertEqual(s2, w1.getWorksheetByIndex(1))
         self.assertEqual(s3, w1.getWorksheetByIndex(2))
 
     def test_getSheet(self):
-        s1, s2, s3, w1, sheetDict = self.makeTestObj()
+        s1, s2, s3, w1= self.makeTestObj()
 
         self.assertEqual(s1, w1.getWorksheet(0))
         self.assertEqual(s1, w1.getWorksheet(s1.name))
@@ -128,13 +122,13 @@ class WorkbookImp_test(unittest.TestCase):
         self.assertEqual(s3, w1.getWorksheet(s3.name))
 
     def test_sheetCount(self):
-        s1, s2, s3, w1, sheetDict = self.makeTestObj()
-        self.assertEqual(len(sheetDict), w1.sheetCount)
+        s1, s2, s3, w1 = self.makeTestObj()
+        self.assertEqual(3, w1.sheetCount)
         w1.removeWorksheetByIndex(0)
         self.assertEqual(2, w1.sheetCount)
 
     def test_createNameSheet(self):
-        s1, s2, s3, w1, sheetDict = self.makeTestObj()
+        s1, s2, s3, w1 = self.makeTestObj()
 
         s4 = w1.createNewWorksheet("s4")
         self.assertEqual(s4, w1.getWorksheet("s4"))
@@ -153,35 +147,46 @@ class WorkbookImp_test(unittest.TestCase):
         self.assertIsNotNone(book.getWorksheet("Sheet1"))
 
     def test_removeSheetByName(self):
-        s1, s2, s3, w1, sheetDict = self.makeTestObj()
+        s1, s2, s3, w1 = self.makeTestObj()
+        self.assertIsNotNone(s2.workbook)
         ds = w1.removeWorksheetByName(s2.name)
         self.assertEqual(s2, ds)
         self.assertEqual(2, w1.sheetCount)
         self.assertEqual(s3, w1.getWorksheet(1))
+        self.assertIsNone(s2.workbook)
+        self.assertIsNone(w1.getWorksheetByNameOrNone(s2.name))
 
     def test_removeSheetByIndex(self):
-        s1, s2, s3, w1, sheetDict = self.makeTestObj()
+        s1, s2, s3, w1= self.makeTestObj()
+        self.assertIsNotNone(s2.workbook)
         ds = w1.removeWorksheetByIndex(1)
         self.assertEqual(s2, ds)
         self.assertEqual(2, w1.sheetCount)
         self.assertEqual(s3, w1.getWorksheet(1))
+        self.assertIsNone(s2.workbook)
+        self.assertIsNone(w1.getWorksheetByNameOrNone(s2.name))
+
 
     def test_removeSheet(self):
-        s1, s2, s3, w1, sheetDict = self.makeTestObj()
+        s1, s2, s3, w1 = self.makeTestObj()
+        self.assertIsNotNone(s2.workbook)
         ds2 = w1.removeWorksheet(s2.name)
         self.assertEqual(s2, ds2)
         self.assertEqual(2, w1.sheetCount)
         self.assertEqual(s3, w1.getWorksheet(1))
+        self.assertIsNone(s2.workbook)
 
+        self.assertIsNotNone(s1.workbook)
         ds1 = w1.removeWorksheet(0)
         self.assertEqual(s1, ds1)
         self.assertEqual(1, w1.sheetCount)
         self.assertEqual(s3, w1.getWorksheet(0))
+        self.assertIsNone(s1.workbook)
         with self.assertRaises(ValueError):
             w1.removeWorksheet(0.0)
 
     def test_activeSheet(self):
-        s1, s2, s3, w1, sheetDict = self.makeTestObj()
+        s1, s2, s3, w1 = self.makeTestObj()
         self.assertEqual(s1, w1.activeWorksheet)
         w1.setActiveWorksheet(1)
         self.assertEqual(s2, w1.activeWorksheet)
@@ -192,7 +197,7 @@ class WorkbookImp_test(unittest.TestCase):
         self.assertEqual(s3, w1.activeWorksheet)
 
     def test_listWorksheet(self):
-        s1, s2, s3, w1, sheetDict = self.makeTestObj()
+        s1, s2, s3, w1 = self.makeTestObj()
         print(w1.listWorksheet())
 
     def __onCellChange(self, wb: Workbook, ws: Worksheet, cell: Cell, event: P6Event):
@@ -202,7 +207,7 @@ class WorkbookImp_test(unittest.TestCase):
         self.aa = f"{cell.address.label}"
 
     def test_toJson(self):
-        s1, s2, s3, w1, d = self.makeTestObj()
+        s1, s2, s3, w1 = self.makeTestObj()
         expect = """{"name": "w1", "path": null, "worksheets": [{"name": "s1", "cells": []}, {"name": "s2", "cells": []}, {"name": "s3", "cells": []}]}"""
         self.assertEqual(expect, w1.toJsonStr())
         print(w1.toJsonStr())

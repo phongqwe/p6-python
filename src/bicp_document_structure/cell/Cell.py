@@ -1,23 +1,46 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
 from abc import ABC
-
 from bicp_document_structure.cell.CellJson import CellJson
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.communication.proto.DocProtos_pb2 import CellProto
 from bicp_document_structure.util.ToJson import ToJson
 from bicp_document_structure.util.ToProto import ToProto
 
+if TYPE_CHECKING:
+    from bicp_document_structure.worksheet.Worksheet import Worksheet
+    from bicp_document_structure.workbook.WorkBook import Workbook
 
-class Cell(ToJson,ToProto[CellProto],ABC):
+class Cell(ToJson, ToProto[CellProto], ABC):
     """
     Cell interface
     """
+
     @property
-    def formula(self)->str:
+    def worksheet(self) -> Worksheet | None:
+        raise NotImplementedError()
+
+    @worksheet.setter
+    def worksheet(self, newWorksheet: Worksheet | None):
+        raise NotImplementedError()
+
+    def removeFromWorksheet(self):
+        self.worksheet = None
+
+    @property
+    def workbook(self)->Workbook | None:
+        if self.worksheet is not None:
+            return self.worksheet.workbook
+        else:
+            return None
+
+    @property
+    def formula(self) -> str:
         """ the original formula """
         raise NotImplementedError()
 
     @formula.setter
-    def formula(self,newFormula):
+    def formula(self, newFormula):
         """ set new formula, script will also be updated """
         raise NotImplementedError()
 
@@ -89,7 +112,7 @@ class Cell(ToJson,ToProto[CellProto],ABC):
         else:
             return self.value == anotherCellOrValue
 
-    def runScript(self, globalScope=None, localScope=None):
+    def runScript(self, globalScope = None, localScope = None):
         """run the script """
         raise NotImplementedError()
 
@@ -97,7 +120,7 @@ class Cell(ToJson,ToProto[CellProto],ABC):
     #     """run the script without triggering event reactors """
     #     raise NotImplementedError()
 
-    def setScriptAndRun(self, newScript, globalScope=None, localScope=None):
+    def setScriptAndRun(self, newScript, globalScope = None, localScope = None):
         """set new script for this cell and execute it immediately"""
         raise NotImplementedError()
 
@@ -126,7 +149,7 @@ class Cell(ToJson,ToProto[CellProto],ABC):
         else:
             return self.value is not None
 
-    def reRun(self, globalScope=None, localScope=None):
+    def reRun(self, globalScope = None, localScope = None):
         self.clearScriptResult()
         self.runScript(globalScope, localScope)
 
@@ -134,7 +157,7 @@ class Cell(ToJson,ToProto[CellProto],ABC):
     #     self.clearScriptResultEventFree()
     #     self.runScriptEventFree(globalScope, localScope)
 
-    def copyFrom(self,anotherCell:"Cell"):
+    def copyFrom(self, anotherCell: "Cell"):
         """copy everything (data, format, etc.) from another cell to this cell"""
         raise NotImplementedError()
 

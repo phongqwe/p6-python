@@ -6,11 +6,12 @@ from bicp_document_structure.cell.CellJson import CellJson
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.cell.util.CellUtil import convertExceptionToStr
 from bicp_document_structure.code_executor.CodeExecutor import CodeExecutor
-from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from bicp_document_structure.communication.proto.DocProtos_pb2 import CellProto
+from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from bicp_document_structure.util.Util import default
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Result import Result
+from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 
 class DataCell(Cell):
@@ -23,15 +24,25 @@ class DataCell(Cell):
                  translatorGetter: Callable[[], FormulaTranslator] | None = None,
                  value: Any = None,
                  formula: str = None,
-                 script: str = None):
+                 script: str = None,
+                 worksheet: Worksheet | None = None):
         self.__value: Any = value
         self.__script: str = script
         self.__addr: CellAddress = address
         self.__scriptAlreadyRun: bool = False
         self.__formula: str = formula
         self.__translatorGetter: Callable[[], FormulaTranslator] | None = translatorGetter
+        self.__ws: Worksheet | None = worksheet
 
     ### >> Cell << ###
+
+    @property
+    def worksheet(self) -> Worksheet | None:
+        return self.__ws
+
+    @worksheet.setter
+    def worksheet(self, newWorksheet: Worksheet | None):
+        self.__ws = newWorksheet
 
     @property
     def formula(self) -> str:
@@ -52,7 +63,7 @@ class DataCell(Cell):
         else:
             raise ValueError(str(transResult.err))
 
-    def toProtoObj(self) ->CellProto:
+    def toProtoObj(self) -> CellProto:
         cellProto = CellProto()
         cellProto.address.CopyFrom(self.address.toProtoObj())
         vl = self.__value
@@ -61,8 +72,8 @@ class DataCell(Cell):
         else:
             cellProto.displayValue = ""
 
-        cellProto.script = default(self.__script,"")
-        cellProto.formula = default(self.__formula,"")
+        cellProto.script = default(self.__script, "")
+        cellProto.formula = default(self.__formula, "")
         return cellProto
 
     def bareValue(self):

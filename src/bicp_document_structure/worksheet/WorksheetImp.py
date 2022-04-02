@@ -13,9 +13,8 @@ from bicp_document_structure.range.address.RangeAddress import RangeAddress
 from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
 from bicp_document_structure.util.AddressParser import AddressParser
 from bicp_document_structure.util.Util import typeCheck
-from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Ok import Ok
-from bicp_document_structure.util.result.Result import Result
+from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 from bicp_document_structure.worksheet.WorksheetConst import WorksheetConst
 from bicp_document_structure.worksheet.WorksheetJson import WorksheetJson
@@ -25,7 +24,7 @@ class WorksheetImp(Worksheet):
     def __init__(self,
                  translatorGetter: Callable[[str], FormulaTranslator],
                  name = "",
-                 ):
+                 workbook: Workbook | None = None):
         # key = col index
         self._colDict: dict[int, list[Cell]] = {}
         # key = row index
@@ -35,6 +34,7 @@ class WorksheetImp(Worksheet):
         self.__name = name
         # self.__onCellChangeOfWorksheet:Optional[Callable[[Worksheet, Cell, P6Event], None]] = onCellChange
         self.translatorGetter: Callable[[str], FormulaTranslator] = translatorGetter
+        self.__wb = workbook
 
     ### >> ToJson << ###
     def toJsonDict(self) -> dict:
@@ -45,6 +45,14 @@ class WorksheetImp(Worksheet):
         return len(self._cellDict)
 
     ### >> Worksheet << ###
+
+    @property
+    def workbook(self) -> Workbook | None:
+        return self.__wb
+
+    @workbook.setter
+    def workbook(self, newWorkbook: Workbook | None):
+        self.__wb = newWorkbook
 
     @property
     def translator(self) -> FormulaTranslator | None:
@@ -118,7 +126,8 @@ class WorksheetImp(Worksheet):
         if rt is None:
             if self.containsAddress(address):
                 return WriteBackCell(
-                    cell = DataCell(address, translatorGetter = partial(self.translatorGetter,self.name)),
+                    cell = DataCell(address, translatorGetter = partial(self.translatorGetter, self.name),
+                                    worksheet = self),
                     container = self,
                 )
             else:
@@ -132,26 +141,27 @@ class WorksheetImp(Worksheet):
             self._cellDict[key] = cell
 
             colIndex = cell.address.colIndex
-            col = self._colDict.get(colIndex,[])
+            col = self._colDict.get(colIndex, [])
             col.append(cell)
             self._colDict[colIndex] = col
 
             rowIndex = cell.address.rowIndex
-            row = self._rowDict.get(rowIndex,[])
+            row = self._rowDict.get(rowIndex, [])
             row.append(cell)
             self._rowDict[rowIndex] = row
         else:
             raise Exception(f"worksheet \'{self.name}\' can't contain cell at \'{cell.address.__str__()}\'")
+
     def removeCell(self, address: CellAddress):
         key = address.toTuple()
-        (colIndex,rowIndex) = key
+        (colIndex, rowIndex) = key
         if key in self._cellDict.keys():
             self._cellDict.pop(key)
-        self._removeCellFromDict(self._colDict,colIndex,address)
-        self._removeCellFromDict(self._rowDict,rowIndex,address)
+        self._removeCellFromDict(self._colDict, colIndex, address)
+        self._removeCellFromDict(self._rowDict, rowIndex, address)
 
     @staticmethod
-    def _removeCellFromDict(targetDict, itemIndex:int, address:CellAddress):
+    def _removeCellFromDict(targetDict, itemIndex: int, address: CellAddress):
         cellList = targetDict.get(itemIndex)
         if cellList is not None:
             cellList = list(filter(lambda cell: cell.address != address, cellList))
@@ -159,7 +169,3 @@ class WorksheetImp(Worksheet):
                 targetDict[itemIndex] = cellList
             else:
                 targetDict.pop(itemIndex)
-
-
-
-

@@ -4,6 +4,7 @@ from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.CellJson import CellJson
 from bicp_document_structure.cell.address.CellAddress import CellAddress
 from bicp_document_structure.communication.proto.DocProtos_pb2 import CellProto
+from bicp_document_structure.worksheet.Worksheet import Worksheet
 
 
 class WrapperCell(Cell, ABC):
@@ -13,6 +14,14 @@ class WrapperCell(Cell, ABC):
 
     def __init__(self, innerCell: Cell):
         self._innerCell: Cell = innerCell
+
+    @property
+    def worksheet(self) -> Worksheet | None:
+        return self._innerCell.worksheet
+
+    @worksheet.setter
+    def worksheet(self, newWorksheet: Worksheet | None):
+        self._innerCell.worksheet = newWorksheet
 
     def toProtoObj(self) -> CellProto:
         return self._innerCell.toProtoObj()

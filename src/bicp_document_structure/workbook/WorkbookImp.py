@@ -168,7 +168,7 @@ class WorkbookImp(Workbook):
                 self._sheetDictByName[newSheetName] = targetSheet
                 # update translator map
                 oldTranslatorDictKey = (oldName, self.workbookKey)
-                # delete old cached translator. New translator will be lazily created when it is queried.
+                # delete old cached translator. New translator will be lazily created when it is requested.
                 if oldTranslatorDictKey in self._translatorDict.keys():
                     self._translatorDict.pop(oldTranslatorDictKey)
                 return Ok(None)
@@ -222,7 +222,9 @@ class WorkbookImp(Workbook):
             )
         newSheet = WorksheetImp(
             name = newSheetName,
-            translatorGetter = self.getTranslator, )
+            translatorGetter = self.getTranslator,
+            workbook = self
+        )
         # store new sheet in name map
         self._sheetDictByName[newSheetName] = newSheet
         # store in index list
@@ -236,6 +238,7 @@ class WorkbookImp(Workbook):
             del self._sheetDictByName[sheetName]
             if rt in self._sheetList:
                 self._sheetList.remove(rt)
+            rt.removeFromWorkbook()
             return Ok(rt)
         else:
             return Err(
@@ -250,8 +253,7 @@ class WorkbookImp(Workbook):
         if 0 <= index < self.sheetCount:
             sheet: Worksheet = self._sheetList[index]
             self._sheetList.pop(index)
-            name: str = sheet.name
-            return self.removeWorksheetByNameRs(name)
+            return self.removeWorksheetByNameRs(sheet.name)
         else:
             return Err(
                 ErrorReport(
