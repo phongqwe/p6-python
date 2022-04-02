@@ -61,23 +61,34 @@ class EventServerReactors:
 
                 if getWbRs.isOk():
                     wb: Workbook = getWbRs.value
-                    renameRs: Result[None, ErrorReport] = wb.renameWorksheetRs(oldName, newName)
-                    if renameRs.isOk():
-                        out = RenameWorksheetResponseData(
-                            workbookKey = wbKey,
-                            oldName = oldName,
-                            newName = newName,
-                            index = wb.getIndexOfWorksheet(newName),
-                            isError = False,
-                        )
-                        return out
+                    getWsRs = wb.getWorksheetRs(oldName)
+                    if getWsRs.isOk():
+                        renameRs: Result[None, ErrorReport] = getWsRs.value.renameRs(newName)
+                        if renameRs.isOk():
+                            out = RenameWorksheetResponseData(
+                                workbookKey = wbKey,
+                                oldName = oldName,
+                                newName = newName,
+                                index = wb.getIndexOfWorksheet(newName),
+                                isError = False,
+                            )
+                            return out
+                        else:
+                            out = RenameWorksheetResponseData(
+                                workbookKey = wbKey,
+                                oldName = oldName,
+                                newName = newName,
+                                isError = True,
+                                errorReport = renameRs.err
+                            )
+                            return out
                     else:
                         out = RenameWorksheetResponseData(
                             workbookKey = wbKey,
                             oldName = oldName,
                             newName = newName,
                             isError = True,
-                            errorReport = renameRs.err
+                            errorReport = getWsRs.err
                         )
                         return out
                 else:

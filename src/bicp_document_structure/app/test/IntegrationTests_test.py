@@ -114,7 +114,7 @@ class IntegrationTest_test(unittest.TestCase):
         book = getWorkbook("Book1")
         socket = self.createSocket(context,port)
         getApp().socketProvider.updateREQSocketForUIUpdating(socket)
-        book.renameWorksheet("Sheet1", "Sheet1x")
+        book.getWorksheet("Sheet1").renameRs("Sheet1x")
         sendClose(socket)
         thread.join()
 

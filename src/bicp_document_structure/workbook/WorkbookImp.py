@@ -144,39 +144,12 @@ class WorkbookImp(Workbook):
         rs = self.getWorksheetByIndexRs(index)
         return Results.extractOrRaise(rs)
 
-    def renameWorksheetRs(self, oldSheetNameOrIndex: str | int, newSheetName: str) -> Result[None, ErrorReport]:
-        if len(newSheetName) == 0 or newSheetName is None:
-            return Err(ErrorReport(
-                header = WorksheetErrors.IllegalNameReport.header,
-                data = WorksheetErrors.IllegalNameReport.Data(newSheetName)
-            ))
-        targetSheet: Worksheet | None = self.getWorksheetOrNone(oldSheetNameOrIndex)
-        if targetSheet is None:
-            return Err(ErrorReport(
-                WorkbookErrors.WorksheetNotExistReport.header,
-                WorkbookErrors.WorksheetNotExistReport.Data(oldSheetNameOrIndex)
-            ))
-        else:
-            if targetSheet.name == newSheetName:
-                return Ok(None)
-            newNameNotMapToExistingSheet = self.getWorksheetOrNone(newSheetName) is None
-            if newNameNotMapToExistingSheet:
-                oldName = targetSheet.name
-                targetSheet.internalRename(newSheetName)
-                # update sheet dict
-                self._sheetDictByName.pop(oldName)
-                self._sheetDictByName[newSheetName] = targetSheet
-                # update translator map
-                oldTranslatorDictKey = (oldName, self.workbookKey)
-                # delete old cached translator. New translator will be lazily created when it is queried.
-                if oldTranslatorDictKey in self._translatorDict.keys():
-                    self._translatorDict.pop(oldTranslatorDictKey)
-                return Ok(None)
-            else:
-                return Err(ErrorReport(
-                    WorkbookErrors.WorksheetAlreadyExistReport.header,
-                    WorkbookErrors.WorksheetNotExistReport.Data(newSheetName)
-                ))
+    # def renameWorksheetRs(self, oldSheetNameOrIndex: str | int, newSheetName: str) -> Result[None, ErrorReport]:
+    #     targetSheet: Worksheet | None = self.getWorksheetOrNone(oldSheetNameOrIndex)
+    #     if targetSheet is None:
+    #         return Err(ErrorReport(WorkbookErrors.WorksheetNotExistReport(oldSheetNameOrIndex)))
+    #     else:
+    #         return targetSheet.renameRs(newSheetName)
 
     @property
     def sheetCount(self) -> int:
@@ -214,15 +187,12 @@ class WorkbookImp(Workbook):
             newSheetName = self._generateNewSheetName()
 
         if self.haveSheet(newSheetName):
-            return Err(
-                ErrorReport(
-                    header = WorkbookErrors.WorksheetAlreadyExistReport.header,
-                    data = WorkbookErrors.WorksheetAlreadyExistReport.Data(newSheetName)
-                )
-            )
+            return Err(WorkbookErrors.WorksheetAlreadyExistReport(newSheetName))
+
         newSheet = WorksheetImp(
             name = newSheetName,
-            translatorGetter = self.getTranslator, )
+            workbook = self
+        )
         # store new sheet in name map
         self._sheetDictByName[newSheetName] = newSheet
         # store in index list
@@ -236,6 +206,12 @@ class WorkbookImp(Workbook):
             del self._sheetDictByName[sheetName]
             if rt in self._sheetList:
                 self._sheetList.remove(rt)
+            rt.removeFromWorkbook()
+
+            # delete old cached translator. New translator will be lazily created when it is requested.
+            oldTranslatorDictKey = (sheetName, self.workbookKey)
+            if oldTranslatorDictKey in self._translatorDict.keys():
+                self._translatorDict.pop(oldTranslatorDictKey)
             return Ok(rt)
         else:
             return Err(
@@ -245,13 +221,23 @@ class WorkbookImp(Workbook):
                 )
             )
 
+    def addWorksheetRs(self, ws: Worksheet) -> Result[None, ErrorReport]:
+        if self.haveSheet(ws.name):
+            return Err(WorkbookErrors.WorksheetAlreadyExistReport(ws.name))
+        else:
+            # store new sheet in name map
+            self._sheetDictByName[ws.name] = ws
+            # store in index list
+            self._sheetList.append(ws)
+            ws.workbook = self
+            return Ok(None)
+
     def removeWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
         typeCheck(index, "index", int)
         if 0 <= index < self.sheetCount:
             sheet: Worksheet = self._sheetList[index]
             self._sheetList.pop(index)
-            name: str = sheet.name
-            return self.removeWorksheetByNameRs(name)
+            return self.removeWorksheetByNameRs(sheet.name)
         else:
             return Err(
                 ErrorReport(
@@ -271,3 +257,16 @@ class WorkbookImp(Workbook):
 
     def toJsonDict(self) -> dict:
         return self.toJson().toJsonDict()
+
+    def updateSheetName(self, oldName:str,ws: Worksheet):
+        if ws in self.worksheets:
+            self._sheetDictByName.pop(oldName)
+            self._sheetDictByName[ws.name] = ws
+
+            translatorKey = (oldName,self.workbookKey)
+            if translatorKey in self._translatorDict.keys():
+                self._translatorDict.pop(translatorKey)
+        else:
+            self.addWorksheet(ws)
+
+

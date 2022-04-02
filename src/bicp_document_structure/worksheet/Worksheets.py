@@ -2,6 +2,7 @@ from typing import Callable
 
 from bicp_document_structure.cell.Cells import Cells
 from bicp_document_structure.formula_translator.FormulaTranslator import FormulaTranslator
+from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 from bicp_document_structure.worksheet.WorksheetJson import WorksheetJson
@@ -9,9 +10,9 @@ from bicp_document_structure.worksheet.WorksheetJson import WorksheetJson
 
 class Worksheets:
     @staticmethod
-    def wsFromJson(worksheetJson: WorksheetJson, translatorGetter: Callable[[str], FormulaTranslator]) -> Worksheet:
+    def wsFromJson(worksheetJson: WorksheetJson,workbook:Workbook) -> Worksheet:
         """create a Worksheet object from a WorksheetJson object"""
-        ws = WorksheetImp(name = worksheetJson.name, translatorGetter = translatorGetter)
+        ws = WorksheetImp(name = worksheetJson.name,workbook = workbook)
         for cellJson in worksheetJson.cells:
             cell = Cells.cellFromJson(cellJson)
             ws.addCell(cell)

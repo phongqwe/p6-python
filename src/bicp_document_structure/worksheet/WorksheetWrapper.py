@@ -8,14 +8,23 @@ from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.address.RangeAddress import RangeAddress
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Result import Result
+from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.worksheet.Worksheet import Worksheet
 from bicp_document_structure.worksheet.WorksheetJson import WorksheetJson
 
 
-class WorksheetWrapper(Worksheet,ABC):
+class WorksheetWrapper(Worksheet):
 
     def __init__(self, innerWorksheet: Worksheet):
         self._innerSheet: Worksheet = innerWorksheet
+
+    @property
+    def workbook(self) -> Workbook | None:
+        return self._innerSheet.workbook
+
+    @workbook.setter
+    def workbook(self, newWorkbook: Workbook | None):
+        self._innerSheet.workbook = newWorkbook
 
     @property
     def translator(self) -> FormulaTranslator:

@@ -3,18 +3,71 @@ import unittest
 from functools import partial
 from unittest.mock import MagicMock
 
+from bicp_document_structure.worksheet.WorksheetErrors import WorksheetErrors
+
 from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.address.CellIndex import CellIndex
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from bicp_document_structure.range.RangeImp import RangeImp
 from bicp_document_structure.range.address.RangeAddressImp import RangeAddressImp
+from bicp_document_structure.workbook.WorkbookErrors import WorkbookErrors
+from bicp_document_structure.workbook.WorkbookImp import WorkbookImp
 from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp
 
 
 class WorksheetImp_test(unittest.TestCase):
 
+    def makeTestObj2(self):
+        w1 = WorkbookImp("w1")
+        s1 = w1.createNewWorksheet("s1")
+        s2 = w1.createNewWorksheet("s2")
+        s3 = w1.createNewWorksheet("s3")
+        return s1, s2, s3, w1
+    def test_rename(self):
+        s1, s2, s3, w = self.makeTestObj2()
+        oldName = s1.name
+        newName = "newS1"
+        s1.rename(newName)
+        self.assertEqual(newName, s1.name)
+        self.assertIsNone(w.getWorksheetOrNone(oldName))
+        self.assertIsNotNone(w.getWorksheetOrNone(newName))
+        with self.assertRaises(Exception):
+            self.assertIsNone(w.getTranslator(oldName))
+        self.assertIsNotNone(w.getTranslator(newName))
+        self.assertIsNotNone(s1.translator)
+        # ensure that sheet index is not changed after name changed
+        self.assertEqual(w.getWorksheetByIndex(0).name, newName)
+    #
+    def test_renameWorksheetRs_Ok(self):
+        s1, s2, s3, w = self.makeTestObj2()
+        newName = "newS1"
+        rs = s1.renameRs(newName)
+        self.assertTrue(rs.isOk())
+        self.assertEqual(newName, s1.name, "Worksheet name is not the new name")
+        self.assertEqual(s1, w.getWorksheet(0), "Worksheet index was affected by changing name")
+
+
+    def test_renameWorksheetRs_InvalidNewName(self):
+        s1, s2, s3, w = self.makeTestObj2()
+        rs = s1.renameRs("")
+        self.assertTrue(rs.isErr())
+        self.assertEqual(WorksheetErrors.IllegalNameReport.header, rs.err.header, "incorrect error header")
+        self.assertEqual("", rs.err.data.name, "incorrect error data")
+    #
+    def test_renameWorksheetRs_NameOfOtherSheet(self):
+        s1, s2, s3, w = self.makeTestObj2()
+        rs = s1.renameRs(s2.name)
+        self.assertTrue(rs.isErr())
+        self.assertEqual(WorkbookErrors.WorksheetAlreadyExistReport.header, rs.err.header, "incorrect error header")
+        self.assertEqual(s2.name, rs.err.data.name, "incorrect error data")
+    #
+    def test_renameWorksheetRs_SameName(self):
+        s1, s2, s3, w = self.makeTestObj2()
+        rs = s1.renameRs(s1.name)
+        self.assertTrue(rs.isOk())
+
     def test_toProtoObj(self):
-        s = WorksheetImp(translatorGetter = MagicMock(), name = "oldName")
+        s = WorksheetImp(name = "oldName", workbook = MagicMock())
         s.cell("@A1").value = 123
         s.cell("@B3").value = 333
         o = s.toProtoObj()
@@ -28,13 +81,15 @@ class WorksheetImp_test(unittest.TestCase):
         return FormulaTranslators.mock()
 
     def testRename(self):
-        s = WorksheetImp(translatorGetter = self.transGetter, name = "oldName")
+        wb = WorkbookImp("w")
+        s = WorksheetImp(name = "oldName",workbook = wb)
+        wb.addWorksheet(s)
         s.rename("newName")
         self.assertEqual("newName", s.name)
 
     def test_cell(self):
-        s = WorksheetImp(translatorGetter = self.transGetter)
-        expect = DataCell(CellIndex(1, 2), translatorGetter = partial(self.transGetter, s.name))
+        s = WorksheetImp(name="s",workbook = MagicMock())
+        expect = DataCell(CellIndex(1, 2))
 
         c1 = s.cell("@A2")
         self.assertEqual(expect, c1)
@@ -46,7 +101,7 @@ class WorksheetImp_test(unittest.TestCase):
         self.assertEqual(expect, c3)
 
     def test_range(self):
-        s = WorksheetImp(translatorGetter = self.transGetter)
+        s = WorksheetImp(name="s",workbook = MagicMock())
         ad1 = CellIndex(1, 1)  # A1
         ad2 = CellIndex(20, 20)  # T20
         expect = RangeImp(ad1, ad2, s)
@@ -65,24 +120,24 @@ class WorksheetImp_test(unittest.TestCase):
 
     def makeTestObj(self):
         cellAddr = CellIndex(random.randrange(1, 20), random.randrange(1, 20))
-        cell = DataCell(cellAddr, translatorGetter = self.transGetterForCell, value = 123, script = "script")
+        cell = DataCell(cellAddr, value = 123, script = "script")
         return cell, cellAddr
 
     def test_hasCellAt(self):
-        s = WorksheetImp(translatorGetter = self.transGetter)
+        s = WorksheetImp(name="s",workbook = MagicMock())
         self.assertFalse(s.hasCellAt(CellIndex(1, 1)))
-        s.addCell(DataCell(CellIndex(1, 1), translatorGetter = self.transGetterForCell, value = 123, script = "script"))
+        s.addCell(DataCell(CellIndex(1, 1), value = 123, script = "script"))
         self.assertTrue(s.hasCellAt(CellIndex(1, 1)))
 
     def test_getCell(self):
-        s = WorksheetImp(translatorGetter = self.transGetter)
+        s = WorksheetImp(name="s",workbook = MagicMock())
         cellAddr = CellIndex(12, 12)
         cell = DataCell(cellAddr, self.transGetterForCell)
         s.addCell(cell)
         self.assertEqual(cell, s.getOrMakeCell(cellAddr))
 
     def test_isEmpty(self):
-        sheet = WorksheetImp(translatorGetter = self.transGetter)
+        sheet = WorksheetImp(name="s", workbook = MagicMock())
         self.assertTrue(sheet.isEmpty())
         cell, cellAddr = self.makeTestObj()
         sheet.addCell(cell)
@@ -91,7 +146,7 @@ class WorksheetImp_test(unittest.TestCase):
         self.assertTrue(sheet.isEmpty())
 
     def test_containAddress(self):
-        s = WorksheetImp(translatorGetter = self.transGetter)
+        s = WorksheetImp(name="s",workbook = MagicMock())
         cell, cellAddr = self.makeTestObj()
         self.assertTrue(s.containsAddress(cellAddr))
         s.addCell(cell)
@@ -102,7 +157,7 @@ class WorksheetImp_test(unittest.TestCase):
     def test_cells(self):
         cell1, cellAddr1 = self.makeTestObj()
         cell2, cellAddr2 = self.makeTestObj()
-        s = WorksheetImp(translatorGetter = self.transGetter)
+        s = WorksheetImp(name="s",workbook = MagicMock())
         s.addCell(cell1)
         s.addCell(cell2)
         self.assertTrue(cell1 in s.cells)
@@ -111,7 +166,7 @@ class WorksheetImp_test(unittest.TestCase):
         self.assertEqual([cell2], s.cells)
 
     def test_getNonExistenceCell(self):
-        s = WorksheetImp(translatorGetter = self.transGetter)
+        s = WorksheetImp(name="s",workbook = MagicMock())
         c = s.getOrMakeCell(CellIndex(1, 1))
         self.assertIsNotNone(c)
         self.assertTrue(s.isEmpty())
@@ -133,4 +188,4 @@ class WorksheetImp_test(unittest.TestCase):
         self.assertIsNone(s.getCell(CellIndex(1, 1)))
 
     def makeS(self):
-        return WorksheetImp(translatorGetter = self.transGetter)
+        return WorksheetImp(name="s",workbook = MagicMock())
