@@ -1,11 +1,10 @@
-import json
 import unittest
 from unittest.mock import MagicMock
 
 from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.EventCell import EventCell
 from bicp_document_structure.cell.address.CellIndex import CellIndex
-from bicp_document_structure.communication.event.reactor.eventData.CellEventData import CellEventData
+from bicp_document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from bicp_document_structure.communication.proto.DocProtos_pb2 import CellProto
 from bicp_document_structure.util.Util import makeGetter

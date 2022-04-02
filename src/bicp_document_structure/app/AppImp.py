@@ -9,10 +9,10 @@ from bicp_document_structure.app.workbook_container.WorkbookContainerImp import 
 from bicp_document_structure.communication.SocketProvider import SocketProvider
 from bicp_document_structure.communication.SocketProviderImp import SocketProviderImp
 from bicp_document_structure.communication.event.P6Events import P6Events
-from bicp_document_structure.communication.event.reactor.EventReactorContainer import EventReactorContainer
-from bicp_document_structure.communication.event.reactor.EventReactorContainers import EventReactorContainers
-from bicp_document_structure.communication.event.reactor.StdReactorProvider import StdReactorProvider
-from bicp_document_structure.communication.event.reactor.eventData.CellEventData import CellEventData
+from bicp_document_structure.communication.internal_reactor.EventReactorContainer import EventReactorContainer
+from bicp_document_structure.communication.internal_reactor.EventReactorContainers import EventReactorContainers
+from bicp_document_structure.communication.internal_reactor.StdReactorProvider import StdReactorProvider
+from bicp_document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
 from bicp_document_structure.communication.event_server.EventServer import EventServer
 from bicp_document_structure.communication.event_server.EventServerImp import EventServerImp
 from bicp_document_structure.communication.event_server.EventServerReactors import EventServerReactors
@@ -70,6 +70,7 @@ class AppImp(App):
         self.__reactorContainer: EventReactorContainer[CellEventData] = cellEventReactorContainer
         self.__reactorProvider = StdReactorProvider(self._getSocketProvider)
         self.__zcontext = zmq.Context.instance()
+
         self.initBaseReactor()
         self._eventServer = EventServerImp(isDaemon = True)
         self._eventServerReactors = EventServerReactors(self.getBareWorkbookRs)
@@ -99,12 +100,12 @@ class AppImp(App):
         )
 
     def initBaseReactor(self):
-        """create base reactors """
+        """create internal reactors """
         container = self.__reactorContainer
         provider = self.__reactorProvider
         container.addReactor(P6Events.Cell.Update.event, provider.cellUpdateReactor())
-        container.addReactor(P6Events.Worksheet.Rename.event, provider.worksheetRename())
-        container.addReactor(P6Events.Workbook.CreateNewWorksheet.event, provider.createNewWorksheet())
+        container.addReactor(P6Events.Worksheet.Rename.event, provider.renameWorksheetReactor())
+        container.addReactor(P6Events.Workbook.CreateNewWorksheet.event, provider.createNewWorksheetReactor())
 
     @property
     def eventReactorContainer(self) -> EventReactorContainer:

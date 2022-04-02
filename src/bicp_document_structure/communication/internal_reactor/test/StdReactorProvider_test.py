@@ -6,11 +6,9 @@ from bicp_document_structure.communication.proto.CellProtos_pb2 import CellUpdat
 
 from bicp_document_structure.communication.proto.P6MsgProtos_pb2 import P6ResponseProto
 
-from bicp_document_structure.communication.proto.DocProtos_pb2 import WorkbookProto
-
 from bicp_document_structure.communication.SocketProviderImp import SocketProviderImp
-from bicp_document_structure.communication.event.reactor.StdReactorProvider import StdReactorProvider
-from bicp_document_structure.communication.event.reactor.eventData.CellEventData import CellEventData
+from bicp_document_structure.communication.internal_reactor.StdReactorProvider import StdReactorProvider
+from bicp_document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
 from bicp_document_structure.util.for_test.TestUtils import findNewSocketPort, startREPServerOnThread, sendClose
 from bicp_document_structure.workbook.EventWorkbook import EventWorkbook
 from bicp_document_structure.workbook.WorkbookImp import WorkbookImp

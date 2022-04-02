@@ -3,19 +3,18 @@ from typing import Callable
 
 from bicp_document_structure.communication.event.P6Events import P6Events
 from bicp_document_structure.communication.event.data.response.RenameWorksheetData import RenameWorksheetResponseData
-from bicp_document_structure.communication.event.reactor.EventReactor import EventReactor
+from bicp_document_structure.communication.event_server.msg.P6Message import P6Message
 from bicp_document_structure.communication.event_server.reactors.CellUpdateReactor import CellUpdateReactor
 from bicp_document_structure.communication.event_server.reactors.CreateNewWorksheetReactor import \
     CreateNewWorksheetReactor
+from bicp_document_structure.communication.internal_reactor.CellReactor import CellReactor
+from bicp_document_structure.communication.internal_reactor.EventReactor import EventReactor
+from bicp_document_structure.communication.internal_reactor.EventReactorFactory import EventReactorFactory
+from bicp_document_structure.communication.internal_reactor.RangeReactor import RangeReactor
+from bicp_document_structure.communication.internal_reactor.WorkbookReactor import WorkbookReactor
+from bicp_document_structure.communication.internal_reactor.WorksheetReactor import WorksheetReactor
 from bicp_document_structure.communication.proto.WorksheetProtos_pb2 import RenameWorksheetResponseProto, \
     RenameWorksheetRequestProto
-
-from bicp_document_structure.communication.event_server.msg.P6Message import P6Message
-from bicp_document_structure.communication.event.reactor.CellReactor import CellReactor
-from bicp_document_structure.communication.event.reactor.EventReactorFactory import EventReactorFactory
-from bicp_document_structure.communication.event.reactor.RangeReactor import RangeReactor
-from bicp_document_structure.communication.event.reactor.WorkbookReactor import WorkbookReactor
-from bicp_document_structure.communication.event.reactor.WorksheetReactor import WorksheetReactor
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.workbook.WorkBook import Workbook
@@ -41,51 +40,16 @@ class EventServerReactors:
         self.__workbookReRun: WorkbookReactor | None = None
 
     def createNewWorksheetReactor(self) -> EventReactor[bytes, P6Events.Workbook.CreateNewWorksheet.Response]:
-        reactor = CreateNewWorksheetReactor(str(uuid.uuid4()),self._wbGetter)
+        reactor = CreateNewWorksheetReactor(str(uuid.uuid4()), self._wbGetter)
         return reactor
 
     def cellUpdateValueReactor(self) -> CellUpdateReactor:
-        reactor = CellUpdateReactor(str(uuid.uuid4()),self._wbGetter)
+        reactor = CellUpdateReactor(str(uuid.uuid4()), self._wbGetter)
         return reactor
-
-    # def cellUpdateScript(self) -> CellReactor:
-    #     if self.__cellUpdateScript is None:
-    #         event = P6Events.Cell.UpdateScript
-    #         self.__cellUpdateScript = EventReactorFactory.makeCellReactor(partial(self.stdCallback, event))
-    #     return self.__cellUpdateScript
-
-    # def cellUpdateFormula(self) -> CellReactor:
-    #     if self.__cellFormulaUpdate is None:
-    #         event = P6Events.Cell.UpdateFormula
-    #         self.__cellFormulaUpdate = EventReactorFactory.makeCellReactor(partial(self.stdCallback, event))
-    #     return self.__cellFormulaUpdate
-
-    # def cellClearScriptResult(self) -> CellReactor:
-    #     if self.__cellClearScriptResult is None:
-    #         event = P6Events.Cell.ClearScriptResult
-    #         self.__cellClearScriptResult = EventReactorFactory.makeCellReactor(
-    #             partial(self.stdCallback, event))
-    #     return self.__cellClearScriptResult
-
-    # def rangeReRun(self) -> RangeReactor:
-    #     if self.__rangeReRun is None:
-    #         event = P6Events.Range.ReRun
-    #         self.__rangeReRun = EventReactorFactory.makeRangeReactor(partial(self.stdCallback, event))
-    #     return self.__rangeReRun
-
-    # def worksheetReRun(self) -> WorksheetReactor:
-    #     if self.__worksheetReRun is None:
-    #         event = P6Events.Worksheet.ReRun
-    #         self.__worksheetReRun = EventReactorFactory.makeRangeReactor(
-    #             partial(self.stdCallback, event))
-    #     return self.__worksheetReRun
-    #
 
     def renameWorksheet(self) -> EventReactor[bytes, RenameWorksheetResponseData]:
         if self.__worksheetRenameReactor is None:
-            def cb(data:bytes) -> RenameWorksheetResponseProto:
-                # receive = p6Msg.data
-
+            def cb(data: bytes) -> RenameWorksheetResponseProto:
                 protoRequest = RenameWorksheetRequestProto()
                 protoRequest.ParseFromString(data)
                 request = P6Events.Worksheet.Rename.Request.fromProto(protoRequest)

@@ -2,8 +2,8 @@ import unittest
 
 from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.address.CellIndex import CellIndex
-from bicp_document_structure.communication.event.reactor.CellReactor import CellReactor
-from bicp_document_structure.communication.event.reactor.eventData.CellEventData import CellEventData
+from bicp_document_structure.communication.internal_reactor.CellReactor import CellReactor
+from bicp_document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
 
 
 class CellEventReactorTest(unittest.TestCase):

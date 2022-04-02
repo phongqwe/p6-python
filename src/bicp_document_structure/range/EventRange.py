@@ -3,10 +3,9 @@ from typing import Callable, Optional, Union, Tuple
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.EventCell import EventCell
 from bicp_document_structure.cell.address.CellAddress import CellAddress
-from bicp_document_structure.communication.event.P6Event import P6Event
 from bicp_document_structure.communication.event.P6Events import P6Events
-from bicp_document_structure.communication.event.reactor.eventData.CellEventData import CellEventData
-from bicp_document_structure.communication.event.reactor.eventData.RangeEventData import RangeEventData
+from bicp_document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
+from bicp_document_structure.communication.internal_reactor.eventData.RangeEventData import RangeEventData
 from bicp_document_structure.range.Range import Range
 from bicp_document_structure.range.RangeWrapper import RangeWrapper
 

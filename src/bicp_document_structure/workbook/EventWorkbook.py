@@ -3,14 +3,12 @@ from typing import Callable, Optional, Union
 
 from bicp_document_structure.communication.event.data.response.CellUpdateCommonResponse import CellUpdateCommonResponse
 
-from bicp_document_structure.communication.proto.CellProtos_pb2 import CellUpdateCommonResponseProto
-
 from bicp_document_structure.communication.event.P6Events import P6Events
-from bicp_document_structure.communication.event.reactor.EventReactorContainer import EventReactorContainer
-from bicp_document_structure.communication.event.reactor.eventData.CellEventData import CellEventData
-from bicp_document_structure.communication.event.reactor.eventData.RangeEventData import RangeEventData
-from bicp_document_structure.communication.event.reactor.eventData.WorkbookEventData import WorkbookEventData
-from bicp_document_structure.communication.event.reactor.eventData.WorksheetEventData import WorksheetEventData
+from bicp_document_structure.communication.internal_reactor import EventReactorContainer
+from bicp_document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
+from bicp_document_structure.communication.internal_reactor.eventData.RangeEventData import RangeEventData
+from bicp_document_structure.communication.internal_reactor.eventData.WorkbookEventData import WorkbookEventData
+from bicp_document_structure.communication.internal_reactor.eventData.WorksheetEventData import WorksheetEventData
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Ok import Ok
 from bicp_document_structure.util.result.Result import Result
@@ -168,6 +166,7 @@ class EventWorkbook(WorkbookWrapper):
 
         def onCellEvent(eventData: CellEventData):
             eventData.workbook = self._innerWorkbook
+            # generate data
             if eventData.event == P6Events.Cell.Update.event:
                 eventData.workbook.reRun()
                 protoData = CellUpdateCommonResponse(eventData.workbook)

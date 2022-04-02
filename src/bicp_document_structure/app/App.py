@@ -8,10 +8,9 @@ from bicp_document_structure.file.loader.P6FileLoader import P6FileLoader
 from bicp_document_structure.file.loader.P6FileLoaderErrors import P6FileLoaderErrors
 from bicp_document_structure.file.saver.P6FileSaver import P6FileSaver
 from bicp_document_structure.communication.SocketProvider import SocketProvider
-from bicp_document_structure.communication.event.reactor.EventReactorContainer import EventReactorContainer
+from bicp_document_structure.communication.internal_reactor import EventReactorContainer
 from bicp_document_structure.communication.event_server.EventServer import EventServer
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
-from bicp_document_structure.util.report.error.ErrorReports import ErrorReports
 from bicp_document_structure.util.result.Err import Err
 from bicp_document_structure.util.result.Ok import Ok
 from bicp_document_structure.util.result.Result import Result

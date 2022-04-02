@@ -1,7 +1,7 @@
 from typing import Callable, TypeVar
 
-from bicp_document_structure.communication.event.reactor.EventReactor import EventReactor
-from bicp_document_structure.communication.event.reactor.eventData.WorkbookEventData import WorkbookEventData
+from bicp_document_structure.communication.internal_reactor.EventReactor import EventReactor
+from bicp_document_structure.communication.internal_reactor.eventData.WorkbookEventData import WorkbookEventData
 
 OutType = TypeVar("OutType")
 

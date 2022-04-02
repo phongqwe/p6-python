@@ -3,7 +3,7 @@ from typing import Callable
 from bicp_document_structure.cell.Cell import Cell
 from bicp_document_structure.cell.WrapperCell import WrapperCell
 from bicp_document_structure.communication.event.P6Events import P6Events
-from bicp_document_structure.communication.event.reactor.eventData.CellEventData import CellEventData
+from bicp_document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
 
 
 class EventCell(WrapperCell):
@@ -43,6 +43,8 @@ class EventCell(WrapperCell):
     def formula(self,newFormula:str):
         self._ic.formula = newFormula
         if self.__onCellEvent is not None:
+            # init the event data object. This object will be passed along the way, until it reach the top-level,
+            # only at the top, the logic will execute. This is because a Cell does not know where it belongs.
             eventData = CellEventData(
                 cell = self._ic,
                 event = P6Events.Cell.Update.event,

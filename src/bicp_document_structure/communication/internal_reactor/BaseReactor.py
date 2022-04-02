@@ -1,6 +1,6 @@
 from typing import TypeVar, Callable
 
-from bicp_document_structure.communication.event.reactor.EventReactor import EventReactor
+from bicp_document_structure.communication.internal_reactor.EventReactor import EventReactor
 
 I = TypeVar("I")
 O = TypeVar("O")

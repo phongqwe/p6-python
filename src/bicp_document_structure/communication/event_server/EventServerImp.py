@@ -6,7 +6,7 @@ from bicp_document_structure.communication.event_server.msg.P6Message import P6M
 from bicp_document_structure.communication.event_server.response.P6Response import P6Response
 from bicp_document_structure.communication.event.P6Event import P6Event
 from bicp_document_structure.communication.event.P6Events import P6Events
-from bicp_document_structure.communication.event.reactor.EventReactor import EventReactor
+from bicp_document_structure.communication.internal_reactor.EventReactor import EventReactor
 from bicp_document_structure.communication.event_server.EventServer import EventServer
 from bicp_document_structure.communication.event_server.EventServerErrors import EventServerErrors
 from bicp_document_structure.communication.proto.P6MsgProtos_pb2 import P6MessageProto
@@ -81,9 +81,6 @@ class EventServerImp(EventServer):
         if self._thread is not None:
             self._thread.join()
             self._thread = None
-        # if self._socket is not None:
-        #     self._socket.close()
-        #     self._socket = None
 
     def getReactorsForEvent(self, event: P6Event) -> EventReactor[bytes, ToProto] | None:
         return self._reactorDict.get(event)

@@ -1,15 +1,15 @@
 import uuid
-from typing import Callable, TypeVar, Any
+from typing import Callable, Any
 
-from bicp_document_structure.communication.event.reactor.BaseReactor import BasicReactor
-from bicp_document_structure.communication.event.reactor.CellReactor import CellReactor
-from bicp_document_structure.communication.event.reactor.RangeReactor import RangeReactor
-from bicp_document_structure.communication.event.reactor.WorkbookReactor import WorkbookReactor
-from bicp_document_structure.communication.event.reactor.WorksheetReactor import WorksheetReactor
-from bicp_document_structure.communication.event.reactor.eventData.CellEventData import CellEventData
-from bicp_document_structure.communication.event.reactor.eventData.RangeEventData import RangeEventData
-from bicp_document_structure.communication.event.reactor.eventData.WorkbookEventData import WorkbookEventData
-from bicp_document_structure.communication.event.reactor.eventData.WorksheetEventData import WorksheetEventData
+from bicp_document_structure.communication.internal_reactor.BaseReactor import BasicReactor
+from bicp_document_structure.communication.internal_reactor.CellReactor import CellReactor
+from bicp_document_structure.communication.internal_reactor.RangeReactor import RangeReactor
+from bicp_document_structure.communication.internal_reactor.WorkbookReactor import WorkbookReactor
+from bicp_document_structure.communication.internal_reactor.WorksheetReactor import WorksheetReactor
+from bicp_document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
+from bicp_document_structure.communication.internal_reactor.eventData.RangeEventData import RangeEventData
+from bicp_document_structure.communication.internal_reactor.eventData.WorkbookEventData import WorkbookEventData
+from bicp_document_structure.communication.internal_reactor.eventData.WorksheetEventData import WorksheetEventData
 
 
 class EventReactorFactory:

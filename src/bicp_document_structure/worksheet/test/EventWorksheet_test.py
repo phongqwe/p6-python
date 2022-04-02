@@ -4,9 +4,9 @@ from unittest.mock import MagicMock
 from bicp_document_structure.cell.DataCell import DataCell
 from bicp_document_structure.cell.address.CellAddresses import CellAddresses
 from bicp_document_structure.cell.address.CellIndex import CellIndex
-from bicp_document_structure.communication.event.reactor.eventData.CellEventData import CellEventData
-from bicp_document_structure.communication.event.reactor.eventData.RangeEventData import RangeEventData
-from bicp_document_structure.communication.event.reactor.eventData.WorksheetEventData import WorksheetEventData
+from bicp_document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
+from bicp_document_structure.communication.internal_reactor.eventData.RangeEventData import RangeEventData
+from bicp_document_structure.communication.internal_reactor.eventData.WorksheetEventData import WorksheetEventData
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from bicp_document_structure.worksheet.EventWorksheet import EventWorksheet
 from bicp_document_structure.worksheet.WorksheetImp import WorksheetImp

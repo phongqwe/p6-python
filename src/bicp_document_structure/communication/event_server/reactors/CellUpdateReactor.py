@@ -1,27 +1,27 @@
 from typing import Callable
 
-from bicp_document_structure.communication.event.P6Events import P6Events
-from bicp_document_structure.communication.event.reactor.EventReactor import EventReactor, I, O
+from bicp_document_structure.communication.event.data.request.CellUpdateRequest import CellUpdateRequest
+
+from bicp_document_structure.communication.event.data.response.CellUpdateCommonResponse import CellUpdateCommonResponse
+
+from bicp_document_structure.communication.internal_reactor.EventReactor import EventReactor
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Result import Result
 from bicp_document_structure.workbook.WorkBook import Workbook
 from bicp_document_structure.workbook.key.WorkbookKey import WorkbookKey
 
-ResponseClazz = P6Events.Cell.Update.Response
-RequestClazz = P6Events.Cell.Update.Request
+class CellUpdateReactor(EventReactor[bytes, CellUpdateCommonResponse]):
 
-class CellUpdateReactor(EventReactor[bytes, ResponseClazz]):
-
-    def __init__(self, id:str, wbGetter: Callable[[WorkbookKey | str | int], Result[Workbook, ErrorReport]]):
-        self._id = id
+    def __init__(self, uid:str, wbGetter: Callable[[WorkbookKey | str | int], Result[Workbook, ErrorReport]]):
+        self._id = uid
         self._wbGetter = wbGetter
 
     @property
     def id(self) -> str:
         return self._id
 
-    def react(self, data: bytes) -> ResponseClazz:
-        request = RequestClazz.fromProtoBytes(data)
+    def react(self, data: bytes) -> CellUpdateCommonResponse:
+        request = CellUpdateRequest.fromProtoBytes(data)
         getWbRs = self._wbGetter(request.workbookKey)
         if getWbRs.isOk():
             wb:Workbook = getWbRs.value
@@ -36,18 +36,16 @@ class CellUpdateReactor(EventReactor[bytes, ResponseClazz]):
                 else:
                     pass # do nothing
                 wb.reRun()
-                return ResponseClazz(
-                    newWorkbook = wb
-                )
+                return CellUpdateCommonResponse(newWorkbook = wb)
 
             else:
-                return ResponseClazz(
+                return CellUpdateCommonResponse(
                     newWorkbook = None,
                     isError = True,
                     errorReport = getWsRs.err
                 )
         else:
-            return ResponseClazz(
+            return CellUpdateCommonResponse(
                 newWorkbook = None,
                 isError = True,
                 errorReport = getWbRs.err

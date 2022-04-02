@@ -2,10 +2,10 @@ import unittest
 from pathlib import Path
 from unittest.mock import MagicMock
 
-from bicp_document_structure.communication.event.reactor.eventData.CellEventData import CellEventData
+from bicp_document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
 from bicp_document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from bicp_document_structure.communication.event.P6Events import P6Events
-from bicp_document_structure.communication.event.reactor.eventData.WorkbookEventData import WorkbookEventData
+from bicp_document_structure.communication.internal_reactor.eventData.WorkbookEventData import WorkbookEventData
 from bicp_document_structure.util.report.error.ErrorReport import ErrorReport
 from bicp_document_structure.util.result.Err import Err
 from bicp_document_structure.workbook.EventWorkbook import EventWorkbook
