@@ -34,7 +34,18 @@ class EventCell(WrapperCell):
         if self.__onCellEvent is not None:
             eventData = CellEventData(
                 cell = self._ic,
-                event = P6Events.Cell.UpdateScriptEvent,
+                event = P6Events.Cell.Update.event,
+                isError = False)
+            self.__onCellEvent(eventData)
+
+
+    @WrapperCell.formula.setter
+    def formula(self,newFormula:str):
+        self._ic.formula = newFormula
+        if self.__onCellEvent is not None:
+            eventData = CellEventData(
+                cell = self._ic,
+                event = P6Events.Cell.Update.event,
                 isError = False)
             self.__onCellEvent(eventData)
 
