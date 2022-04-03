@@ -146,7 +146,7 @@ class WorkbookImp_test(unittest.TestCase):
 
     def test_listWorksheet(self):
         s1, s2, s3, w1 = self.makeTestObj()
-        print(w1.listWorksheet())
+        print(w1.summary())
 
     def __onCellChange(self, wb: Workbook, ws: Worksheet, cell: Cell, event: P6Event):
         self.aa = f"{wb.name}, {ws.name}, {cell.address.label}, {event.code}"

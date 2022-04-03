@@ -10,18 +10,11 @@ D = TypeVar("D")
 
 class WorkbookEventData(ToJson, Generic[D]):
 
-    def __init__(self, workbook: Workbook, event: P6Event, data: ToProto | D = None):
-        self._workbook: Workbook = workbook
+    def __init__(self, workbook: Workbook = None, event: P6Event = None, data: ToProto | D = None):
+        self.workbook: Workbook = workbook
         self.event: P6Event = event
-        self._data: ToProto = data
+        self.data: ToProto = data
 
-    @property
-    def workbook(self):
-        return self._workbook
-
-    @property
-    def data(self) -> ToProto:
-        return self._data
 
     def toJsonDict(self) -> dict:
         return {

@@ -27,12 +27,6 @@ class WorkbookWrapper(Workbook):
     def path(self) -> Path:
         return self._innerWorkbook.path
 
-    # def renameWorksheet(self, oldSheetNameOrIndex: str | int, newSheetName: str):
-    #     return self._innerWorkbook.renameWorksheet(oldSheetNameOrIndex, newSheetName)
-    #
-    # def renameWorksheetRs(self, oldSheetNameOrIndex: str | int, newSheetName: str) -> Result[None, ErrorReport]:
-    #     return self._innerWorkbook.renameWorksheetRs(oldSheetNameOrIndex, newSheetName)
-
     @property
     def worksheets(self) -> list[Worksheet]:
         return self._innerWorkbook.worksheets
@@ -51,15 +45,6 @@ class WorkbookWrapper(Workbook):
 
     def setActiveWorksheet(self, indexOrName: Union[int, str]):
         self._innerWorkbook.setActiveWorksheet(indexOrName)
-
-    def getWorksheetByName(self, name: str) -> Worksheet:
-        return self._innerWorkbook.getWorksheetByName(name)
-
-    def getWorksheetByIndex(self, index: int) -> Worksheet:
-        return self._innerWorkbook.getWorksheetByIndex(index)
-
-    def getWorksheet(self, nameOrIndex: Union[str, int]) -> Worksheet:
-        return self._innerWorkbook.getWorksheet(nameOrIndex)
 
     @property
     def sheetCount(self) -> int:
@@ -113,12 +98,4 @@ class WorkbookWrapper(Workbook):
     def getWorksheetRs(self, nameOrIndex: Union[str, int]) -> Result[Worksheet, ErrorReport]:
         return self._innerWorkbook.getWorksheetRs(nameOrIndex)
 
-    def getWorksheetByNameOrNone(self, name: str) -> Worksheet | None:
-        return self._innerWorkbook.getWorksheetByNameOrNone(name)
-
-    def getWorksheetByIndexOrNone(self, index: int) -> Optional[Worksheet]:
-        return self._innerWorkbook.getWorksheetByIndexOrNone(index)
-
-    def getWorksheetOrNone(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
-        return self._innerWorkbook.getWorksheetOrNone(nameOrIndex)
 

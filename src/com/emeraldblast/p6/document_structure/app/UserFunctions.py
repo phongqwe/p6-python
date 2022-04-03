@@ -113,6 +113,6 @@ def listWorksheet(workBookNameOrIndexOrKey: Union[str, int, WorkbookKey, None] =
     else:
         wb = getWorkbook(workBookNameOrIndexOrKey)
     if wb is not None:
-        return wb.listWorksheet()
+        return wb.summary()
     else:
         return ""

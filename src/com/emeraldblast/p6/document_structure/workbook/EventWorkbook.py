@@ -70,21 +70,6 @@ class EventWorkbook(WorkbookWrapper):
         activeSheet = self._innerWorkbook.activeWorksheet
         return self.__wrapInEventWorksheet(activeSheet)
 
-    def getWorksheetByName(self, name: str) -> Worksheet:
-        """wrap the result worksheet in event worksheet, so that it can propagate event"""
-        sheet = self._innerWorkbook.getWorksheetByName(name)
-        return self.__wrapInEventWorksheet(sheet)
-
-    def getWorksheetByIndex(self, index: int) -> Worksheet:
-        """wrap the result worksheet in event worksheet, so that it can propagate event"""
-        s = self._innerWorkbook.getWorksheetByIndex(index)
-        return self.__wrapInEventWorksheet(s)
-
-    def getWorksheet(self, nameOrIndex: Union[str, int]) -> Worksheet:
-        """wrap the result worksheet in event worksheet, so that it can propagate event"""
-        s = self._innerWorkbook.getWorksheet(nameOrIndex)
-        return self.__wrapInEventWorksheet(s)
-
     def __handleWsRs(self, rs: Result[Worksheet, ErrorReport]):
         if rs.isOk():
             return Ok(self.__wrapInEventWorksheet(rs.value))
@@ -103,18 +88,6 @@ class EventWorkbook(WorkbookWrapper):
         rs = self._iwb.getWorksheetRs(nameOrIndex)
         return self.__handleWsRs(rs)
 
-    def getWorksheetByNameOrNone(self, name: str) -> Worksheet | None:
-        rs = self.getWorksheetByNameRs(name)
-        return Results.extractOrNone(rs)
-
-    def getWorksheetByIndexOrNone(self, index: int) -> Optional[Worksheet]:
-        rs = self.getWorksheetByIndexRs(index)
-        return Results.extractOrNone(rs)
-
-    def getWorksheetOrNone(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
-        rs = self.getWorksheetRs(nameOrIndex)
-        return Results.extractOrNone(rs)
-
     def createNewWorksheet(self, newSheetName: Optional[str]) -> Worksheet:
         rs = self.createNewWorksheetRs(newSheetName)
         if rs.isOk():
@@ -129,22 +102,19 @@ class EventWorkbook(WorkbookWrapper):
         if rs.isOk():
             name = rs.value.name
 
+        wbEventData = WorkbookEventData(
+            workbook = self,
+            event = P6Events.Workbook.CreateNewWorksheet.event)
         if rs.isOk():
             newWorksheet = rs.value
             if self.__onWorkbookEvent is not None:
-                wbEventData = WorkbookEventData(
-                    workbook = self,
-                    event = P6Events.Workbook.CreateNewWorksheet.event,
-                    data = P6Events.Workbook.CreateNewWorksheet.Response(self.workbookKey, name))
+                wbEventData.data = P6Events.Workbook.CreateNewWorksheet.Response(self.workbookKey, name)
                 self.__onWorkbookEvent(wbEventData)
             return Ok(self.__wrapInEventWorksheet(newWorksheet))
         else:
             if self.__onWorkbookEvent is not None:
                 errReport: ErrorReport = rs.err
-                wbEventData = WorkbookEventData(
-                    workbook = self,
-                    event = P6Events.Workbook.CreateNewWorksheet.event,
-                    data = P6Events.Workbook.CreateNewWorksheet.Response(self.workbookKey, name, True, errReport))
+                wbEventData.data = P6Events.Workbook.CreateNewWorksheet.Response(self.workbookKey, name, True, errReport)
                 self.__onWorkbookEvent(wbEventData)
             return rs
 

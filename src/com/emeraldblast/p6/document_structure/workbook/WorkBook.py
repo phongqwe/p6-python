@@ -3,16 +3,17 @@ from abc import ABC
 from pathlib import Path
 from typing import Optional, Union
 
-from com.emeraldblast.p6.proto.DocProtos_pb2 import WorkbookProto
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from com.emeraldblast.p6.document_structure.util.CanCheckEmpty import CanCheckEmpty
 from com.emeraldblast.p6.document_structure.util.ToJson import ToJson
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
+from com.emeraldblast.p6.document_structure.util.result.Results import Results
 from com.emeraldblast.p6.document_structure.workbook.WorkbookJson import WorkbookJson
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
+from com.emeraldblast.p6.proto.DocProtos_pb2 import WorkbookProto
 
 
 class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
@@ -43,14 +44,6 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
         for sheet in self.worksheets:
             sheet.reRun()
 
-    # def renameWorksheet(self, oldSheetNameOrIndex: str | int, newSheetName: str):
-    #     rs = self.renameWorksheetRs(oldSheetNameOrIndex, newSheetName)
-    #     if rs.isErr():
-    #         raise rs.err.toException()
-    #
-    # def renameWorksheetRs(self, oldSheetNameOrIndex: str | int, newSheetName: str) -> Result[None, ErrorReport]:
-    #     raise NotImplementedError()
-
     @property
     def worksheets(self) -> list[Worksheet]:
         """return a list of all sheet in this workbook"""
@@ -76,7 +69,7 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
         :param name: sheet name
         :return: the sheet having that name or None if no such sheet exists
         """
-        raise NotImplementedError()
+        return Results.extractOrRaise(self.getWorksheetByNameRs(name))
 
     def getWorksheetByNameRs(self, name: str) -> Result[Worksheet, ErrorReport]:
         raise NotImplementedError()
@@ -92,24 +85,24 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
         :param name: sheet name
         :return: the sheet having that name or None if no such sheet exists
         """
-        raise NotImplementedError()
+        return Results.extractOrNone(self.getWorksheetByNameRs(name))
 
     def getWorksheetByIndex(self, index: int) -> Worksheet:
         """
         :param index: index of a sheet
         :return: the sheet at that index, or None if no such sheet exists
         """
-        raise NotImplementedError()
+        return Results.extractOrRaise(self.getWorksheetByIndexRs(index))
 
     def getWorksheetByIndexOrNone(self, index: int) -> Optional[Worksheet]:
         """
         :param index: index of a sheet
         :return: the sheet at that index, or None if no such sheet exists
         """
-        raise NotImplementedError()
+        return Results.extractOrNone(self.getWorksheetByIndexRs(index))
 
     def getWorksheetOrNone(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
-        raise NotImplementedError()
+        return Results.extractOrNone(self.getWorksheetRs(nameOrIndex))
 
     def getWorksheet(self, nameOrIndex: Union[str, int]) -> Worksheet:
         """
@@ -117,7 +110,7 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
         :param nameOrIndex: name or index
         :return: the sheet at that index/name, or None if no such sheet exists
         """
-        raise NotImplementedError()
+        return Results.extractOrRaise(self.getWorksheetRs(nameOrIndex))
 
     @property
     def sheetCount(self) -> int:
@@ -203,7 +196,7 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
         else:
             raise addRs.err.toException()
 
-    def updateSheetName(self,oldName:str,ws: Worksheet):
+    def updateSheetName(self, oldName: str, ws: Worksheet):
         raise NotImplementedError()
 
     def addWorksheetRs(self, ws: Worksheet) -> Result[None, ErrorReport]:
@@ -218,7 +211,7 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
             pathJson = str(self.workbookKey.filePath)
         return WorkbookJson(self.name, pathJson, jsons)
 
-    def listWorksheet(self) -> str:
+    def summary(self) -> str:
         """return a list of sheet as string"""
         rt = ""
         for (i, sheet) in enumerate(self.worksheets):

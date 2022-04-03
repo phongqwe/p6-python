@@ -3,7 +3,7 @@ from typing import TypeVar, Generic
 
 V = TypeVar("V")
 E = TypeVar("E")
-
+M = TypeVar("M")
 class Result(Generic[V, E]):
 
     @property
