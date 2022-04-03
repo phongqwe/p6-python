@@ -179,7 +179,17 @@ class WorkbookImp(Workbook):
                 self._translatorDict.pop(oldTranslatorDictKey)
             return Ok(rt)
         else:
-            return Err(WorkbookErrors.WorksheetAlreadyExistReport(sheetName))
+            return Err(WorkbookErrors.WorksheetNotExistReport(sheetName))
+
+    def removeWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
+        typeCheck(index, "index", int)
+        if 0 <= index < self.sheetCount:
+            sheet: Worksheet = self._sheetList[index]
+            self._sheetList.pop(index)
+            return self.removeWorksheetByNameRs(sheet.name)
+        else:
+            return Err(WorkbookErrors.WorksheetNotExistReport(index))
+
 
     def addWorksheetRs(self, ws: Worksheet) -> Result[None, ErrorReport]:
         if self.haveSheet(ws.name):
@@ -191,15 +201,6 @@ class WorkbookImp(Workbook):
             self._sheetList.append(ws)
             ws.workbook = self
             return Ok(None)
-
-    def removeWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
-        typeCheck(index, "index", int)
-        if 0 <= index < self.sheetCount:
-            sheet: Worksheet = self._sheetList[index]
-            self._sheetList.pop(index)
-            return self.removeWorksheetByNameRs(sheet.name)
-        else:
-            return Err(WorkbookErrors.WorksheetAlreadyExistReport(index))
 
     def toJsonDict(self) -> dict:
         return self.toJson().toJsonDict()

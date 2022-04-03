@@ -15,6 +15,8 @@ class DeleteWorksheetResponse(ToProto[DeleteWorksheetResponseProto]):
             errorReport: ErrorReport = None):
         self.errorReport = errorReport
         self.isError = isError
+        if targetWorksheet is None:
+            targetWorksheet = []
         self.targetWorksheetList:list[str] = targetWorksheet
         self.workbookKey = workbookKey
 

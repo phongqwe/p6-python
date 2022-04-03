@@ -5,8 +5,9 @@ from unittest.mock import MagicMock
 from com.emeraldblast.p6.document_structure.communication.event.data.response.DeleteWorksheetResponse import \
     DeleteWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
+from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.WorkbookEventData import \
+    WorkbookEventData
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslators import FormulaTranslators
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.WorkbookEventData import WorkbookEventData
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
 from com.emeraldblast.p6.document_structure.workbook.EventWorkbook import EventWorkbook
@@ -16,8 +17,64 @@ from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import Workbook
 
 class EventWorkbook_test(unittest.TestCase):
 
+    def setUp(self) -> None:
+        super().setUp()
+        self.s1, self.s2, self.s3, self.wb = self.makeTestObj()
 
-    def test_removeWorksheet_callback_ok(self):
+    def removeWorksheet_callback_fail(self, removeWork):
+        """ test that the call back was called. And the data passed to the call back is correct"""
+
+        self.x = 0
+        self.eventData: WorkbookEventData | None = None
+
+        def onWbEvent(eventData: WorkbookEventData):
+            self.eventData = eventData
+            self.x = 1
+
+        eventWb = EventWorkbook(
+            innerWorkbook = self.wb,
+            onWorkbookEvent = onWbEvent)
+
+        removeWork(eventWb)
+        self.assertEqual(1, self.x)
+
+        self.assertIsNotNone(self.eventData)
+        data: DeleteWorksheetResponse = self.eventData.data
+        print(data.toProtoObj())
+
+        self.assertEqual(self.wb.workbookKey, data.workbookKey)
+        self.assertTrue(data.isError)
+        self.assertTrue(len(data.targetWorksheetList) == 0)
+        self.assertIsNotNone(data.errorReport)
+        self.assertEqual(WorkbookErrors.WorksheetNotExistReport.header, data.errorReport.header)
+
+    def test_removeWorksheet_callback_fail(self):
+        invalidSheet = "InvalidSheet"
+
+        def removeWork(eventWb: EventWorkbook):
+            eventWb.removeWorksheetRs(invalidSheet)
+
+        self.removeWorksheet_callback_fail(removeWork)
+
+    def test_removeWorksheetByNameRs_callback_fail(self):
+        invalidSheet = "InvalidSheet"
+
+        def removeWork(eventWb: EventWorkbook):
+            eventWb.removeWorksheetByNameRs(invalidSheet)
+
+        self.removeWorksheet_callback_fail(removeWork)
+
+    def test_removeWorksheetByIndexRs_callback_fail(self):
+        invalidSheet = 1000
+
+        def removeWork(eventWb: EventWorkbook):
+            eventWb.removeWorksheetByIndexRs(invalidSheet)
+
+        self.removeWorksheet_callback_fail(removeWork)
+
+    def removeWorksheet_callback_ok(self, removeWork):
+        """ test that the call back was called. And the data passed to the call back is correct"""
+
         self.x = 0
         self.errorReport: ErrorReport | None = None
         self.eventData: WorkbookEventData | None = None
@@ -26,27 +83,39 @@ class EventWorkbook_test(unittest.TestCase):
             self.eventData = eventData
             self.errorReport = eventData.data.errorReport
             self.x = 1
-        wb = WorkbookImp("wb")
-        wb.createNewWorksheet("Sheet1")
-        wb.createNewWorksheet("Sheet2")
-        wb.createNewWorksheet("Sheet3")
-        wb.createNewWorksheet("Sheet4")
 
         eventWb = EventWorkbook(
-            innerWorkbook = wb,
-            onWorkbookEvent = onWbEvent
-        )
+            innerWorkbook = self.wb,
+            onWorkbookEvent = onWbEvent)
 
-        eventWb.removeWorksheet("Sheet1")
-        self.assertEqual(1,self.x)
+        removeWork(eventWb)
+
+        self.assertEqual(1, self.x)
         self.assertIsNone(self.errorReport)
         self.assertIsNotNone(self.eventData)
-        data:DeleteWorksheetResponse = self.eventData.data
+        data: DeleteWorksheetResponse = self.eventData.data
         print(data.toProtoObj())
-        self.assertEqual(wb.workbookKey,data.workbookKey)
-        self.assertEqual(False,data.isError)
-        self.assertEqual(["Sheet1"], data.targetWorksheetList)
+        self.assertEqual(self.wb.workbookKey, data.workbookKey)
+        self.assertFalse(data.isError)
+        self.assertEqual([self.s1.name], data.targetWorksheetList)
 
+    def test_removeWorksheetByIndexRs_callback_ok(self):
+        def removeWorksheet(eventWb):
+            eventWb.removeWorksheetByIndexRs(0)
+
+        self.removeWorksheet_callback_ok(removeWorksheet)
+
+    def test_removeWorksheetByNameRs_callback_ok(self):
+        def removeWorksheet(eventWb):
+            eventWb.removeWorksheetByNameRs(self.s1.name)
+
+        self.removeWorksheet_callback_ok(removeWorksheet)
+
+    def test_removeWorksheet_callback_ok(self):
+        def removeWorksheet(eventWb):
+            eventWb.removeWorksheet(self.s1.name)
+
+        self.removeWorksheet_callback_ok(removeWorksheet)
 
     def test_createNewWorksheet_callback_fail(self):
         self.x = 0
@@ -119,7 +188,7 @@ class EventWorkbook_test(unittest.TestCase):
         w = WorkbookImp("w1")
         self.a = 0
 
-        def cellCallback(eventData:CellEventData):
+        def cellCallback(eventData: CellEventData):
             self.a += 1
 
         eventWb = EventWorkbook(w, cellCallback, onWorkbookEvent = MagicMock())
@@ -149,14 +218,3 @@ class EventWorkbook_test(unittest.TestCase):
         c4 = eventWb.getWorksheet(0).cell("@h1")
         c4.value = "mmm"
         self.assertEqual(6, self.a)
-
-    # def test_Rename(self):
-    #     s1, s2, s3, w1,  = self.makeTestObj()
-    #     self.a = 0
-    #
-    #     def cb(data:WorkbookEventData):
-    #         self.a += 1
-    #
-    #     ewb = EventWorkbook(w1, onWorkbookEvent = cb)
-        # ewb.renameWorksheet(s1.name, "newName")
-        # self.assertEqual(1, self.a)

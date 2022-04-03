@@ -151,7 +151,7 @@ class EventWorkbook(WorkbookWrapper):
         rs = self._iwb.removeWorksheetByNameRs(sheetName)
         response = DeleteWorksheetResponse(
             workbookKey = self.workbookKey,
-            targetWorksheet = [sheetName],
+            # targetWorksheet = [sheetName],
             isError = rs.isErr()
         )
 
@@ -160,6 +160,8 @@ class EventWorkbook(WorkbookWrapper):
             event = P6Events.Workbook.RemoveWorksheet.event,
             data = response
         )
+        if rs.isOk():
+            response.targetWorksheetList = [sheetName]
 
         if rs.isErr():
             response.errorReport = rs.err
