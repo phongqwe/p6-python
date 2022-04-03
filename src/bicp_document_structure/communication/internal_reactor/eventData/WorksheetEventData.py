@@ -13,13 +13,11 @@ class WorksheetEventData(ToJson, WithWorkbookData,Generic[D]):
                  workbook: Workbook=None,
                  worksheet: Worksheet=None,
                  event: P6Event=None,
-                 data: D = None,
-                 isError: bool = False):
+                 data: D = None):
         self._workbook = workbook
         self.worksheet = worksheet
         self.event = event
         self.data: D = data
-        self.isError = isError
 
     @property
     def workbook(self):

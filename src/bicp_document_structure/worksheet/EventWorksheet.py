@@ -57,8 +57,9 @@ class EventWorksheet(WorksheetWrapper):
     def reRun(self):
         self._innerSheet.reRun()
         if self.__onWorksheetEvent is not None:
-            # incomplete data
+            # todo incomplete data
             eventData = WorksheetEventData(
+                workbook = self.workbook,
                 worksheet = self._innerSheet,
                 event = P6Events.Worksheet.ReRun,
             )
@@ -102,7 +103,6 @@ class EventWorksheet(WorksheetWrapper):
                     workbook = self.workbook,
                     worksheet = self._iws,
                     event = P6Events.Worksheet.Rename.event,
-                    isError = False,
                     data = RenameWorksheetResponseData(
                         workbookKey = self.workbook.workbookKey,
                         oldName = oldName,
@@ -117,7 +117,6 @@ class EventWorksheet(WorksheetWrapper):
                     workbook = self.workbook,
                     worksheet = self._iws,
                     event = P6Events.Worksheet.Rename.event,
-                    isError = True,
                     data = RenameWorksheetResponseData(
                         workbookKey = self.workbook.workbookKey,
                         oldName = oldName,

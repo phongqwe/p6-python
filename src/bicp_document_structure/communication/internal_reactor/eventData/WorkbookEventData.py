@@ -15,11 +15,6 @@ class WorkbookEventData(ToJson, WithWorkbookData, Generic[D]):
         self._workbook: Workbook = workbook
         self.event: P6Event = event
         self._data: ToProto = data
-        self._isError: bool = isError
-
-    @property
-    def isError(self) -> bool:
-        return self._isError
 
     @property
     def workbook(self):

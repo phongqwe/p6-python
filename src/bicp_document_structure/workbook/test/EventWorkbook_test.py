@@ -58,7 +58,6 @@ class EventWorkbook_test(unittest.TestCase):
         newWb = eventWb.createNewWorksheet("SheetX")
         self.assertEqual(1, self.x)
         self.assertEqual("SheetX", newWb.name)
-        self.assertFalse(self.eventData.isError)
 
     def test_toProtoObj(self):
         s1, s2, s3, w1, = self.makeTestObj()

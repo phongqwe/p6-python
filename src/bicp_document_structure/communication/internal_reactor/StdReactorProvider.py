@@ -5,7 +5,6 @@ from bicp_document_structure.communication.event_server.P6Messages import P6Mess
 from bicp_document_structure.communication.event_server.msg.P6Message import P6Message
 from bicp_document_structure.communication.event_server.response.P6Response import P6Response
 from bicp_document_structure.communication.internal_reactor.CellReactor import CellReactor
-from bicp_document_structure.communication.internal_reactor.ColumnReactor import ColumnReactor
 from bicp_document_structure.communication.internal_reactor.EventReactorFactory import EventReactorFactory
 from bicp_document_structure.communication.internal_reactor.RangeReactor import RangeReactor
 from bicp_document_structure.communication.internal_reactor.WorkbookReactor import WorkbookReactor
@@ -24,7 +23,6 @@ class StdReactorProvider:
         self.__cellFormulaUpdate: CellReactor | None = None
         self.__cellClearScriptResult: CellReactor | None = None
 
-        self.__colReRun: ColumnReactor | None = None
         self.__rangeReRun: RangeReactor | None = None
 
         self.__worksheetReRun: WorksheetReactor | None = None
@@ -35,10 +33,7 @@ class StdReactorProvider:
 
     def createNewWorksheetReactor(self) -> WorkbookReactor:
         def cb(data: WorkbookEventData):
-            status = P6Response.Status.OK
-            if data.isError:
-                status = P6Response.Status.ERROR
-            msg = P6Messages.p6Response(data.event, data.data, status)
+            msg = P6Messages.p6Response(data.event, data.data, P6Response.Status.OK)
             self._send(msg)
         reactor = EventReactorFactory.makeWorkbookReactor(cb)
         return reactor
@@ -63,10 +58,7 @@ class StdReactorProvider:
     def renameWorksheetReactor(self) -> WorkbookReactor:
         if self.__worksheetRenameReactor is None:
             def cb(eventData: WorkbookEventData):
-                if not eventData.isError:
-                    msg = P6Messages.p6Response(eventData.event, eventData.data)
-                else:
-                    msg = P6Messages.p6Response(eventData.event, eventData.data, P6Response.Status.ERROR)
+                msg = P6Messages.p6Response(eventData.event, eventData.data)
                 self._send(msg)
 
             self.__worksheetRenameReactor = EventReactorFactory.makeWorkbookReactor(cb)
