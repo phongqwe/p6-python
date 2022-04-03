@@ -14,6 +14,18 @@ class ErrorReport(ToProto[ErrorReportProto]):
         self.data = data
         self.loc = loc
 
+
+    @staticmethod
+    def fromProto(protoObj:ErrorReportProto)->'ErrorReport':
+        return ErrorReport(
+            header = ErrorHeader(
+                errorCode = protoObj.errorCode,
+                errorDescription = protoObj.errorMessage
+            ),
+            data = "from proto"
+        )
+
+
     def toException(self)->Exception:
         if isinstance(self.data,ToException):
             return self.data.toException()
@@ -25,6 +37,9 @@ class ErrorReport(ToProto[ErrorReportProto]):
             return self.data.repStr()
         else:
             return str(self.header)
+
+    def isSameErr(self,another:'ErrorReport'):
+        return self.header == another.header
 
     def toProtoObj(self) -> ErrorReportProto:
         proto = ErrorReportProto()

@@ -10,6 +10,8 @@ from com.emeraldblast.p6.document_structure.communication.event.data.response.Ce
     CellUpdateCommonResponse
 from com.emeraldblast.p6.document_structure.communication.event.data.response.CreateNewWorksheetData import \
     CreateNewWorksheetResponseData
+from com.emeraldblast.p6.document_structure.communication.event.data.response.DeleteWorksheetResponse import \
+    DeleteWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.event.data.response.RenameWorksheetData import \
     RenameWorksheetResponseData
 

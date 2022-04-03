@@ -1,16 +1,19 @@
-from functools import partial
 from typing import Callable, Optional, Union
 
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
-from com.emeraldblast.p6.document_structure.communication.reactor import EventReactorContainer
+from com.emeraldblast.p6.document_structure.communication.event.data.response.DeleteWorksheetResponse import \
+    DeleteWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.RangeEventData import RangeEventData
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.WorkbookEventData import WorkbookEventData
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.WorksheetEventData import WorksheetEventData
+from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.RangeEventData import \
+    RangeEventData
+from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.WorkbookEventData import \
+    WorkbookEventData
+from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.WorksheetEventData import \
+    WorksheetEventData
+from com.emeraldblast.p6.document_structure.communication.reactor import EventReactorContainer
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
-from com.emeraldblast.p6.document_structure.util.result.Results import Results
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 from com.emeraldblast.p6.document_structure.workbook.WorkbookWrapper import WorkbookWrapper
 from com.emeraldblast.p6.document_structure.worksheet.EventWorksheet import EventWorksheet
@@ -114,7 +117,8 @@ class EventWorkbook(WorkbookWrapper):
         else:
             if self.__onWorkbookEvent is not None:
                 errReport: ErrorReport = rs.err
-                wbEventData.data = P6Events.Workbook.CreateNewWorksheet.Response(self.workbookKey, name, True, errReport)
+                wbEventData.data = P6Events.Workbook.CreateNewWorksheet.Response(self.workbookKey, name, True,
+                                                                                 errReport)
                 self.__onWorkbookEvent(wbEventData)
             return rs
 
@@ -143,8 +147,39 @@ class EventWorkbook(WorkbookWrapper):
             onWorksheetEvent = onSheetEvent,
             onRangeEvent = onRangeEvent)
 
-    def __partialWithNoneCheck(self, callback):
-        if callback is not None:
-            return partial(callback, self._innerWorkbook)
-        else:
-            return None
+    def removeWorksheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
+        rs = self._iwb.removeWorksheetByNameRs(sheetName)
+        response = DeleteWorksheetResponse(
+            workbookKey = self.workbookKey,
+            targetWorksheet = [sheetName],
+            isError = rs.isErr()
+        )
+
+        eventData = WorkbookEventData(
+            workbook = self,
+            event = P6Events.Workbook.RemoveWorksheet.event,
+            data = response
+        )
+
+        if rs.isErr():
+            response.errorReport = rs.err
+        self.__onWorkbookEvent(eventData)
+        return rs
+
+    def removeWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
+        rs = self._iwb.removeWorksheetByIndexRs(index)
+        response = DeleteWorksheetResponse(
+            workbookKey = self.workbookKey,
+            isError = rs.isErr()
+        )
+        eventData = WorkbookEventData(
+            workbook = self,
+            event = P6Events.Workbook.RemoveWorksheet.event,
+            data = response
+        )
+        if rs.isOk():
+            response.targetWorksheetList = [rs.value.name]
+        if rs.isErr():
+            response.errorReport = rs.err
+        self.__onWorkbookEvent(eventData)
+        return rs

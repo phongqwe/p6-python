@@ -2,6 +2,8 @@ import unittest
 from pathlib import Path
 from unittest.mock import MagicMock
 
+from com.emeraldblast.p6.document_structure.communication.event.data.response.DeleteWorksheetResponse import \
+    DeleteWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.WorkbookEventData import WorkbookEventData
@@ -13,6 +15,38 @@ from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import Workbook
 
 
 class EventWorkbook_test(unittest.TestCase):
+
+
+    def test_removeWorksheet_callback_ok(self):
+        self.x = 0
+        self.errorReport: ErrorReport | None = None
+        self.eventData: WorkbookEventData | None = None
+
+        def onWbEvent(eventData: WorkbookEventData):
+            self.eventData = eventData
+            self.errorReport = eventData.data.errorReport
+            self.x = 1
+        wb = WorkbookImp("wb")
+        wb.createNewWorksheet("Sheet1")
+        wb.createNewWorksheet("Sheet2")
+        wb.createNewWorksheet("Sheet3")
+        wb.createNewWorksheet("Sheet4")
+
+        eventWb = EventWorkbook(
+            innerWorkbook = wb,
+            onWorkbookEvent = onWbEvent
+        )
+
+        eventWb.removeWorksheet("Sheet1")
+        self.assertEqual(1,self.x)
+        self.assertIsNone(self.errorReport)
+        self.assertIsNotNone(self.eventData)
+        data:DeleteWorksheetResponse = self.eventData.data
+        print(data.toProtoObj())
+        self.assertEqual(wb.workbookKey,data.workbookKey)
+        self.assertEqual(False,data.isError)
+        self.assertEqual(["Sheet1"], data.targetWorksheetList)
+
 
     def test_createNewWorksheet_callback_fail(self):
         self.x = 0

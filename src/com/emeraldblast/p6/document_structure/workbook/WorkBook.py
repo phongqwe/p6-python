@@ -140,10 +140,7 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
         :raise ValueError if the newSheetName already exists
         """
         createRs = self.createNewWorksheetRs(newSheetName)
-        if createRs.isOk():
-            return createRs.value
-        else:
-            raise createRs.err.toException()
+        return Results.extractOrRaise(createRs)
 
     def createNewWorksheetRs(self, newSheetName: Optional[str] = None) -> Result[Worksheet, ErrorReport]:
         """
@@ -153,29 +150,20 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
         """
         raise NotImplementedError()
 
-    def removeWorksheetByName(self, sheetName: str) -> Optional[Worksheet]:
+    def removeWorksheetByName(self, sheetName: str) -> Worksheet:
         """ remove sheet by name. If the target sheet does not exist, simply return"""
         removeRs = self.removeWorksheetByNameRs(sheetName)
-        if removeRs.isOk():
-            return removeRs.value
-        else:
-            raise removeRs.err.toException()
+        return Results.extractOrRaise(removeRs)
 
-    def removeWorksheetByIndex(self, index: int) -> Optional[Worksheet]:
+    def removeWorksheetByIndex(self, index: int) -> Worksheet:
         """ remove sheet by index. If the target sheet does not exist, simply return"""
         removeRs = self.removeWorksheetByIndexRs(index)
-        if removeRs.isOk():
-            return removeRs.value
-        else:
-            raise removeRs.err.toException()
+        return Results.extractOrRaise(removeRs)
 
-    def removeWorksheet(self, nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
+    def removeWorksheet(self, nameOrIndex: Union[str, int]) -> Worksheet:
         """ remove sheet by either index or name. If the target sheet does not exist, simply return"""
         removeRs = self.removeWorksheetRs(nameOrIndex)
-        if removeRs.isOk():
-            return removeRs.value
-        else:
-            raise removeRs.err.toException()
+        return Results.extractOrRaise(removeRs)
 
     def removeWorksheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
         """ remove sheet by name. If the target sheet does not exist, simply return"""
@@ -187,7 +175,11 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
 
     def removeWorksheetRs(self, nameOrIndex: Union[str, int]) -> Result[Worksheet, ErrorReport]:
         """ remove sheet by either index or name. If the target sheet does not exist, simply return"""
-        raise NotImplementedError()
+        if isinstance(nameOrIndex, str):
+            return self.removeWorksheetByNameRs(nameOrIndex)
+        if isinstance(nameOrIndex, int):
+            return self.removeWorksheetByIndexRs(nameOrIndex)
+        raise ValueError("nameOrIndex must either be a string or a number")
 
     def addWorksheet(self, ws: Worksheet):
         addRs = self.addWorksheetRs(ws)
@@ -212,7 +204,7 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
         return WorkbookJson(self.name, pathJson, jsons)
 
     def summary(self) -> str:
-        """return a list of sheet as string"""
+        """return a summary of this workbook"""
         rt = ""
         for (i, sheet) in enumerate(self.worksheets):
             rt += "{num}. {sheetName}\n".format(
@@ -221,10 +213,16 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
             )
         if not rt:
             rt = "empty book"
-        print(rt)
+        return rt
+
+    def showSummary(self):
+        print(self.summary())
 
     def reportJsonStr(self) -> str:
         return json.dumps(self.toJson().toJsonDict())
 
     def toJsonStrForSaving(self) -> str:
         return self.toJson().toJsonStrForSaving()
+
+    def __str__(self):
+        return self.summary()
