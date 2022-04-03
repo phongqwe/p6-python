@@ -12,7 +12,7 @@ from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorFa
 from com.emeraldblast.p6.document_structure.communication.sender.MessageSender import MessageSender
 
 
-class InternalReactorProvider:
+class InternalNotifierProvider:
 
     """All these reactors only do is wrapping the data in P6Res/P6Msg and sending the data away. Nothing more."""
 
@@ -20,7 +20,7 @@ class InternalReactorProvider:
         self.__socketProvider = socketProviderGetter
         self.__worksheetRenameReactor: EventReactor | None = None
 
-    def workbookReactor(self) -> EventReactor[WorkbookEventData, None]:
+    def workbookNotifier(self) -> EventReactor[WorkbookEventData, None]:
         def cb(data: WorkbookEventData):
             msg = P6Messages.p6Response(data.event, data.data)
             MessageSender.sendP6MsgRes(self.__socketProvider(), msg)
@@ -28,7 +28,7 @@ class InternalReactorProvider:
         reactor = EventReactorFactory.makeBasicReactor(cb)
         return reactor
 
-    def cellReactor(self) -> EventReactor[CellEventData, None]:
+    def cellNotifier(self) -> EventReactor[CellEventData, None]:
         def cb(cellEventData: CellEventData):
             p6Res = P6Messages.p6Response(
                 event = cellEventData.event,
@@ -38,7 +38,7 @@ class InternalReactorProvider:
         reactor = EventReactorFactory.makeBasicReactor(cb)
         return reactor
 
-    def worksheetReactor(self) -> EventReactor[WorksheetEventData, None]:
+    def worksheetNotifier(self) -> EventReactor[WorksheetEventData, None]:
         if self.__worksheetRenameReactor is None:
             def cb(eventData: WorksheetEventData):
                 msg = P6Messages.p6Response(eventData.event, eventData.data)

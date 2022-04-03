@@ -12,8 +12,8 @@ from com.emeraldblast.p6.document_structure.communication.event.P6Events import 
 from com.emeraldblast.p6.document_structure.communication.event_server.EventServer import EventServer
 from com.emeraldblast.p6.document_structure.communication.event_server.EventServerImp import EventServerImp
 from com.emeraldblast.p6.document_structure.communication.event_server.EventServerReactors import EventServerReactors
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.InternalReactorProvider import \
-    InternalReactorProvider
+from com.emeraldblast.p6.document_structure.communication.internal_reactor.InternalNotifierProvider import \
+    InternalNotifierProvider
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorContainer import EventReactorContainer
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorContainers import EventReactorContainers
@@ -69,13 +69,13 @@ class AppImp(App):
         if cellEventReactorContainer is None:
             cellEventReactorContainer = EventReactorContainers.mutable()
         self.__reactorContainer: EventReactorContainer[CellEventData] = cellEventReactorContainer
-        self.__reactorProvider = InternalReactorProvider(self._getSocketProvider)
+        self.__reactorProvider = InternalNotifierProvider(self._getSocketProvider)
         self.__zcontext = zmq.Context.instance()
 
-        self.initBaseReactor()
+        self.__initNotifiers()
         self._eventServer = EventServerImp(isDaemon = True)
         self._eventServerReactors = EventServerReactors(self.getBareWorkbookRs)
-        self.initEventServerReactor()
+        self.__initEventServerReactors()
 
     @property
     def zContext(self):
@@ -85,7 +85,7 @@ class AppImp(App):
     def eventServer(self) -> EventServer:
         return self._eventServer
 
-    def initEventServerReactor(self):
+    def __initEventServerReactors(self):
         evSv = self._eventServer
         er = self._eventServerReactors
         self._eventServer.addReactor(
@@ -100,17 +100,17 @@ class AppImp(App):
             reactor = er.cellUpdateValueReactor()
         )
 
-    def initBaseReactor(self):
+    def __initNotifiers(self):
         """create internal reactors """
         container = self.__reactorContainer
         provider = self.__reactorProvider
 
         for event in P6Events.Cell.allEvents():
-            container.addReactor(event, provider.cellReactor())
+            container.addReactor(event, provider.cellNotifier())
         for event in P6Events.Workbook.allEvents():
-            container.addReactor(event, provider.workbookReactor())
+            container.addReactor(event, provider.workbookNotifier())
         for event in P6Events.Worksheet.allEvents():
-            container.addReactor(event, provider.worksheetReactor())
+            container.addReactor(event, provider.worksheetNotifier())
 
     @property
     def eventReactorContainer(self) -> EventReactorContainer:
