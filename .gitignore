@@ -1,3 +1,3 @@
-src/bicp_document_structure/bench.py
+src/com/emeraldblast/p6/document_structure/bench.py
 dist
 src/document_structure.egg-info

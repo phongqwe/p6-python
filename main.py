@@ -1,6 +1,4 @@
-import json
-
-from bicp_document_structure.communication.event_server.EventServerImp import startRenameServer
+from com.emeraldblast.p6.document_structure.communication.event_server.EventServerImp import startRenameServer
 
 
 def main():
