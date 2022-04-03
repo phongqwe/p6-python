@@ -61,7 +61,7 @@ class EventWorksheet(WorksheetWrapper):
             eventData = WorksheetEventData(
                 workbook = self.workbook,
                 worksheet = self._innerSheet,
-                event = P6Events.Worksheet.ReRun,
+                event = P6Events.Worksheet.ReRun.event,
             )
             self.__onWorksheetEvent(eventData)
 

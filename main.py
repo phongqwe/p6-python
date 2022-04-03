@@ -1,8 +1,9 @@
-from com.emeraldblast.p6.document_structure.communication.event_server.EventServerImp import startRenameServer
-
+from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
+import inspect
 
 def main():
-    startRenameServer()
+    for e in P6Events.Worksheet.allEvents():
+        print(e.name)
 
 if __name__ == "__main__":
     main()

@@ -9,13 +9,14 @@ from com.emeraldblast.p6.document_structure.app.workbook_container.WorkbookConta
 from com.emeraldblast.p6.document_structure.communication.SocketProvider import SocketProvider
 from com.emeraldblast.p6.document_structure.communication.SocketProviderImp import SocketProviderImp
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
-from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorContainer import EventReactorContainer
-from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorContainers import EventReactorContainers
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.InternalReactorProvider import InternalReactorProvider
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
 from com.emeraldblast.p6.document_structure.communication.event_server.EventServer import EventServer
 from com.emeraldblast.p6.document_structure.communication.event_server.EventServerImp import EventServerImp
 from com.emeraldblast.p6.document_structure.communication.event_server.EventServerReactors import EventServerReactors
+from com.emeraldblast.p6.document_structure.communication.internal_reactor.InternalReactorProvider import \
+    InternalReactorProvider
+from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
+from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorContainer import EventReactorContainer
+from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorContainers import EventReactorContainers
 from com.emeraldblast.p6.document_structure.file.loader.P6FileLoader import P6FileLoader
 from com.emeraldblast.p6.document_structure.file.loader.P6FileLoaders import P6FileLoaders
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
@@ -103,9 +104,13 @@ class AppImp(App):
         """create internal reactors """
         container = self.__reactorContainer
         provider = self.__reactorProvider
-        container.addReactor(P6Events.Cell.Update.event, provider.cellUpdateReactor())
-        container.addReactor(P6Events.Worksheet.Rename.event, provider.renameWorksheetReactor())
-        container.addReactor(P6Events.Workbook.CreateNewWorksheet.event, provider.createNewWorksheetReactor())
+
+        for event in P6Events.Cell.allEvents():
+            container.addReactor(event, provider.cellReactor())
+        for event in P6Events.Workbook.allEvents():
+            container.addReactor(event, provider.workbookReactor())
+        for event in P6Events.Worksheet.allEvents():
+            container.addReactor(event, provider.worksheetReactor())
 
     @property
     def eventReactorContainer(self) -> EventReactorContainer:

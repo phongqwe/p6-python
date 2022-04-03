@@ -42,7 +42,7 @@ def startREPServerProto(isOk, context, onReceive):
 
 class MessageSenderREQTest(unittest.TestCase):
     messageForProto = P6Message(
-        header = P6MessageHeader("id1", P6Events.Cell.UpdateValueEvent),
+        header = P6MessageHeader("id1", P6Events.Cell.Update.event),
         data = DataCell(
             value = "cell value",
             script = "cell script",

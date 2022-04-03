@@ -151,7 +151,7 @@ class EventWorkbook(WorkbookWrapper):
     def reRun(self):
         self._innerWorkbook.reRun()
         if self.__onWorkbookEvent is not None:
-            self.__onWorkbookEvent(WorkbookEventData(self._iwb, P6Events.Workbook.ReRun))
+            self.__onWorkbookEvent(WorkbookEventData(self._iwb, P6Events.Workbook.ReRun.event))
 
     def __wrapInEventWorksheet(self, sheet: Worksheet) -> Worksheet:
         def onRangeEvent(data: RangeEventData):
@@ -178,41 +178,3 @@ class EventWorkbook(WorkbookWrapper):
             return partial(callback, self._innerWorkbook)
         else:
             return None
-
-    # def renameWorksheet(self, oldSheetNameOrIndex: str | int, newSheetName: str):
-    #     rs = self.renameWorksheetRs(oldSheetNameOrIndex, newSheetName)
-    #     if rs.isOk():
-    #         return
-    #     else:
-    #         raise rs.err.toException()
-
-    # def renameWorksheetRs(self, oldSheetNameOrIndex: str | int, newSheetName: str) -> Result[None, ErrorReport]:
-    #     rs = self._iwb.renameWorksheetRs(oldSheetNameOrIndex, newSheetName)
-    #     event = P6Events.Worksheet.Rename.event
-    #     DataClass = P6Events.Worksheet.Rename.Response
-    #     if rs.isOk():
-    #         oldName = oldSheetNameOrIndex
-    #         index = self.getIndexOfWorksheet(newSheetName)
-    #         eventData: WorkbookEventData[P6Events.Worksheet.Rename.Response] = WorkbookEventData(
-    #             workbook = self,
-    #             event = event,
-    #             isError = False,
-    #             data = DataClass(self.workbookKey, oldName, newSheetName, index, False, None)
-    #         )
-    #         self.__onWorkbookEvent(eventData)
-    #         return Ok(None)
-    #     else:
-    #         eventData: WorkbookEventData = WorkbookEventData(
-    #             workbook = self,
-    #             event = event,
-    #             isError = True,
-    #             data = DataClass(
-    #                 workbookKey = self.workbookKey,
-    #                 oldName = oldSheetNameOrIndex,
-    #                 newName = newSheetName,
-    #                 index = self.getIndexOfWorksheet(oldSheetNameOrIndex),
-    #                 isError = True,
-    #                 errorReport = rs.err)
-    #         )
-    #         self.__onWorkbookEvent(eventData)
-    #         return rs

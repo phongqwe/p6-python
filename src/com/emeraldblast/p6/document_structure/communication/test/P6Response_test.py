@@ -10,7 +10,7 @@ class P6Response_test(unittest.TestCase):
     def setUp(self) -> None:
         super().setUp()
         self.r = P6Response(
-            header = P6MessageHeader("id", P6Events.Cell.UpdateValue.event),
+            header = P6MessageHeader("id", P6Events.Cell.Update.event),
             data = b"data 123",
             status = P6Response.Status.OK
         )

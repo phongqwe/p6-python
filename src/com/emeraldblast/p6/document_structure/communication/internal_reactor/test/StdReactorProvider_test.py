@@ -63,7 +63,7 @@ class StdReactorProvider_test(unittest.TestCase):
             return socketProvider
 
         self.reactorProvider = InternalReactorProvider(gs)
-        reactor = self.reactorProvider.cellUpdateReactor()
+        reactor = self.reactorProvider.cellReactor()
 
         def onCellEvent(data: CellEventData):
             reactor.react(data)
@@ -82,7 +82,7 @@ class StdReactorProvider_test(unittest.TestCase):
 
     def test_integration_test_default_reactor_ok(self):
             # start mock server
-            reactor = self.reactorProvider.cellUpdateReactor()
+            reactor = self.reactorProvider.cellReactor()
 
             def onCellEvent(data:CellEventData):
                 reactor.react(data)
@@ -94,7 +94,7 @@ class StdReactorProvider_test(unittest.TestCase):
 
     def test_integration_test_default_reactor_fail(self):
         """ why should there be an exception? """
-        reactor = self.reactorProvider.cellUpdateReactor()
+        reactor = self.reactorProvider.cellReactor()
 
         def onCellEvent(data:CellEventData):
             reactor.react(data)

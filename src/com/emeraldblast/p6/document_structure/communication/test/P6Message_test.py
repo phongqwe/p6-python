@@ -17,7 +17,7 @@ class P6MessageTest(unittest.TestCase):
             formula="=1234",
             address=CellIndex(1, 34)
         )
-        hd = P6MessageHeader("id1", P6Events.Cell.UpdateValueEvent)
+        hd = P6MessageHeader("id1", P6Events.Cell.Update.event)
         msg = P6Message(
             header=hd,
             data =contentObj

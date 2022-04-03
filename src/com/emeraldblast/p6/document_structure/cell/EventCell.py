@@ -111,7 +111,7 @@ class EventCell(WrapperCell):
             eventData = CellEventData(
                 workbook = self.workbook,
                 cell = self._ic,
-                event = P6Events.Cell.ClearScriptResultEvent,
+                event = P6Events.Cell.Update.event,
                 data = protoData
             )
             self.__onCellEvent(eventData)
