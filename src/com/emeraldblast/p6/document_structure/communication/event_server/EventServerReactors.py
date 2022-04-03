@@ -7,12 +7,8 @@ from com.emeraldblast.p6.document_structure.communication.event_server.msg.P6Mes
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.CellUpdateReactor import CellUpdateReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.CreateNewWorksheetReactor import \
     CreateNewWorksheetReactor
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.CellReactor import CellReactor
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.EventReactor import EventReactor
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.EventReactorFactory import EventReactorFactory
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.RangeReactor import RangeReactor
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.WorkbookReactor import WorkbookReactor
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.WorksheetReactor import WorksheetReactor
 from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import RenameWorksheetResponseProto, \
     RenameWorksheetRequestProto
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
@@ -24,20 +20,8 @@ from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import Work
 class EventServerReactors:
 
     def __init__(self, workbookGetter: Callable[[WorkbookKey | str | int], Result[Workbook, ErrorReport]]):
-        # self.__socketProvider = socketProviderGetter
         self._wbGetter = workbookGetter
-        self.__cellUpdateValue: CellReactor | None = None
-        self.__cellUpdateScript: CellReactor | None = None
-        self.__cellFormulaUpdate: CellReactor | None = None
-        self.__cellClearScriptResult: CellReactor | None = None
-
-        self.__rangeReRun: RangeReactor | None = None
-
-        self.__worksheetReRun: WorksheetReactor | None = None
-        self.__worksheetRenameReactor: WorkbookReactor[P6Message, RenameWorksheetResponseProto] | None = None
-        self.__worksheetRenameFail: WorksheetReactor | None = None
-
-        self.__workbookReRun: WorkbookReactor | None = None
+        self.__worksheetRenameReactor: EventReactor[P6Message, RenameWorksheetResponseProto] | None = None
 
     def createNewWorksheetReactor(self) -> EventReactor[bytes, P6Events.Workbook.CreateNewWorksheet.Response]:
         reactor = CreateNewWorksheetReactor(str(uuid.uuid4()), self._wbGetter)

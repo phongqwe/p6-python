@@ -4,11 +4,8 @@ from com.emeraldblast.p6.document_structure.communication.SocketProvider import 
 from com.emeraldblast.p6.document_structure.communication.event_server.P6Messages import P6Messages
 from com.emeraldblast.p6.document_structure.communication.event_server.msg.P6Message import P6Message
 from com.emeraldblast.p6.document_structure.communication.event_server.response.P6Response import P6Response
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.CellReactor import CellReactor
+from com.emeraldblast.p6.document_structure.communication.internal_reactor.EventReactor import EventReactor
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.EventReactorFactory import EventReactorFactory
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.RangeReactor import RangeReactor
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.WorkbookReactor import WorkbookReactor
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.WorksheetReactor import WorksheetReactor
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.WorkbookEventData import WorkbookEventData
 from com.emeraldblast.p6.document_structure.communication.sender.MessageSender import MessageSender
@@ -18,50 +15,34 @@ class StdReactorProvider:
 
     def __init__(self, socketProviderGetter: Callable[[], SocketProvider]):
         self.__socketProvider = socketProviderGetter
-        self.__cellUpdateValue: CellReactor | None = None
-        self.__cellUpdateScript: CellReactor | None = None
-        self.__cellFormulaUpdate: CellReactor | None = None
-        self.__cellClearScriptResult: CellReactor | None = None
+        self.__worksheetRenameReactor: EventReactor | None = None
 
-        self.__rangeReRun: RangeReactor | None = None
 
-        self.__worksheetReRun: WorksheetReactor | None = None
-        self.__worksheetRenameReactor: WorksheetReactor | None = None
-        self.__worksheetRenameFail: WorksheetReactor | None = None
-
-        self.__workbookReRun: WorkbookReactor | None = None
-
-    def createNewWorksheetReactor(self) -> WorkbookReactor:
+    def createNewWorksheetReactor(self) -> EventReactor[WorkbookEventData,None]:
         def cb(data: WorkbookEventData):
             msg = P6Messages.p6Response(data.event, data.data, P6Response.Status.OK)
             self._send(msg)
-        reactor = EventReactorFactory.makeWorkbookReactor(cb)
+        reactor = EventReactorFactory.makeBasicReactor(cb)
         return reactor
 
-    def cellUpdateReactor(self) -> CellReactor:
+    def cellUpdateReactor(self) -> EventReactor[CellEventData,None]:
         def cb(cellEventData: CellEventData):
-            status = P6Response.Status.OK
-            if cellEventData.isError:
-                status = P6Response.Status.ERROR
-
             p6Res = P6Messages.p6Response(
                 event = cellEventData.event,
-                data = cellEventData.data,
-                status = status)
-
+                data = cellEventData.data,)
             self._send(p6Res)
-
-        reactor = EventReactorFactory.makeCellReactor(cb)
+        reactor = EventReactorFactory.makeBasicReactor(cb)
         return reactor
 
 
-    def renameWorksheetReactor(self) -> WorkbookReactor:
+    # def renameWorksheetReactor(self) -> WorkbookReactor:
+    def renameWorksheetReactor(self) -> EventReactor[WorkbookEventData,None]:
         if self.__worksheetRenameReactor is None:
             def cb(eventData: WorkbookEventData):
                 msg = P6Messages.p6Response(eventData.event, eventData.data)
                 self._send(msg)
 
-            self.__worksheetRenameReactor = EventReactorFactory.makeWorkbookReactor(cb)
+            self.__worksheetRenameReactor = EventReactorFactory.makeBasicReactor(cb)
         return self.__worksheetRenameReactor
 
     def _send(self, p6Msg: P6Message | P6Response):

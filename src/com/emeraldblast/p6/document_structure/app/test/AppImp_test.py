@@ -174,7 +174,7 @@ class AppImp_test(unittest.TestCase):
 
         app.eventReactorContainer.addReactor(
             P6Events.Cell.Update.event,
-            EventReactorFactory.makeCellReactor(self.onCellChange))
+            EventReactorFactory.makeBasicReactor(self.onCellChange))
         fileName = "file.txt"
 
         loadRs0 = app.loadWorkbookRs(fileName)
@@ -198,7 +198,7 @@ class AppImp_test(unittest.TestCase):
 
         app.eventReactorContainer.addReactor(
             P6Events.Cell.Update.event,
-            EventReactorFactory.makeCellReactor(reactor))
+            EventReactorFactory.makeBasicReactor(reactor))
         wb = app.createNewWorkbook("bookz1")
         wb.createNewWorksheet("sheetz1")
         cell = app.activeWorkbook.activeWorksheet.cell("@B32")
@@ -266,7 +266,7 @@ class AppImp_test(unittest.TestCase):
         app = AppImp()
         app.eventReactorContainer.addReactor(
             P6Events.Cell.Update.event,
-            EventReactorFactory.makeCellReactor(self.onCellChange))
+            EventReactorFactory.makeBasicReactor(self.onCellChange))
 
         wb = wbCreator(app)
         sheet = wb.createNewWorksheet("sheet1")

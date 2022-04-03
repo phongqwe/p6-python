@@ -31,7 +31,6 @@ class EventCell(WrapperCell):
                 workbook = self.workbook,
                 cell = self._ic,
                 event = P6Events.Cell.Update.event,
-                isError = False,
                 data = protoData
             )
             self.__onCellEvent(eventData)
@@ -47,7 +46,6 @@ class EventCell(WrapperCell):
                 workbook = self.workbook,
                 cell = self._ic,
                 event = P6Events.Cell.Update.event,
-                isError = False,
                 data = protoData
             )
             self.__onCellEvent(eventData)
@@ -65,7 +63,6 @@ class EventCell(WrapperCell):
                 workbook = self.workbook,
                 cell = self._ic,
                 event = P6Events.Cell.Update.event,
-                isError = False,
                 data = protoData
             )
             self.__onCellEvent(eventData)
@@ -81,7 +78,6 @@ class EventCell(WrapperCell):
                     workbook = self.workbook,
                     cell = self._ic,
                     event = P6Events.Cell.Update.event,
-                    isError = False,
                     data = protoData
                 )
                 self.__onCellEvent(eventData)
@@ -101,7 +97,6 @@ class EventCell(WrapperCell):
                     workbook = self.workbook,
                     cell = self._ic,
                     event = P6Events.Cell.Update.event,
-                    isError = False,
                     data = protoData
                 )
                 self.__onCellEvent(eventData)
@@ -117,7 +112,6 @@ class EventCell(WrapperCell):
                 workbook = self.workbook,
                 cell = self._ic,
                 event = P6Events.Cell.ClearScriptResultEvent,
-                isError = False,
                 data = protoData
             )
             self.__onCellEvent(eventData)

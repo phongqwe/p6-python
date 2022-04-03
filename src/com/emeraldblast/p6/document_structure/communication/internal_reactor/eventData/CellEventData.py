@@ -13,13 +13,11 @@ class CellEventData(ToJson):
                  worksheet: Worksheet = None,
                  cell: Cell = None,
                  event: P6Event = None,
-                 isError: bool = False,
                  data: ToProto = None):
         self.cell = cell
         self.worksheet = worksheet
         self.workbook = workbook
         self.event: P6Event = event
-        self.isError = isError
         self._data = data
 
     @property
