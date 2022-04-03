@@ -7,8 +7,8 @@ from com.emeraldblast.p6.document_structure.communication.event_server.msg.P6Mes
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.CellUpdateReactor import CellUpdateReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.CreateNewWorksheetReactor import \
     CreateNewWorksheetReactor
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.EventReactor import EventReactor
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.EventReactorFactory import EventReactorFactory
+from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
+from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorFactory import EventReactorFactory
 from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import RenameWorksheetResponseProto, \
     RenameWorksheetRequestProto
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport

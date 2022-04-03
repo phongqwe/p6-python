@@ -1,8 +1,8 @@
 import unittest
 
 from com.emeraldblast.p6.document_structure.communication.event.P6Event import P6Event
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.EventReactor import EventReactor
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.MutableEventReactorContainer import MutableEventReactorContainer
+from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
+from com.emeraldblast.p6.document_structure.communication.reactor.MutableEventReactorContainer import MutableEventReactorContainer
 
 
 class DummyReactor(EventReactor[int,None]):

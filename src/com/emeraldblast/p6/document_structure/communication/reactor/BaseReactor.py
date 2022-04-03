@@ -1,6 +1,6 @@
 from typing import TypeVar, Callable
 
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.EventReactor import EventReactor
+from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
 
 I = TypeVar("I")
 O = TypeVar("O")

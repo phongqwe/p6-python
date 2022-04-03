@@ -9,9 +9,9 @@ from com.emeraldblast.p6.document_structure.app.workbook_container.WorkbookConta
 from com.emeraldblast.p6.document_structure.communication.SocketProvider import SocketProvider
 from com.emeraldblast.p6.document_structure.communication.SocketProviderImp import SocketProviderImp
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.EventReactorContainer import EventReactorContainer
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.EventReactorContainers import EventReactorContainers
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.StdReactorProvider import StdReactorProvider
+from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorContainer import EventReactorContainer
+from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorContainers import EventReactorContainers
+from com.emeraldblast.p6.document_structure.communication.internal_reactor.InternalReactorProvider import InternalReactorProvider
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
 from com.emeraldblast.p6.document_structure.communication.event_server.EventServer import EventServer
 from com.emeraldblast.p6.document_structure.communication.event_server.EventServerImp import EventServerImp
@@ -68,7 +68,7 @@ class AppImp(App):
         if cellEventReactorContainer is None:
             cellEventReactorContainer = EventReactorContainers.mutable()
         self.__reactorContainer: EventReactorContainer[CellEventData] = cellEventReactorContainer
-        self.__reactorProvider = StdReactorProvider(self._getSocketProvider)
+        self.__reactorProvider = InternalReactorProvider(self._getSocketProvider)
         self.__zcontext = zmq.Context.instance()
 
         self.initBaseReactor()

@@ -7,7 +7,7 @@ from com.emeraldblast.p6.document_structure.app.App import App
 from com.emeraldblast.p6.document_structure.app.AppImp import AppImp
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.EventReactorFactory import EventReactorFactory
+from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorFactory import EventReactorFactory
 from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import findNewSocketPort
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeyImp import WorkbookKeyImp

@@ -8,7 +8,7 @@ from com.emeraldblast.p6.document_structure.file.loader.P6FileLoader import P6Fi
 from com.emeraldblast.p6.document_structure.file.loader.P6FileLoaderErrors import P6FileLoaderErrors
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
 from com.emeraldblast.p6.document_structure.communication.SocketProvider import SocketProvider
-from com.emeraldblast.p6.document_structure.communication.internal_reactor import EventReactorContainer
+from com.emeraldblast.p6.document_structure.communication.reactor import EventReactorContainer
 from com.emeraldblast.p6.document_structure.communication.event_server.EventServer import EventServer
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Err import Err

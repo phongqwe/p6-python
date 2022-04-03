@@ -3,7 +3,7 @@ import unittest
 from com.emeraldblast.p6.document_structure.communication.event.data.response.RenameWorksheetData import RenameWorksheetResponseData
 
 from com.emeraldblast.p6.document_structure.communication.event_server.EventServerReactors import EventServerReactors
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.EventReactor import EventReactor
+from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
 from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import RenameWorksheetRequestProto
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.workbook.WorkbookErrors import WorkbookErrors

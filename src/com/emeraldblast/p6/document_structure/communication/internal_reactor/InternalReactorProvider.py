@@ -4,14 +4,14 @@ from com.emeraldblast.p6.document_structure.communication.SocketProvider import 
 from com.emeraldblast.p6.document_structure.communication.event_server.P6Messages import P6Messages
 from com.emeraldblast.p6.document_structure.communication.event_server.msg.P6Message import P6Message
 from com.emeraldblast.p6.document_structure.communication.event_server.response.P6Response import P6Response
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.EventReactor import EventReactor
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.EventReactorFactory import EventReactorFactory
+from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
+from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorFactory import EventReactorFactory
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.WorkbookEventData import WorkbookEventData
 from com.emeraldblast.p6.document_structure.communication.sender.MessageSender import MessageSender
 
 
-class StdReactorProvider:
+class InternalReactorProvider:
 
     def __init__(self, socketProviderGetter: Callable[[], SocketProvider]):
         self.__socketProvider = socketProviderGetter

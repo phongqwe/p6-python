@@ -7,7 +7,7 @@ from com.emeraldblast.p6.proto.CellProtos_pb2 import CellUpdateCommonResponsePro
 from com.emeraldblast.p6.proto.P6MsgProtos_pb2 import P6ResponseProto
 
 from com.emeraldblast.p6.document_structure.communication.SocketProviderImp import SocketProviderImp
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.StdReactorProvider import StdReactorProvider
+from com.emeraldblast.p6.document_structure.communication.internal_reactor.InternalReactorProvider import InternalReactorProvider
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
 from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import findNewSocketPort, startREPServerOnThread, sendClose
 from com.emeraldblast.p6.document_structure.workbook.EventWorkbook import EventWorkbook
@@ -38,7 +38,7 @@ class StdReactorProvider_test(unittest.TestCase):
         socketProvider = SocketProviderImp(reqSocketUI = self.socket)
         def gs():
             return socketProvider
-        self. reactorProvider = StdReactorProvider(gs)
+        self. reactorProvider = InternalReactorProvider(gs)
 
 
 
@@ -62,7 +62,7 @@ class StdReactorProvider_test(unittest.TestCase):
         def gs():
             return socketProvider
 
-        self.reactorProvider = StdReactorProvider(gs)
+        self.reactorProvider = InternalReactorProvider(gs)
         reactor = self.reactorProvider.cellUpdateReactor()
 
         def onCellEvent(data: CellEventData):

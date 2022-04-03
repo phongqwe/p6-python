@@ -1,7 +1,7 @@
 import uuid
 from typing import Callable, Any
 
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.BaseReactor import BasicReactor
+from com.emeraldblast.p6.document_structure.communication.reactor.BaseReactor import BasicReactor
 
 
 class EventReactorFactory:

@@ -1,13 +1,12 @@
 from typing import TypeVar, Generic
 
 from com.emeraldblast.p6.document_structure.communication.event.P6Event import P6Event
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.WithWorkbookData import WithWorkbookData
 from com.emeraldblast.p6.document_structure.util.ToJson import ToJson
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
 D = TypeVar("D")
-class WorksheetEventData(ToJson, WithWorkbookData,Generic[D]):
+class WorksheetEventData(ToJson,Generic[D]):
 
     def __init__(self,
                  workbook: Workbook=None,

@@ -4,7 +4,7 @@ from com.emeraldblast.p6.document_structure.communication.event.data.request.Cel
 
 from com.emeraldblast.p6.document_structure.communication.event.data.response.CellUpdateCommonResponse import CellUpdateCommonResponse
 
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.EventReactor import EventReactor
+from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook

@@ -2,7 +2,7 @@ from abc import ABC
 from typing import TypeVar, Generic
 
 from com.emeraldblast.p6.document_structure.communication.event.P6Event import P6Event
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.EventReactor import EventReactor
+from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
 from com.emeraldblast.p6.document_structure.util.CanCheckEmpty import CanCheckEmpty
 
 D = TypeVar("D")

@@ -2,7 +2,7 @@ from functools import partial
 from typing import Callable, Optional, Union
 
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
-from com.emeraldblast.p6.document_structure.communication.internal_reactor import EventReactorContainer
+from com.emeraldblast.p6.document_structure.communication.reactor import EventReactorContainer
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.RangeEventData import RangeEventData
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.WorkbookEventData import WorkbookEventData
@@ -134,7 +134,6 @@ class EventWorkbook(WorkbookWrapper):
             if self.__onWorkbookEvent is not None:
                 wbEventData = WorkbookEventData(
                     workbook = self,
-                    isError = rs.isErr(),
                     event = P6Events.Workbook.CreateNewWorksheet.event,
                     data = P6Events.Workbook.CreateNewWorksheet.Response(self.workbookKey, name))
                 self.__onWorkbookEvent(wbEventData)
@@ -144,7 +143,6 @@ class EventWorkbook(WorkbookWrapper):
                 errReport: ErrorReport = rs.err
                 wbEventData = WorkbookEventData(
                     workbook = self,
-                    isError = rs.isErr(),
                     event = P6Events.Workbook.CreateNewWorksheet.event,
                     data = P6Events.Workbook.CreateNewWorksheet.Response(self.workbookKey, name, True, errReport))
                 self.__onWorkbookEvent(wbEventData)
