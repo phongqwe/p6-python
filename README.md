@@ -1,5 +1,5 @@
 require python 3.10
-python3 -m pip install --upgrade build
+conda install -c conda-forge build
 
 python3 -m build
 
