@@ -22,19 +22,25 @@ class CellUpdateReactor(EventReactor[bytes, CellUpdateCommonResponse]):
 
     def react(self, data: bytes) -> CellUpdateCommonResponse:
         request = CellUpdateRequest.fromProtoBytes(data)
+        cellAddress = request.cellAddress
         getWbRs = self._wbGetter(request.workbookKey)
         if getWbRs.isOk():
             wb:Workbook = getWbRs.value
             getWsRs = wb.getWorksheetRs(request.worksheetName)
             if getWsRs.isOk():
                 ws = getWsRs.value
-                cell = ws.cell(request.cellAddress)
-                if request.value is not None and len(request.value)>0:
-                    cell.value = request.value
-                elif request.formula is not None and len(request.formula)>0:
-                    cell.formula = request.formula
+                cell = ws.cell(cellAddress)
+                if request.isNotEmpty():
+                    if request.value is not None and len(request.value)>0:
+                        cell.value = request.value
+                    elif request.formula is not None and len(request.formula)>0:
+                        cell.formula = request.formula
+                    else:
+                        pass # do nothing
                 else:
-                    pass # do nothing
+                    # cell.value = ""
+                    # cell.formula = ""
+                    ws.removeCell(cellAddress)
                 wb.reRun()
                 return CellUpdateCommonResponse(newWorkbook = wb)
 

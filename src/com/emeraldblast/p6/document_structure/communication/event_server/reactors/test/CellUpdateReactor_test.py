@@ -28,6 +28,26 @@ class CellUpdateReactor_test(unittest.TestCase):
 
         self.wbGetter = wbGetter
 
+    def test_OkBlankContent(self):
+        reactor = CellUpdateReactor("id", self.wbGetter)
+
+        self.wb.getWorksheet("Sheet1").cell((1,1)).value=123
+
+        request = P6Events.Cell.Update.Request(
+            workbookKey = self.wb.workbookKey,
+            worksheetName = "Sheet1",
+            cellAddress = CellAddresses.fromRowCol(1, 1),
+            value = "", formula = ""
+        )
+        outObj = reactor.react(request.toProtoBytes())
+        self.assertFalse(outObj.isError)
+        self.assertIsNone(outObj.errorReport)
+        self.assertIsNotNone(outObj.newWorkbook)
+        outProto = (outObj.newWorkbook.toProtoObj())
+        print(outProto)
+        self.assertEqual(None, outObj.newWorkbook.getWorksheetOrNone("Sheet1").cell((1, 1)).value)
+        self.assertEqual(None, outObj.newWorkbook.getWorksheetOrNone("Sheet1").cell((1, 1)).displayValue)
+
     def test_invalidWB(self):
         err = AppErrors.WorkbookNotExist("invalidWB")
 

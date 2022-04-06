@@ -1,4 +1,5 @@
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
+from com.emeraldblast.p6.document_structure.util.CanCheckEmpty import CanCheckEmpty
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
@@ -7,10 +8,10 @@ from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import Work
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 
 
-class CellUpdateRequest(ToProto[CellUpdateRequestProto]):
+class CellUpdateRequest(ToProto[CellUpdateRequestProto],CanCheckEmpty):
     def __init__(self, workbookKey:WorkbookKey, worksheetName:str, cellAddress:CellAddress, value:str, formula:str):
-        self.formula = formula
-        self.value = value
+        self.formula:str = formula
+        self.value:str = value
         self.cellAddress = cellAddress
         self.worksheetName = worksheetName
         self.workbookKey = workbookKey
@@ -41,3 +42,11 @@ class CellUpdateRequest(ToProto[CellUpdateRequestProto]):
         rt.value = self.value
         rt.formula = self.formula
         return rt
+
+    def isEmpty(self):
+        if self.value is not None and len(self.value) > 0 :
+            return False
+        if self.formula is not None and len(self.formula)>0:
+            return False
+        return True
+
