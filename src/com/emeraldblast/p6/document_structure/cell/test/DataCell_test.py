@@ -59,7 +59,12 @@ class DataCellTest(unittest.TestCase):
         def increaseExCount(eventData:CellEventData):
             self.exCountA += 1
 
-        c2 = EventCell(DataCell(CellIndex(1, 1), value = 123, script = "123"),
+        wb = WorkbookImp("B1")
+        s1 = wb.createNewWorksheet("S1")
+        c1 = s1.cell((1,1))
+        c1.value=123
+        c1.script="123"
+        c2 = EventCell(c1,
                        onCellEvent = increaseExCount)
         oldCount = self.exCountA
         c2.reRun(globals())
@@ -92,7 +97,11 @@ class DataCellTest(unittest.TestCase):
         def increaseExCount(data:CellEventData):
             self.exCount += 1
 
-        c = EventCell(DataCell(CellIndex(1, 1)), onCellEvent = increaseExCount)
+        wb = WorkbookImp("B1")
+        s1 = wb.createNewWorksheet("S1")
+        c1 = s1.cell((1, 1))
+
+        c = EventCell(c1, onCellEvent = increaseExCount)
         c.script = "x=345;\"abc\""
         oldCount = self.exCount
         c.reRun(globals())

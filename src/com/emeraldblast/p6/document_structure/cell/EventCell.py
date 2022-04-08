@@ -1,10 +1,10 @@
 from typing import Callable
 
-from com.emeraldblast.p6.document_structure.communication.event.data.response.CellUpdateCommonResponse import CellUpdateCommonResponse
-
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.WrapperCell import WrapperCell
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
+from com.emeraldblast.p6.document_structure.communication.event.data.response.CellUpdateCommonResponse import \
+    CellUpdateCommonResponse
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
 
 
@@ -26,7 +26,9 @@ class EventCell(WrapperCell):
         if self.__onCellEvent is not None:
             if self.workbook is not None:
                 self.workbook.reRun()
-            protoData = CellUpdateCommonResponse(self.workbook)
+            protoData = CellUpdateCommonResponse(
+                workbookKey = self.workbook.workbookKey,
+                newWorkbook = self.workbook)
             eventData = CellEventData(
                 workbook = self.workbook,
                 cell = self._ic,
@@ -41,7 +43,10 @@ class EventCell(WrapperCell):
         if self.__onCellEvent is not None:
             if self.workbook is not None:
                 self.workbook.reRun()
-            protoData = CellUpdateCommonResponse(self.workbook)
+            protoData = CellUpdateCommonResponse(
+                workbookKey = self.workbook.workbookKey,
+                newWorkbook = self.workbook
+            )
             eventData = CellEventData(
                 workbook = self.workbook,
                 cell = self._ic,
@@ -50,15 +55,16 @@ class EventCell(WrapperCell):
             )
             self.__onCellEvent(eventData)
 
-
-
     @WrapperCell.formula.setter
-    def formula(self,newFormula:str):
+    def formula(self, newFormula: str):
         self._ic.formula = newFormula
         if self.__onCellEvent is not None:
             if self.workbook is not None:
                 self.workbook.reRun()
-            protoData = CellUpdateCommonResponse(self.workbook)
+            protoData = CellUpdateCommonResponse(
+                workbookKey = self.workbook.workbookKey,
+                newWorkbook = self.workbook
+            )
             eventData = CellEventData(
                 workbook = self.workbook,
                 cell = self._ic,
@@ -73,7 +79,10 @@ class EventCell(WrapperCell):
             if self.__onCellEvent is not None:
                 if self.workbook is not None:
                     self.workbook.reRun()
-                protoData = CellUpdateCommonResponse(self.workbook)
+                protoData = CellUpdateCommonResponse(
+                    workbookKey = self.workbook.workbookKey,
+                    newWorkbook = self.workbook
+                )
                 eventData = CellEventData(
                     workbook = self.workbook,
                     cell = self._ic,
@@ -92,7 +101,10 @@ class EventCell(WrapperCell):
             if self.__onCellEvent is not None:
                 if self.workbook is not None:
                     self.workbook.reRun()
-                protoData = CellUpdateCommonResponse(self.workbook)
+                protoData = CellUpdateCommonResponse(
+                    workbookKey = self.workbook.workbookKey,
+                    newWorkbook = self.workbook
+                )
                 eventData = CellEventData(
                     workbook = self.workbook,
                     cell = self._ic,
@@ -107,7 +119,10 @@ class EventCell(WrapperCell):
         if self.__onCellEvent is not None:
             if self.workbook is not None:
                 self.workbook.reRun()
-            protoData = CellUpdateCommonResponse(self.workbook)
+            protoData = CellUpdateCommonResponse(
+                workbookKey = self.workbook.workbookKey,
+                newWorkbook = self.workbook
+            )
             eventData = CellEventData(
                 workbook = self.workbook,
                 cell = self._ic,

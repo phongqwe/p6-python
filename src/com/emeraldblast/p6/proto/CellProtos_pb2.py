@@ -16,7 +16,7 @@ from com.emeraldblast.p6.proto import CommonProtos_pb2 as com_dot_emeraldblast_d
 from com.emeraldblast.p6.proto import DocProtos_pb2 as com_dot_emeraldblast_dot_p6_dot_proto_dot_DocProtos__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n*com/emeraldblast/p6/proto/CellProtos.proto\x12\x19\x63om.emeraldblast.p6.proto\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\x1a)com/emeraldblast/p6/proto/DocProtos.proto\"\xd3\x01\n\x16\x43\x65llUpdateRequestProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x02 \x01(\t\x12@\n\x0b\x63\x65llAddress\x18\x03 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\x12\r\n\x05value\x18\x04 \x01(\t\x12\x0f\n\x07\x66ormula\x18\x05 \x01(\t\"\xb1\x01\n\x1d\x43\x65llUpdateCommonResponseProto\x12=\n\x0bnewWorkbook\x18\x01 \x01(\x0b\x32(.com.emeraldblast.p6.proto.WorkbookProto\x12\x0f\n\x07isError\x18\x02 \x01(\x08\x12@\n\x0b\x65rrorReport\x18\x03 \x01(\x0b\x32+.com.emeraldblast.p6.proto.ErrorReportProtob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n*com/emeraldblast/p6/proto/CellProtos.proto\x12\x19\x63om.emeraldblast.p6.proto\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\x1a)com/emeraldblast/p6/proto/DocProtos.proto\"\xd3\x01\n\x16\x43\x65llUpdateRequestProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x02 \x01(\t\x12@\n\x0b\x63\x65llAddress\x18\x03 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\x12\r\n\x05value\x18\x04 \x01(\t\x12\x0f\n\x07\x66ormula\x18\x05 \x01(\t\"\xf3\x01\n\x1d\x43\x65llUpdateCommonResponseProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12=\n\x0bnewWorkbook\x18\x02 \x01(\x0b\x32(.com.emeraldblast.p6.proto.WorkbookProto\x12\x0f\n\x07isError\x18\x03 \x01(\x08\x12@\n\x0b\x65rrorReport\x18\x04 \x01(\x0b\x32+.com.emeraldblast.p6.proto.ErrorReportProtob\x06proto3')
 
 
 
@@ -42,5 +42,5 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _CELLUPDATEREQUESTPROTO._serialized_start=163
   _CELLUPDATEREQUESTPROTO._serialized_end=374
   _CELLUPDATECOMMONRESPONSEPROTO._serialized_start=377
-  _CELLUPDATECOMMONRESPONSEPROTO._serialized_end=554
+  _CELLUPDATECOMMONRESPONSEPROTO._serialized_end=620
 # @@protoc_insertion_point(module_scope)
