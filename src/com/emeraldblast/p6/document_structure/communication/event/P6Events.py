@@ -85,7 +85,7 @@ class P6Events:
         class ReRun:
             event = P6Event(f"{WBE}1", "Workbook rerun")
 
-        class RemoveWorksheet:
+        class DeleteWorksheet:
             event = P6Event(f"{WBE}2", "remove worksheet")
 
         class CreateNewWorksheet:

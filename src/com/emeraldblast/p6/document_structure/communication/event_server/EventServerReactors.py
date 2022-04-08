@@ -2,11 +2,17 @@ import uuid
 from typing import Callable
 
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
+from com.emeraldblast.p6.document_structure.communication.event.data.response.CreateNewWorksheetData import \
+    CreateNewWorksheetResponse
+from com.emeraldblast.p6.document_structure.communication.event.data.response.DeleteWorksheetResponse import \
+    DeleteWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.event.data.response.RenameWorksheetData import RenameWorksheetResponseData
 from com.emeraldblast.p6.document_structure.communication.event_server.msg.P6Message import P6Message
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.cell.CellUpdateReactor import CellUpdateReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook.CreateNewWorksheetReactor import \
     CreateNewWorksheetReactor
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook.DeleteWorksheetReactor import \
+    DeleteWorksheetReactor
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorFactory import EventReactorFactory
 from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import RenameWorksheetResponseProto, \
@@ -23,7 +29,11 @@ class EventServerReactors:
         self._wbGetter = workbookGetter
         self.__worksheetRenameReactor: EventReactor[P6Message, RenameWorksheetResponseProto] | None = None
 
-    def createNewWorksheetReactor(self) -> EventReactor[bytes, P6Events.Workbook.CreateNewWorksheet.Response]:
+    def deleteWorksheetReactor(self)->EventReactor[bytes,DeleteWorksheetResponse]:
+        reactor = DeleteWorksheetReactor(str(uuid.uuid4()),self._wbGetter)
+        return reactor
+
+    def createNewWorksheetReactor(self) -> EventReactor[bytes, CreateNewWorksheetResponse]:
         reactor = CreateNewWorksheetReactor(str(uuid.uuid4()), self._wbGetter)
         return reactor
 

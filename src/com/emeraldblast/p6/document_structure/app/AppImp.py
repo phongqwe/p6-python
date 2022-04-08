@@ -99,6 +99,10 @@ class AppImp(App):
             event = P6Events.Cell.Update.event,
             reactor = er.cellUpdateValueReactor()
         )
+        evSv.addReactor(
+            event=P6Events.Workbook.DeleteWorksheet.event,
+            reactor =er.deleteWorksheetReactor()
+        )
 
     def __initNotifiers(self):
         """create internal reactors """

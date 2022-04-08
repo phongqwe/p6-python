@@ -157,7 +157,7 @@ class EventWorkbook(WorkbookWrapper):
 
         eventData = WorkbookEventData(
             workbook = self,
-            event = P6Events.Workbook.RemoveWorksheet.event,
+            event = P6Events.Workbook.DeleteWorksheet.event,
             data = response
         )
         if rs.isOk():
@@ -176,7 +176,7 @@ class EventWorkbook(WorkbookWrapper):
         )
         eventData = WorkbookEventData(
             workbook = self,
-            event = P6Events.Workbook.RemoveWorksheet.event,
+            event = P6Events.Workbook.DeleteWorksheet.event,
             data = response
         )
         if rs.isOk():
