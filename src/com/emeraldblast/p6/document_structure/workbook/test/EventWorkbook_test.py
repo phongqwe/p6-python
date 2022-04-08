@@ -44,7 +44,7 @@ class EventWorkbook_test(unittest.TestCase):
 
         self.assertEqual(self.wb.workbookKey, data.workbookKey)
         self.assertTrue(data.isError)
-        self.assertTrue(len(data.targetWorksheetList) == 0)
+        self.assertTrue(len(data.targetWorksheet) == 0)
         self.assertIsNotNone(data.errorReport)
         self.assertEqual(WorkbookErrors.WorksheetNotExistReport.header, data.errorReport.header)
 
@@ -97,7 +97,7 @@ class EventWorkbook_test(unittest.TestCase):
         print(data.toProtoObj())
         self.assertEqual(self.wb.workbookKey, data.workbookKey)
         self.assertFalse(data.isError)
-        self.assertEqual([self.s1.name], data.targetWorksheetList)
+        self.assertEqual(self.s1.name, data.targetWorksheet)
 
     def test_removeWorksheetByIndexRs_callback_ok(self):
         def removeWorksheet(eventWb):

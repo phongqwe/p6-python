@@ -161,7 +161,7 @@ class EventWorkbook(WorkbookWrapper):
             data = response
         )
         if rs.isOk():
-            response.targetWorksheetList = [sheetName]
+            response.targetWorksheet = sheetName
 
         if rs.isErr():
             response.errorReport = rs.err
@@ -180,7 +180,7 @@ class EventWorkbook(WorkbookWrapper):
             data = response
         )
         if rs.isOk():
-            response.targetWorksheetList = [rs.value.name]
+            response.targetWorksheet = rs.value.name
         if rs.isErr():
             response.errorReport = rs.err
         self.__onWorkbookEvent(eventData)

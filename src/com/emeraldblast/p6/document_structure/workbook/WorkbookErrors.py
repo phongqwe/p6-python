@@ -53,7 +53,11 @@ class WorkbookErrors:
                 return self.repStr()
 
             def repStr(self) -> str:
-                return f"Worksheet \"{self.name}\" does not exist"
+                if self.name:
+                    return f"Worksheet \"{self.name}\" does not exist"
+                if self.index:
+                    return f"Worksheet at index \"{self.index}\" does not exist"
+                return "No Worksheet with blank name"
 
             def toException(self) -> Exception:
                 return ValueError(

@@ -10,14 +10,14 @@ class DeleteWorksheetResponse(ToProto[DeleteWorksheetResponseProto]):
     def __init__(
             self,
             workbookKey: WorkbookKey = None,
-            targetWorksheet:list[str] = None,
+            targetWorksheetList:str = None,
             isError: bool = False,
             errorReport: ErrorReport = None):
         self.errorReport = errorReport
         self.isError = isError
-        if targetWorksheet is None:
-            targetWorksheet = []
-        self.targetWorksheetList:list[str] = targetWorksheet
+        if targetWorksheetList is None:
+            targetWorksheetList = ""
+        self.targetWorksheet:str = targetWorksheetList
         self.workbookKey = workbookKey
 
     @staticmethod
@@ -27,7 +27,7 @@ class DeleteWorksheetResponse(ToProto[DeleteWorksheetResponseProto]):
         rt.ParseFromString(protoBytes)
         return DeleteWorksheetResponse(
             workbookKey = WorkbookKeys.fromProto(rt.workbookKey),
-            targetWorksheet = rt.targetWorksheet,
+            targetWorksheetList = rt.targetWorksheet,
             isError = rt.isError,
             errorReport = ErrorReport.fromProto(rt.errorReport)
         )
@@ -35,7 +35,7 @@ class DeleteWorksheetResponse(ToProto[DeleteWorksheetResponseProto]):
     def toProtoObj(self) -> DeleteWorksheetResponseProto:
         rt = DeleteWorksheetResponseProto()
         rt.workbookKey.CopyFrom(self.workbookKey.toProtoObj())
-        rt.targetWorksheet[:] = self.targetWorksheetList
+        rt.targetWorksheet = self.targetWorksheet
         rt.isError = self.isError
         if self.errorReport is not None:
             rt.errorReport.CopyFrom(self.errorReport.toProtoObj())

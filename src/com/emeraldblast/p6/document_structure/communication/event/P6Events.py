@@ -9,7 +9,7 @@ from com.emeraldblast.p6.document_structure.communication.event.data.request.Ren
 from com.emeraldblast.p6.document_structure.communication.event.data.response.CellUpdateCommonResponse import \
     CellUpdateCommonResponse
 from com.emeraldblast.p6.document_structure.communication.event.data.response.CreateNewWorksheetData import \
-    CreateNewWorksheetResponseData
+    CreateNewWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.event.data.response.DeleteWorksheetResponse import \
     DeleteWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.event.data.response.RenameWorksheetData import \
@@ -90,7 +90,7 @@ class P6Events:
 
         class CreateNewWorksheet:
             event = P6Event(f"{WBE}3", "create new worksheet")
-            Response = CreateNewWorksheetResponseData
+            Response = CreateNewWorksheetResponse
             Request = CreateNewWorksheetRequest
 
     class EventServer:

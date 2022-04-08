@@ -12,14 +12,14 @@ class DeleteWorksheetResponse_test(unittest.TestCase):
         """ obj is converted correctly to a proto obj"""
         data = DeleteWorksheetResponse(
             workbookKey = WorkbookKeys.fromNameAndPath("WB",None),
-            targetWorksheet = ["Sheet1","Sheet2"],
+            targetWorksheetList = "Sheet1",
             isError = False,
             errorReport = WorkbookErrors.WorksheetAlreadyExistReport("Name")
         )
 
         protoObj = data.toProtoObj()
         self.assertEqual(data.workbookKey.toProtoObj(), protoObj.workbookKey)
-        self.assertEqual(data.targetWorksheetList, protoObj.targetWorksheet)
+        self.assertEqual(data.targetWorksheet, protoObj.targetWorksheet)
         self.assertEqual(data.isError, protoObj.isError)
         self.assertEqual(data.errorReport.toProtoObj(), protoObj.errorReport)
 
@@ -27,7 +27,7 @@ class DeleteWorksheetResponse_test(unittest.TestCase):
         """ obj is converted correctly to a proto obj"""
         data = DeleteWorksheetResponse(
             workbookKey = WorkbookKeys.fromNameAndPath("WB",None),
-            targetWorksheet = ["Sheet1","Sheet2"],
+            targetWorksheetList = "Sheet1",
             isError = False,
             errorReport = WorkbookErrors.WorksheetAlreadyExistReport("Name")
         )
@@ -35,7 +35,7 @@ class DeleteWorksheetResponse_test(unittest.TestCase):
         protoBytes = data.toProtoBytes()
         data2 = DeleteWorksheetResponse.fromProtoBytes(protoBytes)
         self.assertEqual(data2.workbookKey,data.workbookKey)
-        self.assertEqual(data2.targetWorksheetList, data.targetWorksheetList)
+        self.assertEqual(data2.targetWorksheet, data.targetWorksheet)
         self.assertEqual(data2.isError,data.isError)
         self.assertTrue(data2.errorReport.isSameErr(data.errorReport))
 

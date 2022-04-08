@@ -9,7 +9,7 @@ from com.emeraldblast.p6.document_structure.util.report.error.ErrorHeader import
 
 class ErrorReport(ToProto[ErrorReportProto]):
 
-    def __init__(self, header: ErrorHeader, data: Any | ToProto | ToRepStr, loc: str = ""):
+    def __init__(self, header: ErrorHeader, data: Any | ToProto | ToRepStr ="", loc: str = ""):
         self.header = header
         self.data = data
         self.loc = loc

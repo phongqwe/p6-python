@@ -5,7 +5,7 @@ from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 
 
-class CreateNewWorksheetResponseData(ToProto[CreateNewWorksheetResponseProto]):
+class CreateNewWorksheetResponse(ToProto[CreateNewWorksheetResponseProto]):
     def __init__(self,workbookKey:WorkbookKey, newWorksheetName:str, isError:bool = False,errorReport:ErrorReport|None = None):
         self.workbookKey:WorkbookKey = workbookKey
         self.newWorksheetName = newWorksheetName
