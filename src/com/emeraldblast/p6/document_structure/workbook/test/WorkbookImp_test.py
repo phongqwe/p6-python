@@ -118,20 +118,20 @@ class WorkbookImp_test(unittest.TestCase):
     def test_removeSheet(self):
         s1, s2, s3, w1 = self.makeTestObj()
         self.assertIsNotNone(s2.workbook)
-        ds2 = w1.removeWorksheet(s2.name)
+        ds2 = w1.deleteWorksheet(s2.name)
         self.assertEqual(s2, ds2)
         self.assertEqual(2, w1.sheetCount)
         self.assertEqual(s3, w1.getWorksheet(1))
         self.assertIsNone(s2.workbook)
 
         self.assertIsNotNone(s1.workbook)
-        ds1 = w1.removeWorksheet(0)
+        ds1 = w1.deleteWorksheet(0)
         self.assertEqual(s1, ds1)
         self.assertEqual(1, w1.sheetCount)
         self.assertEqual(s3, w1.getWorksheet(0))
         self.assertIsNone(s1.workbook)
         with self.assertRaises(ValueError):
-            w1.removeWorksheet(0.0)
+            w1.deleteWorksheet(0.0)
 
     def test_activeSheet(self):
         s1, s2, s3, w1 = self.makeTestObj()

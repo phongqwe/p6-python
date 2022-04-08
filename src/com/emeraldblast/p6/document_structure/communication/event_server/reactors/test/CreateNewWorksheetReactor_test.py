@@ -1,7 +1,7 @@
 import unittest
 
 from com.emeraldblast.p6.document_structure.communication.event.data.request.CreateNewWorksheetRequest import CreateNewWorksheetRequest
-from com.emeraldblast.p6.document_structure.communication.event_server.reactors.CreateNewWorksheetReactor import \
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook.CreateNewWorksheetReactor import \
     CreateNewWorksheetReactor
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp

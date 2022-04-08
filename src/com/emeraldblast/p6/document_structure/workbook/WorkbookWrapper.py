@@ -61,11 +61,11 @@ class WorkbookWrapper(Workbook):
     def createNewWorksheetRs(self, newSheetName: Optional[str] = None) -> Result[Worksheet, ErrorReport]:
         return self._innerWorkbook.createNewWorksheetRs(newSheetName)
 
-    def removeWorksheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
-        return self._innerWorkbook.removeWorksheetByNameRs(sheetName)
+    def deleteWorksheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
+        return self._innerWorkbook.deleteWorksheetByNameRs(sheetName)
 
-    def removeWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
-        return self._innerWorkbook.removeWorksheetByIndexRs(index)
+    def deleteWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
+        return self._innerWorkbook.deleteWorksheetByIndexRs(index)
 
 
     def toJsonDict(self) -> dict:

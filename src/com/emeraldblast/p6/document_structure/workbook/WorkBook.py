@@ -152,33 +152,33 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
 
     def removeWorksheetByName(self, sheetName: str) -> Worksheet:
         """ remove sheet by name. If the target sheet does not exist, simply return"""
-        removeRs = self.removeWorksheetByNameRs(sheetName)
+        removeRs = self.deleteWorksheetByNameRs(sheetName)
         return Results.extractOrRaise(removeRs)
 
     def removeWorksheetByIndex(self, index: int) -> Worksheet:
         """ remove sheet by index. If the target sheet does not exist, simply return"""
-        removeRs = self.removeWorksheetByIndexRs(index)
+        removeRs = self.deleteWorksheetByIndexRs(index)
         return Results.extractOrRaise(removeRs)
 
-    def removeWorksheet(self, nameOrIndex: Union[str, int]) -> Worksheet:
+    def deleteWorksheet(self, nameOrIndex: Union[str, int]) -> Worksheet:
         """ remove sheet by either index or name. If the target sheet does not exist, simply return"""
-        removeRs = self.removeWorksheetRs(nameOrIndex)
+        removeRs = self.deleteWorksheetRs(nameOrIndex)
         return Results.extractOrRaise(removeRs)
 
-    def removeWorksheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
+    def deleteWorksheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
         """ remove sheet by name. If the target sheet does not exist, simply return"""
         raise NotImplementedError()
 
-    def removeWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
+    def deleteWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
         """ remove sheet by index. If the target sheet does not exist, simply return"""
         raise NotImplementedError()
 
-    def removeWorksheetRs(self, nameOrIndex: Union[str, int]) -> Result[Worksheet, ErrorReport]:
+    def deleteWorksheetRs(self, nameOrIndex: Union[str, int]) -> Result[Worksheet, ErrorReport]:
         """ remove sheet by either index or name. If the target sheet does not exist, simply return"""
         if isinstance(nameOrIndex, str):
-            return self.removeWorksheetByNameRs(nameOrIndex)
+            return self.deleteWorksheetByNameRs(nameOrIndex)
         if isinstance(nameOrIndex, int):
-            return self.removeWorksheetByIndexRs(nameOrIndex)
+            return self.deleteWorksheetByIndexRs(nameOrIndex)
         raise ValueError("nameOrIndex must either be a string or a number")
 
     def addWorksheet(self, ws: Worksheet):

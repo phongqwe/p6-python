@@ -52,7 +52,7 @@ class EventWorkbook_test(unittest.TestCase):
         invalidSheet = "InvalidSheet"
 
         def removeWork(eventWb: EventWorkbook):
-            eventWb.removeWorksheetRs(invalidSheet)
+            eventWb.deleteWorksheetRs(invalidSheet)
 
         self.removeWorksheet_callback_fail(removeWork)
 
@@ -60,7 +60,7 @@ class EventWorkbook_test(unittest.TestCase):
         invalidSheet = "InvalidSheet"
 
         def removeWork(eventWb: EventWorkbook):
-            eventWb.removeWorksheetByNameRs(invalidSheet)
+            eventWb.deleteWorksheetByNameRs(invalidSheet)
 
         self.removeWorksheet_callback_fail(removeWork)
 
@@ -68,7 +68,7 @@ class EventWorkbook_test(unittest.TestCase):
         invalidSheet = 1000
 
         def removeWork(eventWb: EventWorkbook):
-            eventWb.removeWorksheetByIndexRs(invalidSheet)
+            eventWb.deleteWorksheetByIndexRs(invalidSheet)
 
         self.removeWorksheet_callback_fail(removeWork)
 
@@ -101,19 +101,19 @@ class EventWorkbook_test(unittest.TestCase):
 
     def test_removeWorksheetByIndexRs_callback_ok(self):
         def removeWorksheet(eventWb):
-            eventWb.removeWorksheetByIndexRs(0)
+            eventWb.deleteWorksheetByIndexRs(0)
 
         self.removeWorksheet_callback_ok(removeWorksheet)
 
     def test_removeWorksheetByNameRs_callback_ok(self):
         def removeWorksheet(eventWb):
-            eventWb.removeWorksheetByNameRs(self.s1.name)
+            eventWb.deleteWorksheetByNameRs(self.s1.name)
 
         self.removeWorksheet_callback_ok(removeWorksheet)
 
     def test_removeWorksheet_callback_ok(self):
         def removeWorksheet(eventWb):
-            eventWb.removeWorksheet(self.s1.name)
+            eventWb.deleteWorksheet(self.s1.name)
 
         self.removeWorksheet_callback_ok(removeWorksheet)
 

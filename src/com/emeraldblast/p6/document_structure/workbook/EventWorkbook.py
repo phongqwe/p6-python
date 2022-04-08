@@ -147,8 +147,8 @@ class EventWorkbook(WorkbookWrapper):
             onWorksheetEvent = onSheetEvent,
             onRangeEvent = onRangeEvent)
 
-    def removeWorksheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
-        rs = self._iwb.removeWorksheetByNameRs(sheetName)
+    def deleteWorksheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
+        rs = self._iwb.deleteWorksheetByNameRs(sheetName)
         response = DeleteWorksheetResponse(
             workbookKey = self.workbookKey,
             # targetWorksheet = [sheetName],
@@ -168,8 +168,8 @@ class EventWorkbook(WorkbookWrapper):
         self.__onWorkbookEvent(eventData)
         return rs
 
-    def removeWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
-        rs = self._iwb.removeWorksheetByIndexRs(index)
+    def deleteWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
+        rs = self._iwb.deleteWorksheetByIndexRs(index)
         response = DeleteWorksheetResponse(
             workbookKey = self.workbookKey,
             isError = rs.isErr()

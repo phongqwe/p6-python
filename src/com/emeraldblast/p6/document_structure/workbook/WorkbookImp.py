@@ -164,7 +164,7 @@ class WorkbookImp(Workbook):
         self._sheetList.append(newSheet)
         return Ok(newSheet)
 
-    def removeWorksheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
+    def deleteWorksheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
         typeCheck(sheetName, "sheetName", str)
         if sheetName in self._sheetDictByName.keys():
             rt: Worksheet = self._sheetDictByName[sheetName]
@@ -181,12 +181,12 @@ class WorkbookImp(Workbook):
         else:
             return Err(WorkbookErrors.WorksheetNotExistReport(sheetName))
 
-    def removeWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
+    def deleteWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
         typeCheck(index, "index", int)
         if 0 <= index < self.sheetCount:
             sheet: Worksheet = self._sheetList[index]
             self._sheetList.pop(index)
-            return self.removeWorksheetByNameRs(sheet.name)
+            return self.deleteWorksheetByNameRs(sheet.name)
         else:
             return Err(WorkbookErrors.WorksheetNotExistReport(index))
 

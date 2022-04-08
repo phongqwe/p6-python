@@ -4,8 +4,8 @@ from typing import Callable
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 from com.emeraldblast.p6.document_structure.communication.event.data.response.RenameWorksheetData import RenameWorksheetResponseData
 from com.emeraldblast.p6.document_structure.communication.event_server.msg.P6Message import P6Message
-from com.emeraldblast.p6.document_structure.communication.event_server.reactors.CellUpdateReactor import CellUpdateReactor
-from com.emeraldblast.p6.document_structure.communication.event_server.reactors.CreateNewWorksheetReactor import \
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.cell.CellUpdateReactor import CellUpdateReactor
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook.CreateNewWorksheetReactor import \
     CreateNewWorksheetReactor
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorFactory import EventReactorFactory
