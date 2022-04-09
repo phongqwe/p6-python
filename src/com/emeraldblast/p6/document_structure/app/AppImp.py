@@ -11,7 +11,7 @@ from com.emeraldblast.p6.document_structure.communication.SocketProviderImp impo
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 from com.emeraldblast.p6.document_structure.communication.event_server.EventServer import EventServer
 from com.emeraldblast.p6.document_structure.communication.event_server.EventServerImp import EventServerImp
-from com.emeraldblast.p6.document_structure.communication.event_server.EventServerReactors import EventServerReactors
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.EventServerReactors import EventServerReactors
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.InternalNotifierProvider import \
     InternalNotifierProvider
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
@@ -21,6 +21,7 @@ from com.emeraldblast.p6.document_structure.file.loader.P6FileLoader import P6Fi
 from com.emeraldblast.p6.document_structure.file.loader.P6FileLoaders import P6FileLoaders
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSavers import P6FileSavers
+from com.emeraldblast.p6.document_structure.util.Util import makeGetter
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
@@ -74,7 +75,10 @@ class AppImp(App):
 
         self.__initNotifiers()
         self._eventServer = EventServerImp(isDaemon = True)
-        self._eventServerReactors = EventServerReactors(self.getBareWorkbookRs)
+        self._eventServerReactors = EventServerReactors(
+            workbookGetter = self.getBareWorkbookRs,
+            appGetter = makeGetter(self)
+        )
         self.__initEventServerReactors()
 
     @property
@@ -88,21 +92,33 @@ class AppImp(App):
     def __initEventServerReactors(self):
         evSv = self._eventServer
         er = self._eventServerReactors
-        self._eventServer.addReactor(
-            event = P6Events.Worksheet.Rename.event,
-            reactor = er.renameWorksheet())
-        evSv.addReactor(
-            event = P6Events.Workbook.CreateNewWorksheet.event,
-            reactor = er.createNewWorksheetReactor()
-        )
-        evSv.addReactor(
-            event = P6Events.Cell.Update.event,
-            reactor = er.cellUpdateValueReactor()
-        )
-        evSv.addReactor(
-            event=P6Events.Workbook.DeleteWorksheet.event,
-            reactor =er.deleteWorksheetReactor()
-        )
+
+        reactorForWb = {
+            P6Events.Workbook.DeleteWorksheet.event: er.deleteWorksheetReactor(),
+            P6Events.Workbook.CreateNewWorksheet.event: er.createNewWorksheetReactor(),
+        }
+        reactorForWs = {
+            P6Events.Worksheet.Rename.event: er.renameWorksheet(),
+        }
+
+        reactorForCell = {
+            P6Events.Cell.Update.event: er.cellUpdateValueReactor(),
+        }
+
+        reactorForApp= {
+            P6Events.App.SetActiveWorksheet.event: er.setActiveWorksheetReactor(),
+        }
+
+        d = {
+            **reactorForWb,
+            **reactorForWs,
+            **reactorForCell,
+            **reactorForApp,
+        }
+
+        for (k,v) in d.items():
+            evSv.addReactor(k,v)
+
 
     def __initNotifiers(self):
         """create internal reactors """

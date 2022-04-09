@@ -17,3 +17,8 @@ class RenameWorksheetRequest:
             oldName = proto.oldName,
             workbookKey = WorkbookKeys.fromProto(proto.workbookKey)
         )
+    @staticmethod
+    def fromProtoBytes(data:bytes)->'RenameWorksheetRequest':
+        protoRequest = RenameWorksheetRequestProto()
+        protoRequest.ParseFromString(data)
+        return RenameWorksheetRequest.fromProto(protoRequest)

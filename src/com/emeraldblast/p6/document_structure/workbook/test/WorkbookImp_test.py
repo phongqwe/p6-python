@@ -140,7 +140,7 @@ class WorkbookImp_test(unittest.TestCase):
         self.assertEqual(s2, w1.activeWorksheet)
         w1.setActiveWorksheet(s3.name)
         self.assertEqual(s3, w1.activeWorksheet)
-        with self.assertRaises(ValueError):
+        with self.assertRaises(Exception):
             w1.setActiveWorksheet(100)
         self.assertEqual(s3, w1.activeWorksheet)
 

@@ -6,10 +6,10 @@ from com.emeraldblast.p6.document_structure.util.report.error.ErrorHeader import
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 
-__errPrefix = "appErrors_"
+APPErr = "APPErr"
 
 def errPrefix():
-    return __errPrefix
+    return APPErr
 
 class AppErrors:
     class WorkbookAlreadyExist:

@@ -1,8 +1,9 @@
 import unittest
+from unittest.mock import MagicMock
 
-from com.emeraldblast.p6.document_structure.communication.event.data.response.RenameWorksheetData import RenameWorksheetResponseData
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.response.RenameWorksheetData import RenameWorksheetResponseData
 
-from com.emeraldblast.p6.document_structure.communication.event_server.EventServerReactors import EventServerReactors
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.EventServerReactors import EventServerReactors
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
 from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import RenameWorksheetRequestProto
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
@@ -13,6 +14,7 @@ from com.emeraldblast.p6.document_structure.worksheet.WorksheetErrors import Wor
 
 
 class EventServerReactors_test(unittest.TestCase):
+    """WARNING:Don't add any more reactor logic test into this. Reactor should be test directly, not indirectly through EventServerReactors. This should only test the reactor creation logic"""
 
     def setUp(self) -> None:
         super().setUp()
@@ -21,7 +23,16 @@ class EventServerReactors_test(unittest.TestCase):
         self.s2 = self.wb.createNewWorksheet("Sheet2")
         def wbGetter(identity):
             return Ok(self.wb)
-        self.er = EventServerReactors(wbGetter)
+        def appGetter():
+            return MagicMock()
+
+        self.appGetter = appGetter
+        self.er = EventServerReactors(wbGetter,appGetter = appGetter)
+
+    def test_createSetActiveWorksheetReactor(self):
+        reactor = self.er.setActiveWorksheetReactor()
+        self.assertIsNotNone(reactor.id)
+        self.assertEqual(self.appGetter,reactor.appGetter)
 
     def test_renameReactor_Ok(self):
         reactor: EventReactor[bytes, RenameWorksheetResponseData] = self.er.renameWorksheet()

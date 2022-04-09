@@ -1,6 +1,6 @@
 import unittest
 
-from com.emeraldblast.p6.document_structure.communication.event.data.request.CreateNewWorksheetRequest import CreateNewWorksheetRequest
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.request.CreateNewWorksheetRequest import CreateNewWorksheetRequest
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook.CreateNewWorksheetReactor import \
     CreateNewWorksheetReactor
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok

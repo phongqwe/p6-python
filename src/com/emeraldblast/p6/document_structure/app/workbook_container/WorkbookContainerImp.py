@@ -11,11 +11,10 @@ from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import Work
 
 class WorkbookContainerImp(WorkbookContainer,WithSize):
 
-    def __init__(self, wbDict: OrderedDict = None):
+    def __init__(self, wbDict: dict[WorkbookKey,Workbook] = None):
         if wbDict is None:
-            wbDict = OD()
-        typeCheck(wbDict, "wbDict", OrderedDict)
-        self.__wbDict = wbDict
+            wbDict = {}
+        self.__wbDict:dict[WorkbookKey,Workbook] = wbDict
 
     ### >> WorkbookContainer << ###
 

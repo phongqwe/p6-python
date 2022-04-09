@@ -18,6 +18,10 @@ class WorksheetWrapper(Worksheet):
         self._innerSheet: Worksheet = innerWorksheet
 
     @property
+    def rootWorksheet(self) -> 'Worksheet':
+        return self._innerSheet.rootWorksheet
+
+    @property
     def workbook(self) -> Workbook | None:
         return self._innerSheet.workbook
 

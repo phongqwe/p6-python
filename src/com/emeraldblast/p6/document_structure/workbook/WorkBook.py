@@ -61,8 +61,12 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
     def activeWorksheet(self) -> Optional[Worksheet]:
         raise NotImplementedError()
 
-    def setActiveWorksheet(self, indexOrName: Union[int, str]):
+    def setActiveWorksheetRs(self, indexOrName: Union[int, str])->Result[Worksheet,ErrorReport]:
         raise NotImplementedError()
+
+    def setActiveWorksheet(self, indexOrName: Union[int, str])->Worksheet:
+        rs = self.setActiveWorksheetRs(indexOrName)
+        return Results.extractOrRaise(rs)
 
     def getWorksheetByName(self, name: str) -> Worksheet:
         """

@@ -72,16 +72,12 @@ class WorkbookImp(Workbook):
         # therefore when workbook key is changed, all the old translators must be removed
         self._translatorDict = {}
 
-    def setActiveWorksheet(self, indexOrName: Union[int, str]):
-        sheet = self.getWorksheet(indexOrName)
-        if sheet is not None:
-            # need to remove the event layer
-            if isinstance(sheet, WorksheetWrapper):
-                self.__activeSheet = sheet.innerSheet
-            else:
-                self.__activeSheet = sheet
-        else:
-            raise ValueError("{n} is invalid workbook index or workbook".format(n = indexOrName))
+    def setActiveWorksheetRs(self, indexOrName: Union[int, str]) -> Result[Worksheet, ErrorReport]:
+        getRs = self.getWorksheetRs(indexOrName)
+        if getRs.isOk():
+            sheet = getRs.value
+            self.__activeSheet = sheet.rootWorksheet
+        return getRs
 
     @property
     def activeWorksheet(self) -> Optional[Worksheet]:

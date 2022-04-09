@@ -25,10 +25,7 @@ from com.emeraldblast.p6.document_structure.worksheet.WorksheetJson import Works
 
 
 class WorksheetImp(Worksheet):
-    def toJsonDict(self) -> dict:
-        return self.toJson().toJsonDict()
 
-    ### >> ToJson << ###
     def __init__(self,
                  name,
                  workbook: Workbook,
@@ -47,11 +44,16 @@ class WorksheetImp(Worksheet):
         self.translatorGetter: Callable[[str], FormulaTranslator] = getTranslator
         self.__wb = workbook
 
+    def toJsonDict(self) -> dict:
+        return self.toJson().toJsonDict()
+
     @property
     def size(self) -> int:
         return len(self._cellDict)
 
-    ### >> Worksheet << ###
+    @property
+    def rootWorksheet(self) -> 'Worksheet':
+        return self
 
     @property
     def workbook(self) -> Workbook | None:

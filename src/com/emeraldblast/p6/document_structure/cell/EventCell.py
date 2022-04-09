@@ -3,7 +3,7 @@ from typing import Callable
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.WrapperCell import WrapperCell
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
-from com.emeraldblast.p6.document_structure.communication.event.data.response.CellUpdateCommonResponse import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.response.CellUpdateCommonResponse import \
     CellUpdateCommonResponse
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
 

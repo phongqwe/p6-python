@@ -1,7 +1,7 @@
 from typing import Callable, Optional, Union
 
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
-from com.emeraldblast.p6.document_structure.communication.event.data.response.DeleteWorksheetResponse import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.response.DeleteWorksheetResponse import \
     DeleteWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.RangeEventData import \

@@ -1,18 +1,18 @@
 import inspect
 
 from com.emeraldblast.p6.document_structure.communication.event.P6Event import P6Event
-from com.emeraldblast.p6.document_structure.communication.event.data.request.CellUpdateRequest import CellUpdateRequest
-from com.emeraldblast.p6.document_structure.communication.event.data.request.CreateNewWorksheetRequest import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.request.CellUpdateRequest import CellUpdateRequest
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.request.CreateNewWorksheetRequest import \
     CreateNewWorksheetRequest
-from com.emeraldblast.p6.document_structure.communication.event.data.request.RenameWorksheetRequest import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.request.RenameWorksheetRequest import \
     RenameWorksheetRequest
-from com.emeraldblast.p6.document_structure.communication.event.data.response.CellUpdateCommonResponse import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.response.CellUpdateCommonResponse import \
     CellUpdateCommonResponse
-from com.emeraldblast.p6.document_structure.communication.event.data.response.CreateNewWorksheetData import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.response.CreateNewWorksheetData import \
     CreateNewWorksheetResponse
-from com.emeraldblast.p6.document_structure.communication.event.data.response.DeleteWorksheetResponse import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.response.DeleteWorksheetResponse import \
     DeleteWorksheetResponse
-from com.emeraldblast.p6.document_structure.communication.event.data.response.RenameWorksheetData import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.response.RenameWorksheetData import \
     RenameWorksheetResponseData
 
 WSE = "WSE"  # worksheet event
@@ -20,7 +20,7 @@ CE = "CE"  # cell event
 RE = "RE"  # range event
 WBE = "WBE"  # workbook event
 ESE = "ESE"  # event server event
-
+APPE = "APPE" # app event
 
 class P6Events:
 
@@ -98,4 +98,9 @@ class P6Events:
         def allEvents(clazz):
             return P6Events.allEvents(clazz.__name__)
 
-        Unknown = P6Event(f"{ESE}0", "Unknown event")
+        class Unknown:
+            event = P6Event(f"{ESE}0", "Unknown event")
+
+    class App:
+        class SetActiveWorksheet:
+            event = P6Event(f"{APPE}0","Set active worksheet")

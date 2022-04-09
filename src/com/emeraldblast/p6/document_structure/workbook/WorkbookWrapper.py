@@ -67,6 +67,8 @@ class WorkbookWrapper(Workbook):
     def deleteWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
         return self._innerWorkbook.deleteWorksheetByIndexRs(index)
 
+    def setActiveWorksheetRs(self, indexOrName: Union[int, str]) -> Result[Worksheet, ErrorReport]:
+        return self._innerWorkbook.setActiveWorksheetRs(indexOrName)
 
     def toJsonDict(self) -> dict:
         return self._innerWorkbook.toJsonDict()

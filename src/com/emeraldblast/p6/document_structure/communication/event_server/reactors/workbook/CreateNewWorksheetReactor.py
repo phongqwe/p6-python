@@ -1,9 +1,9 @@
 from typing import Callable
 
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
-from com.emeraldblast.p6.document_structure.communication.event.data.request.CreateNewWorksheetRequest import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.request.CreateNewWorksheetRequest import \
     CreateNewWorksheetRequest
-from com.emeraldblast.p6.document_structure.communication.event.data.response.CreateNewWorksheetData import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.response.CreateNewWorksheetData import \
     CreateNewWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.TypeAliasForReactor import WbGetter
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor

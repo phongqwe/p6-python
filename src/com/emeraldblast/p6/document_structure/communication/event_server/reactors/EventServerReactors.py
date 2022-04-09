@@ -1,39 +1,47 @@
 import uuid
-from typing import Callable
 
-from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
-from com.emeraldblast.p6.document_structure.communication.event.data.response.CreateNewWorksheetData import \
-    CreateNewWorksheetResponse
-from com.emeraldblast.p6.document_structure.communication.event.data.response.DeleteWorksheetResponse import \
-    DeleteWorksheetResponse
-from com.emeraldblast.p6.document_structure.communication.event.data.response.RenameWorksheetData import RenameWorksheetResponseData
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.request.RenameWorksheetRequest import \
+    RenameWorksheetRequest
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.response.RenameWorksheetData import \
+    RenameWorksheetResponseData
 from com.emeraldblast.p6.document_structure.communication.event_server.msg.P6Message import P6Message
-from com.emeraldblast.p6.document_structure.communication.event_server.reactors.cell.CellUpdateReactor import CellUpdateReactor
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.TypeAliasForReactor import WbGetter, \
+    AppGetter
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app.SetActiveWorksheetReactor import \
+    SetActiveWorksheetReactor
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.cell.CellUpdateReactor import \
+    CellUpdateReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook.CreateNewWorksheetReactor import \
     CreateNewWorksheetReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook.DeleteWorksheetReactor import \
     DeleteWorksheetReactor
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorFactory import EventReactorFactory
-from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import RenameWorksheetResponseProto, \
-    RenameWorksheetRequestProto
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
+from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import RenameWorksheetResponseProto
 
 
 class EventServerReactors:
 
-    def __init__(self, workbookGetter: Callable[[WorkbookKey | str | int], Result[Workbook, ErrorReport]]):
+    def __init__(self, workbookGetter: WbGetter, appGetter: AppGetter):
         self._wbGetter = workbookGetter
         self.__worksheetRenameReactor: EventReactor[P6Message, RenameWorksheetResponseProto] | None = None
+        self.__appGetter = appGetter
 
-    def deleteWorksheetReactor(self)->EventReactor[bytes,DeleteWorksheetResponse]:
-        reactor = DeleteWorksheetReactor(str(uuid.uuid4()),self._wbGetter)
+    def setActiveWorksheetReactor(self) -> SetActiveWorksheetReactor:
+        return SetActiveWorksheetReactor(
+            uid = str(uuid.uuid4()),
+            appGetter = self.__appGetter
+        )
+
+    def deleteWorksheetReactor(self) -> DeleteWorksheetReactor:
+        reactor = DeleteWorksheetReactor(str(uuid.uuid4()), self._wbGetter)
         return reactor
 
-    def createNewWorksheetReactor(self) -> EventReactor[bytes, CreateNewWorksheetResponse]:
+    def createNewWorksheetReactor(self) -> CreateNewWorksheetReactor:
         reactor = CreateNewWorksheetReactor(str(uuid.uuid4()), self._wbGetter)
         return reactor
 
@@ -44,9 +52,7 @@ class EventServerReactors:
     def renameWorksheet(self) -> EventReactor[bytes, RenameWorksheetResponseData]:
         if self.__worksheetRenameReactor is None:
             def cb(data: bytes) -> RenameWorksheetResponseProto:
-                protoRequest = RenameWorksheetRequestProto()
-                protoRequest.ParseFromString(data)
-                request = P6Events.Worksheet.Rename.Request.fromProto(protoRequest)
+                request = RenameWorksheetRequest.fromProtoBytes(data)
                 wbKey: WorkbookKey = request.workbookKey
                 oldName = request.oldName
                 newName = request.newName
