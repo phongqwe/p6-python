@@ -5,7 +5,7 @@ from com.emeraldblast.p6.document_structure.app.errors.AppErrors import AppError
 from com.emeraldblast.p6.document_structure.app.workbook_container.WorkbookContainerImp import WorkbookContainerImp
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.app_event.SetActiveWorksheetRequest import \
     SetActiveWorksheetRequest
-from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app.SetActiveWorksheetReactor import \
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.SetActiveWorksheetReactor import \
     SetActiveWorksheetReactor
 from com.emeraldblast.p6.document_structure.workbook.WorkbookErrors import WorkbookErrors
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp

@@ -4,7 +4,7 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.w
     DeleteWorksheetRequest
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.DeleteWorksheetResponse import \
     DeleteWorksheetResponse
-from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook.DeleteWorksheetReactor import \
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook_event.DeleteWorksheetReactor import \
     DeleteWorksheetReactor
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorHeader import ErrorHeader
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport

@@ -4,7 +4,7 @@ from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import Work
 from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import RenameWorksheetResponseProto
 
 
-class RenameWorksheetResponseData(ToProto[RenameWorksheetResponseProto]):
+class RenameWorksheetResponse(ToProto[RenameWorksheetResponseProto]):
     def __init__(self, workbookKey: WorkbookKey, oldName:str, newName:str, index:int=-1, isError:bool = False, errorReport:ErrorReport|None = None):
         self.workbookKey = workbookKey
         self.oldName = oldName

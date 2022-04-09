@@ -1,8 +1,8 @@
 import unittest
 from unittest.mock import MagicMock
 
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetData import \
-    RenameWorksheetResponseData
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetResponse import \
+    RenameWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.EventServerReactors import \
     EventServerReactors
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
@@ -36,7 +36,7 @@ class EventServerReactors_test(unittest.TestCase):
         self.assertEqual(self.appGetter,reactor.appGetter)
 
     def test_renameReactor_Ok(self):
-        reactor: EventReactor[bytes, RenameWorksheetResponseData] = self.er.renameWorksheet()
+        reactor: EventReactor[bytes, RenameWorksheetResponse] = self.er.renameWorksheet()
         inputData = RenameWorksheetRequestProto()
         inputData.workbookKey.CopyFrom(WorkbookKeys.fromNameAndPath("Book1", None).toProtoObj())
         inputData.oldName = self.s1.name
@@ -50,7 +50,7 @@ class EventServerReactors_test(unittest.TestCase):
         self.assertEqual(out.workbookKey, self.wb.workbookKey)
 
     def test_renameReactor_Fail_EmpyNewName(self):
-        reactor: EventReactor[bytes, RenameWorksheetResponseData] = self.er.renameWorksheet()
+        reactor: EventReactor[bytes, RenameWorksheetResponse] = self.er.renameWorksheet()
         inputData = RenameWorksheetRequestProto()
         inputData.workbookKey.CopyFrom(WorkbookKeys.fromNameAndPath("Book1", None).toProtoObj())
         inputData.oldName = self.s1.name
@@ -66,7 +66,7 @@ class EventServerReactors_test(unittest.TestCase):
         self.assertEqual(WorksheetErrors.IllegalNameReport.header, errReport.header)
 
     def test_renameReactor_Fail_CollidingName(self):
-        reactor: EventReactor[bytes, RenameWorksheetResponseData] = self.er.renameWorksheet()
+        reactor: EventReactor[bytes, RenameWorksheetResponse] = self.er.renameWorksheet()
         inputData = RenameWorksheetRequestProto()
         inputData.workbookKey.CopyFrom(self.wb.workbookKey.toProtoObj())
         inputData.oldName = self.s1.name

@@ -9,8 +9,8 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.w
     CreateNewWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.CreateNewWorksheetRequest import \
     CreateNewWorksheetRequest
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetData import \
-    RenameWorksheetResponseData
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetResponse import \
+    RenameWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetRequest import \
     RenameWorksheetRequest
 
@@ -62,7 +62,7 @@ class P6Events:
 
         class Rename:
             event = P6Event(f"{WSE}2", "rename worksheet")
-            Response = RenameWorksheetResponseData
+            Response = RenameWorksheetResponse
             Request = RenameWorksheetRequest
 
     class Range:

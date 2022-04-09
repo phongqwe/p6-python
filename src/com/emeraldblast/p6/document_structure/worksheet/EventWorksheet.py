@@ -5,8 +5,8 @@ from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.EventCell import EventCell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetData import \
-    RenameWorksheetResponseData
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetResponse import \
+    RenameWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.AppEventData import EventData
 from com.emeraldblast.p6.document_structure.range.EventRange import EventRange
 from com.emeraldblast.p6.document_structure.range.Range import Range
@@ -98,7 +98,7 @@ class EventWorksheet(WorksheetWrapper):
             self.__onWorksheetEvent(
                 EventData(
                     event = P6Events.Worksheet.Rename.event,
-                    data = RenameWorksheetResponseData(
+                    data = RenameWorksheetResponse(
                         workbookKey = self.workbook.workbookKey,
                         oldName = oldName,
                         newName = newName,
@@ -110,7 +110,7 @@ class EventWorksheet(WorksheetWrapper):
             self.__onWorksheetEvent(
                 EventData(
                     event = P6Events.Worksheet.Rename.event,
-                    data = RenameWorksheetResponseData(
+                    data = RenameWorksheetResponse(
                         workbookKey = self.workbook.workbookKey,
                         oldName = oldName,
                         newName = newName,

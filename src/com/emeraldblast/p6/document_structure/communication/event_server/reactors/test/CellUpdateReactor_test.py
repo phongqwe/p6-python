@@ -3,7 +3,7 @@ import unittest
 from com.emeraldblast.p6.document_structure.app.errors.AppErrors import AppErrors
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
-from com.emeraldblast.p6.document_structure.communication.event_server.reactors.cell.CellUpdateReactor import \
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.cell_event.CellUpdateReactor import \
     CellUpdateReactor
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
