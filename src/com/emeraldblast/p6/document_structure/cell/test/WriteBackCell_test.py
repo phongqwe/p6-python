@@ -48,19 +48,19 @@ class WriteBackCellTest(unittest.TestCase):
         # cell is added when script is changed
         c.script = "x=10;x+1;"
         self.assertTrue(cellContainer.hasCellAt(address))
-        cellContainer.removeCell(address)
+        cellContainer.deleteCell(address)
 
         # cell is added when value is changed
         c.value = 123
         self.assertTrue(cellContainer.hasCellAt(address))
-        cellContainer.removeCell(address)
+        cellContainer.deleteCell(address)
 
         # cell is added when setScriptAndRun is called
         c.setScriptAndRun("y=10;y+100;",globals())
         self.assertTrue(cellContainer.hasCellAt(address))
-        cellContainer.removeCell(address)
+        cellContainer.deleteCell(address)
 
         # cell is add when new formula is set
         c.formula="zzbd"
         self.assertTrue(cellContainer.hasCellAt(address))
-        cellContainer.removeCell(address)
+        cellContainer.deleteCell(address)

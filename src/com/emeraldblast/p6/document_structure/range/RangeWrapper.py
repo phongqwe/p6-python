@@ -26,8 +26,8 @@ class RangeWrapper(Range,ABC):
     def addCell(self, cell: Cell):
         self._innerRange.addCell(cell)
 
-    def removeCell(self, address: CellAddress):
-        self._innerRange.removeCell(address)
+    def deleteCell(self, address: CellAddress):
+        self._innerRange.deleteCell(address)
 
     def getOrMakeCell(self, address: CellAddress) -> Cell:
         return self._innerRange.getOrMakeCell(address)

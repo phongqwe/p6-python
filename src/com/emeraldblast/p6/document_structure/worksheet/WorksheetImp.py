@@ -7,6 +7,7 @@ from com.emeraldblast.p6.document_structure.cell.address.CellAddress import Cell
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from com.emeraldblast.p6.document_structure.range.Range import Range
+from com.emeraldblast.p6.document_structure.range.RangeErrors import RangeErrors
 from com.emeraldblast.p6.document_structure.range.Ranges import Ranges
 from com.emeraldblast.p6.document_structure.range.address.RangeAddress import RangeAddress
 from com.emeraldblast.p6.document_structure.range.address.RangeAddressImp import RangeAddressImp
@@ -183,13 +184,18 @@ class WorksheetImp(Worksheet):
         else:
             raise Exception(f"worksheet \'{self.name}\' can't contain cell at \'{cell.address.__str__()}\'")
 
-    def removeCell(self, address: CellAddress):
-        key = address.toTuple()
-        (colIndex, rowIndex) = key
-        if key in self._cellDict.keys():
-            self._cellDict.pop(key)
-        self._removeCellFromDict(self._colDict, colIndex, address)
-        self._removeCellFromDict(self._rowDict, rowIndex, address)
+    def deleteCellRs(self, address: CellAddress) -> Result[None, ErrorReport]:
+        if self.containsAddress(address):
+            key = address.toTuple()
+            if key in self._cellDict.keys():
+                self._cellDict.pop(key)
+            (colIndex, rowIndex) = key
+            self._removeCellFromDict(self._colDict, colIndex, address)
+            self._removeCellFromDict(self._rowDict, rowIndex, address)
+            return Ok(None)
+        else:
+            return Err(RangeErrors.CellNotInRangeReport(address, self.rangeAddress))
+
 
     @staticmethod
     def _removeCellFromDict(targetDict, itemIndex: int, address: CellAddress):

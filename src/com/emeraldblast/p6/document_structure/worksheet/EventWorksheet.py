@@ -32,14 +32,14 @@ class EventWorksheet(WorksheetWrapper):
         self._iws = innerWorksheet
 
     def __makePartial(self, callback):
-        """create a partial function from a function by setting the 1st arg = self._innerSheet"""
+        """create a partial function from a function by setting the 1st arg = self.rootWorksheet"""
         if callback is not None:
-            return partial(callback, self._innerSheet)
+            return partial(callback, self.rootWorksheet)
         else:
             return None
 
     def getOrMakeCell(self, address: CellAddress) -> Cell:
-        c: Cell = self._innerSheet.getOrMakeCell(address)
+        c: Cell = self.rootWorksheet.getOrMakeCell(address)
         return self._makeEventCell(c)
 
     def cell(self, address: str | CellAddress | Tuple[int, int]) -> Cell:
@@ -47,14 +47,14 @@ class EventWorksheet(WorksheetWrapper):
         return self.getOrMakeCell(parsedAddress)
 
     def getCell(self, address: CellAddress) -> Optional[Cell]:
-        cell = self._innerSheet.getCell(address)
+        cell = self.rootWorksheet.getCell(address)
         if cell is not None:
             return self._makeEventCell(cell)
         else:
             return cell
 
     def reRun(self):
-        self._innerSheet.reRun()
+        self.rootWorksheet.reRun()
         if self.__onWorksheetEvent is not None:
             # todo incomplete data
             eventData = EventData(
@@ -63,15 +63,15 @@ class EventWorksheet(WorksheetWrapper):
             self.__onWorksheetEvent(eventData)
 
     def _XonCellEvent(self, data: EventData):
-        data.worksheet = self._innerSheet
+        data.worksheet = self.rootWorksheet
         if self.__onCellEvent is not None:
             self.__onCellEvent(data)
 
     def range(self, rangeAddress: str | RangeAddress | Tuple[CellAddress, CellAddress]) -> Range:
-        rng = self._innerSheet.range(rangeAddress)
+        rng = self.rootWorksheet.range(rangeAddress)
 
         def onRangeEvent(data: EventData):
-            data.worksheet = self._innerSheet
+            data.worksheet = self.rootWorksheet
             if self.__onRangeEvent is not None:
                 self.__onRangeEvent(data)
 
@@ -83,7 +83,7 @@ class EventWorksheet(WorksheetWrapper):
 
     @property
     def cells(self) -> list[Cell]:
-        cs = self._innerSheet.cells
+        cs = self.rootWorksheet.cells
         rt = list(map(lambda c: self._makeEventCell(c), cs))
         return rt
 
@@ -93,7 +93,7 @@ class EventWorksheet(WorksheetWrapper):
     def renameRs(self, newName: str) -> Result[None, ErrorReport]:
         oldName = self.name
         index = self.workbook.getIndexOfWorksheet(oldName)
-        rs = self._iws.renameRs(newName)
+        rs = self.rootWorksheet.renameRs(newName)
         if rs.isOk():
             self.__onWorksheetEvent(
                 EventData(

@@ -39,7 +39,7 @@ class CellUpdateReactor(EventReactor[bytes, CellUpdateCommonResponse]):
                     else:
                         pass  # do nothing
                 else:
-                    ws.removeCell(cellAddress)
+                    ws.deleteCell(cellAddress)
                 wb.reRun()
                 return CellUpdateCommonResponse(
                     workbookKey = request.workbookKey,

@@ -17,86 +17,86 @@ class WorksheetWrapper(Worksheet):
     def __init__(self, innerWorksheet: Worksheet):
         self._innerSheet: Worksheet = innerWorksheet
 
+    def deleteCellRs(self, address: CellAddress) -> Result[None, ErrorReport]:
+        return self.rootWorksheet.deleteCellRs(address)
+
     @property
     def rootWorksheet(self) -> 'Worksheet':
         return self._innerSheet.rootWorksheet
 
     @property
     def workbook(self) -> Workbook | None:
-        return self._innerSheet.workbook
+        return self.rootWorksheet.workbook
 
     @workbook.setter
     def workbook(self, newWorkbook: Workbook | None):
-        self._innerSheet.workbook = newWorkbook
+        self.rootWorksheet.workbook = newWorkbook
 
     @property
     def translator(self) -> FormulaTranslator:
-        return self._innerSheet.translator
+        return self.rootWorksheet.translator
     @property
     def name(self) -> str:
-        return self._innerSheet.name
+        return self.rootWorksheet.name
 
     @property
     def size(self) -> int:
-        return self._innerSheet.size
+        return self.rootWorksheet.size
 
     def toJson(self) -> WorksheetJson:
-        return self._innerSheet.toJson()
+        return self.rootWorksheet.toJson()
 
     def cell(self, address: str | CellAddress | Tuple[int, int]) -> Cell:
-        return self._innerSheet.cell(address)
+        return self.rootWorksheet.cell(address)
 
     def range(self, rangeAddress: str | RangeAddress | Tuple[CellAddress, CellAddress]) -> Range:
-        return self._innerSheet.range(rangeAddress)
+        return self.rootWorksheet.range(rangeAddress)
 
     def addCell(self, cell: Cell):
-        self._innerSheet.addCell(cell)
-
-    def removeCell(self, address: CellAddress):
-        self._innerSheet.removeCell(address)
+        self.rootWorksheet.addCell(cell)
 
     def getOrMakeCell(self, address: CellAddress) -> Cell:
-        return self._innerSheet.getOrMakeCell(address)
+        return self.rootWorksheet.getOrMakeCell(address)
 
     def hasCellAt(self, address: CellAddress) -> bool:
-        return self._innerSheet.hasCellAt(address)
+        return self.rootWorksheet.hasCellAt(address)
 
     def getCell(self, address: CellAddress) -> Optional[Cell]:
-        return self._innerSheet.getCell(address)
+        return self.rootWorksheet.getCell(address)
 
     def isEmpty(self) -> bool:
-        return self._innerSheet.isEmpty()
+        return self.rootWorksheet.isEmpty()
 
     def containsAddress(self, address: CellAddress) -> bool:
-        return self._innerSheet.containsAddress(address)
+        return self.rootWorksheet.containsAddress(address)
 
     @property
     def cells(self) -> list[Cell]:
-        return self._innerSheet.cells
+        return self.rootWorksheet.cells
 
     @property
     def rangeAddress(self) -> RangeAddress:
-        return self._innerSheet.rangeAddress
+        return self.rootWorksheet.rangeAddress
 
     def toJsonDict(self) -> dict:
-        return self._innerSheet.toJsonDict()
+        return self.rootWorksheet.toJsonDict()
 
     def reportJsonStr(self) -> str:
-        return self._innerSheet.reportJsonStr()
+        return self.rootWorksheet.reportJsonStr()
 
     def isSameRangeAddress(self, other):
-        return self._innerSheet.isSameRangeAddress(other)
+        return self.rootWorksheet.isSameRangeAddress(other)
 
     def reRun(self):
-        self._innerSheet.reRun()
+        self.rootWorksheet.reRun()
 
     @property
     def innerSheet(self):
-        return self._innerSheet
+        return self.rootWorksheet
 
     def internalRename(self, newName: str):
-        self._innerSheet.internalRename(newName)
+        self.rootWorksheet.internalRename(newName)
 
     def renameRs(self, newName: str) -> Result[None, ErrorReport]:
-        return self._innerSheet.renameRs(newName)
+        return self.rootWorksheet.renameRs(newName)
 

@@ -140,7 +140,7 @@ class WorksheetImp_test(unittest.TestCase):
         cell, cellAddr = self.makeTestObj()
         sheet.addCell(cell)
         self.assertFalse(sheet.isEmpty())
-        sheet.removeCell(cellAddr)
+        sheet.deleteCell(cellAddr)
         self.assertTrue(sheet.isEmpty())
 
     def test_containAddress(self):
@@ -149,7 +149,7 @@ class WorksheetImp_test(unittest.TestCase):
         self.assertTrue(s.containsAddress(cellAddr))
         s.addCell(cell)
         self.assertTrue(s.containsAddress(cellAddr))
-        s.removeCell(cellAddr)
+        s.deleteCell(cellAddr)
         self.assertTrue(s.containsAddress(cellAddr))
 
     def test_cells(self):
@@ -160,7 +160,7 @@ class WorksheetImp_test(unittest.TestCase):
         s.addCell(cell2)
         self.assertTrue(cell1 in s.cells)
         self.assertTrue(cell2 in s.cells)
-        s.removeCell(cellAddr1)
+        s.deleteCell(cellAddr1)
         self.assertEqual([cell2], s.cells)
 
     def test_getNonExistenceCell(self):
@@ -181,7 +181,7 @@ class WorksheetImp_test(unittest.TestCase):
         s = self.makeS()
         c = s.getOrMakeCell(CellIndex(1, 1))
         c.value = 123
-        s.removeCell(CellIndex(1, 1))
+        s.deleteCell(CellIndex(1, 1))
         self.assertTrue(s.isEmpty())
         self.assertIsNone(s.getCell(CellIndex(1, 1)))
 

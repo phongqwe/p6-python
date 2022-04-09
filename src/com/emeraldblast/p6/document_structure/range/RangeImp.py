@@ -5,10 +5,14 @@ from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.cell_container.MutableCellContainer import MutableCellContainer
 from com.emeraldblast.p6.document_structure.range.Range import Range
+from com.emeraldblast.p6.document_structure.range.RangeErrors import RangeErrors
 from com.emeraldblast.p6.document_structure.range.address.RangeAddress import RangeAddress
 from com.emeraldblast.p6.document_structure.range.address.RangeAddressImp import RangeAddressImp
 from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 from com.emeraldblast.p6.document_structure.util.AddressParser import AddressParser
+from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
+from com.emeraldblast.p6.document_structure.util.result.Err import Err
+from com.emeraldblast.p6.document_structure.util.result.Result import Result
 
 
 class RangeImp(Range):
@@ -118,9 +122,17 @@ class RangeImp(Range):
             raise ValueError(
                 "Cannot add cell {cd} into range {rd}".format(cd=str(cell.address), rd=str(self.rangeAddress)))
 
-    def removeCell(self, address: CellAddress):
+    # def removeCell(self, address: CellAddress):
+    #     if self.containsAddress(address):
+    #         self.__sourceContainer.removeCell(address)
+    #     else:
+    #         raise ValueError(
+    #             "Cannot remove cell {cd} from range {rd}".format(cd=str(address), rd=str(self.rangeAddress)))
+
+    def deleteCellRs(self, address: CellAddress) -> Result[None, ErrorReport]:
         if self.containsAddress(address):
-            self.__sourceContainer.removeCell(address)
+            return self.__sourceContainer.deleteCellRs(address)
         else:
-            raise ValueError(
-                "Cannot remove cell {cd} from range {rd}".format(cd=str(address), rd=str(self.rangeAddress)))
+            return Err(RangeErrors.CellNotInRangeReport(address,self.rangeAddress))
+
+
