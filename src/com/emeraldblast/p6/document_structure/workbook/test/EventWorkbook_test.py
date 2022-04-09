@@ -2,7 +2,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import MagicMock
 
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.response.DeleteWorksheetResponse import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.DeleteWorksheetResponse import \
     DeleteWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.WorkbookEventData import \

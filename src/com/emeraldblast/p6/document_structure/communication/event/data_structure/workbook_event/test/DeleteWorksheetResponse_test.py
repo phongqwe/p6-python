@@ -1,8 +1,7 @@
 import unittest
 
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.response.DeleteWorksheetResponse import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.DeleteWorksheetResponse import \
     DeleteWorksheetResponse
-from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.workbook.WorkbookErrors import WorkbookErrors
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 

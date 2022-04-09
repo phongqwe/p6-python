@@ -1,18 +1,16 @@
 import inspect
 
 from com.emeraldblast.p6.document_structure.communication.event.P6Event import P6Event
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.request.CellUpdateRequest import CellUpdateRequest
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.request.CreateNewWorksheetRequest import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateRequest import CellUpdateRequest
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.CreateNewWorksheetRequest import \
     CreateNewWorksheetRequest
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.request.RenameWorksheetRequest import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetRequest import \
     RenameWorksheetRequest
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.response.CellUpdateCommonResponse import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateCommonResponse import \
     CellUpdateCommonResponse
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.response.CreateNewWorksheetData import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.CreateNewWorksheetData import \
     CreateNewWorksheetResponse
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.response.DeleteWorksheetResponse import \
-    DeleteWorksheetResponse
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.response.RenameWorksheetData import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetData import \
     RenameWorksheetResponseData
 
 WSE = "WSE"  # worksheet event

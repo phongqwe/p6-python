@@ -1,8 +1,8 @@
 import unittest
 
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.request.DeleteWorksheetRequest import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.DeleteWorksheetRequest import \
     DeleteWorksheetRequest
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.response.DeleteWorksheetResponse import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.DeleteWorksheetResponse import \
     DeleteWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook.DeleteWorksheetReactor import \
     DeleteWorksheetReactor

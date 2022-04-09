@@ -1,6 +1,6 @@
 import unittest
 
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.response.CellUpdateCommonResponse import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateCommonResponse import \
     CellUpdateCommonResponse
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorHeader import ErrorHeader
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport

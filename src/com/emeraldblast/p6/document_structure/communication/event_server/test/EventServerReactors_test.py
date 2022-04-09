@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import MagicMock
 
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.response.RenameWorksheetData import RenameWorksheetResponseData
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetData import RenameWorksheetResponseData
 
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.EventServerReactors import EventServerReactors
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
