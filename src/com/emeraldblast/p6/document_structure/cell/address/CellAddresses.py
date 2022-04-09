@@ -4,12 +4,12 @@ from typing import Union
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.cell.address.CellAddressJson import CellAddressJson
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
-from com.emeraldblast.p6.proto.DocProtos_pb2 import CellAddressProto
 from com.emeraldblast.p6.document_structure.util.AlphabetBaseNumberSystem import AlphabetBaseNumberSystem
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
+from com.emeraldblast.p6.proto.DocProtos_pb2 import CellAddressProto
 
 
 class CellAddresses:

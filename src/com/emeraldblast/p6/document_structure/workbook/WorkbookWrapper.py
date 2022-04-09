@@ -10,6 +10,9 @@ from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
 
 class WorkbookWrapper(Workbook):
+    @property
+    def rootWorkbook(self) -> 'Workbook':
+        return self._innerWorkbook.rootWorkbook
 
     def updateSheetName(self, oldName: str, ws: Worksheet):
         self._innerWorkbook.updateSheetName(oldName,ws)
@@ -42,9 +45,6 @@ class WorkbookWrapper(Workbook):
     @property
     def activeWorksheet(self) -> Optional[Worksheet]:
         return self._innerWorkbook.activeWorksheet
-
-    def setActiveWorksheet(self, indexOrName: Union[int, str]):
-        self._innerWorkbook.setActiveWorksheet(indexOrName)
 
     @property
     def sheetCount(self) -> int:

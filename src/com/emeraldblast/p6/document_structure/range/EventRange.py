@@ -4,9 +4,7 @@ from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.EventCell import EventCell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.RangeEventData import \
-    RangeEventData
+from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.AppEventData import EventData
 from com.emeraldblast.p6.document_structure.range.Range import Range
 from com.emeraldblast.p6.document_structure.range.RangeWrapper import RangeWrapper
 
@@ -14,8 +12,8 @@ from com.emeraldblast.p6.document_structure.range.RangeWrapper import RangeWrapp
 class EventRange(RangeWrapper):
 
     def __init__(self, innerRange: Range,
-                 onCellEvent: Callable[[CellEventData], None] = None,
-                 onRangeEvent: Callable[[RangeEventData], None] = None,
+                 onCellEvent: Callable[[EventData], None] = None,
+                 onRangeEvent: Callable[[EventData], None] = None,
                  ):
         super().__init__(innerRange)
         self.__onCellEvent = onCellEvent
@@ -48,8 +46,7 @@ class EventRange(RangeWrapper):
     def reRun(self):
         self._innerRange.reRun()
         if self.__onRangeEvent is not None:
-            data = RangeEventData(
-                targetRange = self,
+            data = EventData(
                 event = P6Events.Range.ReRun.event,
                 isError = False
             )

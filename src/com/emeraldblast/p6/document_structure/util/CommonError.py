@@ -1,6 +1,5 @@
-from com.emeraldblast.p6.document_structure.util.ToRepStr import ToRepStr
-
 from com.emeraldblast.p6.document_structure.util.ToException import ToException
+from com.emeraldblast.p6.document_structure.util.ToRepStr import ToRepStr
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorHeader import ErrorHeader
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 

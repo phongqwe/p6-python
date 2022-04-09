@@ -1,9 +1,7 @@
-from collections import OrderedDict as OD
 from pathlib import Path
-from typing import Union, Optional, OrderedDict
+from typing import Union, Optional
 
 from com.emeraldblast.p6.document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
-from com.emeraldblast.p6.document_structure.util.Util import typeCheck
 from com.emeraldblast.p6.document_structure.util.WithSize import WithSize
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey

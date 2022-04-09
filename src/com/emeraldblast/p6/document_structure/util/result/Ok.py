@@ -1,6 +1,6 @@
 from typing import TypeVar, Generic
 
-from com.emeraldblast.p6.document_structure.util.result.Result import Result, M
+from com.emeraldblast.p6.document_structure.util.result.Result import Result
 
 T = TypeVar("T")
 

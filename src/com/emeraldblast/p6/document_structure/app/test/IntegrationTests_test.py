@@ -6,11 +6,12 @@ from com.emeraldblast.p6.document_structure.app.GlobalScope import setIPythonGlo
 # these 2 imports must be keep for the formula script to be able to run
 from com.emeraldblast.p6.document_structure.app.UserFunctions import *
 from com.emeraldblast.p6.document_structure.app.worksheet_functions.WorksheetFunctions import WorksheetFunctions
+from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import findNewSocketPort, startREPServerOnThread, \
+    sendClose
+from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.emeraldblast.p6.proto.P6MsgProtos_pb2 import P6MessageProto, P6ResponseProto
 from com.emeraldblast.p6.proto.WorkbookProtos_pb2 import CreateNewWorksheetResponseProto
 from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import RenameWorksheetResponseProto
-from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import findNewSocketPort, startREPServerOnThread, sendClose
-from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 
 
 class IntegrationTest_test(unittest.TestCase):

@@ -4,8 +4,8 @@ from com.emeraldblast.p6.document_structure.cell.DataCell import DataCell
 from com.emeraldblast.p6.document_structure.cell.EventCell import EventCell
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
-from com.emeraldblast.p6.proto.DocProtos_pb2 import CellProto
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
+from com.emeraldblast.p6.proto.DocProtos_pb2 import CellProto
 
 
 class DataCellTest(unittest.TestCase):

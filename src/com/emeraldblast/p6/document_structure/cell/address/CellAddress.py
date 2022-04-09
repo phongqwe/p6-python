@@ -1,8 +1,8 @@
 from abc import ABC
 
 from com.emeraldblast.p6.document_structure.cell.address.CellAddressJson import CellAddressJson
-from com.emeraldblast.p6.proto.DocProtos_pb2 import CellAddressProto
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
+from com.emeraldblast.p6.proto.DocProtos_pb2 import CellAddressProto
 
 
 class CellAddress(ToProto[CellAddressProto], ABC):

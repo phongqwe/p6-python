@@ -1,7 +1,7 @@
-from com.emeraldblast.p6.proto.WorkbookProtos_pb2 import CreateNewWorksheetRequestProto
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
+from com.emeraldblast.p6.proto.WorkbookProtos_pb2 import CreateNewWorksheetRequestProto
 
 
 class CreateNewWorksheetRequest(ToProto[CreateNewWorksheetRequestProto]):

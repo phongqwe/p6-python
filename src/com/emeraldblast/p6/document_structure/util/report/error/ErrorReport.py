@@ -1,10 +1,10 @@
 from typing import Any
 
-from com.emeraldblast.p6.proto.CommonProtos_pb2 import ErrorReportProto
 from com.emeraldblast.p6.document_structure.util.ToException import ToException
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 from com.emeraldblast.p6.document_structure.util.ToRepStr import ToRepStr
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorHeader import ErrorHeader
+from com.emeraldblast.p6.proto.CommonProtos_pb2 import ErrorReportProto
 
 
 class ErrorReport(ToProto[ErrorReportProto]):

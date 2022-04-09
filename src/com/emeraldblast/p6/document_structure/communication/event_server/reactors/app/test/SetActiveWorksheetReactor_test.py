@@ -53,7 +53,9 @@ class SetActiveWorksheetReactor_test(unittest.TestCase):
         self.assertIsNone(o.errorReport)
 
         self.assertEqual(self.s22, self.wb2.activeWorksheet)
-        self.assertEqual(self.wb2, self.app.activeWorkbook)
+
+        # ensure that active workbook is not changed
+        self.assertEqual(self.wb1, self.app.activeWorkbook)
 
     def test_react_invalidWorkbook(self):
         iwb = WorkbookKeys.fromNameAndPath("INVALID", None)

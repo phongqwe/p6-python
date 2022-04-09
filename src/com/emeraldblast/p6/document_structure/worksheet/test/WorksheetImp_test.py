@@ -2,8 +2,6 @@ import random
 import unittest
 from unittest.mock import MagicMock
 
-from com.emeraldblast.p6.document_structure.worksheet.WorksheetErrors import WorksheetErrors
-
 from com.emeraldblast.p6.document_structure.cell.DataCell import DataCell
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslators import FormulaTranslators
@@ -11,6 +9,7 @@ from com.emeraldblast.p6.document_structure.range.RangeImp import RangeImp
 from com.emeraldblast.p6.document_structure.range.address.RangeAddressImp import RangeAddressImp
 from com.emeraldblast.p6.document_structure.workbook.WorkbookErrors import WorkbookErrors
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
+from com.emeraldblast.p6.document_structure.worksheet.WorksheetErrors import WorksheetErrors
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetImp import WorksheetImp
 
 

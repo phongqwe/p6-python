@@ -1,8 +1,8 @@
 import unittest
 
+from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 from com.emeraldblast.p6.document_structure.communication.event_server.msg.P6MessageHeader import P6MessageHeader
 from com.emeraldblast.p6.document_structure.communication.event_server.response.P6Response import P6Response
-from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 
 
 class P6Response_test(unittest.TestCase):

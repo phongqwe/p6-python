@@ -3,7 +3,8 @@ from typing import TypeVar
 from com.emeraldblast.p6.document_structure.communication.event.P6Event import P6Event
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorContainer import EventReactorContainer
-from com.emeraldblast.p6.document_structure.communication.reactor.MutableEventReactorContainer import MutableEventReactorContainer
+from com.emeraldblast.p6.document_structure.communication.reactor.MutableEventReactorContainer import \
+    MutableEventReactorContainer
 
 D = TypeVar("D")
 

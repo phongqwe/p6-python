@@ -1,6 +1,5 @@
-from com.emeraldblast.p6.document_structure.communication.sender import SenderProvider
-
 from com.emeraldblast.p6.document_structure.communication.SocketProvider import SocketProvider
+from com.emeraldblast.p6.document_structure.communication.sender import SenderProvider
 from com.emeraldblast.p6.document_structure.communication.sender.MessageSender import MessageSender
 
 

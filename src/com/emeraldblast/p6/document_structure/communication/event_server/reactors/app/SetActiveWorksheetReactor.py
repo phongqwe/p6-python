@@ -1,11 +1,9 @@
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.app_event.SetActiveWorksheetRequest import \
     SetActiveWorksheetRequest
-from com.emeraldblast.p6.document_structure.communication.event_server.reactors.TypeAliasForReactor import WbGetter, \
-    AppGetter
-
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.app_event.SetActiveWorksheetResponse import \
     SetActiveWorksheetResponse
-from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor, I, O
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.TypeAliasForReactor import AppGetter
+from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 
 
@@ -21,14 +19,14 @@ class SetActiveWorksheetReactor(EventReactor[bytes,SetActiveWorksheetResponse]):
     def react(self, data: bytes) -> SetActiveWorksheetResponse:
         request = SetActiveWorksheetRequest.fromProtoBytes(data)
         app = self.appGetter()
-        setWbRs = app.setActiveWorkbookRs(request.workbookKey)
+        getWbRs = app.getWorkbookRs(request.workbookKey)
 
         response = SetActiveWorksheetResponse(
             workbookKey = request.workbookKey,
             worksheetName = request.worksheetName,
         )
-        if setWbRs.isOk():
-            wb:Workbook = setWbRs.value
+        if getWbRs.isOk():
+            wb:Workbook = getWbRs.value
             setSheetRs = wb.setActiveWorksheetRs(request.worksheetName)
             if setSheetRs.isOk():
                 response.isError=False
@@ -40,5 +38,5 @@ class SetActiveWorksheetReactor(EventReactor[bytes,SetActiveWorksheetResponse]):
                 return response
         else:
             response.isError = True
-            response.errorReport = setWbRs.err
+            response.errorReport = getWbRs.err
             return response

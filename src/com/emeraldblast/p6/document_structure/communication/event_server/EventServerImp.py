@@ -2,16 +2,16 @@ import threading
 
 import zmq
 
-from com.emeraldblast.p6.document_structure.communication.event_server.msg.P6Message import P6Message
-from com.emeraldblast.p6.document_structure.communication.event_server.response.P6Response import P6Response
 from com.emeraldblast.p6.document_structure.communication.event.P6Event import P6Event
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
-from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.EventServer import EventServer
 from com.emeraldblast.p6.document_structure.communication.event_server.EventServerErrors import EventServerErrors
-from com.emeraldblast.p6.proto.P6MsgProtos_pb2 import P6MessageProto
+from com.emeraldblast.p6.document_structure.communication.event_server.msg.P6Message import P6Message
+from com.emeraldblast.p6.document_structure.communication.event_server.response.P6Response import P6Response
+from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
 from com.emeraldblast.p6.document_structure.util.CommonError import CommonErrors
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
+from com.emeraldblast.p6.proto.P6MsgProtos_pb2 import P6MessageProto
 
 
 class EventServerImp(EventServer):

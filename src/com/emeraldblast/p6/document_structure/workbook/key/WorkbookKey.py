@@ -4,10 +4,9 @@ from typing import Tuple
 
 from google.protobuf.struct_pb2 import NullValue
 
-from com.emeraldblast.p6.proto.CommonProtos_pb2 import NullableString
-
-from com.emeraldblast.p6.proto.DocProtos_pb2 import WorkbookKeyProto
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
+from com.emeraldblast.p6.proto.CommonProtos_pb2 import NullableString
+from com.emeraldblast.p6.proto.DocProtos_pb2 import WorkbookKeyProto
 
 
 class WorkbookKey(ToProto[WorkbookKeyProto],ABC):

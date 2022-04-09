@@ -2,8 +2,8 @@ import uuid
 from typing import Any
 
 from com.emeraldblast.p6.document_structure.communication.event_server.msg.P6MessageHeader import P6MessageHeader
-from com.emeraldblast.p6.proto.P6MsgProtos_pb2 import P6MessageProto
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
+from com.emeraldblast.p6.proto.P6MsgProtos_pb2 import P6MessageProto
 
 
 class P6Message(ToProto[P6MessageProto]):

@@ -1,8 +1,9 @@
 from typing import Callable
 
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateRequest import CellUpdateRequest
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateCommonResponse import \
     CellUpdateCommonResponse
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateRequest import \
+    CellUpdateRequest
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Result import Result

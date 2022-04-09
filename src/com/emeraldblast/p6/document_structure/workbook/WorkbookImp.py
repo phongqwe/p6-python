@@ -9,7 +9,6 @@ from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
-from com.emeraldblast.p6.document_structure.util.result.Results import Results
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 from com.emeraldblast.p6.document_structure.workbook.WorkbookErrors import WorkbookErrors
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
@@ -17,7 +16,6 @@ from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeyImp import W
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetImp import WorksheetImp
-from com.emeraldblast.p6.document_structure.worksheet.WorksheetWrapper import WorksheetWrapper
 
 
 class WorkbookImp(Workbook):
@@ -211,5 +209,9 @@ class WorkbookImp(Workbook):
                 self._translatorDict.pop(translatorKey)
         else:
             self.addWorksheet(ws)
+
+    @property
+    def rootWorkbook(self) -> 'Workbook':
+        return self
 
 

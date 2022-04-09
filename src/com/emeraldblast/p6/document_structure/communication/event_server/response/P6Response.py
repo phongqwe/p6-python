@@ -3,8 +3,8 @@ from enum import Enum
 from typing import Any
 
 from com.emeraldblast.p6.document_structure.communication.event_server.msg.P6MessageHeader import P6MessageHeader
-from com.emeraldblast.p6.proto.P6MsgProtos_pb2 import P6ResponseProto
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
+from com.emeraldblast.p6.proto.P6MsgProtos_pb2 import P6ResponseProto
 
 
 class P6Response(ToProto[P6ResponseProto]):

@@ -2,6 +2,7 @@ import socket
 import threading
 
 import zmq
+
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 
 

@@ -5,13 +5,13 @@ import zmq
 
 from com.emeraldblast.p6.document_structure.cell.DataCell import DataCell
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
+from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 from com.emeraldblast.p6.document_structure.communication.event_server.msg.P6Message import P6Message
 from com.emeraldblast.p6.document_structure.communication.event_server.msg.P6MessageHeader import P6MessageHeader
-from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
-from com.emeraldblast.p6.proto.DocProtos_pb2 import CellProto
-from com.emeraldblast.p6.proto.P6MsgProtos_pb2 import P6MessageProto
 from com.emeraldblast.p6.document_structure.communication.sender.MessageSender import MessageSender
 from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import findNewSocketPort
+from com.emeraldblast.p6.proto.DocProtos_pb2 import CellProto
+from com.emeraldblast.p6.proto.P6MsgProtos_pb2 import P6MessageProto
 
 port = findNewSocketPort()
 

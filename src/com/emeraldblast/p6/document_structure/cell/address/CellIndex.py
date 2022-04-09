@@ -1,6 +1,6 @@
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
-from com.emeraldblast.p6.proto.DocProtos_pb2 import CellAddressProto
 from com.emeraldblast.p6.document_structure.util.AlphabetBaseNumberSystem import AlphabetBaseNumberSystem
+from com.emeraldblast.p6.proto.DocProtos_pb2 import CellAddressProto
 
 
 class CellIndex(CellAddress):

@@ -1,9 +1,9 @@
 import uuid
 
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetRequest import \
-    RenameWorksheetRequest
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetData import \
     RenameWorksheetResponseData
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetRequest import \
+    RenameWorksheetRequest
 from com.emeraldblast.p6.document_structure.communication.event_server.msg.P6Message import P6Message
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.TypeAliasForReactor import WbGetter, \
     AppGetter

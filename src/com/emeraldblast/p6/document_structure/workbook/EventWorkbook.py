@@ -1,15 +1,11 @@
 from typing import Callable, Optional, Union
 
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.app_event.SetActiveWorksheetResponse import \
+    SetActiveWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.DeleteWorksheetResponse import \
     DeleteWorksheetResponse
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.RangeEventData import \
-    RangeEventData
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.WorkbookEventData import \
-    WorkbookEventData
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.WorksheetEventData import \
-    WorksheetEventData
+from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.AppEventData import EventData
 from com.emeraldblast.p6.document_structure.communication.reactor import EventReactorContainer
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
@@ -26,30 +22,35 @@ class EventWorkbook(WorkbookWrapper):
     """
 
     def __init__(self, innerWorkbook: Workbook,
-                 onCellEvent: Callable[[CellEventData], None] = None,
-                 onWorksheetEvent: Callable[[WorksheetEventData], None] = None,
-                 onRangeEvent: Callable[[RangeEventData], None] = None,
-                 onWorkbookEvent: Callable[[WorkbookEventData], None] = None,
+                 onCellEvent: Callable[[EventData], None] = None,
+                 onWorksheetEvent: Callable[[EventData], None] = None,
+                 onRangeEvent: Callable[[EventData], None] = None,
+                 onWorkbookEvent: Callable[[EventData], None] = None,
+                 onEvent: Callable[[EventData], None] = None
                  ):
         super().__init__(innerWorkbook)
-        self.__onCellChange: Callable[[CellEventData], None] = onCellEvent
-        self.__onWorksheetEvent: Callable[[WorksheetEventData], None] = onWorksheetEvent
-        self.__onRangeEvent: Callable[[RangeEventData], None] = onRangeEvent
-        self.__onWorkbookEvent: Callable[[WorkbookEventData], None] = onWorkbookEvent
+        self.__onCellChange: Callable[[EventData], None] = onCellEvent
+        self.__onWorksheetEvent: Callable[[EventData], None] = onWorksheetEvent
+        self.__onRangeEvent: Callable[[EventData], None] = onRangeEvent
+        self.__onWorkbookEvent: Callable[[EventData], None] = onWorkbookEvent
+        self.__onEvent: Callable[[EventData], None] = onEvent
         self._iwb = self._innerWorkbook
 
     @staticmethod
     def create(innerWorkbook: Workbook, reactorContainer: EventReactorContainer) -> 'EventWorkbook':
-        def onCell(data: CellEventData):
+        def onCell(data: EventData):
             reactorContainer.triggerReactorsFor(data.event, data)
 
-        def onWorkbook(data: WorkbookEventData):
+        def onWorkbook(data: EventData):
             reactorContainer.triggerReactorsFor(data.event, data)
 
-        def onWorksheet(data: WorksheetEventData):
+        def onWorksheet(data: EventData):
             reactorContainer.triggerReactorsFor(data.event, data)
 
-        def onRange(data: RangeEventData):
+        def onRange(data: EventData):
+            reactorContainer.triggerReactorsFor(data.event, data)
+
+        def onEvent(data: EventData):
             reactorContainer.triggerReactorsFor(data.event, data)
 
         return EventWorkbook(
@@ -58,6 +59,7 @@ class EventWorkbook(WorkbookWrapper):
             onWorksheetEvent = onWorksheet,
             onRangeEvent = onRange,
             onWorkbookEvent = onWorkbook,
+            onEvent = onEvent,
         )
 
     @property
@@ -105,8 +107,7 @@ class EventWorkbook(WorkbookWrapper):
         if rs.isOk():
             name = rs.value.name
 
-        wbEventData = WorkbookEventData(
-            workbook = self,
+        wbEventData = EventData(
             event = P6Events.Workbook.CreateNewWorksheet.event)
         if rs.isOk():
             newWorksheet = rs.value
@@ -125,18 +126,18 @@ class EventWorkbook(WorkbookWrapper):
     def reRun(self):
         self._innerWorkbook.reRun()
         if self.__onWorkbookEvent is not None:
-            self.__onWorkbookEvent(WorkbookEventData(self._iwb, P6Events.Workbook.ReRun.event))
+            self.__onWorkbookEvent(EventData(P6Events.Workbook.ReRun.event))
 
     def __wrapInEventWorksheet(self, sheet: Worksheet) -> Worksheet:
-        def onRangeEvent(data: RangeEventData):
+        def onRangeEvent(data: EventData):
             if self.__onRangeEvent is not None:
                 self.__onRangeEvent(data)
 
-        def onCellEvent(eventData: CellEventData):
+        def onCellEvent(eventData: EventData):
             if self.__onCellChange is not None:
                 self.__onCellChange(eventData)
 
-        def onSheetEvent(data: WorksheetEventData):
+        def onSheetEvent(data: EventData):
             if self.__onWorksheetEvent is not None:
                 self.__onWorksheetEvent(data)
 
@@ -155,8 +156,7 @@ class EventWorkbook(WorkbookWrapper):
             isError = rs.isErr()
         )
 
-        eventData = WorkbookEventData(
-            workbook = self,
+        eventData = EventData(
             event = P6Events.Workbook.DeleteWorksheet.event,
             data = response
         )
@@ -174,8 +174,7 @@ class EventWorkbook(WorkbookWrapper):
             workbookKey = self.workbookKey,
             isError = rs.isErr()
         )
-        eventData = WorkbookEventData(
-            workbook = self,
+        eventData = EventData(
             event = P6Events.Workbook.DeleteWorksheet.event,
             data = response
         )
@@ -184,4 +183,25 @@ class EventWorkbook(WorkbookWrapper):
         if rs.isErr():
             response.errorReport = rs.err
         self.__onWorkbookEvent(eventData)
+        return rs
+
+    def setActiveWorksheetRs(self, indexOrName: Union[int, str]) -> Result[Worksheet, ErrorReport]:
+        rs = self._iwb.setActiveWorksheetRs(indexOrName)
+
+        response = SetActiveWorksheetResponse(
+            workbookKey = self.workbookKey,
+        )
+        if rs.isOk():
+            ws = rs.value
+            response.worksheetName = ws.name
+        else:
+            response.worksheetName = indexOrName
+            response.isError = True
+            response.errorReport = rs.err
+
+        eventData = EventData(
+            event = P6Events.App.SetActiveWorksheet.event,
+            data = response
+        )
+        self.__onEvent(eventData)
         return rs

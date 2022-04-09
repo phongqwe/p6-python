@@ -11,10 +11,11 @@ from com.emeraldblast.p6.document_structure.communication.SocketProviderImp impo
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 from com.emeraldblast.p6.document_structure.communication.event_server.EventServer import EventServer
 from com.emeraldblast.p6.document_structure.communication.event_server.EventServerImp import EventServerImp
-from com.emeraldblast.p6.document_structure.communication.event_server.reactors.EventServerReactors import EventServerReactors
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.EventServerReactors import \
+    EventServerReactors
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.InternalNotifierProvider import \
     InternalNotifierProvider
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
+from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.AppEventData import EventData
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorContainer import EventReactorContainer
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorContainers import EventReactorContainers
 from com.emeraldblast.p6.document_structure.file.loader.P6FileLoader import P6FileLoader
@@ -44,7 +45,7 @@ class AppImp(App):
                  loader: Optional[P6FileLoader] = None,
                  saver: Optional[P6FileSaver] = None,
                  socketProvider: SocketProvider | None = None,
-                 cellEventReactorContainer: EventReactorContainer[CellEventData] | None = None,
+                 eventReactorContainer: EventReactorContainer[EventData] | None = None,
                  ):
         if workbookContainer is None:
             workbookContainer = WorkbookContainerImp()
@@ -67,9 +68,9 @@ class AppImp(App):
         if socketProvider is None:
             socketProvider = SocketProviderImp()
         self.__socketProvider: SocketProvider = socketProvider
-        if cellEventReactorContainer is None:
-            cellEventReactorContainer = EventReactorContainers.mutable()
-        self.__reactorContainer: EventReactorContainer[CellEventData] = cellEventReactorContainer
+        if eventReactorContainer is None:
+            eventReactorContainer = EventReactorContainers.mutable()
+        self.__reactorContainer: EventReactorContainer[EventData] = eventReactorContainer
         self.__reactorProvider = InternalNotifierProvider(self._getSocketProvider)
         self.__zcontext = zmq.Context.instance()
 
@@ -131,6 +132,8 @@ class AppImp(App):
             container.addReactor(event, provider.workbookNotifier())
         for event in P6Events.Worksheet.allEvents():
             container.addReactor(event, provider.worksheetNotifier())
+        for event in P6Events.App.allEvents():
+            container.addReactor(event,provider.appNotifier())
 
     @property
     def eventReactorContainer(self) -> EventReactorContainer:

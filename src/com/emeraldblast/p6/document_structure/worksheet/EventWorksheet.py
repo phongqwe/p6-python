@@ -5,10 +5,9 @@ from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.EventCell import EventCell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetData import RenameWorksheetResponseData
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.RangeEventData import RangeEventData
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.WorksheetEventData import WorksheetEventData
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetData import \
+    RenameWorksheetResponseData
+from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.AppEventData import EventData
 from com.emeraldblast.p6.document_structure.range.EventRange import EventRange
 from com.emeraldblast.p6.document_structure.range.Range import Range
 from com.emeraldblast.p6.document_structure.range.address.RangeAddress import RangeAddress
@@ -22,14 +21,14 @@ from com.emeraldblast.p6.document_structure.worksheet.WorksheetWrapper import Wo
 class EventWorksheet(WorksheetWrapper):
     def __init__(self,
                  innerWorksheet: Worksheet,
-                 onCellEvent: Callable[[CellEventData], None] = None,
-                 onWorksheetEvent: Callable[[WorksheetEventData], None] = None,
-                 onRangeEvent: Callable[[RangeEventData], None] = None,
+                 onCellEvent: Callable[[EventData], None] = None,
+                 onWorksheetEvent: Callable[[EventData], None] = None,
+                 onRangeEvent: Callable[[EventData], None] = None,
                  ):
         super().__init__(innerWorksheet)
-        self.__onCellEvent: Callable[[CellEventData], None] = onCellEvent
-        self.__onWorksheetEvent: Callable[[WorksheetEventData], None] = onWorksheetEvent
-        self.__onRangeEvent: Callable[[RangeEventData], None] = onRangeEvent
+        self.__onCellEvent: Callable[[EventData], None] = onCellEvent
+        self.__onWorksheetEvent: Callable[[EventData], None] = onWorksheetEvent
+        self.__onRangeEvent: Callable[[EventData], None] = onRangeEvent
         self._iws = innerWorksheet
 
     def __makePartial(self, callback):
@@ -58,14 +57,12 @@ class EventWorksheet(WorksheetWrapper):
         self._innerSheet.reRun()
         if self.__onWorksheetEvent is not None:
             # todo incomplete data
-            eventData = WorksheetEventData(
-                workbook = self.workbook,
-                worksheet = self._innerSheet,
+            eventData = EventData(
                 event = P6Events.Worksheet.ReRun.event,
             )
             self.__onWorksheetEvent(eventData)
 
-    def _XonCellEvent(self, data: CellEventData):
+    def _XonCellEvent(self, data: EventData):
         data.worksheet = self._innerSheet
         if self.__onCellEvent is not None:
             self.__onCellEvent(data)
@@ -73,7 +70,7 @@ class EventWorksheet(WorksheetWrapper):
     def range(self, rangeAddress: str | RangeAddress | Tuple[CellAddress, CellAddress]) -> Range:
         rng = self._innerSheet.range(rangeAddress)
 
-        def onRangeEvent(data: RangeEventData):
+        def onRangeEvent(data: EventData):
             data.worksheet = self._innerSheet
             if self.__onRangeEvent is not None:
                 self.__onRangeEvent(data)
@@ -99,9 +96,7 @@ class EventWorksheet(WorksheetWrapper):
         rs = self._iws.renameRs(newName)
         if rs.isOk():
             self.__onWorksheetEvent(
-                WorksheetEventData(
-                    workbook = self.workbook,
-                    worksheet = self._iws,
+                EventData(
                     event = P6Events.Worksheet.Rename.event,
                     data = RenameWorksheetResponseData(
                         workbookKey = self.workbook.workbookKey,
@@ -113,9 +108,7 @@ class EventWorksheet(WorksheetWrapper):
             )
         else:
             self.__onWorksheetEvent(
-                WorksheetEventData(
-                    workbook = self.workbook,
-                    worksheet = self._iws,
+                EventData(
                     event = P6Events.Worksheet.Rename.event,
                     data = RenameWorksheetResponseData(
                         workbookKey = self.workbook.workbookKey,

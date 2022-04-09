@@ -3,8 +3,8 @@ import unittest
 from com.emeraldblast.p6.document_structure.app.GlobalScope import setIPythonGlobals
 from com.emeraldblast.p6.document_structure.app.UserFunctions import *
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
-from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorFactory import EventReactorFactory
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
+from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorFactory import EventReactorFactory
 
 
 class UserFunctions_test(unittest.TestCase):

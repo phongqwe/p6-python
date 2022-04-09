@@ -1,6 +1,6 @@
 from com.emeraldblast.p6.document_structure.communication.event.P6Event import P6Event
-from com.emeraldblast.p6.proto.P6MsgProtos_pb2 import P6MessageHeaderProto
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
+from com.emeraldblast.p6.proto.P6MsgProtos_pb2 import P6MessageHeaderProto
 
 
 class P6MessageHeader(ToProto[P6MessageHeaderProto]):

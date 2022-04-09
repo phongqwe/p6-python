@@ -4,10 +4,7 @@ from unittest.mock import MagicMock
 from com.emeraldblast.p6.document_structure.cell.DataCell import DataCell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
-from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.RangeEventData import RangeEventData
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.WorksheetEventData import WorksheetEventData
+from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.AppEventData import EventData
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
 from com.emeraldblast.p6.document_structure.worksheet.EventWorksheet import EventWorksheet
@@ -20,9 +17,9 @@ class EventWorksheet_test(unittest.TestCase):
         self.x = 0
         newName = "newName"
         oldName = "oldName"
-        self.eventData: WorksheetEventData[P6Events.Worksheet.Rename.Response] | None = None
+        self.eventData: EventData | None = None
 
-        def onWbEvent(eventData: WorksheetEventData[P6Events.Worksheet.Rename.Response]):
+        def onWbEvent(eventData: EventData):
             self.x = 1
             self.eventData = eventData
 
@@ -37,9 +34,9 @@ class EventWorksheet_test(unittest.TestCase):
         self.x = 0
         newName = "newName"
         oldName = "oldName"
-        self.eventData: WorksheetEventData[P6Events.Worksheet.Rename.Response] | None = None
+        self.eventData: EventData | None = None
 
-        def onWbEvent(eventData: WorksheetEventData[P6Events.Worksheet.Rename.Response]):
+        def onWbEvent(eventData: EventData):
             self.x = 1
             self.eventData = eventData
 
@@ -71,17 +68,17 @@ class EventWorksheet_test(unittest.TestCase):
         sheet = WorksheetImp(name = "s3", workbook = MagicMock())
         self.a = 0
 
-        def cb(data: CellEventData):
+        def cb(data: EventData):
             self.a += 1
 
         self.b = 0
 
-        def re(rangeEventData: RangeEventData):
+        def re(rangeEventData: EventData):
             self.b += 1
 
         self.c = 0
 
-        def wse(data: WorksheetEventData):
+        def wse(data: EventData):
             self.c += 1
 
         self.col = 0

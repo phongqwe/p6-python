@@ -1,11 +1,11 @@
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.CreateNewWorksheetRequest import \
-    CreateNewWorksheetRequest
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.CreateNewWorksheetData import \
     CreateNewWorksheetResponse
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.CreateNewWorksheetRequest import \
+    CreateNewWorksheetRequest
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.TypeAliasForReactor import WbGetter
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
-from com.emeraldblast.p6.proto.WorkbookProtos_pb2 import CreateNewWorksheetRequestProto
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
+from com.emeraldblast.p6.proto.WorkbookProtos_pb2 import CreateNewWorksheetRequestProto
 
 
 class CreateNewWorksheetReactor(EventReactor[bytes, CreateNewWorksheetResponse]):

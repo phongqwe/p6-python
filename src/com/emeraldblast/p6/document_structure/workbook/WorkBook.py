@@ -17,6 +17,11 @@ from com.emeraldblast.p6.proto.DocProtos_pb2 import WorkbookProto
 
 
 class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
+
+    @property
+    def rootWorkbook(self)->'Workbook':
+        raise NotImplementedError()
+
     # Worksheet = WS.Worksheet
     def getIndexOfWorksheet(self, sheetName: str) -> int:
         for (index, sheet) in enumerate(self.worksheets):

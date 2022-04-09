@@ -2,16 +2,17 @@ import unittest
 from unittest.mock import MagicMock
 
 import zmq
-from com.emeraldblast.p6.proto.CellProtos_pb2 import CellUpdateCommonResponseProto
-
-from com.emeraldblast.p6.proto.P6MsgProtos_pb2 import P6ResponseProto
 
 from com.emeraldblast.p6.document_structure.communication.SocketProviderImp import SocketProviderImp
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.InternalNotifierProvider import InternalNotifierProvider
+from com.emeraldblast.p6.document_structure.communication.internal_reactor.InternalNotifierProvider import \
+    InternalNotifierProvider
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
-from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import findNewSocketPort, startREPServerOnThread, sendClose
+from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import findNewSocketPort, startREPServerOnThread, \
+    sendClose
 from com.emeraldblast.p6.document_structure.workbook.EventWorkbook import EventWorkbook
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
+from com.emeraldblast.p6.proto.CellProtos_pb2 import CellUpdateCommonResponseProto
+from com.emeraldblast.p6.proto.P6MsgProtos_pb2 import P6ResponseProto
 
 port = findNewSocketPort()
 

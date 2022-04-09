@@ -3,8 +3,8 @@ from abc import ABC
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.CellJson import CellJson
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
-from com.emeraldblast.p6.proto.DocProtos_pb2 import CellProto
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
+from com.emeraldblast.p6.proto.DocProtos_pb2 import CellProto
 
 
 class WrapperCell(Cell, ABC):

@@ -1,4 +1,3 @@
-from abc import ABC
 from typing import TypeVar, Generic
 
 V = TypeVar("V")

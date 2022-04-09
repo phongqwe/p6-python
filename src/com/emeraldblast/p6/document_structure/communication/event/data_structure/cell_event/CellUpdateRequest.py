@@ -1,11 +1,10 @@
+from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.util.CanCheckEmpty import CanCheckEmpty
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
-
-from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
-from com.emeraldblast.p6.proto.CellProtos_pb2 import CellUpdateRequestProto
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
+from com.emeraldblast.p6.proto.CellProtos_pb2 import CellUpdateRequestProto
 
 
 class CellUpdateRequest(ToProto[CellUpdateRequestProto],CanCheckEmpty):

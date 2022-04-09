@@ -1,6 +1,6 @@
-from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import RenameWorksheetRequestProto
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
+from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import RenameWorksheetRequestProto
 
 
 class RenameWorksheetRequest:

@@ -1,17 +1,18 @@
 import inspect
 
 from com.emeraldblast.p6.document_structure.communication.event.P6Event import P6Event
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateRequest import CellUpdateRequest
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.CreateNewWorksheetRequest import \
-    CreateNewWorksheetRequest
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetRequest import \
-    RenameWorksheetRequest
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateCommonResponse import \
     CellUpdateCommonResponse
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateRequest import \
+    CellUpdateRequest
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.CreateNewWorksheetData import \
     CreateNewWorksheetResponse
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.CreateNewWorksheetRequest import \
+    CreateNewWorksheetRequest
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetData import \
     RenameWorksheetResponseData
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetRequest import \
+    RenameWorksheetRequest
 
 WSE = "WSE"  # worksheet event
 CE = "CE"  # cell event
@@ -100,5 +101,8 @@ class P6Events:
             event = P6Event(f"{ESE}0", "Unknown event")
 
     class App:
+        @classmethod
+        def allEvents(clazz):
+            return P6Events.allEvents(clazz.__name__)
         class SetActiveWorksheet:
             event = P6Event(f"{APPE}0","Set active worksheet")
