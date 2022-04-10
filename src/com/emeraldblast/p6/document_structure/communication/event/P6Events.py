@@ -65,6 +65,9 @@ class P6Events:
             Response = RenameWorksheetResponse
             Request = RenameWorksheetRequest
 
+        class DeleteCell:
+            event = P6Event(f"{WSE}3", "Delete cell")
+
     class Range:
         @classmethod
         def allEvents(clazz):
