@@ -3,6 +3,7 @@ from typing import Optional, Union, Tuple
 
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
+from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.cell_container.MutableCellContainer import MutableCellContainer
 from com.emeraldblast.p6.document_structure.range.Range import Range
 from com.emeraldblast.p6.document_structure.range.RangeErrors import RangeErrors
@@ -31,7 +32,7 @@ class RangeImp(Range):
             self.__sourceContainer = sourceContainer
         else:
             raise ValueError("container {sc} does not contain range {r}".format(
-                sc=str(sourceContainer.rangeAddress), r=str(rAddress)
+                sc = str(sourceContainer.rangeAddress), r = str(rAddress)
             ))
 
     @staticmethod
@@ -41,7 +42,7 @@ class RangeImp(Range):
     @staticmethod
     def fromStrAddress(address: str, sourceContainer: MutableCellContainer) -> Range:
         rangeAddress = RangeAddresses.addressFromLabel(address)
-        return RangeImp.fromRangeAddress(rangeAddress,sourceContainer)
+        return RangeImp.fromRangeAddress(rangeAddress, sourceContainer)
 
     @staticmethod
     def from2Cells(cell1Address: CellAddress, cell2Address: CellAddress,
@@ -71,7 +72,7 @@ class RangeImp(Range):
         if self.containsAddress(address):
             return self.__sourceContainer.getCell(address)
         else:
-            raise ValueError("cell {cd} is not in range {rd}".format(cd=str(address), rd=str(self.rangeAddress)))
+            raise ValueError("cell {cd} is not in range {rd}".format(cd = str(address), rd = str(self.rangeAddress)))
 
     def isSameRangeAddress(self, other):
         return super().isSameRangeAddress(other)
@@ -113,26 +114,18 @@ class RangeImp(Range):
         if self.containsAddress(address):
             return self.__sourceContainer.getOrMakeCell(address)
         else:
-            raise ValueError("cell {cd} is not in range {rd}".format(cd=str(address), rd=str(self.rangeAddress)))
+            raise ValueError("cell {cd} is not in range {rd}".format(cd = str(address), rd = str(self.rangeAddress)))
 
     def addCell(self, cell: Cell):
         if self.containsAddress(cell.address):
             self.__sourceContainer.addCell(cell)
         else:
             raise ValueError(
-                "Cannot add cell {cd} into range {rd}".format(cd=str(cell.address), rd=str(self.rangeAddress)))
+                "Cannot add cell {cd} into range {rd}".format(cd = str(cell.address), rd = str(self.rangeAddress)))
 
-    # def removeCell(self, address: CellAddress):
-    #     if self.containsAddress(address):
-    #         self.__sourceContainer.removeCell(address)
-    #     else:
-    #         raise ValueError(
-    #             "Cannot remove cell {cd} from range {rd}".format(cd=str(address), rd=str(self.rangeAddress)))
-
-    def deleteCellRs(self, address: CellAddress) -> Result[None, ErrorReport]:
+    def deleteCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
+        address = CellAddresses.parseAddress(address)
         if self.containsAddress(address):
             return self.__sourceContainer.deleteCellRs(address)
         else:
-            return Err(RangeErrors.CellNotInRangeReport(address,self.rangeAddress))
-
-
+            return Err(RangeErrors.CellNotInRangeReport(address, self.rangeAddress))

@@ -1,5 +1,5 @@
 import re
-from typing import Union
+from typing import Union, Tuple
 
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.cell.address.CellAddressJson import CellAddressJson
@@ -15,14 +15,21 @@ from com.emeraldblast.p6.proto.DocProtos_pb2 import CellAddressProto
 class CellAddresses:
     __labelPattern = re.compile("@[A-Za-z]+[1-9][0-9]*")
 
-
     @staticmethod
-    def fromProto(proto:CellAddressProto):
+    def fromProto(proto: CellAddressProto):
         return CellIndex(proto.col, proto.row)
 
     @staticmethod
     def addressFromJson(json: Union[CellAddressJson, str]) -> CellAddress:
         return CellIndex(json.col, json.row)
+
+    @staticmethod
+    def parseAddress(address: CellAddress | Tuple[int, int] | str) -> CellAddress:
+        if isinstance(address, str):
+            return CellAddresses.addressFromLabel(address)
+        if isinstance(address, Tuple):
+            return CellAddresses.fromColRow(address[0], address[1])
+        return address
 
     @staticmethod
     def addressFromLabel(address: str) -> CellAddress:
@@ -52,7 +59,12 @@ class CellAddresses:
         return CellIndex(0, 0)
 
     @staticmethod
-    def fromRowCol(row:int,col:int) -> CellAddress:
+    def fromRowCol(row: int, col: int) -> CellAddress:
+        """A special, invalid cell address"""
+        return CellIndex(col, row)
+
+    @staticmethod
+    def fromColRow(col: int, row: int) -> CellAddress:
         """A special, invalid cell address"""
         return CellIndex(col, row)
 

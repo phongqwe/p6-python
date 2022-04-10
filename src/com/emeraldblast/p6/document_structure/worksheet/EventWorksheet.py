@@ -4,7 +4,10 @@ from typing import Callable, Tuple, Optional
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.EventCell import EventCell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
+from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteCellRequest import \
+    DeleteCellResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetResponse import \
     RenameWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.AppEventData import EventData
@@ -121,6 +124,28 @@ class EventWorksheet(WorksheetWrapper):
                 )
             )
         return rs
+
+    def deleteCellRs(self, address: CellAddress | Tuple[int, int]|str) -> Result[None, ErrorReport]:
+        address = CellAddresses.parseAddress(address)
+        delRs = self.rootWorksheet.deleteCellRs(address)
+        delResponse = DeleteCellResponse(
+            workbookKey = self.workbook.workbookKey,
+            worksheetName = self.name,
+            cellAddress = address,
+        )
+        if delRs.isOk():
+            delResponse.newWorkbook = self.workbook
+        else:
+            delResponse.isError = True
+            delResponse.errorReport = delRs.err
+
+        eventData = EventData(
+            event = P6Events.Worksheet.DeleteCell.event,
+            data = delResponse
+        )
+
+        self.__onWorksheetEvent(eventData)
+        return delRs
 
 
 

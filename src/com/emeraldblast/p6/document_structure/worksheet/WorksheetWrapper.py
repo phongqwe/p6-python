@@ -17,7 +17,7 @@ class WorksheetWrapper(Worksheet):
     def __init__(self, innerWorksheet: Worksheet):
         self._innerSheet: Worksheet = innerWorksheet
 
-    def deleteCellRs(self, address: CellAddress) -> Result[None, ErrorReport]:
+    def deleteCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
         return self.rootWorksheet.deleteCellRs(address)
 
     @property
@@ -35,6 +35,7 @@ class WorksheetWrapper(Worksheet):
     @property
     def translator(self) -> FormulaTranslator:
         return self.rootWorksheet.translator
+
     @property
     def name(self) -> str:
         return self.rootWorksheet.name
@@ -99,4 +100,3 @@ class WorksheetWrapper(Worksheet):
 
     def renameRs(self, newName: str) -> Result[None, ErrorReport]:
         return self.rootWorksheet.renameRs(newName)
-

@@ -4,6 +4,8 @@ from unittest.mock import MagicMock
 from com.emeraldblast.p6.document_structure.cell.DataCell import DataCell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteCellRequest import \
+    DeleteCellResponse
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.AppEventData import EventData
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
@@ -12,6 +14,47 @@ from com.emeraldblast.p6.document_structure.worksheet.WorksheetImp import Worksh
 
 
 class EventWorksheet_test(unittest.TestCase):
+    def setUp(self):
+        super().setUp()
+        self.wb = WorkbookImp("WB1")
+        self.s1 = self.wb.createNewWorksheet("S1")
+
+    def test_deleteCell_ok(self):
+        self.eventData = None
+        def onWSEvent(data):
+            self.eventData = data
+        es = EventWorksheet(
+            innerWorksheet = self.s1,
+            onWorksheetEvent = onWSEvent)
+        es.deleteCellRs(CellIndex(1,1))
+        self.assertIsNotNone(self.eventData)
+        response:DeleteCellResponse = self.eventData.data
+        self.assertEqual(self.wb.workbookKey,response.workbookKey)
+        self.assertEqual(self.s1.name,response.worksheetName)
+        self.assertEqual(CellIndex(1,1),response.cellAddress)
+        self.assertFalse(response.isError)
+        self.assertIsNone(response.errorReport)
+        self.assertEqual(self.wb,response.newWorkbook)
+
+    def test_deleteCell_fail(self):
+        self.eventData = None
+        def onWSEvent(data):
+            self.eventData = data
+        es = EventWorksheet(
+            innerWorksheet = self.s1,
+            onWorksheetEvent = onWSEvent)
+        address= CellIndex(-11,1)
+        o=es.deleteCellRs(address)
+        self.assertIsNotNone(self.eventData)
+        response:DeleteCellResponse = self.eventData.data
+        self.assertEqual(self.wb.workbookKey,response.workbookKey)
+        self.assertEqual(self.s1.name,response.worksheetName)
+        self.assertEqual(address,response.cellAddress)
+        self.assertTrue(response.isError)
+        self.assertIsNotNone(response.errorReport)
+        self.assertIsNone(response.newWorkbook)
+        self.assertEqual(o.err.header,response.errorReport.header)
+
 
     def test_rename_onWorksheet(self):
         self.x = 0

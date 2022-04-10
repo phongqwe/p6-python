@@ -4,6 +4,7 @@ from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.DataCell import DataCell
 from com.emeraldblast.p6.document_structure.cell.WriteBackCell import WriteBackCell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
+from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from com.emeraldblast.p6.document_structure.range.Range import Range
@@ -184,7 +185,8 @@ class WorksheetImp(Worksheet):
         else:
             raise Exception(f"worksheet \'{self.name}\' can't contain cell at \'{cell.address.__str__()}\'")
 
-    def deleteCellRs(self, address: CellAddress) -> Result[None, ErrorReport]:
+    def deleteCellRs(self, address: CellAddress | Tuple[int, int]|str) -> Result[None, ErrorReport]:
+        address = CellAddresses.parseAddress(address)
         if self.containsAddress(address):
             key = address.toTuple()
             if key in self._cellDict.keys():
