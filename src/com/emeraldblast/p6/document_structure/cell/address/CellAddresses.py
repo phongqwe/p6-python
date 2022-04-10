@@ -25,11 +25,12 @@ class CellAddresses:
 
     @staticmethod
     def parseAddress(address: CellAddress | Tuple[int, int] | str) -> CellAddress:
-        if isinstance(address, str):
-            return CellAddresses.addressFromLabel(address)
+        if isinstance(address, CellAddress):
+            return address
         if isinstance(address, Tuple):
             return CellAddresses.fromColRow(address[0], address[1])
-        return address
+        if isinstance(address, str):
+            return CellAddresses.addressFromLabel(address)
 
     @staticmethod
     def addressFromLabel(address: str) -> CellAddress:
