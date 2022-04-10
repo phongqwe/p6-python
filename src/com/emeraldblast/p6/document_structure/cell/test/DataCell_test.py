@@ -41,16 +41,16 @@ class DataCellTest(unittest.TestCase):
     def test_clearScriptResult(self):
         c1 = DataCell(CellIndex(1, 1), 123)
         c1.clearScriptResult()
-        self.assertEqual(123, c1.bareValue())
+        self.assertEqual(123, c1.bareValue)
 
         c2 = DataCell(CellIndex(1, 1), 123, script = "123")
         c2.clearScriptResult()
-        self.assertIsNone(c2.bareValue())
+        self.assertIsNone(c2.bareValue)
         self.assertIsNotNone(c2.script)
 
         c3 = DataCell(CellIndex(1, 1))
         c3.clearScriptResult()
-        self.assertIsNone(c3.bareValue())
+        self.assertIsNone(c3.bareValue)
         self.assertIsNone(c3.script)
 
     def test_rerun(self):
@@ -68,12 +68,12 @@ class DataCellTest(unittest.TestCase):
                        onCellEvent = increaseExCount)
         oldCount = self.exCountA
         c2.reRun(globals())
-        self.assertEqual(123, c2.bareValue())
+        self.assertEqual(123, c2.bareValue)
         # +1 when clear, and +1 when run
         self.assertEqual(oldCount + 1, self.exCountA)
         oldCount = self.exCountA
         c2.reRun(globals())
-        self.assertEqual(123, c2.bareValue())
+        self.assertEqual(123, c2.bareValue)
         self.assertEqual(oldCount + 1, self.exCountA)
 
     def test_assigningValueAndScript(self):
@@ -86,7 +86,7 @@ class DataCellTest(unittest.TestCase):
 
         # x: result 11 from running script should overwrite the old value 123
         c.script = "x=10;x=x+1;x;"
-        self.assertIsNone(c.bareValue())
+        self.assertIsNone(c.bareValue)
         c.runScript(globals())
         self.assertTrue(c.isValueEqual(11))
         self.assertEqual(11, c.value)
@@ -123,7 +123,7 @@ class DataCellTest(unittest.TestCase):
         # x: set valid script
         c.script = "x=345;\"abc\""
         c.runScript()
-        self.assertEqual("abc", c.bareValue())
+        self.assertEqual("abc", c.bareValue)
         self.assertEqual("x=345;\"abc\"", c.script)
 
         # x: set empty script

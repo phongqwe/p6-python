@@ -19,9 +19,11 @@ class DataCell(Cell):
     A Cell that holds some data.
     """
 
+    @property
     def bareScript(self) -> str:
         return self.__script
 
+    @property
     def bareFormula(self) -> str:
         return self.__formula
 
@@ -88,6 +90,7 @@ class DataCell(Cell):
         cellProto.formula = default(self.__formula, "")
         return cellProto
 
+    @property
     def bareValue(self):
         return self.__value
 

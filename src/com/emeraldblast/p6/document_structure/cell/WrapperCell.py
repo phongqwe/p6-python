@@ -58,8 +58,17 @@ class WrapperCell(Cell, ABC):
     def formula(self, newFormula: str):
         self._innerCell.formula = newFormula
 
+    @property
+    def bareScript(self) -> str:
+        return self._innerCell.bareScript
+
+    @property
+    def bareFormula(self) -> str:
+        return self._innerCell.bareFormula
+
+    @property
     def bareValue(self):
-        return self._innerCell.bareValue()
+        return self._innerCell.bareValue
 
     def toJson(self) -> CellJson:
         return self._innerCell.toJson()
