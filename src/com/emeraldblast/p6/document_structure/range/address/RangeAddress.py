@@ -6,10 +6,16 @@ from com.emeraldblast.p6.document_structure.worksheet.WorksheetConst import Work
 
 
 class RangeAddress(ABC):
+    """
+    This interface represents a range address.
+    Label format:
+    first cell - last cell: "@A1:B3"
+    whole column: "@A:D"
+    whole row: "@22:33"
+    """
 
     @property
     def label(self) -> str:
-        # TODO add code to simplify whole column/range to shorten address
         firstCellOnFirstRow = self.firstAddress.rowIndex == 1
         lastCellOnLastRow = self.lastAddress.rowIndex == WorksheetConst.rowLimit
         if firstCellOnFirstRow and lastCellOnLastRow:
