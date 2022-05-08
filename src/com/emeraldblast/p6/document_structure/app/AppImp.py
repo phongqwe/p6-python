@@ -124,7 +124,7 @@ class AppImp(App):
 
 
     def __initNotifiers(self):
-        """create internal reactors """
+        """create internal reactors that will react to events from the app, workbooks, worksheets, cells, etc """
         container = self.__reactorContainer
         provider = self.__reactorProvider
 

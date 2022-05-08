@@ -1,10 +1,10 @@
 import unittest
 from unittest.mock import MagicMock
 
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetResponse import \
-    RenameWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.EventServerReactors import \
     EventServerReactors
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.worksheet_event.RenameWorksheetReactor import \
+    RenameWorksheetReactor
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.workbook.WorkbookErrors import WorkbookErrors
@@ -13,38 +13,32 @@ from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import Wor
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetErrors import WorksheetErrors
 from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import RenameWorksheetRequestProto
 
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetResponse import \
+    RenameWorksheetResponse
 
-class EventServerReactors_test(unittest.TestCase):
-    """WARNING:Don't add any more reactor logic test into this. Reactor should be test directly, not indirectly through EventServerReactors. This should only test the reactor creation logic
-    TODO move the reactor tests to their own files
-    """
 
+class RenameWorksheetReactor_test(unittest.TestCase):
     def setUp(self) -> None:
         super().setUp()
         self.wb = WorkbookImp("Book1")
         self.s1 = self.wb.createNewWorksheet("Sheet1")
         self.s2 = self.wb.createNewWorksheet("Sheet2")
-        def wbGetter(identity):
+        def wbGetter(wbKey):
             return Ok(self.wb)
+        self.wbGetter = wbGetter
         def appGetter():
             return MagicMock()
 
         self.appGetter = appGetter
         self.er = EventServerReactors(wbGetter,appGetter = appGetter)
-
-    def test_createSetActiveWorksheetReactor(self):
-        reactor = self.er.setActiveWorksheetReactor()
-        self.assertIsNotNone(reactor.id)
-        self.assertEqual(self.appGetter,reactor.appGetter)
+        self.reactor = RenameWorksheetReactor("x", self.wbGetter)
 
     def test_renameReactor_Ok(self):
-        reactor: EventReactor[bytes, RenameWorksheetResponse] = self.er.renameWorksheet()
         inputData = RenameWorksheetRequestProto()
         inputData.workbookKey.CopyFrom(WorkbookKeys.fromNameAndPath("Book1", None).toProtoObj())
         inputData.oldName = self.s1.name
         inputData.newName = "NewName"
-
-        out = reactor.react(inputData.SerializeToString())
+        out = self.reactor.react(inputData.SerializeToString())
         self.assertFalse(out.isError)
         print(out)
         print(out.toProtoBytes())
@@ -53,13 +47,13 @@ class EventServerReactors_test(unittest.TestCase):
         self.assertEqual(out.workbookKey, self.wb.workbookKey)
 
     def test_renameReactor_Fail_EmpyNewName(self):
-        reactor: EventReactor[bytes, RenameWorksheetResponse] = self.er.renameWorksheet()
+
         inputData = RenameWorksheetRequestProto()
         inputData.workbookKey.CopyFrom(WorkbookKeys.fromNameAndPath("Book1", None).toProtoObj())
         inputData.oldName = self.s1.name
         inputData.newName = ""
 
-        out = reactor.react(inputData.SerializeToString())
+        out = self.reactor.react(inputData.SerializeToString())
         print(out)
         print(out.toProtoBytes)
         self.assertTrue(out.isError)
@@ -69,13 +63,12 @@ class EventServerReactors_test(unittest.TestCase):
         self.assertEqual(WorksheetErrors.IllegalNameReport.header, errReport.header)
 
     def test_renameReactor_Fail_CollidingName(self):
-        reactor: EventReactor[bytes, RenameWorksheetResponse] = self.er.renameWorksheet()
         inputData = RenameWorksheetRequestProto()
         inputData.workbookKey.CopyFrom(self.wb.workbookKey.toProtoObj())
         inputData.oldName = self.s1.name
         inputData.newName = self.s2.name
 
-        out = reactor.react(inputData.SerializeToString())
+        out = self.reactor.react(inputData.SerializeToString())
         print(out)
         self.assertTrue(out.isError)
         self.assertTrue(self.s1.name, out.oldName)
