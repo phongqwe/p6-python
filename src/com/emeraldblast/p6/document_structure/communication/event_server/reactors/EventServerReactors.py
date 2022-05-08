@@ -1,6 +1,6 @@
 import uuid
 
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteCellRequest import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteCell import \
     DeleteCellResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetResponse import \
     RenameWorksheetResponse

@@ -30,10 +30,10 @@ class CellAddresses:
         if isinstance(address, Tuple):
             return CellAddresses.fromColRow(address[0], address[1])
         if isinstance(address, str):
-            return CellAddresses.addressFromLabel(address)
+            return CellAddresses.fromLabel(address)
 
     @staticmethod
-    def addressFromLabel(address: str) -> CellAddress:
+    def fromLabel(address: str) -> CellAddress:
         """
         :param address: can be in form "@<cell_address>" such as "@A1"
         :return:

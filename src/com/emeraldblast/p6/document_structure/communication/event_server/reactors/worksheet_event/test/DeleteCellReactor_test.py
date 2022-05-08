@@ -2,7 +2,7 @@ import unittest
 
 from com.emeraldblast.p6.document_structure.app.errors.AppErrors import AppErrors
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteCellRequest import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteCell import \
     DeleteCellRequest
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.worksheet_event.DeleteCellReactor import \
     DeleteCellReactor

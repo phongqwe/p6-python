@@ -37,7 +37,7 @@ class RangeImp(Range):
 
     @staticmethod
     def fromRangeAddress(rangeAddress: RangeAddress, sourceContainer: MutableCellContainer) -> Range:
-        return RangeImp(rangeAddress.firstAddress, rangeAddress.lastAddress, sourceContainer)
+        return RangeImp(rangeAddress.topLeft, rangeAddress.botRight, sourceContainer)
 
     @staticmethod
     def fromStrAddress(address: str, sourceContainer: MutableCellContainer) -> Range:
@@ -48,7 +48,7 @@ class RangeImp(Range):
     def from2Cells(cell1Address: CellAddress, cell2Address: CellAddress,
                    sourceContainer: MutableCellContainer):
         """ accept any two cells. The cell address can be input in any order """
-        rangeAddress = RangeAddresses.fromArbitraryCells(cell1Address, cell2Address)
+        rangeAddress = RangeAddresses.from2Cells(cell1Address, cell2Address)
         return RangeImp.fromRangeAddress(rangeAddress, sourceContainer)
 
     ### >> UserFriendlyCellContainer << ###

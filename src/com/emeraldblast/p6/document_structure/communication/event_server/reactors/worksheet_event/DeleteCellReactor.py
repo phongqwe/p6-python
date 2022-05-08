@@ -1,6 +1,6 @@
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.TypeAliasForReactor import WbGetter
 
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteCellRequest import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteCell import \
     DeleteCellResponse, DeleteCellRequest
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor, I, O
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook

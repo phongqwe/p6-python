@@ -11,11 +11,25 @@ from com.emeraldblast.p6.document_structure.util.result.Err import Err
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetConst import WorksheetConst
+from com.emeraldblast.p6.proto.DocProtos_pb2 import RangeAddressProto
 
 
 class RangeAddresses:
+
     @staticmethod
-    def fromArbitraryCells(firstCell: CellAddress, secondCell: CellAddress) -> RangeAddress:
+    def fromProtoBytes(protoBytes:bytes)->'RangeAddress':
+        proto = RangeAddressProto()
+        proto.ParseFromString(protoBytes)
+        return RangeAddresses.fromProto(proto)
+
+    @staticmethod
+    def fromProto(proto:RangeAddressProto)->'RangeAddress':
+        topLeft = CellAddresses.fromProto(proto.topLeft)
+        botRight = CellAddresses.fromProto(proto.botRight)
+        return RangeAddresses.from2Cells(topLeft, botRight)
+
+    @staticmethod
+    def from2Cells(firstCell: CellAddress, secondCell: CellAddress) -> RangeAddress:
         """accept any 2 cells, regardless of order, then construct a RangeAddress from that"""
         topLeftCell = CellIndex(min(firstCell.colIndex, secondCell.colIndex),
                                 min(firstCell.rowIndex, secondCell.rowIndex))
@@ -29,7 +43,7 @@ class RangeAddresses:
         if isNormalRange.isOk():
             bareLabel = label[1:]  # remove @
             cellLabels = bareLabel.split(":")
-            cellAddresses = list(map(lambda cLabel: CellAddresses.addressFromLabel("@" + cLabel), cellLabels))
+            cellAddresses = list(map(lambda cLabel: CellAddresses.fromLabel("@" + cLabel), cellLabels))
             firstCell = cellAddresses[0]
             lastCell = cellAddresses[1]
 
@@ -39,8 +53,8 @@ class RangeAddresses:
             lastRow = max(firstCell.rowIndex, lastCell.rowIndex)
 
             return RangeAddressImp(
-                firstAddress=CellIndex(firstCol,firstRow),
-                lastAddress=CellIndex(lastCol,lastRow)
+                topLeft =CellIndex(firstCol, firstRow),
+                botRight =CellIndex(lastCol, lastRow)
             )
         else:
             isWholeRange = RangeAddresses.checkWholeAddressFormat(label)
@@ -60,15 +74,15 @@ class RangeAddresses:
                     firstColIndex = AlphabetBaseNumberSystem.toDecimal(firstPart)
                     secondColIndex = AlphabetBaseNumberSystem.toDecimal(secondPart)
                     return RangeAddressImp(
-                        firstAddress=CellIndex(min(firstColIndex,secondColIndex),1),
-                        lastAddress=CellIndex(max(firstColIndex,secondColIndex),WorksheetConst.rowLimit)
+                        topLeft =CellIndex(min(firstColIndex, secondColIndex), 1),
+                        botRight =CellIndex(max(firstColIndex, secondColIndex), WorksheetConst.rowLimit)
                     )
                 elif firstPartIsRow and secondPartIsRow:
                     firstRowIndex = int(firstPart)
                     secondRowIndex = int(secondPart)
                     return RangeAddressImp(
-                        firstAddress=CellIndex(1,min(firstRowIndex,secondRowIndex)),
-                        lastAddress=CellIndex(WorksheetConst.colLimit,max(firstRowIndex,secondRowIndex))
+                        topLeft =CellIndex(1, min(firstRowIndex, secondRowIndex)),
+                        botRight =CellIndex(WorksheetConst.colLimit, max(firstRowIndex, secondRowIndex))
                     )
                 else:
                     raise ValueError("input label \"{lb}\" is not a valid whole column/row address")

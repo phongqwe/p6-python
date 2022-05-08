@@ -4,7 +4,7 @@ from unittest.mock import MagicMock
 from com.emeraldblast.p6.document_structure.cell.DataCell import DataCell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteCellRequest import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteCell import \
     DeleteCellResponse
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.AppEventData import EventData
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslators import FormulaTranslators
@@ -154,7 +154,7 @@ class EventWorksheet_test(unittest.TestCase):
         self.assertEqual(5, self.a)
 
         # getCell
-        c3 = eventSheet.getCell(CellAddresses.addressFromLabel("@A2"))
+        c3 = eventSheet.getCell(CellAddresses.fromLabel("@A2"))
         c3.value = "jjj"
         self.assertEqual(6, self.a)
 

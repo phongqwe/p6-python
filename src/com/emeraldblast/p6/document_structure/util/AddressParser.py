@@ -13,7 +13,7 @@ class AddressParser:
     def parseCellAddress(address: Union[str, CellAddress, Tuple[int, int]])->CellAddress:
         parsedAddress = address
         if isinstance(address, str):
-            parsedAddress = CellAddresses.addressFromLabel(address)
+            parsedAddress = CellAddresses.fromLabel(address)
         if isinstance(address, Tuple):
             parsedAddress = CellIndex(address[0], address[1])
         return parsedAddress

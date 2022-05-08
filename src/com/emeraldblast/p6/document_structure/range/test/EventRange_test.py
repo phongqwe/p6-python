@@ -38,13 +38,13 @@ class EventRangeTest(unittest.TestCase):
         self.assertEqual(oldA,self.a)
 
         # getCell
-        c1 = er.getCell(CellAddresses.addressFromLabel("@B2"))
+        c1 = er.getCell(CellAddresses.fromLabel("@B2"))
         oldA = self.a
         c1.value=123
         self.assertEqual(oldA+1,self.a)
 
         # getOrMakeCell
-        c2 = er.getOrMakeCell(CellAddresses.addressFromLabel("@A3"))
+        c2 = er.getOrMakeCell(CellAddresses.fromLabel("@A3"))
         oldA = self.a
         c2.value = 123
         self.assertEqual(oldA+1,self.a)

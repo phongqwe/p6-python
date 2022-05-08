@@ -17,6 +17,9 @@ class WorksheetWrapper(Worksheet):
     def __init__(self, innerWorksheet: Worksheet):
         self._innerSheet: Worksheet = innerWorksheet
 
+    def deleteRangeRs(self, rangeAddress: RangeAddress) -> Result[None, ErrorReport]:
+        return self.rootWorksheet.deleteRangeRs(rangeAddress)
+
     def deleteCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
         return self.rootWorksheet.deleteCellRs(address)
 

@@ -12,7 +12,7 @@ class WorkbookKeys:
         return WorkbookKeyImp.fromPathStr(path)
 
     @staticmethod
-    def fromNameAndPath(name: str, path: str | Path | None) -> WorkbookKey:
+    def fromNameAndPath(name: str, path: str | Path | None = None) -> WorkbookKey:
         p = path
         if path is not None:
             if isinstance(path, str):

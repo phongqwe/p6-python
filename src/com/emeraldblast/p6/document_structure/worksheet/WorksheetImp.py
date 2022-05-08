@@ -46,6 +46,21 @@ class WorksheetImp(Worksheet):
         self.translatorGetter: Callable[[str], FormulaTranslator] = getTranslator
         self.__wb = workbook
 
+    def deleteRangeRs(self, rangeAddress: RangeAddress) -> Result[None, ErrorReport]:
+        tobeRemovedCells = []
+        for cell in self.cells:
+            address = cell.address
+            if rangeAddress.containCellAddress(address):
+                tobeRemovedCells.append(address)
+
+        for address in tobeRemovedCells:
+            self._cellDict.pop(address.toTuple())
+            (colIndex, rowIndex) = address.toTuple()
+            self._removeCellFromDict(self._colDict, colIndex, address)
+            self._removeCellFromDict(self._rowDict, rowIndex, address)
+
+        return Ok(None)
+
     def toJsonDict(self) -> dict:
         return self.toJson().toJsonDict()
 

@@ -3,10 +3,12 @@ import unittest
 from unittest.mock import MagicMock
 
 from com.emeraldblast.p6.document_structure.cell.DataCell import DataCell
+from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from com.emeraldblast.p6.document_structure.range.RangeImp import RangeImp
 from com.emeraldblast.p6.document_structure.range.address.RangeAddressImp import RangeAddressImp
+from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 from com.emeraldblast.p6.document_structure.workbook.WorkbookErrors import WorkbookErrors
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetErrors import WorksheetErrors
@@ -21,6 +23,30 @@ class WorksheetImp_test(unittest.TestCase):
         s2 = w1.createNewWorksheet("s2")
         s3 = w1.createNewWorksheet("s3")
         return s1, s2, s3, w1
+
+    def setUp(self) -> None:
+        super().setUp()
+        s1, s2, s3, w1 = self.makeTestObj2()
+        self.w1 = w1
+        self.s1 = s1
+        self.s2 = s2
+        self.s3 = s3
+
+    def test_deleteRange(self):
+        self.s1.cell("@A1").value="a1"
+        self.s1.cell("@A2").value="a2"
+        self.s1.cell("@A3").value="a3"
+        self.s1.cell("@B2").value ="b2"
+        r1 = RangeAddresses.from2Cells(CellAddresses.fromLabel("@A1"),CellAddresses.fromLabel("@B2"))
+        rs = self.s1.deleteRangeRs(r1)
+        self.assertTrue(rs.isOk())
+        self.assertFalse(self.s1.hasCellAt(CellAddresses.fromLabel("@A1")))
+        self.assertFalse(self.s1.hasCellAt(CellAddresses.fromLabel("@A2")))
+        self.assertFalse(self.s1.hasCellAt(CellAddresses.fromLabel("@B2")))
+        self.assertTrue(self.s1.hasCellAt(CellAddresses.fromLabel("@A3")))
+
+
+
     def test_rename(self):
         s1, s2, s3, w = self.makeTestObj2()
         oldName = s1.name
@@ -177,7 +203,7 @@ class WorksheetImp_test(unittest.TestCase):
         c2.value = 123
         self.assertTrue(s.hasCellAt(c2Addr))
 
-    def test_RemoveCell(self):
+    def test_deleteCell(self):
         s = self.makeS()
         c = s.getOrMakeCell(CellIndex(1, 1))
         c.value = 123

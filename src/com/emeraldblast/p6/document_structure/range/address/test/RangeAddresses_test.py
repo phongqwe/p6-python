@@ -1,11 +1,13 @@
 import unittest
 
+from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
 from com.emeraldblast.p6.document_structure.range.address.RangeAddressImp import RangeAddressImp
 from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetConst import WorksheetConst
+from com.emeraldblast.p6.proto.DocProtos_pb2 import RangeAddressProto
 
 
 class RangeAddresses_test(unittest.TestCase):
@@ -77,3 +79,43 @@ class RangeAddresses_test(unittest.TestCase):
         self.assertTrue(isinstance(RangeAddresses.checkWholeAddressFormat("@123"), Err))
         self.assertTrue(isinstance(RangeAddresses.checkWholeAddressFormat("@A1:"), Err))
         self.assertTrue(isinstance(RangeAddresses.checkWholeAddressFormat("@A1:"), Err))
+
+    def test_fromArbitraryCells(self):
+        cell1 = CellIndex(99, 88)
+        cell2 = CellIndex(1, 2)
+        r = RangeAddresses.from2Cells(cell1, cell2)
+        expect = RangeAddressImp(cell2, cell1)
+        self.assertTrue(r == expect)
+        self.assertEqual(r, expect)
+
+    def test_label(self):
+        self.assertEqual("@A1:A2",RangeAddresses.addressFromLabel("@A1:A2").label)
+        self.assertEqual("@A:B",RangeAddresses.addressFromLabel("@A:B").label)
+        self.assertEqual("@A:B",RangeAddresses.addressFromLabel("@B:A").label)
+        self.assertEqual("@20:30",RangeAddresses.addressFromLabel("@20:30").label)
+        self.assertEqual("@20:30",RangeAddresses.addressFromLabel("@30:20").label)
+        self.assertEqual("@A:C",
+                         RangeAddresses.from2Cells(
+                             CellIndex(1,1),
+                             CellIndex(3,WorksheetConst.rowLimit)).label)
+        self.assertEqual("@3:5",
+                         RangeAddresses.from2Cells(
+                             CellIndex(1, 3),
+                             CellIndex(WorksheetConst.colLimit, 5)).label)
+
+        self.assertEqual("@C:Q",
+                         RangeAddresses.from2Cells(
+                             CellAddresses.fromLabel("@C1"),
+                             CellAddresses.fromLabel("@Q{r}".format(r=str(WorksheetConst.rowLimit)))).label)
+
+    def test_fromProto(self):
+        topLeft = CellAddresses.fromColRow(1, 1)
+        botRight = CellAddresses.fromColRow(20, 30)
+        expect = RangeAddressImp(
+            topLeft = topLeft,
+            botRight = botRight,
+        )
+        protoRange = RangeAddressProto()
+        protoRange.topLeft.CopyFrom(topLeft.toProtoObj())
+        protoRange.botRight.CopyFrom(botRight.toProtoObj())
+        self.assertEqual(RangeAddresses.fromProto(protoRange),expect)

@@ -17,14 +17,14 @@ class CellLabel_test(unittest.TestCase):
             "@abu96": CellIndex(749, 96),
         }
         for k, v in data.items():
-            self.assertEqual(v, CellAddresses.addressFromLabel(k))
+            self.assertEqual(v, CellAddresses.fromLabel(k))
 
     def test_constructorWithMalformedAddress(self):
         with self.assertRaises(ValueError):
-            CellAddresses.addressFromLabel("ABU96")
+            CellAddresses.fromLabel("ABU96")
         with self.assertRaises(ValueError):
-            CellAddresses.addressFromLabel("@ABU96__")
+            CellAddresses.fromLabel("@ABU96__")
         with self.assertRaises(ValueError):
-            CellAddresses.addressFromLabel("@96ABU")
+            CellAddresses.fromLabel("@96ABU")
         with self.assertRaises(ValueError):
-            CellAddresses.addressFromLabel("@ABU_96")
+            CellAddresses.fromLabel("@ABU_96")

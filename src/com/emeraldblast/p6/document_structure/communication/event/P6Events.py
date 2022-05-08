@@ -68,6 +68,9 @@ class P6Events:
         class DeleteCell:
             event = P6Event(f"{WSE}3", "Delete cell")
 
+        class DeleteMulti:
+            event = P6Event(f"{WSE}4", "Delete multi")
+
     class Range:
         @classmethod
         def allEvents(clazz):
