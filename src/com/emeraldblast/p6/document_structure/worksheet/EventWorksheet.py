@@ -8,12 +8,15 @@ from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import Ce
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteCell import \
     DeleteCellResponse
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteMulti import \
+    DeleteMultiResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetResponse import \
     RenameWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.AppEventData import EventData
 from com.emeraldblast.p6.document_structure.range.EventRange import EventRange
 from com.emeraldblast.p6.document_structure.range.Range import Range
 from com.emeraldblast.p6.document_structure.range.address.RangeAddress import RangeAddress
+from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 from com.emeraldblast.p6.document_structure.util.AddressParser import AddressParser
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
@@ -145,6 +148,24 @@ class EventWorksheet(WorksheetWrapper):
         )
 
         self.__onWorksheetEvent(eventData)
+        return delRs
+
+    # TODO test this
+    def deleteRangeRs(self, rangeAddress: RangeAddress) -> Result[None, ErrorReport]:
+        delRs = self.rootWorksheet.deleteRangeRs(rangeAddress)
+        eventResponse = DeleteMultiResponse(
+            isError = not delRs.isOk(),
+            workbookKey = self.workbook.workbookKey
+        )
+        if delRs.isOk():
+            eventResponse.newWorkbook = self.workbook
+        else:
+            eventResponse.errorReport = delRs.err
+
+        self.__onWorksheetEvent(EventData(
+            event = P6Events.Worksheet.DeleteMulti.event,
+            data = eventResponse
+        ))
         return delRs
 
 

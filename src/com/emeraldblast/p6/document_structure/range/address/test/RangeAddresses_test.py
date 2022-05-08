@@ -34,36 +34,36 @@ class RangeAddresses_test(unittest.TestCase):
         }
 
         for k, v in data.items():
-            label = RangeAddresses.addressFromLabel(k)
+            label = RangeAddresses.fromLabel(k)
             self.assertEqual(label, v)
 
     def test_constructorWithMalformedLabel(self):
         with self.assertRaises(ValueError):
-            RangeAddresses.addressFromLabel("A1:ABC2")
+            RangeAddresses.fromLabel("A1:ABC2")
         with self.assertRaises(ValueError):
-            RangeAddresses.addressFromLabel("A1:@ABC2")
+            RangeAddresses.fromLabel("A1:@ABC2")
         with self.assertRaises(ValueError):
-            RangeAddresses.addressFromLabel("@A_1:ABC2")
+            RangeAddresses.fromLabel("@A_1:ABC2")
         with self.assertRaises(ValueError):
-            RangeAddresses.addressFromLabel("@_A1:ABC2")
+            RangeAddresses.fromLabel("@_A1:ABC2")
         with self.assertRaises(ValueError):
-            RangeAddresses.addressFromLabel("@_A1:_ABC2")
+            RangeAddresses.fromLabel("@_A1:_ABC2")
         with self.assertRaises(ValueError):
-            RangeAddresses.addressFromLabel("@_A1:_ABC2")
+            RangeAddresses.fromLabel("@_A1:_ABC2")
         with self.assertRaises(ValueError):
-            RangeAddresses.addressFromLabel("A:L")
+            RangeAddresses.fromLabel("A:L")
         with self.assertRaises(ValueError):
-            RangeAddresses.addressFromLabel("1:32")
+            RangeAddresses.fromLabel("1:32")
         with self.assertRaises(ValueError):
-            RangeAddresses.addressFromLabel("@A1:A")
+            RangeAddresses.fromLabel("@A1:A")
         with self.assertRaises(ValueError):
-            RangeAddresses.addressFromLabel("@A")
+            RangeAddresses.fromLabel("@A")
         with self.assertRaises(ValueError):
-            RangeAddresses.addressFromLabel("@1")
+            RangeAddresses.fromLabel("@1")
         with self.assertRaises(ValueError):
-            RangeAddresses.addressFromLabel("@A:")
+            RangeAddresses.fromLabel("@A:")
         with self.assertRaises(ValueError):
-            RangeAddresses.addressFromLabel(":@A")
+            RangeAddresses.fromLabel(":@A")
 
     def test_checkWholeAddressFormat(self):
         self.assertTrue(isinstance(RangeAddresses.checkWholeAddressFormat("@A:A"), Ok))
@@ -89,11 +89,11 @@ class RangeAddresses_test(unittest.TestCase):
         self.assertEqual(r, expect)
 
     def test_label(self):
-        self.assertEqual("@A1:A2",RangeAddresses.addressFromLabel("@A1:A2").label)
-        self.assertEqual("@A:B",RangeAddresses.addressFromLabel("@A:B").label)
-        self.assertEqual("@A:B",RangeAddresses.addressFromLabel("@B:A").label)
-        self.assertEqual("@20:30",RangeAddresses.addressFromLabel("@20:30").label)
-        self.assertEqual("@20:30",RangeAddresses.addressFromLabel("@30:20").label)
+        self.assertEqual("@A1:A2", RangeAddresses.fromLabel("@A1:A2").label)
+        self.assertEqual("@A:B", RangeAddresses.fromLabel("@A:B").label)
+        self.assertEqual("@A:B", RangeAddresses.fromLabel("@B:A").label)
+        self.assertEqual("@20:30", RangeAddresses.fromLabel("@20:30").label)
+        self.assertEqual("@20:30", RangeAddresses.fromLabel("@30:20").label)
         self.assertEqual("@A:C",
                          RangeAddresses.from2Cells(
                              CellIndex(1,1),

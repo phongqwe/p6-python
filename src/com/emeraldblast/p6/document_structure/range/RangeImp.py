@@ -41,7 +41,7 @@ class RangeImp(Range):
 
     @staticmethod
     def fromStrAddress(address: str, sourceContainer: MutableCellContainer) -> Range:
-        rangeAddress = RangeAddresses.addressFromLabel(address)
+        rangeAddress = RangeAddresses.fromLabel(address)
         return RangeImp.fromRangeAddress(rangeAddress, sourceContainer)
 
     @staticmethod

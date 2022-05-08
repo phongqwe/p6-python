@@ -22,7 +22,7 @@ class AddressParser:
     def parseRangeAddress(rangeAddress: Union[str, RangeAddress, Tuple[CellAddress, CellAddress]])->RangeAddress:
         parsedAddress = rangeAddress
         if isinstance(rangeAddress, str):
-            parsedAddress = RangeAddresses.addressFromLabel(rangeAddress)
+            parsedAddress = RangeAddresses.fromLabel(rangeAddress)
 
         if isinstance(rangeAddress, Tuple):
             ad1 = rangeAddress[0]

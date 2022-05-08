@@ -38,7 +38,7 @@ class RangeAddresses:
         return RangeAddressImp(topLeftCell, botRightCell)
 
     @staticmethod
-    def addressFromLabel(label: str) -> RangeAddress:
+    def fromLabel(label: str) -> RangeAddress:
         isNormalRange = RangeAddresses.checkRangeAddressFormat(label)
         if isNormalRange.isOk():
             bareLabel = label[1:]  # remove @
