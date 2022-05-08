@@ -100,7 +100,8 @@ class AppImp(App):
         }
         reactorForWs = {
             P6Events.Worksheet.Rename.event: er.renameWorksheet(),
-            P6Events.Worksheet.DeleteCell.event: er.deleteCellReactor()
+            P6Events.Worksheet.DeleteCell.event: er.deleteCellReactor(),
+            P6Events.Worksheet.DeleteMulti.event: er.deleteMultiReactor(),
         }
 
         reactorForCell = {

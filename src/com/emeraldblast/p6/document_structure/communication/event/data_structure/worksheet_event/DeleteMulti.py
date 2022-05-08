@@ -48,9 +48,10 @@ class DeleteMultiRequest:
 class DeleteMultiResponse(ToProto[DeleteMultiResponseProto]):
     def __init__(self,
                  isError: bool,
-                 errorReport: ErrorReport | None,
-                 newWorkbook: Workbook | None,
-                 workbookKey: WorkbookKey, ):
+                 workbookKey: WorkbookKey,
+                 errorReport: ErrorReport | None = None,
+                 newWorkbook: Workbook | None = None,
+                  ):
         self.workbookKey = workbookKey
         self.newWorkbook = newWorkbook
         self.errorReport = errorReport
