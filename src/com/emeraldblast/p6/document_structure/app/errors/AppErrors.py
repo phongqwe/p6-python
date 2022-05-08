@@ -27,23 +27,23 @@ class AppErrors:
         header = ErrorHeader(errPrefix() + "0", "workbook does not exist")
         class Data(ReportJsonStrMaker):
             def __init__(self, nameOrIndexOrKey: Union[str, int, WorkbookKey]):
-                self.name = None
-                self.index = None
-                self.key=None
+                self.wbName = None
+                self.wbIndex = None
+                self.wbKey=None
 
                 if isinstance(nameOrIndexOrKey, str):
-                    self.name: str = nameOrIndexOrKey
+                    self.wbName: str = nameOrIndexOrKey
                 if isinstance(nameOrIndexOrKey, int):
-                    self.index = nameOrIndexOrKey
+                    self.wbIndex = nameOrIndexOrKey
                 if isinstance(nameOrIndexOrKey, WorkbookKey):
-                    self.key = nameOrIndexOrKey
+                    self.wbKey = nameOrIndexOrKey
             def __str__(self):
-                if self.index is not None:
-                    return "Workbook at index: "+str(self.index)
-                if self.name is not None:
-                    return "Workbook named "+ self.name
-                if self.key is not None:
-                    return "Workbook at key:\n"+str(self.key)
+                if self.wbIndex is not None:
+                    return "Workbook at index: "+str(self.wbIndex)
+                if self.wbName is not None:
+                    return "Workbook named "+ self.wbName
+                if self.wbKey is not None:
+                    return "Workbook at key:\n"+str(self.wbKey)
                 return ""
             def reportJsonStr(self):
                 return json.dumps(self.__dict__)

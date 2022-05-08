@@ -107,7 +107,7 @@ class App(ABC):
             return rs
 
     def getBareWorkbookRs(self, key: Union[str, int, WorkbookKey]) -> Result[Workbook, ErrorReport]:
-        """:return workbook at a key that is either a name, an index, or a WorkbookKey. The returned workbook is NOT hooked to reactors """
+        """:return workbook at a key that is either a name, an index, or a WorkbookKey. The returned workbook is NOT hooked to any event reactors."""
         wb = self.wbContainer.getWorkbook(key)
         if wb is not None:
             return Ok(wb)

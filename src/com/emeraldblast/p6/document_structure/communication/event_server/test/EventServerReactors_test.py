@@ -15,7 +15,9 @@ from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import RenameWorksheetRequest
 
 
 class EventServerReactors_test(unittest.TestCase):
-    """WARNING:Don't add any more reactor logic test into this. Reactor should be test directly, not indirectly through EventServerReactors. This should only test the reactor creation logic"""
+    """WARNING:Don't add any more reactor logic test into this. Reactor should be test directly, not indirectly through EventServerReactors. This should only test the reactor creation logic
+    TODO move the reactor tests to their own files
+    """
 
     def setUp(self) -> None:
         super().setUp()
@@ -43,6 +45,7 @@ class EventServerReactors_test(unittest.TestCase):
         inputData.newName = "NewName"
 
         out = reactor.react(inputData.SerializeToString())
+        self.assertFalse(out.isError)
         print(out)
         print(out.toProtoBytes())
         self.assertEqual(inputData.oldName, out.oldName)

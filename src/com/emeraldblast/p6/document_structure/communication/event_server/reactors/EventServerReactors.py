@@ -66,10 +66,9 @@ class EventServerReactors:
     def deleteCellReactor(self)->EventReactor[bytes,DeleteCellResponse]:
         return DeleteCellReactor(
             uid = str(uuid.uuid4()),
-            wbGetter = self.wbGetter
+            wbGetter = self.appGetter().getBareWorkbookRs
         )
     def deleteMultiReactor(self)->EventReactor[bytes,DeleteMultiResponse]:
         return DeleteMultiReactor(
-            uid = str(uuid.uuid4()),
-            wbGetter = self.wbGetter
+            wbGetter = self.appGetter().getBareWorkbookRs
         )

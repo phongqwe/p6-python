@@ -1,20 +1,17 @@
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteMulti import \
     DeleteMultiResponse, DeleteMultiRequest
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.TypeAliasForReactor import WbGetter
+from com.emeraldblast.p6.document_structure.communication.reactor.BaseEventReactor import BaseEventReactor
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor, I, O
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
 
-class DeleteMultiReactor(EventReactor[bytes, DeleteMultiResponse]):
+class DeleteMultiReactor(BaseEventReactor[bytes, DeleteMultiResponse]):
 
-    def __init__(self, uid: str, wbGetter: WbGetter):
-        self._uid = uid
+    def __init__(self, wbGetter: WbGetter):
+        super().__init__()
         self._wbGetter = wbGetter
-
-    @property
-    def id(self) -> str:
-        return self._uid
 
     def react(self, data: bytes) -> DeleteMultiResponse:
         request = DeleteMultiRequest.fromProtoBytes(data)
@@ -34,10 +31,8 @@ class DeleteMultiReactor(EventReactor[bytes, DeleteMultiResponse]):
                     ws.deleteCell(cellAddress)
                 for rangeAddress in request.rangeList:
                     ws.deleteRange(rangeAddress)
-
                 rt.isError = False
                 rt.newWorkbook = wb
-
             else:
                 rt.isError = True
                 rt.errorReport = getWsRs.err
