@@ -47,7 +47,7 @@ class CellUpdateReactor_test(unittest.TestCase):
         outProto = (outObj.newWorkbook.toProtoObj())
         print(outProto)
         self.assertEqual(None, outObj.newWorkbook.getWorksheetOrNone("Sheet1").cell((1, 1)).value)
-        self.assertEqual(None, outObj.newWorkbook.getWorksheetOrNone("Sheet1").cell((1, 1)).displayValue)
+        self.assertEqual("", outObj.newWorkbook.getWorksheetOrNone("Sheet1").cell((1, 1)).displayValue)
 
     def test_invalidWB(self):
         err = AppErrors.WorkbookNotExist("invalidWB")

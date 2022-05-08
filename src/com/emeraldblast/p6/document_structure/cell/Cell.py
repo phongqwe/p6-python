@@ -19,6 +19,10 @@ class Cell(ToJson, ToProto[CellProto], ABC):
     """
 
     @property
+    def displayValue(self)->str:
+        raise NotImplementedError()
+
+    @property
     def worksheet(self) -> Worksheet | None:
         raise NotImplementedError()
 
@@ -133,17 +137,9 @@ class Cell(ToJson, ToProto[CellProto], ABC):
         """run the script """
         raise NotImplementedError()
 
-    # def runScriptEventFree(self, globalScope=None, localScope=None):
-    #     """run the script without triggering event reactors """
-    #     raise NotImplementedError()
-
     def setScriptAndRun(self, newScript, globalScope = None, localScope = None):
         """set new script for this cell and execute it immediately"""
         raise NotImplementedError()
-
-    # def setScriptAndRunEventFree(self, newScript, globalScope=None, localScope=None):
-    #     """set new script for this cell and execute it immediately"""
-    #     raise NotImplementedError()
 
     def hasScript(self) -> bool:
         """:return True if this cell contains any script"""
@@ -156,10 +152,6 @@ class Cell(ToJson, ToProto[CellProto], ABC):
         """delete script result if this Cell houses any script"""
         raise NotImplementedError()
 
-    # def clearScriptResultEventFree(self):
-    #     """delete script result if this Cell houses any script without triggering event reactors"""
-    #     raise NotImplementedError()
-
     def isEmpty(self):
         if self.hasScript():
             return True
@@ -169,10 +161,6 @@ class Cell(ToJson, ToProto[CellProto], ABC):
     def reRun(self, globalScope = None, localScope = None):
         self.clearScriptResult()
         self.runScript(globalScope, localScope)
-
-    # def reRunEventFree(self, globalScope=None, localScope=None):
-    #     self.clearScriptResultEventFree()
-    #     self.runScriptEventFree(globalScope, localScope)
 
     def copyFrom(self, anotherCell: "Cell"):
         """copy everything (data, format, etc.) from another cell to this cell"""

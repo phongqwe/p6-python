@@ -18,7 +18,7 @@ class DataCell(Cell):
     """
     A Cell that holds some data.
     """
-
+    texualType = [int, float, str, ]
     @property
     def bareScript(self) -> str:
         return self.__script
@@ -35,9 +35,9 @@ class DataCell(Cell):
                  worksheet: Worksheet | None = None):
         self.__value: Any = value
         self.__script: str = script
-        self.__addr: CellAddress = address
-        self.__scriptAlreadyRun: bool = False
         self.__formula: str = formula
+        self.__scriptAlreadyRun: bool = False
+        self.__addr: CellAddress = address
 
         def translatorGetter():
             if self.workbook is not None and self.worksheet is not None:
@@ -80,14 +80,10 @@ class DataCell(Cell):
     def toProtoObj(self) -> CellProto:
         cellProto = CellProto()
         cellProto.address.CopyFrom(self.address.toProtoObj())
-        vl = self.__value
-        if vl is not None:
-            cellProto.displayValue = str(vl)
-        else:
-            cellProto.displayValue = ""
-
+        cellProto.displayValue = self.displayValue
         cellProto.script = default(self.__script, "")
         cellProto.formula = default(self.__formula, "")
+        cellProto.isObject = type(self.__value) in DataCell.texualType
         return cellProto
 
     @property
@@ -104,10 +100,13 @@ class DataCell(Cell):
 
     @property
     def displayValue(self) -> str:
-        if isinstance(self.value, Exception):
+        if isinstance(self.__value, Exception):
             return convertExceptionToStr(self.__value)
         else:
-            str(self.__value)
+            if self.__value is None:
+                return ""
+            else:
+                return str(self.__value)
 
     @property
     def value(self):

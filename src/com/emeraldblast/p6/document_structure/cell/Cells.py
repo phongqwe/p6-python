@@ -16,6 +16,8 @@ class Cells:
     Cell factory
     """
 
+
+
     @staticmethod
     def cellFromJson(cellJson: Union[CellJson, str]) -> Cell:
         if isinstance(cellJson, str):

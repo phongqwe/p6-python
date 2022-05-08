@@ -19,6 +19,10 @@ class WrapperCell(Cell, ABC):
     def worksheet(self) -> Worksheet | None:
         return self._innerCell.worksheet
 
+    @property
+    def displayValue(self) -> str:
+        return self._innerCell.displayValue
+
     @worksheet.setter
     def worksheet(self, newWorksheet: Worksheet | None):
         self._innerCell.worksheet = newWorksheet

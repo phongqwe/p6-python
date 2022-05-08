@@ -15,7 +15,7 @@ _sym_db = _symbol_database.Default()
 from com.emeraldblast.p6.proto import CommonProtos_pb2 as com_dot_emeraldblast_dot_p6_dot_proto_dot_CommonProtos__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n)com/emeraldblast/p6/proto/DocProtos.proto\x12\x19\x63om.emeraldblast.p6.proto\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\"\x90\x01\n\x11RangeAddressProto\x12<\n\x07topLeft\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\x12=\n\x08\x62otRight\x18\x02 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\",\n\x10\x43\x65llAddressProto\x12\x0b\n\x03\x63ol\x18\x01 \x01(\x05\x12\x0b\n\x03row\x18\x02 \x01(\x05\"\x80\x01\n\tCellProto\x12\x14\n\x0c\x64isplayValue\x18\x01 \x01(\t\x12\x0f\n\x07\x66ormula\x18\x02 \x01(\t\x12\x0e\n\x06script\x18\x03 \x01(\t\x12<\n\x07\x61\x64\x64ress\x18\x04 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\"R\n\x0eWorksheetProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x32\n\x04\x63\x65ll\x18\x02 \x03(\x0b\x32$.com.emeraldblast.p6.proto.CellProto\"Y\n\x10WorkbookKeyProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x37\n\x04path\x18\x02 \x01(\x0b\x32).com.emeraldblast.p6.proto.NullableString\"\x8f\x01\n\rWorkbookProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12<\n\tworksheet\x18\x02 \x03(\x0b\x32).com.emeraldblast.p6.proto.WorksheetProtob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n)com/emeraldblast/p6/proto/DocProtos.proto\x12\x19\x63om.emeraldblast.p6.proto\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\"\x90\x01\n\x11RangeAddressProto\x12<\n\x07topLeft\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\x12=\n\x08\x62otRight\x18\x02 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\",\n\x10\x43\x65llAddressProto\x12\x0b\n\x03\x63ol\x18\x01 \x01(\x05\x12\x0b\n\x03row\x18\x02 \x01(\x05\"\x92\x01\n\tCellProto\x12\x14\n\x0c\x64isplayValue\x18\x01 \x01(\t\x12\x0f\n\x07\x66ormula\x18\x02 \x01(\t\x12\x0e\n\x06script\x18\x03 \x01(\t\x12\x10\n\x08isObject\x18\x04 \x01(\x08\x12<\n\x07\x61\x64\x64ress\x18\x05 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\"R\n\x0eWorksheetProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x32\n\x04\x63\x65ll\x18\x02 \x03(\x0b\x32$.com.emeraldblast.p6.proto.CellProto\"Y\n\x10WorkbookKeyProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x37\n\x04path\x18\x02 \x01(\x0b\x32).com.emeraldblast.p6.proto.NullableString\"\x8f\x01\n\rWorkbookProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12<\n\tworksheet\x18\x02 \x03(\x0b\x32).com.emeraldblast.p6.proto.WorksheetProtob\x06proto3')
 
 
 
@@ -75,11 +75,11 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _CELLADDRESSPROTO._serialized_start=265
   _CELLADDRESSPROTO._serialized_end=309
   _CELLPROTO._serialized_start=312
-  _CELLPROTO._serialized_end=440
-  _WORKSHEETPROTO._serialized_start=442
-  _WORKSHEETPROTO._serialized_end=524
-  _WORKBOOKKEYPROTO._serialized_start=526
-  _WORKBOOKKEYPROTO._serialized_end=615
-  _WORKBOOKPROTO._serialized_start=618
-  _WORKBOOKPROTO._serialized_end=761
+  _CELLPROTO._serialized_end=458
+  _WORKSHEETPROTO._serialized_start=460
+  _WORKSHEETPROTO._serialized_end=542
+  _WORKBOOKKEYPROTO._serialized_start=544
+  _WORKBOOKKEYPROTO._serialized_end=633
+  _WORKBOOKPROTO._serialized_start=636
+  _WORKBOOKPROTO._serialized_end=779
 # @@protoc_insertion_point(module_scope)
