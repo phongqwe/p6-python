@@ -1,10 +1,10 @@
-from typing import TypeVar, Callable
+from typing import TypeVar, Callable, Generic
 
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
 
 I = TypeVar("I")
 O = TypeVar("O")
-class BasicReactor(EventReactor[I, O]):
+class BaseReactor(EventReactor[I, O], Generic[I, O]):
 
     def __init__(self, reactorId: str, callback: Callable[[I], O]):
         self._id = reactorId

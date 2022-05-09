@@ -49,6 +49,9 @@ class P6Events:
             Response = WorkbookUpdateCommonResponse
             Request = CellUpdateRequest
 
+        class MultiUpdate:
+            event = P6Event(f"{CE}2", "cell multi update")
+
     class Worksheet:
         @classmethod
         def allEvents(clazz):

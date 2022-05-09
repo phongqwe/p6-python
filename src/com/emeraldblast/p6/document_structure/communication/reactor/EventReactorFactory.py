@@ -1,11 +1,11 @@
 import uuid
 from typing import Callable, Any
 
-from com.emeraldblast.p6.document_structure.communication.reactor.BaseReactor import BasicReactor
+from com.emeraldblast.p6.document_structure.communication.reactor.BaseReactor import BaseReactor
 
 
 class EventReactorFactory:
     @staticmethod
-    def makeBasicReactor(callback: Callable[[Any], Any]) -> BasicReactor[Any,Any]:
+    def makeBasicReactor(callback: Callable[[Any], Any]) -> BaseReactor[Any, Any]:
         """create a workbook reactor with randomize uuid4 id"""
-        return BasicReactor(str(uuid.uuid4()), callback)
+        return BaseReactor(str(uuid.uuid4()), callback)

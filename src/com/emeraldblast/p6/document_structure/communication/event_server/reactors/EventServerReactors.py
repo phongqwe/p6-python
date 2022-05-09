@@ -13,6 +13,8 @@ from com.emeraldblast.p6.document_structure.communication.event_server.reactors.
     AppGetter
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.SetActiveWorksheetReactor import \
     SetActiveWorksheetReactor
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.cell_event.CellMultiUpdateReactor import \
+    CellMultiUpdateReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.cell_event.CellUpdateReactor import \
     CellUpdateReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook_event.CreateNewWorksheetReactor import \
@@ -26,12 +28,6 @@ from com.emeraldblast.p6.document_structure.communication.event_server.reactors.
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.worksheet_event.RenameWorksheetReactor import \
     RenameWorksheetReactor
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
-from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorFactory import EventReactorFactory
-from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
-from com.emeraldblast.p6.document_structure.util.result.Result import Result
-from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
-from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
-from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import RenameWorksheetResponseProto
 
 
 class EventServerReactors:
@@ -43,8 +39,7 @@ class EventServerReactors:
     def setActiveWorksheetReactor(self) -> SetActiveWorksheetReactor:
         return SetActiveWorksheetReactor(
             uid = str(uuid.uuid4()),
-            appGetter = self.appGetter
-        )
+            appGetter = self.appGetter)
 
     def deleteWorksheetReactor(self) -> DeleteWorksheetReactor:
         reactor = DeleteWorksheetReactor(str(uuid.uuid4()), self.wbGetter)
@@ -58,6 +53,9 @@ class EventServerReactors:
         reactor = CellUpdateReactor(str(uuid.uuid4()), self.wbGetter)
         return reactor
 
+    def cellMultiUpdateReactor(self)->'CellMultiUpdateReactor':
+        return CellMultiUpdateReactor(self.appGetter().getBareWorkbookRs)
+
     def renameWorksheet(self) -> EventReactor[bytes, RenameWorksheetResponse]:
         return RenameWorksheetReactor(
             uid=str(uuid.uuid4()),
@@ -69,6 +67,4 @@ class EventServerReactors:
             wbGetter = self.appGetter().getBareWorkbookRs
         )
     def deleteMultiReactor(self)->EventReactor[bytes, WorkbookUpdateCommonResponse]:
-        return DeleteMultiReactor(
-            wbGetter = self.appGetter().getBareWorkbookRs
-        )
+        return DeleteMultiReactor(self.appGetter().getBareWorkbookRs)

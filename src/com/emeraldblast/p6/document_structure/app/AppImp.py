@@ -106,6 +106,7 @@ class AppImp(App):
 
         reactorForCell = {
             P6Events.Cell.Update.event: er.cellUpdateValueReactor(),
+            P6Events.Cell.MultiUpdate.event: er.cellMultiUpdateReactor(),
         }
 
         reactorForApp= {
