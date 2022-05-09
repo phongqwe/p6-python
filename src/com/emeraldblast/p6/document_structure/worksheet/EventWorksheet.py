@@ -6,10 +6,10 @@ from com.emeraldblast.p6.document_structure.cell.EventCell import EventCell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.WorkbookUpdateCommonResponse import \
+    WorkbookUpdateCommonResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteCell import \
     DeleteCellResponse
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteMulti import \
-    DeleteMultiResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetResponse import \
     RenameWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.AppEventData import EventData
@@ -153,7 +153,7 @@ class EventWorksheet(WorksheetWrapper):
     # TODO test this
     def deleteRangeRs(self, rangeAddress: RangeAddress) -> Result[None, ErrorReport]:
         delRs = self.rootWorksheet.deleteRangeRs(rangeAddress)
-        eventResponse = DeleteMultiResponse(
+        eventResponse = WorkbookUpdateCommonResponse(
             isError = not delRs.isOk(),
             workbookKey = self.workbook.workbookKey
         )

@@ -1,6 +1,8 @@
 import unittest
 
 from com.emeraldblast.p6.document_structure.app.errors.AppErrors import AppErrors
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.WorkbookUpdateCommonResponse import \
+    WorkbookUpdateCommonResponse
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
 from com.emeraldblast.p6.document_structure.workbook.WorkbookErrors import WorkbookErrors
@@ -9,7 +11,7 @@ from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import DeleteMultiRequestProt
 
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteMulti import \
-    DeleteMultiRequest, DeleteMultiResponse
+    DeleteMultiRequest
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.worksheet_event.DeleteMultiReactor import \
     DeleteMultiReactor
 from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
@@ -83,12 +85,12 @@ class DeleteMultiReactor_test(unittest.TestCase):
         self.assertEqual(invalidWbKey,o.errorReport.data.wbKey)
 
 
-    def __test_okCase(self,o:DeleteMultiResponse):
+    def __test_okCase(self, o:WorkbookUpdateCommonResponse):
         self.assertFalse(o.isError)
         self.assertIsNone(o.errorReport)
         self.assertIsNotNone(o.newWorkbook)
 
-    def __test_failCase(self,o:DeleteMultiResponse):
+    def __test_failCase(self, o:WorkbookUpdateCommonResponse):
         self.assertTrue(o.isError)
         self.assertIsNotNone(o.errorReport)
         self.assertIsNone(o.newWorkbook)

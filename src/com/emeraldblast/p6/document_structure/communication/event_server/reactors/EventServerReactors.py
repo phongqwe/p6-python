@@ -1,9 +1,9 @@
 import uuid
 
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.WorkbookUpdateCommonResponse import \
+    WorkbookUpdateCommonResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteCell import \
     DeleteCellResponse
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteMulti import \
-    DeleteMultiResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetResponse import \
     RenameWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetRequest import \
@@ -68,7 +68,7 @@ class EventServerReactors:
             uid = str(uuid.uuid4()),
             wbGetter = self.appGetter().getBareWorkbookRs
         )
-    def deleteMultiReactor(self)->EventReactor[bytes,DeleteMultiResponse]:
+    def deleteMultiReactor(self)->EventReactor[bytes, WorkbookUpdateCommonResponse]:
         return DeleteMultiReactor(
             wbGetter = self.appGetter().getBareWorkbookRs
         )
