@@ -59,7 +59,7 @@ class EventServerImp(EventServer):
                 except Exception as e:
                     # catch-all response
                     p6Res: P6Response = P6Response.create(
-                        event = P6Events.EventServer.Unknown.event,
+                        event = P6Events.EventServer.UnknownError.event,
                         data = CommonErrors.ExceptionErrorReport(e),
                         status = P6Response.Status.ERROR)
                     repSocket.send(p6Res.toProtoBytes())

@@ -106,8 +106,11 @@ class P6Events:
         def allEvents(clazz):
             return P6Events.allEvents(clazz.__name__)
 
-        class Unknown:
+        class UnknownEvent:
             event = P6Event(f"{ESE}0", "Unknown event")
+
+        class UnknownError:
+            event = P6Event(f"{ESE}0","Unknown error")
 
     class App:
         @classmethod
