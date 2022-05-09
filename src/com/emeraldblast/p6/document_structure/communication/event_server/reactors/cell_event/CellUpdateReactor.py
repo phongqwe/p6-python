@@ -1,9 +1,9 @@
 from typing import Callable
 
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateCommonResponse import \
-    CellUpdateCommonResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateRequest import \
     CellUpdateRequest
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.WorkbookUpdateCommonResponse import \
+    WorkbookUpdateCommonResponse
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
@@ -11,7 +11,7 @@ from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 
 
-class CellUpdateReactor(EventReactor[bytes, CellUpdateCommonResponse]):
+class CellUpdateReactor(EventReactor[bytes, WorkbookUpdateCommonResponse]):
 
     def __init__(self, uid: str, wbGetter: Callable[[WorkbookKey | str | int], Result[Workbook, ErrorReport]]):
         self._id = uid
@@ -21,7 +21,7 @@ class CellUpdateReactor(EventReactor[bytes, CellUpdateCommonResponse]):
     def id(self) -> str:
         return self._id
 
-    def react(self, data: bytes) -> CellUpdateCommonResponse:
+    def react(self, data: bytes) -> WorkbookUpdateCommonResponse:
         request = CellUpdateRequest.fromProtoBytes(data)
         cellAddress = request.cellAddress
         getWbRs = self._wbGetter(request.workbookKey)
@@ -41,19 +41,20 @@ class CellUpdateReactor(EventReactor[bytes, CellUpdateCommonResponse]):
                 else:
                     ws.deleteCell(cellAddress)
                 wb.reRun()
-                return CellUpdateCommonResponse(
+                return WorkbookUpdateCommonResponse(
+                    isError = False,
                     workbookKey = request.workbookKey,
                     newWorkbook = wb)
 
             else:
-                return CellUpdateCommonResponse(
+                return WorkbookUpdateCommonResponse(
                     workbookKey = request.workbookKey,
                     newWorkbook = None,
                     isError = True,
                     errorReport = getWsRs.err
                 )
         else:
-            return CellUpdateCommonResponse(
+            return WorkbookUpdateCommonResponse(
                 workbookKey = request.workbookKey,
                 newWorkbook = None,
                 isError = True,

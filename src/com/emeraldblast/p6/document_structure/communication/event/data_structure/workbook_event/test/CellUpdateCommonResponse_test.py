@@ -1,7 +1,7 @@
 import unittest
 
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateCommonResponse import \
-    CellUpdateCommonResponse
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.WorkbookUpdateCommonResponse import \
+    WorkbookUpdateCommonResponse
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorHeader import ErrorHeader
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
@@ -10,7 +10,8 @@ from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import Wor
 
 class CellUpdateCommonResponse_test(unittest.TestCase):
     def test_toProtoObj_1(self):
-        o = CellUpdateCommonResponse(
+        o = WorkbookUpdateCommonResponse(
+            isError = False,
             workbookKey = WorkbookKeys.fromNameAndPath("b1",None),
             newWorkbook = WorkbookImp("B1")
         )
@@ -21,7 +22,7 @@ class CellUpdateCommonResponse_test(unittest.TestCase):
         self.assertFalse(proto.HasField("errorReport"))
 
     def test_toProtoObj_2(self):
-        o = CellUpdateCommonResponse(
+        o = WorkbookUpdateCommonResponse(
             workbookKey = WorkbookKeys.fromNameAndPath("b1",None),
             newWorkbook = WorkbookImp("B1"),
             isError = True,

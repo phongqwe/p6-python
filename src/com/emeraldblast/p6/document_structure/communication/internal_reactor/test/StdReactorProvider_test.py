@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import MagicMock
 
 import zmq
+from com.emeraldblast.p6.proto.WorkbookProtos_pb2 import WorkbookUpdateCommonResponseProto
 
 from com.emeraldblast.p6.document_structure.communication.SocketProviderImp import SocketProviderImp
 from com.emeraldblast.p6.document_structure.communication.internal_reactor.InternalNotifierProvider import \
@@ -11,7 +12,6 @@ from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import findN
     sendClose
 from com.emeraldblast.p6.document_structure.workbook.EventWorkbook import EventWorkbook
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
-from com.emeraldblast.p6.proto.CellProtos_pb2 import CellUpdateCommonResponseProto
 from com.emeraldblast.p6.proto.P6MsgProtos_pb2 import P6ResponseProto
 
 port = findNewSocketPort()
@@ -51,7 +51,7 @@ class StdReactorProvider_test(unittest.TestCase):
         def onReceive(data):
             p6Res = P6ResponseProto()
             p6Res.ParseFromString(data)
-            receive = CellUpdateCommonResponseProto()
+            receive = WorkbookUpdateCommonResponseProto()
             receive.ParseFromString(p6Res.data)
             self.receiveObj = receive
 

@@ -1,14 +1,14 @@
 import inspect
 
 from com.emeraldblast.p6.document_structure.communication.event.P6Event import P6Event
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateCommonResponse import \
-    CellUpdateCommonResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateRequest import \
     CellUpdateRequest
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.CreateNewWorksheetData import \
     CreateNewWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.CreateNewWorksheetRequest import \
     CreateNewWorksheetRequest
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.WorkbookUpdateCommonResponse import \
+    WorkbookUpdateCommonResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetResponse import \
     RenameWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetRequest import \
@@ -46,7 +46,7 @@ class P6Events:
 
         class Update:
             event = P6Event(f"{CE}1", "cell update")
-            Response = CellUpdateCommonResponse
+            Response = WorkbookUpdateCommonResponse
             Request = CellUpdateRequest
 
     class Worksheet:
