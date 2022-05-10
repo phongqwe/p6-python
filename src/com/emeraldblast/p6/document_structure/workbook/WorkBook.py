@@ -19,6 +19,10 @@ from com.emeraldblast.p6.proto.DocProtos_pb2 import WorkbookProto
 class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
 
     @property
+    def worksheetCount(self)->int:
+        return len(self.worksheets)
+
+    @property
     def rootWorkbook(self)->'Workbook':
         raise NotImplementedError()
 

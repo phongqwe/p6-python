@@ -11,7 +11,7 @@ class P6FileSaver(ABC):
     """save a workbook to a file
     """
 
-    def save(self, workbook: Workbook, filePath: Union[str,Path]) -> Result[None,ErrorReport]:
+    def saveRs(self, workbook: Workbook, filePath: Union[str, Path]) -> Result[None, ErrorReport]:
         """
         :param workbook:
         :param filePath:

@@ -16,7 +16,7 @@ from com.emeraldblast.p6.proto import CommonProtos_pb2 as com_dot_emeraldblast_d
 from com.emeraldblast.p6.proto import DocProtos_pb2 as com_dot_emeraldblast_dot_p6_dot_proto_dot_DocProtos__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n,com/emeraldblast/p6/proto/P6FileProtos.proto\x12\x19\x63om.emeraldblast.p6.proto\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\x1a)com/emeraldblast/p6/proto/DocProtos.proto\"#\n\x13P6FileMetaInfoProto\x12\x0c\n\x04\x64\x61te\x18\x01 \x01(\x03\"\x8e\x01\n\x12P6FileContentProto\x12<\n\x04meta\x18\x01 \x01(\x0b\x32..com.emeraldblast.p6.proto.P6FileMetaInfoProto\x12:\n\x08workbook\x18\x02 \x01(\x0b\x32(.com.emeraldblast.p6.proto.WorkbookProto\"/\n\x0bP6FileProto\x12\x0f\n\x07version\x18\x01 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x02 \x01(\x0c\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n,com/emeraldblast/p6/proto/P6FileProtos.proto\x12\x19\x63om.emeraldblast.p6.proto\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\x1a)com/emeraldblast/p6/proto/DocProtos.proto\"#\n\x13P6FileMetaInfoProto\x12\x0c\n\x04\x64\x61te\x18\x01 \x01(\x02\"\x8e\x01\n\x12P6FileContentProto\x12<\n\x04meta\x18\x01 \x01(\x0b\x32..com.emeraldblast.p6.proto.P6FileMetaInfoProto\x12:\n\x08workbook\x18\x02 \x01(\x0b\x32(.com.emeraldblast.p6.proto.WorkbookProto\"/\n\x0bP6FileProto\x12\x0f\n\x07version\x18\x01 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x02 \x01(\x0c\x62\x06proto3')
 
 
 

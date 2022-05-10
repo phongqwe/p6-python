@@ -1,7 +1,10 @@
+import time
 from pathlib import Path
 from typing import Union
 
-from com.emeraldblast.p6.document_structure.file.P6File import P6File
+from com.emeraldblast.p6.document_structure.file.P6File2 import P6File2
+from com.emeraldblast.p6.document_structure.file.P6FileContent import P6FileContent
+from com.emeraldblast.p6.document_structure.file.P6FileMetaInfo import P6FileMetaInfo
 from com.emeraldblast.p6.document_structure.file.P6Files import P6Files
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSaverErrors import P6FileSaverErrors
@@ -12,11 +15,20 @@ from com.emeraldblast.p6.document_structure.util.result.Result import Result
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 
 
-class P6FileSaverStd(P6FileSaver):
+class P6ProtoFileSaver(P6FileSaver):
+    def saveRs(self, workbook: Workbook, filePath: Union[str, Path]) -> Result[None, ErrorReport]:
+        # convert workbook to proto
+        meta =P6FileMetaInfo(date=time.time())
+        fileContent = P6FileContent(
+            meta=meta,
+            wb = workbook
+        )
+        p6FileProtoBytes = P6File2(
+            version="v1",
+            content=fileContent.toProtoBytes()
+        ).toProtoBytes()
 
-    def saveRs(self, workbook: Workbook, filePath: Union[str, Path, None]) -> Result[None, ErrorReport]:
         path = filePath
-
         if filePath is None:
             path = workbook.workbookKey.filePath
 
@@ -24,11 +36,9 @@ class P6FileSaverStd(P6FileSaver):
             path = P6Files.defaultPath
 
         try:
-            file = open(filePath, 'w')
+            file = open(filePath, 'wb')
             try:
-                jsonObject = workbook.toJson()
-                fileObject = P6File(P6Files.currentVersion, jsonObject)
-                file.write(str(fileObject))
+                file.write(p6FileProtoBytes)
                 file.close()
                 return Ok(None)
             except Exception as e:

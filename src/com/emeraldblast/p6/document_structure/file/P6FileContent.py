@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from com.emeraldblast.p6.document_structure.file.P6FileMetaInfo import P6FileMetaInfo
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto, P
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
@@ -18,10 +20,10 @@ class P6FileContent(ToProto[P6FileProto]):
         return proto
 
     @staticmethod
-    def fromProtoBytes(data:bytes):
+    def fromProtoBytes(data:bytes,filePath: Path | None = None):
         proto = P6FileContentProto()
         proto.ParseFromString(data)
         return P6FileContent(
             meta = P6FileMetaInfo.fromProto(proto.meta),
-            wb = Workbooks.fromProto(proto.workbook)
+            wb = Workbooks.fromProto(proto.workbook,filePath)
         )

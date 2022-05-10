@@ -23,7 +23,7 @@ class WorkbookSaverStd_test(unittest.TestCase):
         if self.path.exists():
             os.remove(self.path)
         self.assertFalse(self.path.exists())
-        saver.save(mockWorkbook, self.path)
+        saver.saveRs(mockWorkbook, self.path)
         self.assertTrue(self.path.exists())
         savedFile = open(self.path, "r")
         savedContent = savedFile.read()

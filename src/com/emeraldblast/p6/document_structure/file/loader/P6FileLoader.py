@@ -11,7 +11,7 @@ class P6FileLoader(ABC):
     """load a Workbook from a a file
 
     """
-    def load(self,filePath:Union[str,Path])->Result[Workbook,ErrorReport]:
+    def loadRs(self, filePath:Union[str, Path])->Result[Workbook, ErrorReport]:
         """
         load a Workbook from a file
         :param filePath: path of workbook file

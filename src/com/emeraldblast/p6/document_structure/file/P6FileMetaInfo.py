@@ -3,7 +3,7 @@ from com.emeraldblast.p6.proto.P6FileProtos_pb2 import P6FileMetaInfoProto
 
 
 class P6FileMetaInfo(ToProto[P6FileMetaInfoProto]):
-    def __init__(self, date:int):
+    def __init__(self, date:float):
         self.date = date
 
     def toProtoObj(self)->P6FileMetaInfoProto:

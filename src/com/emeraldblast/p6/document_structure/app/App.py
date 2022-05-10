@@ -180,7 +180,7 @@ class App(ABC):
         force load a workbook from a file path, and add it to this app state, replace whatever workbook with the same key
         :return an Result object if there are error instead of raising an exception
         """
-        loadRs: Result[Workbook, ErrorReport] = self._fileLoader.load(Path(filePath))
+        loadRs: Result[Workbook, ErrorReport] = self._fileLoader.loadRs(Path(filePath))
         if loadRs.isOk():
             self.wbContainer.addWorkbook(loadRs.value)
         return loadRs
@@ -207,7 +207,7 @@ class App(ABC):
         getWbRs: Result[Workbook, ErrorReport] = self.getWorkbookRs(nameOrIndexOrKey)
         if getWbRs.isOk():
             wb: Workbook = getWbRs.value
-            saveResult = self._fileSaver.save(wb, path)
+            saveResult = self._fileSaver.saveRs(wb, path)
             if saveResult.isOk():
                 newKey = WorkbookKeyImp(wb.workbookKey.fileName, path)
                 if newKey != wb.workbookKey:
@@ -265,7 +265,7 @@ class App(ABC):
         wbRs = self.getWorkbookRs(wbKey)
         alreadyHasThisWorkbook = wbRs.isOk()
         if not alreadyHasThisWorkbook:
-            loadResult: Result[Workbook, ErrorReport] = self._fileLoader.load(filePath)
+            loadResult: Result[Workbook, ErrorReport] = self._fileLoader.loadRs(filePath)
             if loadResult.isOk():
                 newWb: Workbook = loadResult.value
                 eventNewWb = self._makeEventWb(newWb)
