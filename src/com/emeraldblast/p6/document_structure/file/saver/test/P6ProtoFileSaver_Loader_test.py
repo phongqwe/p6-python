@@ -55,8 +55,6 @@ class P6ProtoFileSaver_test(unittest.TestCase):
         self.assertTrue(saveRs.isOk())
         self.assertTrue(self.filePath.exists())
 
-
-        
         loader = P6ProtoFileLoader()
         loadRs = loader.loadRs(self.filePath)
         self.assertTrue(loadRs.isOk())
@@ -75,7 +73,6 @@ class P6ProtoFileSaver_test(unittest.TestCase):
 
         ws.cell("@B33").formula="""=SCRIPT(1+2+3)"""
         self.assertEqual(6, ws.cell("@B33").value)
-
 
     def tearDown(self) -> None:
         super().tearDown()
