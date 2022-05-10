@@ -64,10 +64,11 @@ class DataCell(Cell):
 
     @formula.setter
     def formula(self, newFormula):
-        self.__formula = newFormula
-        if self.__translatorGetter is not None:
-            newScript = self._translateFormula(newFormula, self.__translatorGetter())
-            self.__setScriptWithoutChangingFormula(newScript)
+        if newFormula != self.__formula:
+            self.__formula = newFormula
+            if self.__translatorGetter is not None:
+                newScript = self._translateFormula(newFormula, self.__translatorGetter())
+                self.__setScriptWithoutChangingFormula(newScript)
 
     @staticmethod
     def _translateFormula(formula: str, translator: FormulaTranslator) -> str:
@@ -137,8 +138,9 @@ class DataCell(Cell):
 
     @script.setter
     def script(self, newScript: str):
-        self.__setScriptWithoutChangingFormula(newScript)
-        self.__formula = f"=SCRIPT({newScript})"
+        if newScript!= self.__script:
+            self.__setScriptWithoutChangingFormula(newScript)
+            self.__formula = f"=SCRIPT({newScript})"
 
     def __setScriptWithoutChangingFormula(self, newScript):
         self.__script = newScript
