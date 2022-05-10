@@ -1,6 +1,9 @@
 from pathlib import Path
 from typing import Union
 
+from com.emeraldblast.p6.document_structure.worksheet.Worksheets import Worksheets
+from com.emeraldblast.p6.proto.DocProtos_pb2 import WorkbookProto
+
 from com.emeraldblast.p6.document_structure.cell.Cells import Cells
 from com.emeraldblast.p6.document_structure.file.P6Files import P6Files
 from com.emeraldblast.p6.document_structure.workbook import WorkbookJson
@@ -10,6 +13,18 @@ from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
 
 class Workbooks:
+
+    @staticmethod
+    def fromProto(proto: WorkbookProto, filePath: Path | None = None) -> Workbook:
+        wbName = proto.workbookKey.name
+        wb = WorkbookImp(
+            name = wbName,
+            path = filePath
+        )
+        for wsProto in proto.worksheet:
+            ws:Worksheet = Worksheets.fromProto(wsProto,wb)
+            wb.addWorksheet(ws)
+        return wb
 
     @staticmethod
     def wbFromJson(wbJson: WorkbookJson, filePath: Union[Path, None] = None) -> Workbook:

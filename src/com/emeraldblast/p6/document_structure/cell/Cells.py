@@ -1,5 +1,8 @@
 from typing import Union, Any, Callable
 
+from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
+from com.emeraldblast.p6.proto.DocProtos_pb2 import CellProto
+
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.CellJson import CellJson
 from com.emeraldblast.p6.document_structure.cell.DataCell import DataCell
@@ -15,14 +18,28 @@ class Cells:
     """
     Cell factory
     """
+    @staticmethod
+    def fromProto(proto:CellProto)->Cell:
+        v = proto.value
+        try:
+            vf = float(v)
+            v = vf
+        except Exception as e:
+            pass
 
+        rt = DataCell(
+            address = CellAddresses.fromProto(proto.address),
+            value = v,
+            formula = proto.formula,
+            script = proto.script,
+        )
+        return rt
 
 
     @staticmethod
     def cellFromJson(cellJson: Union[CellJson, str]) -> Cell:
         if isinstance(cellJson, str):
             cellJson = CellJson.fromJsonStr(cellJson)
-
         cell = DataCell(
             address = CellIndex(cellJson.address.col, cellJson.address.row),
             value = cellJson.value,

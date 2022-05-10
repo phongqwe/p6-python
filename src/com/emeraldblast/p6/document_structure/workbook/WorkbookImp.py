@@ -193,6 +193,7 @@ class WorkbookImp(Workbook):
             self._sheetDictByName[ws.name] = ws
             # store in index list
             self._sheetList.append(ws)
+            # wire the ws to this wb
             ws.workbook = self
             return Ok(None)
 

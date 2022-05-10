@@ -18,7 +18,7 @@ class DataCell(Cell):
     """
     A Cell that holds some data.
     """
-    texualType = [int, float, str, ]
+    texualType = [int, float, str]
     @property
     def bareScript(self) -> str:
         return self.__script
@@ -67,8 +67,10 @@ class DataCell(Cell):
         if newFormula != self.__formula:
             self.__formula = newFormula
             if self.__translatorGetter is not None:
-                newScript = self._translateFormula(newFormula, self.__translatorGetter())
-                self.__setScriptWithoutChangingFormula(newScript)
+                translator = self.__translatorGetter()
+                if translator is not None:
+                    newScript = self._translateFormula(newFormula, translator)
+                    self.__setScriptWithoutChangingFormula(newScript)
 
     @staticmethod
     def _translateFormula(formula: str, translator: FormulaTranslator) -> str:
@@ -82,9 +84,10 @@ class DataCell(Cell):
         cellProto = CellProto()
         cellProto.address.CopyFrom(self.address.toProtoObj())
         cellProto.displayValue = self.displayValue
+        cellProto.value = str(self.bareValue)
         cellProto.script = default(self.__script, "")
         cellProto.formula = default(self.__formula, "")
-        cellProto.isObject = type(self.__value) in DataCell.texualType
+        cellProto.isObject = type(self.__value) not in DataCell.texualType
         return cellProto
 
     @property
@@ -132,8 +135,10 @@ class DataCell(Cell):
     def script(self) -> str:
         if self.formula is not None and len(self.formula) != 0:
             if self.__translatorGetter is not None:
-                newScript = self._translateFormula(self.formula, self.__translatorGetter())
-                self.__script = newScript
+                translator = self.__translatorGetter()
+                if translator is not None:
+                    newScript = self._translateFormula(self.formula, translator)
+                    self.__script = newScript
         return self.__script
 
     @script.setter
@@ -198,6 +203,6 @@ class DataCell(Cell):
             self.__scriptAlreadyRun = False
 
     def copyFrom(self, anotherCell: "Cell"):
-        self.__value = anotherCell.value
-        self.__formula = anotherCell.formula
-        self.__script = anotherCell.script
+        self.__value = anotherCell.bareValue
+        self.__formula = anotherCell.bareFormula
+        self.__script = anotherCell.bareScript

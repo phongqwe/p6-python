@@ -1,11 +1,46 @@
 import unittest
 
+from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
+from com.emeraldblast.p6.proto.DocProtos_pb2 import CellProto
+
 from com.emeraldblast.p6.document_structure.cell.CellJson import CellJson
 from com.emeraldblast.p6.document_structure.cell.Cells import Cells
 from com.emeraldblast.p6.document_structure.cell.address.CellAddressJson import CellAddressJson
 
 
 class Cells_test(unittest.TestCase):
+
+    def test_FromProto2(self):
+        address = CellAddresses.fromLabel("@C23")
+
+        proto = CellProto(
+            address = address.toProtoObj(),
+            value = "123qwe",
+            formula = "formula z",
+            script = "script x"
+        )
+
+        cell = Cells.fromProto(proto)
+        self.assertEqual(address, cell.address)
+        self.assertEqual(proto.formula, cell.formula)
+        self.assertEqual(proto.script, cell.script)
+        self.assertEqual(proto.value, cell.bareValue)
+
+    def test_FromProto(self):
+        address = CellAddresses.fromLabel("@C23")
+
+        proto = CellProto()
+        proto.address.CopyFrom(address.toProtoObj())
+        proto.value="123"
+        proto.formula= "formula z"
+        proto.script= "script x"
+
+        cell = Cells.fromProto(proto)
+        self.assertEqual(address,cell.address)
+        self.assertEqual(proto.formula,cell.bareFormula)
+        self.assertEqual(proto.script,cell.bareScript)
+        self.assertEqual(123, cell.bareValue)
+
     def test_CreateCellFromJson(self):
         cellJson = CellJson("value", "script", "formula", CellAddressJson(12, 33))
         cell = Cells.cellFromJson(cellJson)
