@@ -34,6 +34,7 @@ class DeleteMultiReactor(BaseEventReactor[bytes, WorkbookUpdateCommonResponse]):
                 for rangeAddress in request.rangeList:
                     ws.deleteRange(rangeAddress)
                 rt.isError = False
+                wb.reRun()
                 rt.newWorkbook = wb
             else:
                 rt.isError = True
