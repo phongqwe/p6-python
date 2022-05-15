@@ -12,6 +12,6 @@ class SaveWorkbookRequest:
         proto = SaveWorkbookRequestProto()
         proto.ParseFromString(data)
         return SaveWorkbookRequest(
-            workbookKey = WorkbookKeys.fromProto(proto),
+            workbookKey = WorkbookKeys.fromProto(proto.workbookKey),
             path = proto.path
         )
