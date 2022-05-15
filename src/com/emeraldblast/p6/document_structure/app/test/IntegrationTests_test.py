@@ -106,7 +106,7 @@ class IntegrationTest_test(unittest.TestCase):
             self.assertEqual("Sheet1", dataObj.oldName)
             self.assertEqual("Sheet1x", dataObj.newName)
             self.assertEqual("Book1", dataObj.workbookKey.name)
-            self.assertEqual("null", dataObj.workbookKey.path.WhichOneof("kind"))
+            self.assertFalse(dataObj.workbookKey.HasField("path"))
             print(dataObj)
 
         thread = startREPServerOnThread(True, port, context, onReceive)

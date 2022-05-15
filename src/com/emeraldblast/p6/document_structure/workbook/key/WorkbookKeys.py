@@ -22,8 +22,10 @@ class WorkbookKeys:
     @staticmethod
     def fromProto(protoOjb: WorkbookKeyProto) -> 'WorkbookKeyImp':
         p = None
-        if ProtoUtils.isValidStr(protoOjb.path):
-            p = Path(protoOjb.path.str)
+        # if ProtoUtils.isValidStr(protoOjb.path):
+        #     p = Path(protoOjb.path.str)
+        if protoOjb.HasField("path"):
+            p = Path(protoOjb.path)
         return WorkbookKeyImp(
             fileName = protoOjb.name,
             filePath = p

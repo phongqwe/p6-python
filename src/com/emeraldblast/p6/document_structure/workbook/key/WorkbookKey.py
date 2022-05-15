@@ -2,12 +2,8 @@ from abc import ABC
 from pathlib import Path
 from typing import Tuple
 
-from google.protobuf.struct_pb2 import NullValue
-
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
-from com.emeraldblast.p6.proto.CommonProtos_pb2 import NullableString
 from com.emeraldblast.p6.proto.DocProtos_pb2 import WorkbookKeyProto
-
 
 class WorkbookKey(ToProto[WorkbookKeyProto],ABC):
     """
@@ -18,12 +14,8 @@ class WorkbookKey(ToProto[WorkbookKeyProto],ABC):
     def toProtoObj(self) -> WorkbookKeyProto:
         rt = WorkbookKeyProto()
         rt.name = self.fileName
-        pathStr = NullableString()
-        if self.filePath is None:
-            pathStr.null = NullValue.NULL_VALUE
-        else:
-            pathStr.str = str(self.filePath.absolute())
-        rt.path.CopyFrom(pathStr)
+        if self.filePath is not None:
+            rt.path = str(self.filePath.absolute())
         return rt
 
     @property
@@ -35,7 +27,10 @@ class WorkbookKey(ToProto[WorkbookKeyProto],ABC):
         raise NotImplementedError()
 
     def __key(self)->Tuple:
-        return self.filePath.absolute(), self.fileName
+        p = None
+        if self.filePath is not None:
+            p = self.filePath.absolute()
+        return p, self.fileName
 
     def __eq__(self, o: object) -> bool:
         if isinstance(o, WorkbookKey):

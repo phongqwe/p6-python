@@ -15,14 +15,14 @@ class WorkbookImp_test(unittest.TestCase):
         s1, s2, s3, w1 = self.makeTestObj()
         o = w1.toProtoObj()
         self.assertEqual(w1.name, o.workbookKey.name)
-        self.assertEqual("null", o.workbookKey.path.WhichOneof("kind"))
+        self.assertFalse( o.workbookKey.HasField("path"))
         self.assertEqual(s1.toProtoObj(), o.worksheet[0])
         self.assertEqual(s2.toProtoObj(), o.worksheet[1])
         self.assertEqual(s3.toProtoObj(), o.worksheet[2])
         w1.path = Path("someFile.qwe")
         o2 = w1.toProtoObj()
-        self.assertEqual("str", o2.workbookKey.path.WhichOneof("kind"))
-        self.assertEqual(str(w1.path.absolute()), o2.workbookKey.path.str)
+        self.assertTrue( o2.workbookKey.HasField("path"))
+        self.assertEqual(str(w1.path.absolute()), o2.workbookKey.path)
 
     def makeTestObj(self):
         w1 = WorkbookImp("w1")
