@@ -101,6 +101,9 @@ class P6Events:
             Response = CreateNewWorksheetResponse
             Request = CreateNewWorksheetRequest
 
+        class SaveWorkbook:
+            event = P6Event(f"{WBE}4","save workbook")
+
     class EventServer:
         @classmethod
         def allEvents(clazz):

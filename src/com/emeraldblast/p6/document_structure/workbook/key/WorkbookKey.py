@@ -35,7 +35,7 @@ class WorkbookKey(ToProto[WorkbookKeyProto],ABC):
         raise NotImplementedError()
 
     def __key(self)->Tuple:
-        return self.filePath, self.fileName
+        return self.filePath.absolute(), self.fileName
 
     def __eq__(self, o: object) -> bool:
         if isinstance(o, WorkbookKey):
