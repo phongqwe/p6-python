@@ -8,7 +8,7 @@ from com.emeraldblast.p6.proto.CellProtos_pb2 import CellUpdateRequestProto
 
 
 class CellUpdateRequest(ToProto[CellUpdateRequestProto],CanCheckEmpty):
-    def __init__(self, workbookKey:WorkbookKey, worksheetName:str, cellAddress:CellAddress, value:str, formula:str):
+    def __init__(self, workbookKey:WorkbookKey, worksheetName:str, cellAddress:CellAddress, value:str|None, formula:str|None):
         self.formula:str = formula
         self.value:str = value
         self.cellAddress = cellAddress
@@ -22,9 +22,15 @@ class CellUpdateRequest(ToProto[CellUpdateRequestProto],CanCheckEmpty):
             workbookKey = WorkbookKeys.fromProto(proto.workbookKey),
             worksheetName = proto.worksheetName,
             cellAddress = CellAddresses.fromProto(proto.cellAddress),
-            value = proto.value,
-            formula = proto.formula,
+            value = None,
+            formula = None,
         )
+        # if proto.HasField("value"):
+        if proto.value is not None:
+            rt.value = proto.value
+        # if proto.HasField("formula"):
+        if proto.formula is not None:
+            rt.formula = proto.formula
         return rt
 
     @staticmethod
@@ -38,8 +44,10 @@ class CellUpdateRequest(ToProto[CellUpdateRequestProto],CanCheckEmpty):
         rt.workbookKey.CopyFrom(self.workbookKey.toProtoObj())
         rt.worksheetName = self.worksheetName
         rt.cellAddress.CopyFrom(self.cellAddress.toProtoObj())
-        rt.value = self.value
-        rt.formula = self.formula
+        if self.value is not None:
+            rt.value = self.value
+        if self.formula is not None:
+            rt.formula = self.formula
         return rt
 
     def isEmpty(self):

@@ -3,7 +3,7 @@ from com.emeraldblast.p6.document_structure.util.ToRepStr import ToRepStr
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorHeader import ErrorHeader
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 
-CE = "CE"
+CE = "CErr"
 class CommonErrors:
     class WrongTypeReport(ErrorReport):
         header = ErrorHeader(f"{CE}0", "Incorrect type")

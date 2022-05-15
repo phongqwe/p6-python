@@ -1,4 +1,10 @@
 import unittest
+from pathlib import Path
+
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateRequest import \
+    CellUpdateRequest
+from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
+from com.emeraldblast.p6.proto.CellProtos_pb2 import CellUpdateRequestProto
 
 from com.emeraldblast.p6.document_structure.app.errors.AppErrors import AppErrors
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
@@ -28,6 +34,29 @@ class CellUpdateReactor_test(unittest.TestCase):
             )
 
         self.wbGetter = wbGetter
+
+
+    def test_Bug(self):
+        proto = CellUpdateRequestProto(
+            workbookKey = WorkbookKeys.fromNameAndPath("b1.txt",                                               "/home/abc/Documents/gits/project2/p6/b1.txt").toProtoObj(),
+            worksheetName = "Sheet1",
+            cellAddress = CellAddresses.fromLabel("@B4").toProtoObj(),
+            value = b'123',
+            formula = None
+        )
+
+        wb = WorkbookImp("b1.txt",Path("/home/abc/Documents/gits/project2/p6/b1.txt"))
+        s1 = wb.createNewWorksheet("Sheet1")
+        s2 = wb.createNewWorksheet("Sheet2")
+
+        def wbGetter(identity):
+            return Ok(wb)
+
+        reactor = CellUpdateReactor("id", wbGetter)
+        o = reactor.react(proto.SerializeToString())
+        print(o)
+
+
 
     def test_OkBlankContent(self):
         reactor = CellUpdateReactor("id", self.wbGetter)

@@ -43,6 +43,8 @@ class EventServerImp(EventServer):
                     if reactor is not None:
                         # has reactor -> return reactor result
                         outputBytes: bytes = reactor.react(p6Msg.contentAsByte()).toProtoBytes()
+                        # print("Done reacting, output:")
+                        # print(outputBytes)
                         p6Res = P6Response(
                             header = p6Msg.header,
                             data = outputBytes,

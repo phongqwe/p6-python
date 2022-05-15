@@ -207,13 +207,15 @@ class App(ABC):
         getWbRs: Result[Workbook, ErrorReport] = self.getWorkbookRs(nameOrIndexOrKey)
         if getWbRs.isOk():
             wb: Workbook = getWbRs.value
+            oldKey = wb.workbookKey
             saveResult = self._fileSaver.saveRs(wb, path)
             if saveResult.isOk():
-                newKey = WorkbookKeyImp(wb.workbookKey.fileName, path)
+                newKey = WorkbookKeyImp(str(path.name), path)
                 if newKey != wb.workbookKey:
-                    getWbRs.workbookKey = newKey
+                    self.wbContainer.removeWorkbook(oldKey)
+                    wb.workbookKey = newKey
                     self.wbContainer.addWorkbook(wb)
-                    self.refreshContainer()
+                    # self.refreshContainer()
             return saveResult
         else:
             return getWbRs
@@ -261,7 +263,7 @@ class App(ABC):
         :return:
         """
         path = Path(filePath)
-        wbKey = WorkbookKeyImp(path.name, path)
+        wbKey = WorkbookKeyImp(str(path.name), path)
         wbRs = self.getWorkbookRs(wbKey)
         alreadyHasThisWorkbook = wbRs.isOk()
         if not alreadyHasThisWorkbook:

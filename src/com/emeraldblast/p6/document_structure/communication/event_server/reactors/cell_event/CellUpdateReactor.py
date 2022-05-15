@@ -32,9 +32,11 @@ class CellUpdateReactor(EventReactor[bytes, WorkbookUpdateCommonResponse]):
                 ws = getWsRs.value
                 cell = ws.cell(cellAddress)
                 if request.isNotEmpty():
-                    if request.value is not None and len(request.value) > 0:
+                    # if request.value is not None and len(request.value) > 0:
+                    if request.value:
                         cell.value = request.value
-                    elif request.formula is not None and len(request.formula) > 0:
+                    # elif request.formula is not None and len(request.formula) > 0:
+                    elif request.formula:
                         cell.formula = request.formula
                     else:
                         pass  # do nothing

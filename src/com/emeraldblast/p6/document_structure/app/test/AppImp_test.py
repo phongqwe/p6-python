@@ -68,17 +68,19 @@ class AppImp_test(unittest.TestCase):
         fileName = "book1.txt"
         path = Path(fileName)
         book1 = app.createNewWorkbookRs("Book1").value
+
         saveRs = app.saveWorkbookAtPathRs("Book1", fileName)
+        self.assertEqual(path, book1.workbookKey.filePath)
 
         self.assertTrue(saveRs.isOk())
         self.assertTrue(path.exists())
         os.remove(path)
 
-        saveRs2 = app.saveWorkbookAtPathRs("Book1", Path(fileName))
+        saveRs2 = app.saveWorkbookAtPathRs(book1.workbookKey, Path(fileName))
         self.assertTrue(saveRs2.isOk())
         self.assertTrue(path.exists())
         os.remove(path)
-
+        #
         saveRs3 = app.saveWorkbookAtPathRs("Book1xxx", Path(fileName))
         self.assertFalse(saveRs3.isOk())
 
@@ -90,8 +92,8 @@ class AppImp_test(unittest.TestCase):
         fileName = "book1x.txt"
         path = Path(fileName)
         book1 = app.createNewWorkbookRs("Book1").value
-        key = WorkbookKeyImp("Book1", path)
-        book1.workbookKey = key
+        oldKey = WorkbookKeyImp("Book1", path)
+        book1.workbookKey = oldKey
         app.refreshContainer()
 
         app.saveWorkbook(0)
@@ -99,10 +101,10 @@ class AppImp_test(unittest.TestCase):
         with self.assertRaises(Exception):
             app.saveWorkbook(100)
 
-        app.saveWorkbook("Book1")
+        app.saveWorkbook(book1.workbookKey.fileName)
         self.__testFileExistence(path)
 
-        app.saveWorkbook(key)
+        app.saveWorkbook(book1.workbookKey)
         self.__testFileExistence(path)
 
     def test_loadWorkbook(self):

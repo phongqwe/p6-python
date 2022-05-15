@@ -26,6 +26,7 @@ class SaveWorkbookReactor(BaseEventReactor[bytes, SaveWorkbookResponse]):
         pathIsDiff: bool = wbKey.filePath != targetPath
         saveRs: Result[Workbook | None, ErrorReport] = None
         newWbKey = wbKey
+
         if pathIsDiff:
             saveRs = app.saveWorkbookAtPathRs(wbKey, targetPath)
             newWbKey = newWbKey.setPath(targetPath)
@@ -35,7 +36,7 @@ class SaveWorkbookReactor(BaseEventReactor[bytes, SaveWorkbookResponse]):
         rt = SaveWorkbookResponse(
             isError = saveRs.isErr(),
             errorReport = saveRs.err,
-            workbookKey = newWbKey,
+            workbookKey = wbKey, # remember to return the old workbookKey
             path = request.path
         )
         return rt

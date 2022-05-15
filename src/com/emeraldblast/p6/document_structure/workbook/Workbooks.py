@@ -36,7 +36,7 @@ class Workbooks:
                 path = Path(wbJson.path)
 
         wb = WorkbookImp(
-            name = path.name,
+            name = str(path.name),
             path = path,
         )
 

@@ -68,7 +68,6 @@ class WorkbookContainerImp(WorkbookContainer,WithSize):
         wb = self.getWorkbook(indexOrKey)
         if wb is not None:
             del self.__wbDict[wb.workbookKey]
-        print("end")
 
 
     def isEmpty(self) -> bool:
