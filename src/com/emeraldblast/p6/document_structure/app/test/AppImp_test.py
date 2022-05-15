@@ -20,6 +20,7 @@ class AppImp_test(unittest.TestCase):
         super().setUp()
         self.app = AppImp()
         self.aa = 0
+        self.fileName="fileProto.txt"
 
     def test_createNewWorkbook(self):
         app = self.app
@@ -86,7 +87,7 @@ class AppImp_test(unittest.TestCase):
 
     def test_saveWorkbook(self):
         app = self.app
-        fileName = "book1.txt"
+        fileName = "book1x.txt"
         path = Path(fileName)
         book1 = app.createNewWorkbookRs("Book1").value
         key = WorkbookKeyImp("Book1", path)
@@ -106,11 +107,11 @@ class AppImp_test(unittest.TestCase):
 
     def test_loadWorkbook(self):
         app = self.app
-        fileName = "file.txt"
+        fileName = "fileProto1.txt"
 
         # x: load a valid file with result function
         loadRs0 = app.loadWorkbookRs(fileName)
-        self.assertTrue(loadRs0.isOk())
+        self.assertTrue(loadRs0.isOk(),)
         self.assertIsNotNone(app.getWorkbookOrNone(0))
 
         # x: load an invalid file with result function
@@ -147,9 +148,9 @@ class AppImp_test(unittest.TestCase):
         app = self.app
         app.createNewWorkbook("workbookName")
         wb = app.getWorkbook("workbookName")
-        wb.workbookKey = WorkbookKeyImp("file.txt", Path("file.txt"))
+        wb.workbookKey = WorkbookKeyImp("fileProto3.txt", Path("fileProto3.txt"))
         app.refreshContainer()
-        loadRs = app.forceLoadWorkbookRs("file.txt")
+        loadRs = app.forceLoadWorkbookRs("fileProto3.txt")
         self.assertTrue(loadRs.isOk())
         self.assertNotEqual(wb, app.getWorkbookOrNone("workbookName"))
 
@@ -175,7 +176,7 @@ class AppImp_test(unittest.TestCase):
         app.eventReactorContainer.addReactor(
             P6Events.Cell.Update.event,
             EventReactorFactory.makeBasicReactor(self.onCellChange))
-        fileName = "file.txt"
+        fileName = "fileProto2.txt"
 
         loadRs0 = app.loadWorkbookRs(fileName)
         self.assertTrue(loadRs0.isOk())

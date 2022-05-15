@@ -26,8 +26,7 @@ class WorkbookImp(Workbook):
         self.__key = WorkbookKeyImp(name, path)
         if sheetList is None:
             sheetList = []
-        else:
-            typeCheck(sheetList, "sheetDict", list)
+        typeCheck(sheetList, "sheetDict", list)
         self._sheetList: list[Worksheet] = sheetList
         self._sheetDictByName: dict[str, Worksheet] = {}
         for sheet in self._sheetList:
@@ -42,6 +41,14 @@ class WorkbookImp(Workbook):
         self._translatorDict: dict[Tuple[str, WorkbookKey], FormulaTranslator] = {}
 
     ### >> Workbook << ###
+
+    def makeSavableCopy(self) -> 'Workbook':
+        """a copy without workbook key"""
+        return WorkbookImp(
+            name="",
+            path = None,
+            sheetList = self._sheetList
+        )
 
     def getTranslator(self, sheetName: str) -> FormulaTranslator:
         if self.haveSheet(sheetName):

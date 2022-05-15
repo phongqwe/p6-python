@@ -4,8 +4,8 @@ from com.emeraldblast.p6.proto.P6FileProtos_pb2 import P6FileProto
 
 class P6File2(ToProto[P6FileProto]):
     def __init__(self,version:str, content:bytes):
-        self.content = content
-        self.version = version
+        self.version: str = version
+        self.content:bytes = content
 
     def toProtoObj(self)->P6FileProto:
         proto = P6FileProto()

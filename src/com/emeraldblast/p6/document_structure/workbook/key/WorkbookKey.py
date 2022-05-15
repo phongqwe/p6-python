@@ -11,6 +11,9 @@ class WorkbookKey(ToProto[WorkbookKeyProto],ABC):
     Each workbook as a unique WorkbookKey
     """
 
+    def setPath(self,newPath:Path)->'WorkbookKey':
+        raise NotImplementedError()
+
     def toProtoObj(self) -> WorkbookKeyProto:
         rt = WorkbookKeyProto()
         rt.name = self.fileName

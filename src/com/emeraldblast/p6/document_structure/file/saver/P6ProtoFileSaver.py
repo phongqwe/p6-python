@@ -17,11 +17,13 @@ from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 
 class P6ProtoFileSaver(P6FileSaver):
     def saveRs(self, workbook: Workbook, filePath: Union[str, Path]) -> Result[None, ErrorReport]:
-        # convert workbook to proto
+
+        wb = workbook.makeSavableCopy()
+
         meta =P6FileMetaInfo(date=time.time())
         fileContent = P6FileContent(
             meta=meta,
-            wb = workbook
+            wb = wb
         )
         p6FileProtoBytes = P6File2(
             version="v1",

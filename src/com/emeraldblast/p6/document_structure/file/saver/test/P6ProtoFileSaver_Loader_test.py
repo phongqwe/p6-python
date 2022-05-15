@@ -59,7 +59,7 @@ class P6ProtoFileSaver_test(unittest.TestCase):
         loadRs = loader.loadRs(self.filePath)
         self.assertTrue(loadRs.isOk())
         loadedWb = loadRs.value
-        self.assertEqual(loadedWb.name, workbook.name)
+        self.assertEqual(self.filePath.name,loadedWb.name)
         self.assertEqual(loadedWb.path,self.filePath)
         self.assertEqual(1, loadedWb.worksheetCount)
         ws = loadedWb.getWorksheet(0)

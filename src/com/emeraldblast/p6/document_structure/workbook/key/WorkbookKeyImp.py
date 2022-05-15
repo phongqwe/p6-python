@@ -7,6 +7,9 @@ from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import Work
 
 class WorkbookKeyImp(WorkbookKey):
 
+    def setPath(self, newPath:Path)->'WorkbookKeyImp':
+        return WorkbookKeyImp(self.__fileName, newPath)
+
     def __init__(self, fileName: str, filePath: Path | None = None):
         self.__filePath: Optional[Path] = filePath
         self.__fileName = fileName

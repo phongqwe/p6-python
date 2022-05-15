@@ -26,6 +26,11 @@ class Worksheet(UserFriendlyCellContainer,
                 ToJson,
                 ToProto[WorksheetProto],
                 ABC):
+
+    @property
+    def cellCount(self):
+        return self.size
+
     @property
     def rootWorksheet(self)->'Worksheet':
         """the root worksheet is the lowest layer (data layer) worksheet, not hooked to any event callbacks, not wrapped in any wrapper. For data-layer worksheet, this is itself. For wrapper worksheet, this is their inner worksheet"""

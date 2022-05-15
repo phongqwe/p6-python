@@ -18,6 +18,10 @@ from com.emeraldblast.p6.proto.DocProtos_pb2 import WorkbookProto
 
 class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
 
+    def makeSavableCopy(self)->'Workbook':
+        """create a copy instance that is fit for being saved to files"""
+        raise NotImplementedError()
+
     @property
     def worksheetCount(self)->int:
         return len(self.worksheets)

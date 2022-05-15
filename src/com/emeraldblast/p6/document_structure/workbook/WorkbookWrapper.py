@@ -10,6 +10,9 @@ from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
 
 class WorkbookWrapper(Workbook):
+    def makeSavableCopy(self) -> 'Workbook':
+        return self.rootWorkbook.makeSavableCopy()
+
     @property
     def rootWorkbook(self) -> 'Workbook':
         return self._innerWorkbook.rootWorkbook

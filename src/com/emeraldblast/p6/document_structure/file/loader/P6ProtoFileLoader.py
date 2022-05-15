@@ -25,6 +25,8 @@ class P6ProtoFileLoader(P6FileLoader):
                     fileContent = P6FileContent.fromProtoBytes(p6File.content,filePath)
                     workbook = fileContent.wb
                     file.close()
+                    workbookKey = WorkbookKeys.fromNameAndPath(path.name, path)
+                    workbook.workbookKey = workbookKey
                     return Ok(workbook)
                 except Exception as e:
                     file.close()

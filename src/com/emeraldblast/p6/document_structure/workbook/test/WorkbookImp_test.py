@@ -11,6 +11,14 @@ from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
 class WorkbookImp_test(unittest.TestCase):
 
+    def test_makeSavableCopy(self):
+        s1, s2, s3, w1 = self.makeTestObj()
+        cp = w1.makeSavableCopy()
+        self.assertEqual(WorkbookKeys.fromNameAndPath("",None),cp.workbookKey)
+        self.assertEqual(w1.sheetCount, cp.sheetCount)
+        for i in range(0,w1.sheetCount):
+            self.assertEquals(w1.getWorksheet(i),cp.getWorksheet(i))
+
     def test_toProtoObj(self):
         s1, s2, s3, w1 = self.makeTestObj()
         o = w1.toProtoObj()

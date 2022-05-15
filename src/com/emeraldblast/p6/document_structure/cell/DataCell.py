@@ -159,9 +159,9 @@ class DataCell(Cell):
     def __eq__(self, other):
         if isinstance(other, Cell):
             sameValue = self.value == other.value
-            sameCode = self.script == other.script
+            sameScript = self.script == other.script or (not(self.script and other.script))
             sameAddress = self.address == other.address
-            return sameValue and sameCode and sameAddress
+            return sameValue and sameScript and sameAddress
         else:
             return False
 

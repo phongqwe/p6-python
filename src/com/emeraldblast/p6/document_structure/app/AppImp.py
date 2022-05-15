@@ -58,9 +58,9 @@ class AppImp(App):
             self.__activeWorkbook: Optional[Workbook] = None
 
         if loader is None:
-            loader = P6FileLoaders.standard()
+            loader = P6FileLoaders.proto()
         if saver is None:
-            saver = P6FileSavers.standard()
+            saver = P6FileSavers.proto()
         self.__wbLoader: P6FileLoader = loader
         self.__wbSaver: P6FileSaver = saver
         self.__newBookIndex: int = 0

@@ -196,7 +196,7 @@ class App(ABC):
 
     def saveWorkbookAtPathRs(self,
                              nameOrIndexOrKey: Union[int, str, WorkbookKey],
-                             filePath: Union[str, Path]) -> Result[Any, ErrorReport]:
+                             filePath: Union[str, Path]) -> Result[Workbook|None, ErrorReport]:
         """
          save a workbook at nameOrIndex to a certain filePath, then update the workbook with that new path
         :param nameOrIndexOrKey:
