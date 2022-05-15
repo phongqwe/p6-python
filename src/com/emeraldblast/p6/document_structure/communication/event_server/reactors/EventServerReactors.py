@@ -21,6 +21,8 @@ from com.emeraldblast.p6.document_structure.communication.event_server.reactors.
     CreateNewWorksheetReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook_event.DeleteWorksheetReactor import \
     DeleteWorksheetReactor
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook_event.SaveWorkbookReactor import \
+    SaveWorkbookReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.worksheet_event.DeleteCellReactor import \
     DeleteCellReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.worksheet_event.DeleteMultiReactor import \
@@ -40,6 +42,9 @@ class EventServerReactors:
         return SetActiveWorksheetReactor(
             uid = str(uuid.uuid4()),
             appGetter = self.appGetter)
+
+    def createSaveWorkbookReactor(self)->SaveWorkbookReactor:
+        return SaveWorkbookReactor(self.appGetter)
 
     def deleteWorksheetReactor(self) -> DeleteWorksheetReactor:
         reactor = DeleteWorksheetReactor(str(uuid.uuid4()), self.wbGetter)

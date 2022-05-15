@@ -97,6 +97,7 @@ class AppImp(App):
         reactorForWb = {
             P6Events.Workbook.DeleteWorksheet.event: er.deleteWorksheetReactor(),
             P6Events.Workbook.CreateNewWorksheet.event: er.createNewWorksheetReactor(),
+            P6Events.Workbook.SaveWorkbook.event: er.createSaveWorkbookReactor()
         }
         reactorForWs = {
             P6Events.Worksheet.Rename.event: er.renameWorksheet(),

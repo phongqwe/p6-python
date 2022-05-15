@@ -107,7 +107,7 @@ class AppImp_test(unittest.TestCase):
 
     def test_loadWorkbook(self):
         app = self.app
-        fileName = "fileProto1.txt"
+        fileName = "fileProto4.txt"
 
         # x: load a valid file with result function
         loadRs0 = app.loadWorkbookRs(fileName)

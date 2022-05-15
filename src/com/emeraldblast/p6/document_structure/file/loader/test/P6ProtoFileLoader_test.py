@@ -29,7 +29,7 @@ class P6ProtoFileLoader_test(unittest.TestCase):
         for x in range(workbook.worksheetCount):
             self.assertTrue(compareWs(workbook.getWorksheet(x),lwb.getWorksheet(x)))
 
-        # os.remove(path)
+        os.remove(path)
 
 
 if __name__ == '__main__':
