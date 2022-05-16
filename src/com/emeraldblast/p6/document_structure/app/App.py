@@ -110,7 +110,7 @@ class App(ABC):
         """:return workbook at a key that is either a name, an index, or a WorkbookKey. The returned workbook is NOT hooked to any event reactors."""
         wb = self.wbContainer.getWorkbook(key)
         if wb is not None:
-            return Ok(wb)
+            return Ok(wb.rootWorkbook)
         else:
             return Err(AppErrors.WorkbookNotExist(key))
     def hasNoWorkbook(self) -> bool:
@@ -214,8 +214,7 @@ class App(ABC):
                 if newKey != wb.workbookKey:
                     self.wbContainer.removeWorkbook(oldKey)
                     wb.workbookKey = newKey
-                    self.wbContainer.addWorkbook(wb)
-                    # self.refreshContainer()
+                    self.wbContainer.addWorkbook(wb.rootWorkbook)
             return saveResult
         else:
             return getWbRs

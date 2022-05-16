@@ -61,7 +61,7 @@ class P6ProtoFileSaver_test(unittest.TestCase):
         loadedWb = loadRs.value
         self.assertEqual(self.filePath.name,loadedWb.name)
         self.assertEqual(loadedWb.path,self.filePath)
-        self.assertEqual(1, loadedWb.worksheetCount)
+        self.assertEqual(1, loadedWb.sheetCount)
         ws = loadedWb.getWorksheet(0)
         self.assertEqual("Sheet1",ws.name)
         self.assertTrue(ws.hasCellAt(CellAddresses.fromLabel("@C23")))

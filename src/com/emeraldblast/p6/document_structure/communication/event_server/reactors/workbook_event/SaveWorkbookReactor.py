@@ -19,17 +19,15 @@ class SaveWorkbookReactor(BaseEventReactor[bytes, SaveWorkbookResponse]):
         self.appGetter = appGetter
 
     def react(self, data: bytes) -> SaveWorkbookResponse:
-        request = SaveWorkbookRequest.fromProtoBytes(data)
+        request:SaveWorkbookRequest = SaveWorkbookRequest.fromProtoBytes(data)
         app = self.appGetter()
         wbKey = request.workbookKey
         targetPath = Path(request.path)
         pathIsDiff: bool = wbKey.filePath != targetPath
         saveRs: Result[Workbook | None, ErrorReport] = None
-        newWbKey = wbKey
 
         if pathIsDiff:
             saveRs = app.saveWorkbookAtPathRs(wbKey, targetPath)
-            newWbKey = newWbKey.setPath(targetPath)
         else:
             saveRs = app.saveWorkbookRs(wbKey)
 
@@ -39,4 +37,6 @@ class SaveWorkbookReactor(BaseEventReactor[bytes, SaveWorkbookResponse]):
             workbookKey = wbKey, # remember to return the old workbookKey
             path = request.path
         )
+        if saveRs.isErr():
+            rt.errorReport.loc = "SaveWorkbookReactor"
         return rt

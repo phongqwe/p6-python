@@ -23,14 +23,9 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
         raise NotImplementedError()
 
     @property
-    def worksheetCount(self)->int:
-        return len(self.worksheets)
-
-    @property
     def rootWorkbook(self)->'Workbook':
         raise NotImplementedError()
 
-    # Worksheet = WS.Worksheet
     def getIndexOfWorksheet(self, sheetName: str) -> int:
         for (index, sheet) in enumerate(self.worksheets):
             if sheet.name == sheetName:
@@ -38,6 +33,7 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
         return -1
 
     def toProtoObj(self) -> WorkbookProto:
+        # rootWb = self.rootWorkbook
         rt = WorkbookProto()
         rt.workbookKey.CopyFrom(self.workbookKey.toProtoObj())
         sheets = []

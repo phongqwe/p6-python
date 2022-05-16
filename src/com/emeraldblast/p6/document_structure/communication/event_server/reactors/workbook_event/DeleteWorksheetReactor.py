@@ -33,8 +33,10 @@ class DeleteWorksheetReactor(EventReactor[bytes, DeleteWorksheetResponse]):
             else:
                 rt.isError = True
                 rt.errorReport = deleteRs.err
+                rt.errorReport.loc = "DeleteWorksheetReactor"
                 return rt
         else:
             rt.isError = True
             rt.errorReport = wbRs.err
+            rt.errorReport.loc = "DeleteWorksheetReactor"
             return rt

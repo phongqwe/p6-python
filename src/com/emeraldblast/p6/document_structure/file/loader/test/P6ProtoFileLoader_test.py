@@ -25,8 +25,8 @@ class P6ProtoFileLoader_test(unittest.TestCase):
         lwb = loadWbRs.value
         self.assertEqual(fileName, lwb.workbookKey.fileName)
         self.assertEqual(path, lwb.workbookKey.filePath)
-        self.assertEqual(workbook.worksheetCount, lwb.worksheetCount)
-        for x in range(workbook.worksheetCount):
+        self.assertEqual(workbook.sheetCount, lwb.sheetCount)
+        for x in range(workbook.sheetCount):
             self.assertTrue(compareWs(workbook.getWorksheet(x),lwb.getWorksheet(x)))
 
         os.remove(path)

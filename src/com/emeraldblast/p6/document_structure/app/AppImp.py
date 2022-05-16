@@ -185,10 +185,7 @@ class AppImp(App):
     def setActiveWorkbookRs(self, indexOrNameOrKey: Union[int, str, WorkbookKey]) -> Result[Workbook, ErrorReport]:
         wb = self.getWorkbookOrNone(indexOrNameOrKey)
         if wb is not None:
-            if isinstance(wb, WorkbookWrapper):
-                self.__activeWorkbook = wb.innerWorkbook
-            else:
-                self.__activeWorkbook = wb
+            self.__activeWorkbook = wb.rootWorkbook
             return Ok(self.__activeWorkbook)
         else:
             return Err(

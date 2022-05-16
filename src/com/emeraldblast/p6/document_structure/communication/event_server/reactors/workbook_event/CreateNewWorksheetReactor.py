@@ -37,16 +37,20 @@ class CreateNewWorksheetReactor(EventReactor[bytes, CreateNewWorksheetResponse])
                     isError = False,
                 )
             else:
-                return CreateNewWorksheetResponse(
+                rt= CreateNewWorksheetResponse(
                     workbookKey = wbKey,
                     newWorksheetName = newSheetName,
                     isError = True,
                     errorReport = createRs.err
                 )
+                rt.errorReport.loc = "CreateNewWorksheetReactor"
+                return rt
         else:
-            return CreateNewWorksheetResponse(
+            rt= CreateNewWorksheetResponse(
                 workbookKey = wbKey,
                 newWorksheetName = newSheetName,
                 isError = True,
                 errorReport = getWbRs.err
             )
+            rt.errorReport.loc = "CreateNewWorksheetReactor"
+            return rt

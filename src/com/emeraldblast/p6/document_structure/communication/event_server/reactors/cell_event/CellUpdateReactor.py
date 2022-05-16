@@ -26,20 +26,16 @@ class CellUpdateReactor(EventReactor[bytes, WorkbookUpdateCommonResponse]):
         cellAddress = request.cellAddress
         getWbRs = self._wbGetter(request.workbookKey)
         if getWbRs.isOk():
-            wb: Workbook = getWbRs.value
+            wb: Workbook = getWbRs.value.rootWorkbook
             getWsRs = wb.getWorksheetRs(request.worksheetName)
             if getWsRs.isOk():
                 ws = getWsRs.value
                 cell = ws.cell(cellAddress)
                 if request.isNotEmpty():
-                    # if request.value is not None and len(request.value) > 0:
                     if request.value:
                         cell.value = request.value
-                    # elif request.formula is not None and len(request.formula) > 0:
-                    elif request.formula:
+                    if request.formula:
                         cell.formula = request.formula
-                    else:
-                        pass  # do nothing
                 else:
                     ws.deleteCell(cellAddress)
                 wb.reRun()
@@ -49,16 +45,20 @@ class CellUpdateReactor(EventReactor[bytes, WorkbookUpdateCommonResponse]):
                     newWorkbook = wb)
 
             else:
-                return WorkbookUpdateCommonResponse(
+                rt= WorkbookUpdateCommonResponse(
                     workbookKey = request.workbookKey,
                     newWorkbook = None,
                     isError = True,
                     errorReport = getWsRs.err
                 )
+                rt.errorReport.loc = "CellUpdateReactor"
+                return rt
         else:
-            return WorkbookUpdateCommonResponse(
+            rt= WorkbookUpdateCommonResponse(
                 workbookKey = request.workbookKey,
                 newWorkbook = None,
                 isError = True,
                 errorReport = getWbRs.err
             )
+            rt.errorReport.loc = "CellUpdateReactor"
+            return rt

@@ -39,8 +39,10 @@ class DeleteMultiReactor(BaseEventReactor[bytes, WorkbookUpdateCommonResponse]):
             else:
                 rt.isError = True
                 rt.errorReport = getWsRs.err
+                rt.errorReport.loc = "DeleteMultiReactor"
         else:
             rt.isError = True
             rt.errorReport = getWbRs.err
+            rt.errorReport.loc = "DeleteMultiReactor"
 
         return rt

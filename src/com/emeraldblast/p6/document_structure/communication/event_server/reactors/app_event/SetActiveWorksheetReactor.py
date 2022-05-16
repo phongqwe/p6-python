@@ -35,8 +35,10 @@ class SetActiveWorksheetReactor(EventReactor[bytes,SetActiveWorksheetResponse]):
             else:
                 response.isError = True
                 response.errorReport = setSheetRs.err
+                response.errorReport.loc = "SetActiveWorksheetReactor"
                 return response
         else:
             response.isError = True
             response.errorReport = getWbRs.err
+            response.errorReport.loc = "SetActiveWorksheetReactor"
             return response

@@ -37,10 +37,13 @@ class DeleteCellReactor(EventReactor[bytes,DeleteCellResponse]):
                 else:
                     rt.isError=True
                     rt.errorReport = delRs.err
+                    rt.errorReport.loc = "DeleteCellReactor"
             else:
                 rt.isError = True
                 rt.errorReport = getWsRs.err
+                rt.errorReport.loc = "DeleteCellReactor"
         else:
             rt.isError=True
             rt.errorReport = getWbRs.err
+            rt.errorReport.loc = "DeleteCellReactor"
         return rt

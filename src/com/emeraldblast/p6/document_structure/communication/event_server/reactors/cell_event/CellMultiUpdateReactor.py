@@ -41,8 +41,12 @@ class CellMultiUpdateReactor(BaseEventReactor[bytes, WorkbookUpdateCommonRespons
             else:
                 rt.isError=True
                 rt.errorReport = wsRs.err
+                rt.errorReport.loc = "CellMultiUpdateReactor"
+                return rt
         else:
             rt.isError=True
             rt.errorReport = wbRs.err
+            rt.errorReport.loc = "CellMultiUpdateReactor"
+            return rt
 
         return rt

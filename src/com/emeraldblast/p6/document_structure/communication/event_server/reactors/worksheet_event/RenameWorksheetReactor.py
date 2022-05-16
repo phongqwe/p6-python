@@ -56,6 +56,7 @@ class RenameWorksheetReactor(EventReactor[bytes, RenameWorksheetResponse]):
                         isError = True,
                         errorReport = renameRs.err
                     )
+                    out.errorReport.loc = "RenameWorksheetReactor"
                     return out
             else:
                 out = RenameWorksheetResponse(
@@ -65,6 +66,7 @@ class RenameWorksheetReactor(EventReactor[bytes, RenameWorksheetResponse]):
                     isError = True,
                     errorReport = getWsRs.err
                 )
+                out.errorReport.loc = "RenameWorksheetReactor"
                 return out
         else:
             out = RenameWorksheetResponse(
@@ -73,4 +75,5 @@ class RenameWorksheetReactor(EventReactor[bytes, RenameWorksheetResponse]):
                 oldName = oldName,
                 isError = True,
                 errorReport = getWbRs.err)
+            out.errorReport.loc = "RenameWorksheetReactor"
             return out
