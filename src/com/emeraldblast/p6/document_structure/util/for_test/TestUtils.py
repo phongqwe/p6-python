@@ -11,26 +11,7 @@ from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
 
 def compareWs(ws1:Worksheet, ws2:Worksheet)->bool:
-    sameName = ws1.name == ws2.name
-    if sameName:
-        sameCellCount = ws1.cellCount == ws1.cellCount
-
-        if sameCellCount:
-            z = True
-            for c1 in ws1.cells:
-                c2 = ws2.cell(c1.address)
-                if c1!=c2:
-                    return False
-
-            for c2 in ws2.cells:
-                c1 = ws1.cell(c2.address)
-                if c2 != c1:
-                    return False
-            return z
-        else:
-            return False
-    else:
-        return False
+    return ws1.compareWith(ws2)
 
 
 def sampleWb(name):
@@ -44,12 +25,16 @@ def sampleWb(name):
     s2.cell((2, 2)).value = 222
     s2.cell((3, 3)).value = 233
     return wb
+
 def sampleApp()->App:
     wb = sampleWb("Book1")
+    wb2 = sampleWb("Book2")
+    wb3 = sampleWb("Book3")
     app = AppImp()
     app.wbContainer.addWorkbook(wb)
+    app.wbContainer.addWorkbook(wb2)
+    app.wbContainer.addWorkbook(wb3)
     return app
-
 
 def findNewSocketPort():
     sock = socket.socket()

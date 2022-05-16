@@ -1,11 +1,10 @@
+import time
 import unittest
 
 import zmq
 
-from com.emeraldblast.p6.document_structure.app.GlobalScope import setIPythonGlobals
 # these 2 imports must be keep for the formula script to be able to run
 from com.emeraldblast.p6.document_structure.app.UserFunctions import *
-from com.emeraldblast.p6.document_structure.app.worksheet_functions.WorksheetFunctions import WorksheetFunctions
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateRequest import \
@@ -13,6 +12,7 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.c
 from com.emeraldblast.p6.document_structure.communication.event_server.response.P6Response import P6Response
 from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import findNewSocketPort, startREPServerOnThread, \
     sendClose
+from com.emeraldblast.p6.document_structure.util.for_test.emu.TestEnvImp import TestEnvImp
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.emeraldblast.p6.proto.P6MsgProtos_pb2 import P6MessageProto, P6ResponseProto, P6MessageHeaderProto
 from com.emeraldblast.p6.proto.WorkbookProtos_pb2 import CreateNewWorksheetResponseProto, SaveWorkbookRequestProto
@@ -24,19 +24,18 @@ class IntegrationTest_test(unittest.TestCase):
 
     def setUp(self) -> None:
         super().setUp()
-        # k, z to prevent auto formatting tools from removing the respective imports
-        z = WorksheetFunctions
-        k = WorkbookKeys
-        setIPythonGlobals(globals())
-        startApp()
-        restartApp()
-        getApp().createNewWorkbook("Book1")
-        getActiveWorkbook().createNewWorksheet("Sheet1")
-        self.wb = getWorkbook("Book1")
+        self.testEnv = TestEnvImp()
+        self.testEnv.startApp()
+        self.wb = self.testEnv.app.getWorkbook("Book1")
+        self.z = False
 
-    def test_bug2(self):
+    def tearDown(self) -> None:
+        self.testEnv.stopAll()
+
+    def test_bug3(self):
+        wb = self.testEnv.app.getWorkbook("Book1")
         request = SaveWorkbookRequestProto(
-            workbookKey = self.wb.workbookKey.toProtoObj(),
+            workbookKey = wb.workbookKey.toProtoObj(),
             path = "/home/abc/MyTemp/b1.txt"
         )
         p6Req = P6MessageProto(
@@ -46,11 +45,8 @@ class IntegrationTest_test(unittest.TestCase):
             ),
             data = request.SerializeToString()
         )
-        port = findNewSocketPort()
-        getApp().eventServer.start(port)
 
-        zsocket = getApp().zContext.socket(zmq.REQ)
-        zsocket.connect(f"tcp://localhost:{port}")
+        zsocket = self.testEnv.requestZSocket
         zsocket.send(p6Req.SerializeToString())
         rec = zsocket.recv()
         p6ResponseProto = P6ResponseProto()
@@ -83,54 +79,38 @@ class IntegrationTest_test(unittest.TestCase):
         p6R = P6Response.fromProto(rProto)
         print(p6R)
         self.assertEqual(P6Response.Status.OK,p6R.status)
-        print(self.wb.getWorksheet("Sheet1").cell("@C1").value)
+        print(wb.getWorksheet("Sheet1").cell("@C1").value)
 
 
-
-        zsocket.close()
-
-
-
-
-    def test_scenario_x(self):
-        port = findNewSocketPort()
-        zContext = getApp().zContext
-
+    def test_scenario_changeUpdateCell(self):
+        wb = self.testEnv.app.getWorkbook("Book1")
+        self.z = False
         def onReceive(rawMsg):
             msg = P6MessageProto()
             msg.ParseFromString(rawMsg)
             print(msg)
+            self.z=True
 
-        thread = startREPServerOnThread(True, port, zContext, onReceive)
-        socket = self.createSocket(zContext, port)
-        getApp().socketProvider.updateREQSocketForUIUpdating(socket)
-        s1 = self.wb.getWorksheet("Sheet1")
+        self.testEnv.startREPListenerOnThread(True, onReceive)
+        s1 = wb.getWorksheet("Sheet1")
         s1.cell((1, 1)).value = 1
         s1.cell((1, 2)).value = 2
         s1.cell((1, 3)).formula = "=SUM(A1:A2)"
         s1.cell((1, 4)).value = "b"
-
-        sendClose(socket)
-        thread.join()
+        self.assertTrue(self.z)
 
     def test_create_new_workbook(self):
-        port = findNewSocketPort()
-        zContext = getApp().zContext
-
         def onReceive(rawMsg):
             msg = P6ResponseProto()
             msg.ParseFromString(rawMsg)
+            print(msg)
             protoObj = CreateNewWorksheetResponseProto()
             protoObj.ParseFromString(msg.data)
             self.assertEqual("SheetX", protoObj.newWorksheetName)
             print(protoObj)
 
-        thread = startREPServerOnThread(True, port, zContext, onReceive)
-        socket = self.createSocket(zContext, port)
-        getApp().socketProvider.updateREQSocketForUIUpdating(socket)
+        self.testEnv.startREPListenerOnThread(True, onReceive)
         self.wb.createNewWorksheet("SheetX")
-        sendClose(socket)
-        thread.join()
 
     def createSocket(self, zContext, port):
         socket = zContext.socket(zmq.REQ)
@@ -139,7 +119,7 @@ class IntegrationTest_test(unittest.TestCase):
 
     def test_bug1(self):
         """bug1: this wb unable to generate json"""
-        app = getApp()
+        app = self.testEnv.app
         w1 = app.createNewWorkbook("w1")
         s1 = w1.createNewWorksheet("s1")
         c1 = s1.cell("@A1")
@@ -158,7 +138,7 @@ class IntegrationTest_test(unittest.TestCase):
 
     def test_rename(self):
         port = findNewSocketPort()
-        context = getApp().zContext
+        context = self.testEnv.app.zContext
 
         def onReceive(data):
             msg = P6ResponseProto()
@@ -174,27 +154,19 @@ class IntegrationTest_test(unittest.TestCase):
         thread = startREPServerOnThread(True, port, context, onReceive)
         book = getWorkbook("Book1")
         socket = self.createSocket(context, port)
-        getApp().socketProvider.updateREQSocketForUIUpdating(socket)
+        self.testEnv.app.socketProvider.updateREQSocketForUIUpdating(socket)
         book.getWorksheet("Sheet1").renameRs("Sheet1x")
-        sendClose(socket)
-        thread.join()
+
 
     def test_reaction(self):
-        app = getApp()
-        port = findNewSocketPort()
-        context = getApp().zContext
+        app = self.testEnv.app
 
         def onReceive(data):
             print(data)
 
-        thread = startREPServerOnThread(True, port, context, onReceive)
-        socket = self.createSocket(context, port)
-        app.socketProvider.updateREQSocketForUIUpdating(socket)
+        self.testEnv.startREPListenerOnThread(True,onReceive)
 
         w1 = app.createNewWorkbook("w1")
         s1 = w1.createNewWorksheet("s1")
         c1 = s1.cell("@A1")
         c1.value = 1
-        sendClose(socket)
-
-        thread.join()
