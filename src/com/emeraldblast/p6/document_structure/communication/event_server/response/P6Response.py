@@ -73,7 +73,7 @@ class P6Response(ToProto[P6ResponseProto]):
     def toProtoObj(self):
         rt = P6ResponseProto()
         rt.header.CopyFrom(self.header.toProtoObj())
-        content = self.data
+        content:bytes = self.data
         if isinstance(self.data, ToProto):
             content = self.data.toProtoBytes()
         rt.data = content

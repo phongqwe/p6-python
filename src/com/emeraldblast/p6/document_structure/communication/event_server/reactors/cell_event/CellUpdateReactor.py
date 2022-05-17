@@ -1,5 +1,7 @@
 from typing import Callable
 
+from com.emeraldblast.p6.document_structure.util.for_test.ZZ import writeTestLog
+
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateRequest import \
     CellUpdateRequest
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.WorkbookUpdateCommonResponse import \
@@ -39,10 +41,11 @@ class CellUpdateReactor(EventReactor[bytes, WorkbookUpdateCommonResponse]):
                 else:
                     ws.deleteCell(cellAddress)
                 wb.reRun()
-                return WorkbookUpdateCommonResponse(
+                rt= WorkbookUpdateCommonResponse(
                     isError = False,
                     workbookKey = request.workbookKey,
                     newWorkbook = wb)
+                return rt
 
             else:
                 rt= WorkbookUpdateCommonResponse(

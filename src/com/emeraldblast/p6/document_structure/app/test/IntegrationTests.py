@@ -20,7 +20,7 @@ from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import RenameWorksheetRespons
 
 
 class IntegrationTest_test(unittest.TestCase):
-    """ this class includes re-creation of actual bugs """
+    """ this class includes re-creation of actual bugs. These tests are not run with other test because it slows down other tests """
 
     def setUp(self) -> None:
         super().setUp()
@@ -28,32 +28,40 @@ class IntegrationTest_test(unittest.TestCase):
         self.testEnv.startApp()
         self.wb = self.testEnv.app.getWorkbook("Book1")
         self.z = False
+        self.testEnv.createNotifSender()
 
     def tearDown(self) -> None:
         self.testEnv.stopAll()
 
     def test_bug3(self):
+        def onReceive(rawMsg):
+            msg = P6MessageProto()
+            msg.ParseFromString(rawMsg)
+            print(msg)
+            self.z = True
+
+        self.testEnv.startNotificationListenerOnThread(True, onReceive)
         wb = self.testEnv.app.getWorkbook("Book1")
-        request = SaveWorkbookRequestProto(
-            workbookKey = wb.workbookKey.toProtoObj(),
-            path = "/home/abc/MyTemp/b1.txt"
-        )
-        p6Req = P6MessageProto(
+        saveReq = P6MessageProto(
             header = P6MessageHeaderProto(
                 msgId = "1",
                 eventType = P6Events.Workbook.SaveWorkbook.event.toProtoObj()
             ),
-            data = request.SerializeToString()
+            data = SaveWorkbookRequestProto(
+                workbookKey = wb.workbookKey.toProtoObj(),
+                path = "/home/abc/MyTemp/b1.txt"
+            ).SerializeToString()
         )
 
         zsocket = self.testEnv.requestZSocket
-        zsocket.send(p6Req.SerializeToString())
-        rec = zsocket.recv()
-        p6ResponseProto = P6ResponseProto()
-        p6ResponseProto.ParseFromString(rec)
+        zsocket.send(saveReq.SerializeToString())
 
-        p6Response = P6Response.fromProto(p6ResponseProto)
-        self.assertTrue(p6Response.status == P6Response.Status.OK)
+        rec = zsocket.recv()
+        saveResProto = P6ResponseProto()
+        saveResProto.ParseFromString(rec)
+        saveRes = P6Response.fromProto(saveResProto)
+
+        self.assertTrue(saveRes.status == P6Response.Status.OK)
 
         cellUpdateRequest = P6MessageProto(
             header = P6MessageHeaderProto(
@@ -74,24 +82,23 @@ class IntegrationTest_test(unittest.TestCase):
 
         zsocket.send(cellUpdateRequest.SerializeToString())
         r = zsocket.recv()
-        rProto = P6ResponseProto()
-        rProto.ParseFromString(r)
-        p6R = P6Response.fromProto(rProto)
-        print(p6R)
-        self.assertEqual(P6Response.Status.OK,p6R.status)
+        cellUpdateResProto = P6ResponseProto()
+        cellUpdateResProto.ParseFromString(r)
+        cellUpdateRes = P6Response.fromProto(cellUpdateResProto)
+        self.assertEqual(P6Response.Status.OK, cellUpdateRes.status)
         print(wb.getWorksheet("Sheet1").cell("@C1").value)
-
 
     def test_scenario_changeUpdateCell(self):
         wb = self.testEnv.app.getWorkbook("Book1")
         self.z = False
+
         def onReceive(rawMsg):
             msg = P6MessageProto()
             msg.ParseFromString(rawMsg)
             print(msg)
-            self.z=True
+            self.z = True
 
-        self.testEnv.startREPListenerOnThread(True, onReceive)
+        self.testEnv.startNotificationListenerOnThread(True, onReceive)
         s1 = wb.getWorksheet("Sheet1")
         s1.cell((1, 1)).value = 1
         s1.cell((1, 2)).value = 2
@@ -109,7 +116,7 @@ class IntegrationTest_test(unittest.TestCase):
             self.assertEqual("SheetX", protoObj.newWorksheetName)
             print(protoObj)
 
-        self.testEnv.startREPListenerOnThread(True, onReceive)
+        self.testEnv.startNotificationListenerOnThread(True, onReceive)
         self.wb.createNewWorksheet("SheetX")
 
     def createSocket(self, zContext, port):
@@ -119,6 +126,7 @@ class IntegrationTest_test(unittest.TestCase):
 
     def test_bug1(self):
         """bug1: this wb unable to generate json"""
+        self.testEnv.removeNotifSender()
         app = self.testEnv.app
         w1 = app.createNewWorkbook("w1")
         s1 = w1.createNewWorksheet("s1")
@@ -157,14 +165,13 @@ class IntegrationTest_test(unittest.TestCase):
         self.testEnv.app.socketProvider.updateREQSocketForUIUpdating(socket)
         book.getWorksheet("Sheet1").renameRs("Sheet1x")
 
-
     def test_reaction(self):
         app = self.testEnv.app
 
         def onReceive(data):
             print(data)
 
-        self.testEnv.startREPListenerOnThread(True,onReceive)
+        self.testEnv.startNotificationListenerOnThread(True, onReceive)
 
         w1 = app.createNewWorkbook("w1")
         s1 = w1.createNewWorksheet("s1")

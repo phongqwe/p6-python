@@ -78,7 +78,10 @@ class WorksheetImp(Worksheet):
 
     @workbook.setter
     def workbook(self, newWorkbook: Workbook | None):
-        self.__wb = newWorkbook.rootWorkbook
+        if newWorkbook is not None:
+            self.__wb = newWorkbook.rootWorkbook
+        else:
+            self.__wb = newWorkbook
 
     @property
     def translator(self) -> FormulaTranslator | None:

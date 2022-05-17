@@ -10,6 +10,7 @@ from com.emeraldblast.p6.document_structure.communication.reactor import EventRe
 from com.emeraldblast.p6.document_structure.file.loader.P6FileLoader import P6FileLoader
 from com.emeraldblast.p6.document_structure.file.loader.P6FileLoaderErrors import P6FileLoaderErrors
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
+from com.emeraldblast.p6.document_structure.util.for_test.ZZ import writeTestLog
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
@@ -71,35 +72,30 @@ class App(ABC):
 
     def getWorkbookByIndex(self, index: int) -> Workbook:
         """:return workbook at an index. The returned workbook is connected to all the reactors of this app"""
-        # return self._makeEventWb(self.wbContainer.getWorkbookByIndex(index))
         return self.getWorkbook(index)
 
     def getWorkbookByName(self, name: str) -> Workbook:
         """:return workbook at a name. The returned workbook is connected to all the reactors of this app"""
-        # return self._makeEventWb(self.wbContainer.getWorkbookByName(name))
         return self.getWorkbook(name)
 
     def getWorkbookByKey(self, key: WorkbookKey) -> Workbook:
         """:return workbook at a key. The returned workbook is connected to all the reactors of this app"""
-        # return self._makeEventWb(self.wbContainer.getWorkbookByKey(key))
         return self.getWorkbook(key)
 
     def getWorkbook(self, key: Union[str, int, WorkbookKey]) -> Workbook:
         """:return workbook at a key that is either a name, an index, or a WorkbookKey. The returned workbook is connected to all the reactors of this app
         :raise exception if the workbook is unavailable
         """
-        # return self._makeEventWb(self.wbContainer.getWorkbook(key))
         rs: Result[Workbook, ErrorReport] = self.getWorkbookRs(key)
         return Results.extractOrRaise(rs)
 
-    def getWorkbookOrNone(self, key: Union[str, int, WorkbookKey]) -> Workbook:
+    def getWorkbookOrNone(self, key: Union[str, int, WorkbookKey]) -> Workbook|None:
         """:return workbook at a key that is either a name, an index, or a WorkbookKey. The returned workbook is connected to all the reactors of this app. Return none if the workbook is not available"""
-        # return self._makeEventWb(self.wbContainer.getWorkbook(key))
         rs: Result[Workbook, ErrorReport] = self.getWorkbookRs(key)
         return Results.extractOrNone(rs)
 
     def getWorkbookRs(self, key: Union[str, int, WorkbookKey]) -> Result[Workbook, ErrorReport]:
-        """:return workbook at a key that is either a name, an index, or a WorkbookKey. The returned workbook is connected to all the reactors of this app"""
+        """:return workbook at a key that is either a name, an index, or a WorkbookKey. The returned workbook is connected to all the reactors/notifier of this app"""
         rs = self.getBareWorkbookRs(key)
         if rs.isOk():
             return Ok(self._makeEventWb(rs.value))
@@ -113,6 +109,7 @@ class App(ABC):
             return Ok(wb.rootWorkbook)
         else:
             return Err(AppErrors.WorkbookNotExist(key))
+
     def hasNoWorkbook(self) -> bool:
         """
         :return: true if this app does not have any workbook
@@ -204,7 +201,7 @@ class App(ABC):
         :return: a Result object
         """
         path = Path(filePath)
-        getWbRs: Result[Workbook, ErrorReport] = self.getWorkbookRs(nameOrIndexOrKey)
+        getWbRs: Result[Workbook, ErrorReport] = self.getBareWorkbookRs(nameOrIndexOrKey)
         if getWbRs.isOk():
             wb: Workbook = getWbRs.value
             oldKey = wb.workbookKey

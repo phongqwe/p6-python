@@ -4,9 +4,10 @@ from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 
 class EventData:
     def __init__(self,
-                 event: P6Event = None,
+                 event: P6Event,
                  isError: bool = False,
-                 data: ToProto = None):
+                 data: ToProto = b""):
+                 # data: ToProto = None):
         self.event = event
         self.isError = isError
         self.data = data

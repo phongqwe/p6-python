@@ -38,6 +38,7 @@ class EventWorkbook(WorkbookWrapper):
 
     @staticmethod
     def create(innerWorkbook: Workbook, reactorContainer: EventReactorContainer) -> 'EventWorkbook':
+        # todo these methods are the same, fix it
         def onCell(data: EventData):
             reactorContainer.triggerReactorsFor(data.event, data)
 
@@ -124,7 +125,7 @@ class EventWorkbook(WorkbookWrapper):
             return rs
 
     def reRun(self):
-        self._innerWorkbook.reRun()
+        self.rootWorkbook.reRun()
         if self.__onWorkbookEvent is not None:
             self.__onWorkbookEvent(EventData(P6Events.Workbook.ReRun.event))
 

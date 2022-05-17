@@ -70,11 +70,6 @@ class Cell(ToJson, ToProto[CellProto], ABC):
             return str(self.value)
 
     @property
-    def displayValue(self) -> str:
-        """string representation of the object stored in this cell"""
-        raise NotImplementedError()
-
-    @property
     def bareScript(self)->str:
         """
         :return: the bare script, may not be consistent with the result of running the formula of this cell.
