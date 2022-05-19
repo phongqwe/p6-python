@@ -27,16 +27,13 @@ class CellMultiUpdateReactor(BaseEventReactor[bytes, WorkbookUpdateCommonRespons
             wsRs = wb.getWorksheetRs(req.worksheetName)
             if wsRs.isOk():
                 ws:Worksheet = wsRs.value
-                atLeast1FormulaWasUpdated = False
                 for update in req.cellUpdateList:
                     content = update.content
                     if len(content.formula)!=0:
                         ws.cell(update.cellAddress).formula = content.formula
-                        atLeast1FormulaWasUpdated = True
                     else:
                         ws.cell(update.cellAddress).value = content.literal
-                if atLeast1FormulaWasUpdated:
-                    wb.reRun()
+                wb.reRun()
                 rt.newWorkbook = wb
             else:
                 rt.isError=True
