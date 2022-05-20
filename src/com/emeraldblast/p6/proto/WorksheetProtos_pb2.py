@@ -16,7 +16,7 @@ from com.emeraldblast.p6.proto import CommonProtos_pb2 as com_dot_emeraldblast_d
 from com.emeraldblast.p6.proto import DocProtos_pb2 as com_dot_emeraldblast_dot_p6_dot_proto_dot_DocProtos__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n/com/emeraldblast/p6/proto/WorksheetProtos.proto\x12\x19\x63om.emeraldblast.p6.proto\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\x1a)com/emeraldblast/p6/proto/DocProtos.proto\"\x81\x01\n\x1bRenameWorksheetRequestProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x0f\n\x07oldName\x18\x02 \x01(\t\x12\x0f\n\x07newName\x18\x03 \x01(\t\"\xe4\x01\n\x1cRenameWorksheetResponseProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x0f\n\x07oldName\x18\x02 \x01(\t\x12\r\n\x05index\x18\x03 \x01(\x05\x12\x0f\n\x07newName\x18\x04 \x01(\t\x12\x0f\n\x07isError\x18\x05 \x01(\x08\x12@\n\x0b\x65rrorReport\x18\x06 \x01(\x0b\x32+.com.emeraldblast.p6.proto.ErrorReportProto\"\xb3\x01\n\x16\x44\x65leteCellRequestProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x02 \x01(\t\x12@\n\x0b\x63\x65llAddress\x18\x03 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\"\xc6\x02\n\x17\x44\x65leteCellResponseProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x02 \x01(\t\x12@\n\x0b\x63\x65llAddress\x18\x03 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\x12=\n\x0bnewWorkbook\x18\x04 \x01(\x0b\x32(.com.emeraldblast.p6.proto.WorkbookProto\x12\x0f\n\x07isError\x18\x05 \x01(\x08\x12@\n\x0b\x65rrorReport\x18\x06 \x01(\x0b\x32+.com.emeraldblast.p6.proto.ErrorReportProto\"\xea\x01\n\x17\x44\x65leteMultiRequestProto\x12;\n\x05range\x18\x01 \x03(\x0b\x32,.com.emeraldblast.p6.proto.RangeAddressProto\x12\x39\n\x04\x63\x65ll\x18\x02 \x03(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\x12@\n\x0bworkbookKey\x18\x03 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x04 \x01(\tb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n/com/emeraldblast/p6/proto/WorksheetProtos.proto\x12\x19\x63om.emeraldblast.p6.proto\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\x1a)com/emeraldblast/p6/proto/DocProtos.proto\"\x81\x01\n\x1bRenameWorksheetRequestProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x0f\n\x07oldName\x18\x02 \x01(\t\x12\x0f\n\x07newName\x18\x03 \x01(\t\"\xd5\x01\n\x1cRenameWorksheetResponseProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x0f\n\x07oldName\x18\x02 \x01(\t\x12\x0f\n\x07newName\x18\x03 \x01(\t\x12\x0f\n\x07isError\x18\x04 \x01(\x08\x12@\n\x0b\x65rrorReport\x18\x05 \x01(\x0b\x32+.com.emeraldblast.p6.proto.ErrorReportProto\"\xb3\x01\n\x16\x44\x65leteCellRequestProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x02 \x01(\t\x12@\n\x0b\x63\x65llAddress\x18\x03 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\"\xc6\x02\n\x17\x44\x65leteCellResponseProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x02 \x01(\t\x12@\n\x0b\x63\x65llAddress\x18\x03 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\x12=\n\x0bnewWorkbook\x18\x04 \x01(\x0b\x32(.com.emeraldblast.p6.proto.WorkbookProto\x12\x0f\n\x07isError\x18\x05 \x01(\x08\x12@\n\x0b\x65rrorReport\x18\x06 \x01(\x0b\x32+.com.emeraldblast.p6.proto.ErrorReportProto\"\xea\x01\n\x17\x44\x65leteMultiRequestProto\x12;\n\x05range\x18\x01 \x03(\x0b\x32,.com.emeraldblast.p6.proto.RangeAddressProto\x12\x39\n\x04\x63\x65ll\x18\x02 \x03(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\x12@\n\x0bworkbookKey\x18\x03 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x04 \x01(\tb\x06proto3')
 
 
 
@@ -66,11 +66,11 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _RENAMEWORKSHEETREQUESTPROTO._serialized_start=168
   _RENAMEWORKSHEETREQUESTPROTO._serialized_end=297
   _RENAMEWORKSHEETRESPONSEPROTO._serialized_start=300
-  _RENAMEWORKSHEETRESPONSEPROTO._serialized_end=528
-  _DELETECELLREQUESTPROTO._serialized_start=531
-  _DELETECELLREQUESTPROTO._serialized_end=710
-  _DELETECELLRESPONSEPROTO._serialized_start=713
-  _DELETECELLRESPONSEPROTO._serialized_end=1039
-  _DELETEMULTIREQUESTPROTO._serialized_start=1042
-  _DELETEMULTIREQUESTPROTO._serialized_end=1276
+  _RENAMEWORKSHEETRESPONSEPROTO._serialized_end=513
+  _DELETECELLREQUESTPROTO._serialized_start=516
+  _DELETECELLREQUESTPROTO._serialized_end=695
+  _DELETECELLRESPONSEPROTO._serialized_start=698
+  _DELETECELLRESPONSEPROTO._serialized_end=1024
+  _DELETEMULTIREQUESTPROTO._serialized_start=1027
+  _DELETEMULTIREQUESTPROTO._serialized_end=1261
 # @@protoc_insertion_point(module_scope)

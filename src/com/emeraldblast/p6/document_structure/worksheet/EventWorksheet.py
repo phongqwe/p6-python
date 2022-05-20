@@ -108,7 +108,7 @@ class EventWorksheet(WorksheetWrapper):
                         workbookKey = self.workbook.workbookKey,
                         oldName = oldName,
                         newName = newName,
-                        index= index,
+                        # index= index,
                     )
                 )
             )

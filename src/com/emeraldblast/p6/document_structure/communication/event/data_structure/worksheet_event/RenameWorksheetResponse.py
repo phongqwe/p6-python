@@ -5,10 +5,12 @@ from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import RenameWorksheetRespons
 
 
 class RenameWorksheetResponse(ToProto[RenameWorksheetResponseProto]):
-    def __init__(self, workbookKey: WorkbookKey, oldName:str, newName:str, index:int=-1, isError:bool = False, errorReport:ErrorReport|None = None):
+    def __init__(self, workbookKey: WorkbookKey, oldName:str, newName:str,
+                 # index:int=-1,
+                 isError:bool = False, errorReport:ErrorReport|None = None):
         self.workbookKey = workbookKey
         self.oldName = oldName
-        self.index = index
+        # self.index = index
         self.newName = newName
         self.isError = isError
         self.errorReport = errorReport
@@ -17,7 +19,7 @@ class RenameWorksheetResponse(ToProto[RenameWorksheetResponseProto]):
         rt = RenameWorksheetResponseProto()
         rt.oldName = self.oldName
         rt.newName = self.newName
-        rt.index = self.index
+        # rt.index = self.index
         rt.isError = self.isError
         rt.workbookKey.CopyFrom(self.workbookKey.toProtoObj())
         if self.errorReport is not None:

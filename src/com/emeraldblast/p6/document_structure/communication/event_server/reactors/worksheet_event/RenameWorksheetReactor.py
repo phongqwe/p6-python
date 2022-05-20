@@ -44,7 +44,7 @@ class RenameWorksheetReactor(EventReactor[bytes, RenameWorksheetResponse]):
                         workbookKey = wbKey,
                         oldName = oldName,
                         newName = newName,
-                        index = wb.getIndexOfWorksheet(newName),
+                        # index = wb.getIndexOfWorksheet(newName),
                         isError = False,
                     )
                     return out
