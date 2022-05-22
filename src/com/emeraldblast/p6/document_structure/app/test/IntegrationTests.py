@@ -45,7 +45,7 @@ class IntegrationTest_test(unittest.TestCase):
         saveReq = P6MessageProto(
             header = P6MessageHeaderProto(
                 msgId = "1",
-                eventType = P6Events.Workbook.SaveWorkbook.event.toProtoObj()
+                eventType = P6Events.App.SaveWorkbook.event.toProtoObj()
             ),
             data = SaveWorkbookRequestProto(
                 workbookKey = wb.workbookKey.toProtoObj(),

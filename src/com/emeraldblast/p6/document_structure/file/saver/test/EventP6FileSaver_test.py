@@ -33,7 +33,7 @@ class EventP6FileSaver_test(unittest.TestCase):
         mockSaver.saveRs.assert_called_once_with(wb, newPath)
 
         eventData = EventData(
-            event = P6Events.Workbook.SaveWorkbook.event,
+            event = P6Events.App.SaveWorkbook.event,
             data = SaveWorkbookResponse(
                 path = str(newPath.absolute()),
                 isError = False,
@@ -62,7 +62,7 @@ class EventP6FileSaver_test(unittest.TestCase):
         mockSaver.saveRs.assert_called_once_with(wb, newPath)
 
         eventData = EventData(
-            event = P6Events.Workbook.SaveWorkbook.event,
+            event = P6Events.App.SaveWorkbook.event,
             data = SaveWorkbookResponse(
                 path = str(newPath.absolute()),
                 isError = True,

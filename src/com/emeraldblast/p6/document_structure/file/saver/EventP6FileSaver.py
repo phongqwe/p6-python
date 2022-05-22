@@ -41,7 +41,7 @@ class EventP6FileSaver(P6FileSaver):
         response.workbookKey = wbKey
 
         eventData = EventData(
-            event = P6Events.Workbook.SaveWorkbook.event,
+            event = P6Events.App.SaveWorkbook.event,
             data = response
         )
         self.onSave(eventData)

@@ -289,7 +289,7 @@ class AppImp_test(unittest.TestCase):
         app = AppImp()
         mockCallback = MagicMock()
         app.eventNotifierContainer.addReactor(
-            P6Events.Workbook.SaveWorkbook.event,
+            P6Events.App.SaveWorkbook.event,
             EventReactorFactory.makeBasicReactor(mockCallback))
 
         # runSave(app,onEvent)
