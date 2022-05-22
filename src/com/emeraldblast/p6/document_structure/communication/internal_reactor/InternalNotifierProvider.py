@@ -18,38 +18,27 @@ class InternalNotifierProvider:
         self.__socketProvider = socketProviderGetter
         self.__worksheetRenameReactor: EventReactor | None = None
 
-    def workbookNotifier(self) -> EventReactor[EventData, None]:
+    def __commonNotifier(self) -> EventReactor[EventData, None]:
         def cb(data: EventData):
-            msg = P6Messages.p6Response(data.event, data.data)
+            msg = P6Messages.p6Response(
+                event=data.event,
+                data= data.data)
             self.__send(msg)
 
         reactor = EventReactorFactory.makeBasicReactor(cb)
         return reactor
+
+    def workbookNotifier(self) -> EventReactor[EventData, None]:
+        return self.__commonNotifier()
 
     def cellNotifier(self) -> EventReactor[EventData, None]:
-        def cb(cellEventData: EventData):
-            p6Res = P6Messages.p6Response(
-                event = cellEventData.event,
-                data = cellEventData.data, )
-            self.__send(p6Res)
-        reactor = EventReactorFactory.makeBasicReactor(cb)
-        return reactor
+        return self.__commonNotifier()
 
     def worksheetNotifier(self) -> EventReactor[EventData, None]:
-        def cb(eventData: EventData):
-            msg = P6Messages.p6Response(eventData.event, eventData.data)
-            # MessageSender.sendP6MsgRes(self.__socketProvider(),msg)
-            self.__send(msg)
-
-        reactor = EventReactorFactory.makeBasicReactor(cb)
-        return reactor
+        return self.__commonNotifier()
 
     def appNotifier(self)->EventReactor[EventData,None]:
-        def cb(data:EventData):
-            response = P6Messages.p6Response(event = data.event,data=data.data)
-            self.__send(response)
-        reactor = EventReactorFactory.makeBasicReactor(cb)
-        return reactor
+        return self.__commonNotifier()
 
     def __send(self,p6MsgOrRes:P6Message|P6Response):
         MessageSender.sendP6MsgRes(self.__socketProvider(), p6MsgOrRes)

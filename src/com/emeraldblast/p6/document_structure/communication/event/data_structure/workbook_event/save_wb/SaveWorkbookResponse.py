@@ -26,3 +26,8 @@ class SaveWorkbookResponse(ToProto[SaveWorkbookResponseProto]):
 
 
         return proto
+    def __eq__(self, other):
+        if isinstance(other,SaveWorkbookResponse):
+            return self.path == other.path and self.workbookKey == other.workbookKey and self.errorReport == self.errorReport and self.isError == self.isError
+        else:
+            return False

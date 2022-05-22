@@ -1,4 +1,5 @@
-from typing import Optional, Union
+from pathlib import Path
+from typing import Optional, Union, Any
 
 import zmq
 
@@ -9,6 +10,8 @@ from com.emeraldblast.p6.document_structure.app.workbook_container.WorkbookConta
 from com.emeraldblast.p6.document_structure.communication.SocketProvider import SocketProvider
 from com.emeraldblast.p6.document_structure.communication.SocketProviderImp import SocketProviderImp
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.save_wb.SaveWorkbookResponse import \
+    SaveWorkbookResponse
 from com.emeraldblast.p6.document_structure.communication.event_server.EventServer import EventServer
 from com.emeraldblast.p6.document_structure.communication.event_server.EventServerImp import EventServerImp
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.EventServerReactors import \
@@ -70,7 +73,7 @@ class AppImp(App):
         self.__socketProvider: SocketProvider = socketProvider
         if eventReactorContainer is None:
             eventReactorContainer = EventReactorContainers.mutable()
-        self.__reactorContainer: EventReactorContainer[EventData] = eventReactorContainer
+        self.__notifierContainer: EventReactorContainer[EventData] = eventReactorContainer
         self.__reactorProvider = InternalNotifierProvider(self._getSocketProvider)
         self.__zcontext = zmq.Context.instance()
 
@@ -81,6 +84,10 @@ class AppImp(App):
             appGetter = makeGetter(self)
         )
         self.__initEventServerReactors()
+
+    @property
+    def rootApp(self) -> 'App':
+        return self
 
     @property
     def zContext(self):
@@ -110,7 +117,7 @@ class AppImp(App):
             P6Events.Cell.MultiUpdate.event: er.cellMultiUpdateReactor(),
         }
 
-        reactorForApp= {
+        reactorForApp = {
             P6Events.App.SetActiveWorksheet.event: er.setActiveWorksheetReactor(),
         }
 
@@ -121,13 +128,12 @@ class AppImp(App):
             **reactorForApp,
         }
 
-        for (k,v) in d.items():
-            evSv.addReactor(k,v)
-
+        for (k, v) in d.items():
+            evSv.addReactor(k, v)
 
     def __initNotifiers(self):
         """create internal reactors that will react to events from the app, workbooks, worksheets, cells, etc """
-        container = self.__reactorContainer
+        container = self.__notifierContainer
         provider = self.__reactorProvider
 
         for event in P6Events.Cell.allEvents():
@@ -137,11 +143,11 @@ class AppImp(App):
         for event in P6Events.Worksheet.allEvents():
             container.addReactor(event, provider.worksheetNotifier())
         for event in P6Events.App.allEvents():
-            container.addReactor(event,provider.appNotifier())
+            container.addReactor(event, provider.appNotifier())
 
     @property
     def eventReactorContainer(self) -> EventReactorContainer:
-        return self.__reactorContainer
+        return self.__notifierContainer
 
     ### >> App << ###
 
@@ -237,3 +243,36 @@ class AppImp(App):
                     data = AppErrors.WorkbookAlreadyExist.Data(name)
                 )
             )
+
+    def saveWorkbookAtPathRs(self,
+                             nameOrIndexOrKey: Union[int, str, WorkbookKey],
+                             filePath: Union[str, Path]) -> Result[Workbook | None, ErrorReport]:
+        """
+        this overload will trigger notifier
+        """
+        saveRs = super().saveWorkbookAtPathRs(nameOrIndexOrKey,filePath)
+        wbKey = None
+        if saveRs.isOk():
+            wb = saveRs.value
+            if wb:
+                wbKey = wb.workbookKey
+        errReport = None
+        if saveRs.isErr():
+            errReport = saveRs.err
+
+        eventData = SaveWorkbookResponse(
+                path=str(Path(filePath).absolute()),
+                isError = saveRs.isErr(),
+            )
+
+        eventData.errorReport = errReport
+        if wbKey:
+            eventData.workbookKey = wbKey
+
+        evenData = EventData(
+            event = P6Events.Workbook.SaveWorkbook.event,
+            data = eventData
+        )
+        self.__notifierContainer.triggerReactorsFor(P6Events.Workbook.SaveWorkbook.event,evenData)
+
+        return saveRs

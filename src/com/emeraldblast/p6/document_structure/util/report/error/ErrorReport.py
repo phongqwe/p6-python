@@ -51,3 +51,12 @@ class ErrorReport(ToProto[ErrorReportProto]):
         if self.data is not None:
             proto.data = str(self.data)
         return proto
+
+    def __eq__(self, other):
+        if isinstance(other,ErrorReport):
+            c1 = self.header == other.header
+            c2 = self.data == other.data
+            c3 = self.loc == other.loc
+            return c1 and c2
+        else:
+            return False

@@ -29,6 +29,10 @@ class App(ABC):
     """
 
     @property
+    def rootApp(self)->'App':
+        raise  NotImplementedError()
+
+    @property
     def zContext(self):
         """zmq context"""
         raise NotImplementedError()
