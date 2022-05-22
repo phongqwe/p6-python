@@ -38,29 +38,17 @@ class EventWorkbook(WorkbookWrapper):
 
     @staticmethod
     def create(innerWorkbook: Workbook, reactorContainer: EventReactorContainer) -> 'EventWorkbook':
-        # todo these methods are the same, fix it
-        def onCell(data: EventData):
-            reactorContainer.triggerReactorsFor(data.event, data)
 
-        def onWorkbook(data: EventData):
-            reactorContainer.triggerReactorsFor(data.event, data)
-
-        def onWorksheet(data: EventData):
-            reactorContainer.triggerReactorsFor(data.event, data)
-
-        def onRange(data: EventData):
-            reactorContainer.triggerReactorsFor(data.event, data)
-
-        def onEvent(data: EventData):
+        def triggerEventReactor(data: EventData):
             reactorContainer.triggerReactorsFor(data.event, data)
 
         return EventWorkbook(
             innerWorkbook = innerWorkbook,
-            onCellEvent = onCell,
-            onWorksheetEvent = onWorksheet,
-            onRangeEvent = onRange,
-            onWorkbookEvent = onWorkbook,
-            onEvent = onEvent,
+            onCellEvent = triggerEventReactor,
+            onWorksheetEvent = triggerEventReactor,
+            onRangeEvent = triggerEventReactor,
+            onWorkbookEvent = triggerEventReactor,
+            onEvent = triggerEventReactor,
         )
 
     @property
