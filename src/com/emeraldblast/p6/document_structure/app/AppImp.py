@@ -169,11 +169,11 @@ class AppImp(App):
         self.__socketProvider = socketProvider
 
     @property
-    def _fileSaver(self) -> P6FileSaver:
+    def fileSaver(self) -> P6FileSaver:
         return self.__wbSaver
 
     @property
-    def _fileLoader(self) -> P6FileLoader:
+    def fileLoader(self) -> P6FileLoader:
         return self.__wbLoader
 
     def hasNoWorkbook(self) -> bool:

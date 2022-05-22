@@ -16,6 +16,10 @@ from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 
 
 class P6ProtoFileSaver(P6FileSaver):
+    @property
+    def rootSaver(self) -> 'P6FileSaver':
+        return self
+
     def saveRs(self, workbook: Workbook, filePath: str | Path | None) -> Result[None, ErrorReport]:
         path = filePath
 

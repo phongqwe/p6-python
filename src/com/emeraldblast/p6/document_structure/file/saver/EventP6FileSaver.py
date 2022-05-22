@@ -1,7 +1,6 @@
 from pathlib import Path
 from typing import Union, Callable
 
-from com.emeraldblast.p6.document_structure.communication.event.P6Event import P6Event
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.save_wb.SaveWorkbookResponse import \
     SaveWorkbookResponse
@@ -14,6 +13,10 @@ from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 
 
 class EventP6FileSaver(P6FileSaver):
+
+    @property
+    def rootSaver(self) -> 'P6FileSaver':
+        return self.saver
 
     def __init__(self,saver,onSave:Callable[[EventData],None]):
         self.saver = saver

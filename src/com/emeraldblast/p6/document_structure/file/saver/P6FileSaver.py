@@ -11,6 +11,10 @@ class P6FileSaver(ABC):
     """save a workbook to a file
     """
 
+    @property
+    def rootSaver(self)->'P6FileSaver':
+        raise NotImplementedError()
+
     def saveRs(self, workbook: Workbook, filePath: Union[str, Path]) -> Result[None, ErrorReport]:
         """
         :param workbook:

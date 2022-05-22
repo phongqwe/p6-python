@@ -29,8 +29,8 @@ class App(ABC):
     """
 
     @property
-    def rootApp(self)->'App':
-        raise  NotImplementedError()
+    def rootApp(self) -> 'App':
+        raise NotImplementedError()
 
     @property
     def zContext(self):
@@ -42,11 +42,11 @@ class App(ABC):
         raise NotImplementedError()
 
     @property
-    def _fileSaver(self) -> P6FileSaver:
+    def fileSaver(self) -> P6FileSaver:
         raise NotImplementedError()
 
     @property
-    def _fileLoader(self) -> P6FileLoader:
+    def fileLoader(self) -> P6FileLoader:
         raise NotImplementedError()
 
     @property
@@ -93,7 +93,7 @@ class App(ABC):
         rs: Result[Workbook, ErrorReport] = self.getWorkbookRs(key)
         return Results.extractOrRaise(rs)
 
-    def getWorkbookOrNone(self, key: Union[str, int, WorkbookKey]) -> Workbook|None:
+    def getWorkbookOrNone(self, key: Union[str, int, WorkbookKey]) -> Workbook | None:
         """:return workbook at a key that is either a name, an index, or a WorkbookKey. The returned workbook is connected to all the reactors of this app. Return none if the workbook is not available"""
         rs: Result[Workbook, ErrorReport] = self.getWorkbookRs(key)
         return Results.extractOrNone(rs)
@@ -181,7 +181,7 @@ class App(ABC):
         force load a workbook from a file path, and add it to this app state, replace whatever workbook with the same key
         :return an Result object if there are error instead of raising an exception
         """
-        loadRs: Result[Workbook, ErrorReport] = self._fileLoader.loadRs(Path(filePath))
+        loadRs: Result[Workbook, ErrorReport] = self.fileLoader.loadRs(Path(filePath))
         if loadRs.isOk():
             self.wbContainer.addWorkbook(loadRs.value)
         return loadRs
@@ -197,7 +197,25 @@ class App(ABC):
 
     def saveWorkbookAtPathRs(self,
                              nameOrIndexOrKey: Union[int, str, WorkbookKey],
-                             filePath: str| Path|None) -> Result[Workbook|None, ErrorReport]:
+                             filePath: str | Path | None) -> Result[Workbook | None, ErrorReport]:
+        """
+         save a workbook at nameOrIndex to a certain filePath, then update the workbook with that new path
+        :param nameOrIndexOrKey:
+        :param filePath:
+        :return: a Result object
+        """
+        return self.__saveWorkbookAtPathRs(self.fileSaver, nameOrIndexOrKey, filePath)
+
+    def saveWorkbookAtPathNoEventRs(self,
+                                    nameOrIndexOrKey: Union[int, str, WorkbookKey],
+                                    filePath: str | Path | None) -> Result[Workbook | None, ErrorReport]:
+
+        return self.__saveWorkbookAtPathRs(self.fileSaver.rootSaver, nameOrIndexOrKey, filePath)
+
+    def __saveWorkbookAtPathRs(self,
+                               saver: P6FileSaver,
+                               nameOrIndexOrKey: Union[int, str, WorkbookKey],
+                               filePath: str | Path | None) -> Result[Workbook | None, ErrorReport]:
         """
          save a workbook at nameOrIndex to a certain filePath, then update the workbook with that new path
         :param nameOrIndexOrKey:
@@ -209,7 +227,7 @@ class App(ABC):
         if getWbRs.isOk():
             wb: Workbook = getWbRs.value
             oldKey = wb.workbookKey
-            saveResult = self._fileSaver.saveRs(wb, path)
+            saveResult = saver.saveRs(wb, path)
             if saveResult.isOk():
                 newKey = WorkbookKeyImp(str(path.name), path)
                 if newKey != wb.workbookKey:
@@ -235,10 +253,25 @@ class App(ABC):
         :param nameOrIndexOrKey:
         :return:
         """
+        return self.__saveWorkbookRs(self.fileSaver,nameOrIndexOrKey)
+    def saveWorkbookNoEventRs(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]) -> Result[Any, ErrorReport]:
+        """
+        save a workbook at nameOrIndex
+        :param nameOrIndexOrKey:
+        :return:
+        """
+        return self.__saveWorkbookRs(self.fileSaver.rootSaver,nameOrIndexOrKey)
+
+    def __saveWorkbookRs(self, saver:P6FileSaver, nameOrIndexOrKey: Union[int, str, WorkbookKey]) -> Result[Any, ErrorReport]:
+        """
+        save a workbook at nameOrIndex with custom saver
+        :param nameOrIndexOrKey:
+        :return:
+        """
         wbRs: Result[Workbook, ErrorReport] = self.getWorkbookRs(nameOrIndexOrKey)
         if wbRs.isOk():
             wb: Workbook = wbRs.value
-            saveResult = self.saveWorkbookAtPathRs(nameOrIndexOrKey, wb.workbookKey.filePath)
+            saveResult = self.__saveWorkbookAtPathRs(saver,nameOrIndexOrKey, wb.workbookKey.filePath)
             return saveResult
         else:
             return wbRs
@@ -267,7 +300,7 @@ class App(ABC):
         wbRs = self.getWorkbookRs(wbKey)
         alreadyHasThisWorkbook = wbRs.isOk()
         if not alreadyHasThisWorkbook:
-            loadResult: Result[Workbook, ErrorReport] = self._fileLoader.loadRs(filePath)
+            loadResult: Result[Workbook, ErrorReport] = self.fileLoader.loadRs(filePath)
             if loadResult.isOk():
                 newWb: Workbook = loadResult.value
                 eventNewWb = self._makeEventWb(newWb)
@@ -311,7 +344,7 @@ class App(ABC):
         raise NotImplementedError()
 
     @property
-    def eventServer(self)->EventServer:
+    def eventServer(self) -> EventServer:
         raise NotImplementedError()
 
     def _makeEventWb(self, workbook: Workbook | Optional[Workbook]) -> Optional[EventWorkbook]:
