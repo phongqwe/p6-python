@@ -1,7 +1,8 @@
 import os
 import unittest
 from pathlib import Path
-from typing import Callable
+from typing import Callable, Any
+from unittest.mock import MagicMock
 
 from com.emeraldblast.p6.document_structure.app.App import App
 from com.emeraldblast.p6.document_structure.app.AppImp import AppImp
@@ -20,6 +21,7 @@ class AppImp_test(unittest.TestCase):
         super().setUp()
         self.app = AppImp()
         self.aa = 0
+        self.saveIndicator = False
         self.fileName="fileProto.txt"
 
     def test_createNewWorkbook(self):
@@ -173,6 +175,9 @@ class AppImp_test(unittest.TestCase):
         self.aa = f"{dt.cell.address.label}"
 
     def test_event_listener_on_workbook_loaded_from_file(self):
+        """
+        ensure that when a wb is loaded from a file, it is wired to the event handlers of the app
+        """
         app = AppImp()
 
         app.eventNotifierContainer.addReactor(
@@ -231,7 +236,7 @@ class AppImp_test(unittest.TestCase):
 
         self._test_event_onWb(cwb)
 
-    def test_event_listener_getWorkbookByIndex(self):
+    def test_event_listener_on_wb_from_getWorkbookByIndex(self):
         """test event triggering on workbook returned by getWorkbookByIndex"""
         def cwb(app: App):
             app.createNewWorkbook("book1")
@@ -240,7 +245,7 @@ class AppImp_test(unittest.TestCase):
 
         self._test_event_onWb(cwb)
 
-    def test_event_listener_getWorkbookByName(self):
+    def test_event_listener_on_wb_from_getWorkbookByName(self):
         """test event triggering on workbook returned by getWorkbookByName"""
         def cwb(app: App):
             app.createNewWorkbook("book1")
@@ -249,7 +254,7 @@ class AppImp_test(unittest.TestCase):
 
         self._test_event_onWb(cwb)
 
-    def test_event_listener_getWorkbookByKey(self):
+    def test_event_listener_on_wb_from_getWorkbookByKey(self):
         """test event triggering on workbook return by getWorkbookByKey"""
         def cwb(app: App):
             app.createNewWorkbook("book1")
@@ -277,6 +282,35 @@ class AppImp_test(unittest.TestCase):
         self.assertEqual(0, self.aa)
         cell.value = "abc"
         self.assertEqual(123, self.aa)
+
+
+    def test_saveEvent(self):
+        """ensure that save notifier is trigger when a workbook is saved"""
+        app = AppImp()
+        mockCallback = MagicMock()
+        app.eventNotifierContainer.addReactor(
+            P6Events.Workbook.SaveWorkbook.event,
+            EventReactorFactory.makeBasicReactor(mockCallback))
+
+        # runSave(app,onEvent)
+        path = Path("b1")
+        app.createNewWorkbook("b1")
+        app.saveWorkbookAtPathRs("b1", path)
+        self.assertEqual(1, mockCallback.call_count)
+
+        app.saveWorkbookAtPath("b1", path)
+        self.assertEqual(2, mockCallback.call_count)
+
+        app.saveWorkbook("b1")
+        self.assertEqual(3, mockCallback.call_count)
+
+        app.saveWorkbookRs("b1")
+        self.assertEqual(4, mockCallback.call_count)
+
+        if path.exists():
+            os.remove(path)
+
+
 
 
 if __name__ == '__main__':
