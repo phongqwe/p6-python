@@ -23,6 +23,7 @@ from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorCo
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorContainers import EventReactorContainers
 from com.emeraldblast.p6.document_structure.file.loader.P6FileLoader import P6FileLoader
 from com.emeraldblast.p6.document_structure.file.loader.P6FileLoaders import P6FileLoaders
+from com.emeraldblast.p6.document_structure.file.saver.EventP6FileSaver import EventP6FileSaver
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSavers import P6FileSavers
 from com.emeraldblast.p6.document_structure.util.Util import makeGetter
@@ -83,7 +84,8 @@ class AppImp(App):
             workbookGetter = self.getBareWorkbookRs,
             appGetter = makeGetter(self)
         )
-        self.__initEventServerReactors()
+        self.__setupEventServerReactors()
+        self.__setupEventEmitter()
 
     @property
     def rootApp(self) -> 'App':
@@ -97,7 +99,7 @@ class AppImp(App):
     def eventServer(self) -> EventServer:
         return self._eventServer
 
-    def __initEventServerReactors(self):
+    def __setupEventServerReactors(self):
         evSv = self._eventServer
         er = self._eventServerReactors
 
@@ -145,8 +147,11 @@ class AppImp(App):
         for event in P6Events.App.allEvents():
             container.addReactor(event, provider.appNotifier())
 
+    def __setupEventEmitter(self):
+        self.__wbSaver=EventP6FileSaver.create(self.__wbSaver, self.__notifierContainer)
+
     @property
-    def eventReactorContainer(self) -> EventReactorContainer:
+    def eventNotifierContainer(self) -> EventReactorContainer:
         return self.__notifierContainer
 
     ### >> App << ###
@@ -244,35 +249,35 @@ class AppImp(App):
                 )
             )
 
-    def saveWorkbookAtPathRs(self,
-                             nameOrIndexOrKey: Union[int, str, WorkbookKey],
-                             filePath: Union[str, Path]) -> Result[Workbook | None, ErrorReport]:
-        """
-        this overload will trigger notifier
-        """
-        saveRs = super().saveWorkbookAtPathRs(nameOrIndexOrKey,filePath)
-        wbKey = None
-        if saveRs.isOk():
-            wb = saveRs.value
-            if wb:
-                wbKey = wb.workbookKey
-        errReport = None
-        if saveRs.isErr():
-            errReport = saveRs.err
-
-        eventData = SaveWorkbookResponse(
-                path=str(Path(filePath).absolute()),
-                isError = saveRs.isErr(),
-            )
-
-        eventData.errorReport = errReport
-        if wbKey:
-            eventData.workbookKey = wbKey
-
-        evenData = EventData(
-            event = P6Events.Workbook.SaveWorkbook.event,
-            data = eventData
-        )
-        self.__notifierContainer.triggerReactorsFor(P6Events.Workbook.SaveWorkbook.event,evenData)
-
-        return saveRs
+    # def saveWorkbookAtPathRs(self,
+    #                          nameOrIndexOrKey: Union[int, str, WorkbookKey],
+    #                          filePath: Union[str, Path]) -> Result[Workbook | None, ErrorReport]:
+    #     """
+    #     this overload will trigger notifier
+    #     """
+    #     saveRs = super().saveWorkbookAtPathRs(nameOrIndexOrKey,filePath)
+    #     wbKey = None
+    #     if saveRs.isOk():
+    #         wb = saveRs.value
+    #         if wb:
+    #             wbKey = wb.workbookKey
+    #     errReport = None
+    #     if saveRs.isErr():
+    #         errReport = saveRs.err
+    #
+    #     eventData = SaveWorkbookResponse(
+    #             path=str(Path(filePath).absolute()),
+    #             isError = saveRs.isErr(),
+    #         )
+    #
+    #     eventData.errorReport = errReport
+    #     if wbKey:
+    #         eventData.workbookKey = wbKey
+    #
+    #     evenData = EventData(
+    #         event = P6Events.Workbook.SaveWorkbook.event,
+    #         data = eventData
+    #     )
+    #     self.__notifierContainer.triggerReactorsFor(P6Events.Workbook.SaveWorkbook.event,evenData)
+    #
+    #     return saveRs

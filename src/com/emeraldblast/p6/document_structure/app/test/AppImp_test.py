@@ -175,7 +175,7 @@ class AppImp_test(unittest.TestCase):
     def test_event_listener_on_workbook_loaded_from_file(self):
         app = AppImp()
 
-        app.eventReactorContainer.addReactor(
+        app.eventNotifierContainer.addReactor(
             P6Events.Cell.Update.event,
             EventReactorFactory.makeBasicReactor(self.onCellChange))
         fileName = "fileProto2.txt"
@@ -199,7 +199,7 @@ class AppImp_test(unittest.TestCase):
         def reactor(_):
             self.ze = 123
 
-        app.eventReactorContainer.addReactor(
+        app.eventNotifierContainer.addReactor(
             P6Events.Cell.Update.event,
             EventReactorFactory.makeBasicReactor(reactor))
         wb = app.createNewWorkbook("bookz1")
@@ -267,7 +267,7 @@ class AppImp_test(unittest.TestCase):
         wbCreator is a function that create a workbook.
         """
         app = AppImp()
-        app.eventReactorContainer.addReactor(
+        app.eventNotifierContainer.addReactor(
             P6Events.Cell.Update.event,
             EventReactorFactory.makeBasicReactor(self.onCellChange))
 

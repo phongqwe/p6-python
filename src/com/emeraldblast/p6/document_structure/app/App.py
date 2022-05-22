@@ -197,7 +197,7 @@ class App(ABC):
 
     def saveWorkbookAtPathRs(self,
                              nameOrIndexOrKey: Union[int, str, WorkbookKey],
-                             filePath: Union[str, Path]) -> Result[Workbook|None, ErrorReport]:
+                             filePath: str| Path|None) -> Result[Workbook|None, ErrorReport]:
         """
          save a workbook at nameOrIndex to a certain filePath, then update the workbook with that new path
         :param nameOrIndexOrKey:
@@ -307,7 +307,7 @@ class App(ABC):
         raise NotImplementedError()
 
     @property
-    def eventReactorContainer(self) -> EventReactorContainer:
+    def eventNotifierContainer(self) -> EventReactorContainer:
         raise NotImplementedError()
 
     @property
@@ -322,6 +322,6 @@ class App(ABC):
             else:
                 return EventWorkbook.create(
                     innerWorkbook = workbook,
-                    reactorContainer = self.eventReactorContainer)
+                    reactorContainer = self.eventNotifierContainer)
         else:
             return None

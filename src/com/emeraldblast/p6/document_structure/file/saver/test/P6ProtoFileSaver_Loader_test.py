@@ -1,6 +1,7 @@
 import os
 import unittest
 from pathlib import Path
+from unittest.mock import MagicMock
 
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.file.loader.P6ProtoFileLoader import P6ProtoFileLoader
@@ -20,6 +21,7 @@ class P6ProtoFileSaver_test(unittest.TestCase):
     def setUp(self) -> None:
         super().setUp()
         self.filePath = Path("abc.txt")
+        self.saver = P6ProtoFileSaver()
 
     def test_save(self):
         wbKey = WorkbookKeys.fromNameAndPath("Book1", None)
@@ -46,12 +48,11 @@ class P6ProtoFileSaver_test(unittest.TestCase):
         )
 
         workbook = Workbooks.fromProto(wbProto)
-        saver = P6ProtoFileSaver()
         if self.filePath.exists():
             os.remove(self.filePath)
 
         self.assertFalse(self.filePath.exists())
-        saveRs = saver.saveRs(workbook, self.filePath)
+        saveRs = self.saver.saveRs(workbook, self.filePath)
         self.assertTrue(saveRs.isOk())
         self.assertTrue(self.filePath.exists())
 
@@ -74,9 +75,15 @@ class P6ProtoFileSaver_test(unittest.TestCase):
         ws.cell("@B33").formula="""=SCRIPT(1+2+3)"""
         self.assertEqual(6, ws.cell("@B33").value)
 
+    def test_saveRs_invalidPath(self):
+        rs = self.saver.saveRs(MagicMock(),None)
+        self.assertTrue(rs.isErr())
+
+
     def tearDown(self) -> None:
         super().tearDown()
-        os.remove(self.filePath)
+        if self.filePath.exists():
+            os.remove(self.filePath)
 
 
 if __name__ == '__main__':

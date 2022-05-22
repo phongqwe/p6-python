@@ -27,7 +27,7 @@ class UserFunctions_test(unittest.TestCase):
         def onCellChange(dt: CellEventData):
             self.a += 1
 
-        app.eventReactorContainer.addReactor(
+        app.eventNotifierContainer.addReactor(
             P6Events.Cell.Update.event,
             EventReactorFactory.makeBasicReactor(onCellChange))
         c1 = cell("@A1")
