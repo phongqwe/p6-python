@@ -13,11 +13,13 @@ class LoadWorkbookResponse_test(unittest.TestCase):
         wb = WorkbookImp("abc")
         o = LoadWorkbookResponse(
             isError = False,
+            windowId = "123",
             workbook = wb
         )
         p = o.toProtoObj()
         expect = LoadWorkbookResponseProto(
             isError = o.isError,
+            windowId="123",
             workbook = wb.toProtoObj()
         )
         self.assertEqual(expect,p)
@@ -28,11 +30,13 @@ class LoadWorkbookResponse_test(unittest.TestCase):
         )
         o = LoadWorkbookResponse(
             isError = True,
+            windowId = "123",
             errorReport = er
         )
         p = o.toProtoObj()
         expect = LoadWorkbookResponseProto(
             isError = o.isError,
+            windowId = "123",
             errorReport = er.toProtoObj()
         )
         self.assertEqual(expect,p)

@@ -5,17 +5,17 @@ from com.emeraldblast.p6.proto.AppEventProtos_pb2 import LoadWorkbookResponsePro
 
 
 class LoadWorkbookResponse(ToProto[LoadWorkbookResponseProto]):
-    def __init__(self, isError: bool, errorReport: ErrorReport | None = None, workbook: Workbook | None = None):
+    def __init__(self, isError: bool, windowId: str, errorReport: ErrorReport | None = None,
+                 workbook: Workbook | None = None):
+        self.windowId = windowId
         self.workbook = workbook
         self.errorReport = errorReport
         self.isError = isError
 
-    def toProtoObj(self)->LoadWorkbookResponseProto:
-        proto = LoadWorkbookResponseProto(isError = self.isError)
+    def toProtoObj(self) -> LoadWorkbookResponseProto:
+        proto = LoadWorkbookResponseProto(isError = self.isError, windowId = self.windowId)
         if self.workbook:
-            proto.workbook.CopyFrom( self.workbook.toProtoObj())
+            proto.workbook.CopyFrom(self.workbook.toProtoObj())
         if self.errorReport:
             proto.errorReport.CopyFrom(self.errorReport.toProtoObj())
         return proto
-
-

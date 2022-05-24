@@ -21,7 +21,7 @@ class LoadWorkbookReactor(BaseEventReactor[bytes, LoadWorkbookResponse]):
         req = LoadWorkbookRequest.fromProtoByte(data)
         app = self.appGetter()
         loadRs: Result[Workbook, ErrorReport] = app.loadWorkbookRsNoEvent(req.absolutePath)
-        res = LoadWorkbookResponse(isError = loadRs.isErr())
+        res = LoadWorkbookResponse(isError = loadRs.isErr(),windowId = req.windowId)
         if loadRs.isOk():
             res.workbook = loadRs.value
         else:
