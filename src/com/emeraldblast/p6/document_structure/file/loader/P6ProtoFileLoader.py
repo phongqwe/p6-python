@@ -14,6 +14,10 @@ from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import Wor
 
 
 class P6ProtoFileLoader(P6FileLoader):
+    @property
+    def rootLoader(self) -> 'P6FileLoader':
+        return self
+
     def loadRs(self, filePath: Union[str, Path]) -> Result[Workbook, ErrorReport]:
         path = Path(filePath)
         if path.exists():

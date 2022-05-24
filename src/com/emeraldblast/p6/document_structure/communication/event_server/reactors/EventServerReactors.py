@@ -11,6 +11,8 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.w
 from com.emeraldblast.p6.document_structure.communication.event_server.msg.P6Message import P6Message
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.TypeAliasForReactor import WbGetter, \
     AppGetter
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.AppEventServerReactors import \
+    AppEventServerReactors
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.SetActiveWorksheetReactor import \
     SetActiveWorksheetReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.cell_event.CellMultiUpdateReactor import \
@@ -32,11 +34,17 @@ from com.emeraldblast.p6.document_structure.communication.event_server.reactors.
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
 
 
+
+
 class EventServerReactors:
 
     def __init__(self, workbookGetter: WbGetter, appGetter: AppGetter):
         self.wbGetter = workbookGetter
         self.appGetter = appGetter
+        self._app = AppEventServerReactors(self.wbGetter, self.appGetter)
+    @property
+    def app(self)->AppEventServerReactors:
+        return self._app
 
     def setActiveWorksheetReactor(self) -> SetActiveWorksheetReactor:
         return SetActiveWorksheetReactor(

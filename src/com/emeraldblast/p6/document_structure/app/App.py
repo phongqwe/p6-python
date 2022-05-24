@@ -290,6 +290,22 @@ class App(ABC):
 
     def loadWorkbookRs(self, filePath: Union[str, Path]) -> Result[Workbook, ErrorReport]:
         """
+        Load a file using the default loader
+        :param filePath:
+        """
+
+        return self.__loadWorkbookRs(self.fileLoader, filePath)
+
+    def loadWorkbookRsNoEvent(self, filePath: Union[str, Path]) -> Result[Workbook, ErrorReport]:
+        """
+        Load a file using the loader that does not emmit event
+        :param filePath:
+        """
+        return self.__loadWorkbookRs(self.fileLoader.rootLoader,filePath)
+
+    def __loadWorkbookRs(self, loader:P6FileLoader,filePath: Union[str, Path]) -> Result[Workbook, ErrorReport]:
+        """
+        Load a file using a loader
         because of the potential difference between file content and loaded content,
         if a workbook is already loaded, attempting loading it will return an error.
         :param filePath:
@@ -300,7 +316,7 @@ class App(ABC):
         wbRs = self.getWorkbookRs(wbKey)
         alreadyHasThisWorkbook = wbRs.isOk()
         if not alreadyHasThisWorkbook:
-            loadResult: Result[Workbook, ErrorReport] = self.fileLoader.loadRs(filePath)
+            loadResult: Result[Workbook, ErrorReport] = loader.loadRs(filePath)
             if loadResult.isOk():
                 newWb: Workbook = loadResult.value
                 eventNewWb = self._makeEventWb(newWb)
@@ -315,6 +331,7 @@ class App(ABC):
                     data = P6FileLoaderErrors.AlreadyLoad.Data(path, None)
                 )
             )
+
 
     def refreshContainer(self):
         """make WorkbookContainer update-to-date with its elements"""

@@ -18,3 +18,6 @@ class P6FileLoader(ABC):
         :return: a result indicate if this operation is a success or not
         """
         raise NotImplementedError()
+    @property
+    def rootLoader(self)->'P6FileLoader':
+        raise NotImplementedError()
