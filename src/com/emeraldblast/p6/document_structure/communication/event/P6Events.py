@@ -101,7 +101,6 @@ class P6Events:
             Response = CreateNewWorksheetResponse
             Request = CreateNewWorksheetRequest
 
-
     class EventServer:
         @classmethod
         def allEvents(clazz):

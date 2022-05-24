@@ -15,7 +15,6 @@ class P6FileLoader(ABC):
         """
         load a Workbook from a file
         :param filePath: path of workbook file
-        :param onCellChange: a listener invoked when a cell is changed
         :return: a result indicate if this operation is a success or not
         """
         raise NotImplementedError()
