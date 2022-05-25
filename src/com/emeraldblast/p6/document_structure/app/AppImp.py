@@ -195,9 +195,6 @@ class AppImp(BaseApp):
         rt = self._makeEventWb(self.__activeWorkbook)
         return rt
 
-    def setActiveWorkbook(self, indexOrNameOrKey: Union[int, str, WorkbookKey]):
-        setRs = self.setActiveWorkbookRs(indexOrNameOrKey)
-        return Results.extractOrRaise(setRs)
 
     def setActiveWorkbookRs(self, indexOrNameOrKey: Union[int, str, WorkbookKey]) -> Result[Workbook, ErrorReport]:
         wb = self.getWorkbookOrNone(indexOrNameOrKey)
@@ -230,9 +227,7 @@ class AppImp(BaseApp):
             wb.createNewWorksheetRs()
         return newWbRs
 
-    def createNewWorkbook(self, name: Optional[str] = None) -> Workbook:
-        createRs: Result[Workbook, ErrorReport] = self.createNewWorkbookRs(name)
-        return Results.extractOrRaise(createRs)
+
 
     def createNewWorkbookRs(self, name: Optional[str] = None) -> Result[Workbook, ErrorReport]:
         if name is None:

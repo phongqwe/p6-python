@@ -26,8 +26,17 @@ from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
 class BaseApp(App,ABC):
 
+    @property
+    def rootApp(self) -> 'App':
+        return self
 
+    def createNewWorkbook(self, name: Optional[str] = None) -> Workbook:
+        createRs: Result[Workbook, ErrorReport] = self.createNewWorkbookRs(name)
+        return Results.extractOrRaise(createRs)
 
+    def setActiveWorkbook(self, indexOrNameOrKey: Union[int, str, WorkbookKey]):
+        setRs = self.setActiveWorkbookRs(indexOrNameOrKey)
+        return Results.extractOrRaise(setRs)
 
     def getWorkbookByIndex(self, index: int) -> Workbook:
         return self.getWorkbook(index)

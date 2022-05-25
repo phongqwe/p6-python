@@ -2,6 +2,7 @@ from typing import Optional, Union, Tuple
 
 from com.emeraldblast.p6.document_structure.app import App
 from com.emeraldblast.p6.document_structure.app.AppImp import AppImp
+from com.emeraldblast.p6.document_structure.app.EventApp import EventApp
 from com.emeraldblast.p6.document_structure.app.GlobalScope import getGlobals
 from com.emeraldblast.p6.document_structure.app.errors.AppErrors import AppErrors
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
@@ -41,7 +42,10 @@ def getApp() -> App:
     """get the singleton App instance"""
     g = getGlobals()
     if appKey not in g.keys():
-        app = AppImp()
+        app0 = AppImp()
+        app = EventApp.create(
+            app0,app0.eventNotifierContainer
+        )
         g[appKey] = app
     return g[appKey]
 

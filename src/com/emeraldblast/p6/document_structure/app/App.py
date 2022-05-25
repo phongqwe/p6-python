@@ -34,7 +34,7 @@ class App(ABC):
 
     @property
     def zContext(self):
-        """zmq context"""
+        """:return zmq context"""
         raise NotImplementedError()
 
     @property
@@ -182,19 +182,8 @@ class App(ABC):
                                     nameOrIndexOrKey: Union[int, str, WorkbookKey],
                                     filePath: str | Path | None) -> Result[Workbook | None, ErrorReport]:
 
-        return self.__saveWorkbookAtPathRs(self.fileSaver.rootSaver, nameOrIndexOrKey, filePath)
-
-    def __saveWorkbookAtPathRs(self,
-                               saver: P6FileSaver,
-                               nameOrIndexOrKey: Union[int, str, WorkbookKey],
-                               filePath: str | Path | None) -> Result[Workbook | None, ErrorReport]:
-        """
-         save a workbook at nameOrIndex to a certain filePath, then update the workbook with that new path
-        :param nameOrIndexOrKey:
-        :param filePath:
-        :return: a Result object
-        """
         raise NotImplementedError()
+
 
     def saveWorkbook(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]):
         """
@@ -219,13 +208,6 @@ class App(ABC):
         """
         raise NotImplementedError()
 
-    def __saveWorkbookRs(self, saver:P6FileSaver, nameOrIndexOrKey: Union[int, str, WorkbookKey]) -> Result[Any, ErrorReport]:
-        """
-        save a workbook at nameOrIndex with custom saver
-        :param nameOrIndexOrKey:
-        :return:
-        """
-        raise NotImplementedError()
 
     def loadWorkbook(self, filePath: Union[str, Path]) -> Workbook:
         """
@@ -251,17 +233,6 @@ class App(ABC):
         :param filePath:
         """
         raise NotImplementedError()
-
-    def __loadWorkbookRs(self, loader:P6FileLoader,filePath: Union[str, Path]) -> Result[Workbook, ErrorReport]:
-        """
-        Load a file using a loader
-        because of the potential difference between file content and loaded content,
-        if a workbook is already loaded, attempting loading it will return an error.
-        :param filePath:
-        :return:
-        """
-        raise NotImplementedError()
-
 
     def refreshContainer(self):
         """make WorkbookContainer update-to-date with its elements"""
