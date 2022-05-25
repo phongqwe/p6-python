@@ -45,6 +45,7 @@ class EventP6FileSaver(P6FileSaver):
 
         eventData = EventData(
             event = P6Events.App.SaveWorkbook.event,
+            isError = False,
             data = response
         )
         self.onSave(eventData)

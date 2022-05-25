@@ -3,6 +3,9 @@ from typing import Optional, Union, Any
 
 import zmq
 
+from com.emeraldblast.p6.document_structure.app.BaseApp import BaseApp
+from com.emeraldblast.p6.document_structure.file.loader.EventP6FileLoader import EventP6FileLoader
+
 from com.emeraldblast.p6.document_structure.app.App import App
 from com.emeraldblast.p6.document_structure.app.errors.AppErrors import AppErrors
 from com.emeraldblast.p6.document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
@@ -39,7 +42,7 @@ from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import Work
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
 
-class AppImp(App):
+class AppImp(BaseApp):
     """
     Standard implementation of App interface
     """
@@ -151,6 +154,7 @@ class AppImp(App):
 
     def __setupEventEmitter(self):
         self.__wbSaver=EventP6FileSaver.create(self.__wbSaver, self.__notifierContainer)
+        self.__wbLoader = EventP6FileLoader.create(self.__wbLoader, self.__notifierContainer)
 
     @property
     def eventNotifierContainer(self) -> EventReactorContainer:
@@ -250,36 +254,3 @@ class AppImp(App):
                     data = AppErrors.WorkbookAlreadyExist.Data(name)
                 )
             )
-
-    # def saveWorkbookAtPathRs(self,
-    #                          nameOrIndexOrKey: Union[int, str, WorkbookKey],
-    #                          filePath: Union[str, Path]) -> Result[Workbook | None, ErrorReport]:
-    #     """
-    #     this overload will trigger notifier
-    #     """
-    #     saveRs = super().saveWorkbookAtPathRs(nameOrIndexOrKey,filePath)
-    #     wbKey = None
-    #     if saveRs.isOk():
-    #         wb = saveRs.value
-    #         if wb:
-    #             wbKey = wb.workbookKey
-    #     errReport = None
-    #     if saveRs.isErr():
-    #         errReport = saveRs.err
-    #
-    #     eventData = SaveWorkbookResponse(
-    #             path=str(Path(filePath).absolute()),
-    #             isError = saveRs.isErr(),
-    #         )
-    #
-    #     eventData.errorReport = errReport
-    #     if wbKey:
-    #         eventData.workbookKey = wbKey
-    #
-    #     evenData = EventData(
-    #         event = P6Events.Workbook.SaveWorkbook.event,
-    #         data = eventData
-    #     )
-    #     self.__notifierContainer.triggerReactorsFor(P6Events.Workbook.SaveWorkbook.event,evenData)
-    #
-    #     return saveRs
