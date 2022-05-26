@@ -24,31 +24,23 @@ class NotificationListener:
         self.thread = None
         self.reactorContainer:EventReactorContainer = MutableEventReactorContainer()
 
-        # def defaultReactorCB(data):
-        #     print(f"{data}")
-
-        # defaultReactor = EventReactors.makeBasicReactor(defaultReactorCB)
-        #
-        # for event in P6Events.Cell.allEvents():
-        #     self.reactorContainer.addReactor(event, defaultReactor)
-        # for event in P6Events.Workbook.allEvents():
-        #     self.reactorContainer.addReactor(event, defaultReactor)
-        # for event in P6Events.Worksheet.allEvents():
-        #     self.reactorContainer.addReactor(event, defaultReactor)
-        # for event in P6Events.App.allEvents():
-        #     self.reactorContainer.addReactor(event, defaultReactor)
-
 
     def onReceive(self,data:bytes):
-        # msg = P6MessageProto()
-        # msg.ParseFromString(data)
-        # print(msg)
         p6Res = P6Response.fromProtoByte(data)
         self.reactorContainer.triggerReactorsFor(p6Res.header.eventType, p6Res.data)
 
     def addReactor(self,event:P6Event,reactor:EventReactor):
         self.reactorContainer.addReactor(event,reactor)
 
+    def addAllEventReactor(self,reactor):
+        for event in P6Events.Cell.allEvents():
+            self.reactorContainer.addReactor(event, reactor)
+        for event in P6Events.Workbook.allEvents():
+            self.reactorContainer.addReactor(event, reactor)
+        for event in P6Events.Worksheet.allEvents():
+            self.reactorContainer.addReactor(event, reactor)
+        for event in P6Events.App.allEvents():
+            self.reactorContainer.addReactor(event, reactor)
 
     def start(self):
         while True:
