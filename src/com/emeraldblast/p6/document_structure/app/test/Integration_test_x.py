@@ -129,3 +129,23 @@ class IntegrationTest_test(unittest.TestCase):
         s1 = w1.createNewWorksheet("s1")
         c1 = s1.cell("@A1")
         c1.value = 1
+
+    def test_updateCellInInvalidWB(self):
+        app = self.testEnv.app
+        request = CellUpdateRequest(
+            workbookKey = WorkbookKeys.fromNameAndPath("InvalidWB"),
+            worksheetName = "Sheet1",
+            cellAddress = CellAddresses.fromRowCol(1, 1),
+            value = "123", formula = ""
+        )
+        p6Req=P6MessageProto(
+            header = P6MessageHeaderProto(
+                msgId = "1",
+                eventType = P6Events.Cell.Update.event.toProtoObj()
+            ),
+            data = request.toProtoBytes()
+        )
+        o = self.testEnv.sendRequestToEventServer(p6Req.SerializeToString())
+        print(o)
+
+

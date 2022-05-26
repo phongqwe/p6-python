@@ -42,10 +42,10 @@ class EventServerImp(EventServer):
                     reactor: EventReactor[bytes, ToProto] | None = self.getReactorsForEvent(p6Msg.header.eventType)
                     if reactor is not None:
                         # has reactor -> return reactor result
-                        outputBytes: bytes = reactor.react(p6Msg.contentAsByte()).toProtoBytes()
+                        outObj = reactor.react(p6Msg.contentAsByte())
                         p6Res = P6Response(
                             header = p6Msg.header,
-                            data = outputBytes,
+                            data = outObj.toProtoBytes(),
                             status = P6Response.Status.OK)
                         repSocket.send(p6Res.toProtoBytes())
                     else:
