@@ -17,7 +17,7 @@ class MessageSender:
     def sendP6MsgRes(socketProvider: SocketProvider | None, p6Msg: P6Message | P6Response):
         """ send a p6msg/p6response """
         if socketProvider is not None:
-            socket = socketProvider.reqSocketForUIUpdating()
+            socket = socketProvider.notificationSocket()
             if socket is not None:
                 replyRs = MessageSender.sendREQ_Proto(
                     socket = socket,

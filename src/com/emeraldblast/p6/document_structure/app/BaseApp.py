@@ -37,7 +37,6 @@ class BaseApp(App,ABC):
             wb.createNewWorksheetRs()
         return newWbRs
 
-
     def createNewWorkbook(self, name: Optional[str] = None) -> Workbook:
         createRs: Result[Workbook, ErrorReport] = self.createNewWorkbookRs(name)
         return Results.extractOrRaise(createRs)

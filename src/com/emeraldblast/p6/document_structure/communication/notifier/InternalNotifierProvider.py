@@ -6,7 +6,7 @@ from com.emeraldblast.p6.document_structure.communication.event_server.msg.P6Mes
 from com.emeraldblast.p6.document_structure.communication.event_server.response.P6Response import P6Response
 from com.emeraldblast.p6.document_structure.communication.notifier.eventData.AppEventData import EventData
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
-from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorFactory import EventReactorFactory
+from com.emeraldblast.p6.document_structure.communication.reactor.EventReactors import EventReactors
 from com.emeraldblast.p6.document_structure.communication.sender.MessageSender import MessageSender
 
 
@@ -25,7 +25,7 @@ class InternalNotifierProvider:
                 data= data.data)
             self.__send(msg)
 
-        reactor = EventReactorFactory.makeBasicReactor(cb)
+        reactor = EventReactors.makeBasicReactor(cb)
         return reactor
 
     def workbookNotifier(self) -> EventReactor[EventData, None]:

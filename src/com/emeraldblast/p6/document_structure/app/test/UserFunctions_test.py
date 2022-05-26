@@ -4,7 +4,7 @@ from com.emeraldblast.p6.document_structure.app.GlobalScope import setIPythonGlo
 from com.emeraldblast.p6.document_structure.app.UserFunctions import *
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 from com.emeraldblast.p6.document_structure.communication.notifier.eventData.CellEventData import CellEventData
-from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorFactory import EventReactorFactory
+from com.emeraldblast.p6.document_structure.communication.reactor.EventReactors import EventReactors
 
 
 class UserFunctions_test(unittest.TestCase):
@@ -29,7 +29,7 @@ class UserFunctions_test(unittest.TestCase):
 
         app.eventNotifierContainer.addReactor(
             P6Events.Cell.Update.event,
-            EventReactorFactory.makeBasicReactor(onCellChange))
+            EventReactors.makeBasicReactor(onCellChange))
         c1 = cell("@A1")
         c1.value = 123
         self.assertEqual(1, self.a)

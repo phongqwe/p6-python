@@ -4,7 +4,7 @@ from typing import Callable, Any
 from com.emeraldblast.p6.document_structure.communication.reactor.BaseReactor import BaseReactor
 
 
-class EventReactorFactory:
+class EventReactors:
     @staticmethod
     def makeBasicReactor(callback: Callable[[Any], Any]) -> BaseReactor[Any, Any]:
         """create a workbook reactor with randomize uuid4 id"""

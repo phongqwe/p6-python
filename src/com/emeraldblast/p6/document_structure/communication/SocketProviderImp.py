@@ -9,10 +9,10 @@ class SocketProviderImp(SocketProvider):
         self.__reqSocketUI: Socket = reqSocketUI
         self._eventServerPort: int|None = eventServerPort
 
-    def reqSocketForUIUpdating(self) -> Socket | None:
+    def notificationSocket(self) -> Socket | None:
         return self.__reqSocketUI
 
-    def updateREQSocketForUIUpdating(self, newSocket: Socket | None):
+    def updateNotificationSocket(self, newSocket: Socket | None):
         self.__reqSocketUI = newSocket
 
     # def eventServerPort(self) -> int:

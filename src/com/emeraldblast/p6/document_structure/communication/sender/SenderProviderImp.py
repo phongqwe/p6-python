@@ -12,6 +12,6 @@ class SenderProviderImp(SenderProvider):
     def reqSenderForUpdatingUI(self) -> MessageSender:
         if self.__reqSenderForUpdatingUI is None:
             if self.__socketProvider is not None:
-                socket = self.__socketProvider.reqSocketForUIUpdating()
+                socket = self.__socketProvider.notificationSocket()
                 self.__reqSenderForUpdatingUI = MessageSender.reqSender(socket)
         return self.__reqSenderForUpdatingUI

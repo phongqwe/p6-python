@@ -3,21 +3,35 @@ import time
 
 import zmq
 
+from com.emeraldblast.p6.document_structure.communication.event_server.msg.P6Message import P6Message
+from com.emeraldblast.p6.document_structure.communication.event_server.response.P6Response import P6Response
+from com.emeraldblast.p6.document_structure.util.for_test.emu.NotificationListener import NotificationListener
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
 from com.emeraldblast.p6.document_structure.app.UserFunctions import *
 from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import findNewSocketPort
 
 class TestEnvImp:
+    """
+    How to use:
+        testEnv = TestEnvImp()
+        testEnv.startApp()
+
+        use sendRequestToEventServer() to send request to event server
+        use self.notifListener.addReactor() to add notification reactor
+
+        This test env emulate a real app which consist of:
+            2 workbooks, each workbook consist of 2 sheets. All wb and ws can emit events
+            1 event server
+            1 notification listener
+    """
 
     def __init__(self):
+        self._eventServerRequestSocket = None
+        self.eventServerPort = None
         self._app = None
-        self._requestZSocket = None
-        self._toRepSocket = None
-        self._repPort = None
-        self._repListenerThread = None
         self._eventServerPort = None
         self.notifSocket = None
-        self.notifPort = None
+        self.notifListener:NotificationListener = None
 
     @staticmethod
     def sampleWb(name):
@@ -32,7 +46,7 @@ class TestEnvImp:
         s2.cell((3, 3)).value = 233
         return wb
 
-    def startApp(self):
+    def startEnv(self):
         # these import will be put in local
         from com.emeraldblast.p6.document_structure.app.App import App
         from com.emeraldblast.p6.document_structure.app.GlobalScope import setIPythonGlobals
@@ -66,89 +80,54 @@ class TestEnvImp:
         b2.createNewWorksheet("Sheet1")
         b2.createNewWorksheet("Sheet2")
         # start event server
-        port = findNewSocketPort()
-        self.app.eventServer.start(port)
-        reqSocket = getApp().zContext.socket(zmq.REQ)
-        reqSocket.connect(f"tcp://localhost:{port}")
-        self._requestZSocket = reqSocket
+        self.eventServerPort = findNewSocketPort()
+        self.app.eventServer.start(self.eventServerPort)
+
+        self._eventServerRequestSocket = self.app.zContext.socket(zmq.REQ)
+        self._eventServerRequestSocket.connect(f"tcp://localhost:{self.eventServerPort}")
 
         # start event notifier sender
-
-    def createNotifSender(self):
-        notifSenderPort = findNewSocketPort()
-        notifSocket = self.app.zContext.socket(zmq.REQ)
-        notifSocket.connect(f"tcp://localhost:{notifSenderPort}")
-        self.app.socketProvider.updateREQSocketForUIUpdating(notifSocket)
-        self.notifSocket = notifSocket
-        self.notifPort = notifSenderPort
-
-    def removeNotifSender(self):
-        if self.notifSocket:
-            self.notifSocket.close()
-            self.notifSocket = None
-            self.app.socketProvider.updateREQSocketForUIUpdating(None)
+        self.notifListener = NotificationListener(self.app.zContext)
+        self.notifListener.startOnThread()
+        self.app.socketProvider.updateNotificationSocket(self.notifListener.senderSocket)
 
 
     def stopAll(self):
         stopApp()
-        self.requestZSocket.close()
-        self.closeNotifListener()
         if self.notifSocket:
             self.notifSocket.close()
             self.notifSocket = None
+        self.notifListener.stop()
+
+        if self.eventServerRequestSocket:
+            self.eventServerRequestSocket.close()
+            self._eventServerRequestSocket = None
 
     @property
     def app(self)->App:
         return self._app
 
     @property
-    def requestZSocket(self):
-        return self._requestZSocket
+    def notifSenderSocket(self):
+        """socket for sending msg to rep listener"""
+        return self.notifListener.senderSocket
+
 
     @property
-    def toRepSocket(self):
-        """socket for sending msg to rep listener"""
-        return self._toRepSocket
+    def eventServerRequestSocket(self):
+        return self._eventServerRequestSocket
 
-    def startNotificationListener(self, isOk, onReceive):
-        """
-        emu the front end rep listener
-        """
-        repSocket = self.app.zContext.socket(zmq.REP)
-        repSocket.bind(f"tcp://*:{self.notifPort}")
-        if self._toRepSocket is None:
-            self._toRepSocket = self.app.zContext.socket(zmq.REQ)
-            self._toRepSocket.connect(f"tcp://localhost:{self.notifPort}")
+    def sendRequestToEventServer(self,p6Msg:P6Message|bytes)->P6Response | None:
 
-        while True:
-            receive = repSocket.recv()
-            if receive == b"close":
-                break
-            onReceive(receive)
-            if isOk:
-                repSocket.send("ok".encode())
-            else:
-                repSocket.send("fail".encode())
-        repSocket.close()
-
-    def startNotificationListenerOnThread(self, isOk, onReceive) -> threading.Thread:
-        thread = threading.Thread(target = self.startNotificationListener, args = [isOk, onReceive])
-        thread.daemon = True
-        thread.start()
-        while True:
-            if self._toRepSocket is not None:
-                self.app.socketProvider.updateREQSocketForUIUpdating(self._toRepSocket)
-                break
-        self._repListenerThread = thread
-        return thread
-
-    def closeNotifListener(self):
-        if self._toRepSocket is not None:
-            self._toRepSocket.send(b"close")
-            self._toRepSocket.close()
-            self._toRepSocket = None
-        if self._repListenerThread is not None:
-            self._repListenerThread.join()
-            self._repListenerThread = None
+        b = p6Msg
+        if isinstance(p6Msg,P6Message):
+            b = p6Msg.toProtoBytes()
+        if self.eventServerRequestSocket:
+            self.eventServerRequestSocket.send(b)
+            recv = self.eventServerRequestSocket.recv()
+            rt = P6Response.fromProtoByte(recv)
+            return rt
+        else:
+            return None
 
 

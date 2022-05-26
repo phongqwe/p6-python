@@ -58,6 +58,12 @@ class P6Response(ToProto[P6ResponseProto]):
         )
         return rt
 
+    @staticmethod
+    def fromProtoByte(data:bytes)->'P6Response':
+        proto = P6ResponseProto()
+        proto.ParseFromString(data)
+        return P6Response.fromProto(proto)
+
     @property
     def data(self):
         return self._content

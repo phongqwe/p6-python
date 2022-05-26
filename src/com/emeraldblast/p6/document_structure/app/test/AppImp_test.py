@@ -8,7 +8,7 @@ from com.emeraldblast.p6.document_structure.app.App import App
 from com.emeraldblast.p6.document_structure.app.AppImp import AppImp
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
-from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorFactory import EventReactorFactory
+from com.emeraldblast.p6.document_structure.communication.reactor.EventReactors import EventReactors
 from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import findNewSocketPort
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeyImp import WorkbookKeyImp
@@ -182,7 +182,7 @@ class AppImp_test(unittest.TestCase):
 
         app.eventNotifierContainer.addReactor(
             P6Events.Cell.Update.event,
-            EventReactorFactory.makeBasicReactor(self.onCellChange))
+            EventReactors.makeBasicReactor(self.onCellChange))
         fileName = "fileProto2.txt"
 
         loadRs0 = app.loadWorkbookRs(fileName)
@@ -206,7 +206,7 @@ class AppImp_test(unittest.TestCase):
 
         app.eventNotifierContainer.addReactor(
             P6Events.Cell.Update.event,
-            EventReactorFactory.makeBasicReactor(reactor))
+            EventReactors.makeBasicReactor(reactor))
         wb = app.createNewWorkbook("bookz1")
         wb.createNewWorksheet("sheetz1")
         cell = app.activeWorkbook.activeWorksheet.cell("@B32")
@@ -274,7 +274,7 @@ class AppImp_test(unittest.TestCase):
         app = AppImp()
         app.eventNotifierContainer.addReactor(
             P6Events.Cell.Update.event,
-            EventReactorFactory.makeBasicReactor(self.onCellChange))
+            EventReactors.makeBasicReactor(self.onCellChange))
 
         wb = wbCreator(app)
         sheet = wb.createNewWorksheet("sheet1")
@@ -290,7 +290,7 @@ class AppImp_test(unittest.TestCase):
         mockCallback = MagicMock()
         app.eventNotifierContainer.addReactor(
             P6Events.App.SaveWorkbook.event,
-            EventReactorFactory.makeBasicReactor(mockCallback))
+            EventReactors.makeBasicReactor(mockCallback))
 
         # runSave(app,onEvent)
         path = Path("b1")

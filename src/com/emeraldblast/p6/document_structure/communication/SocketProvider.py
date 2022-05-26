@@ -4,14 +4,8 @@ from zmq import Socket
 
 
 class SocketProvider(ABC):
-    def reqSocketForUIUpdating(self) -> Socket | None:
+    def notificationSocket(self) -> Socket | None:
         raise NotImplementedError()
 
-    def updateREQSocketForUIUpdating(self, newSocket: Socket | None):
+    def updateNotificationSocket(self, newSocket: Socket | None):
         raise NotImplementedError()
-
-    # def eventServerPort(self)->int:
-    #     raise NotImplementedError()
-    #
-    # def updateEventServerPort(self,port):
-    #     raise NotImplementedError()

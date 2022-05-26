@@ -12,6 +12,7 @@ class MutableEventReactorContainer(EventReactorContainer[D]):
     def __init__(self, innerDict: dict[P6Event, dict[str, EventReactor]] | None = None):
         if innerDict is None:
             innerDict = dict()
+        # dict[ event -> dict[reactorId->reactor] ]
         self._dict: dict[P6Event, dict[str, EventReactor]] = innerDict
 
     def getReactorsForEvent(self, event: P6Event) -> list[EventReactor]:

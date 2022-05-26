@@ -6,7 +6,12 @@ from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import RenameWorksheetRespons
 
 
 class CreateNewWorksheetResponse(ToProto[CreateNewWorksheetResponseProto]):
-    def __init__(self,workbookKey:WorkbookKey, newWorksheetName:str, isError:bool = False,errorReport:ErrorReport|None = None):
+    def __init__(
+            self,
+            workbookKey:WorkbookKey,
+            newWorksheetName:str,
+            isError:bool = False,
+            errorReport:ErrorReport|None = None):
         self.workbookKey:WorkbookKey = workbookKey
         self.newWorksheetName = newWorksheetName
         self.isError = isError
