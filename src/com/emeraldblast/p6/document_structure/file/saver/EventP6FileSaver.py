@@ -4,7 +4,7 @@ from typing import Union, Callable
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.save_wb.SaveWorkbookResponse import \
     SaveWorkbookResponse
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.AppEventData import EventData
+from com.emeraldblast.p6.document_structure.communication.notifier.eventData.AppEventData import EventData
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorContainer import EventReactorContainer
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport

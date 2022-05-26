@@ -54,7 +54,5 @@ class CreateNewWorkbookResponse_test(unittest.TestCase):
         self.assertFalse(proto2.HasField("windowId"))
 
 
-
-
 if __name__ == '__main__':
     unittest.main()

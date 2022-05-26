@@ -41,8 +41,12 @@ class ErrorReport(ToProto[ErrorReportProto]):
         else:
             return str(self.header)
 
-    def isSameErr(self,another:'ErrorReport'):
-        return self.header == another.header
+    def isSameErr(self,another):
+        if isinstance(another,ErrorReport):
+            return self.header == another.header
+        if isinstance(another, ErrorHeader):
+            return self.header == another
+        return False
 
     def toProtoObj(self) -> ErrorReportProto:
         proto = ErrorReportProto()

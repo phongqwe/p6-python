@@ -5,7 +5,7 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.a
     SetActiveWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.DeleteWorksheetResponse import \
     DeleteWorksheetResponse
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.AppEventData import EventData
+from com.emeraldblast.p6.document_structure.communication.notifier.eventData.AppEventData import EventData
 from com.emeraldblast.p6.document_structure.communication.reactor import EventReactorContainer
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok

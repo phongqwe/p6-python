@@ -5,9 +5,9 @@ import zmq
 from com.emeraldblast.p6.proto.WorkbookProtos_pb2 import WorkbookUpdateCommonResponseProto
 
 from com.emeraldblast.p6.document_structure.communication.SocketProviderImp import SocketProviderImp
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.InternalNotifierProvider import \
+from com.emeraldblast.p6.document_structure.communication.notifier.InternalNotifierProvider import \
     InternalNotifierProvider
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
+from com.emeraldblast.p6.document_structure.communication.notifier.eventData.CellEventData import CellEventData
 from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import findNewSocketPort, startREPServerOnThread, \
     sendClose
 from com.emeraldblast.p6.document_structure.workbook.EventWorkbook import EventWorkbook

@@ -3,7 +3,7 @@ from unittest.mock import MagicMock
 
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
+from com.emeraldblast.p6.document_structure.communication.notifier.eventData.CellEventData import CellEventData
 from com.emeraldblast.p6.document_structure.range.EventRange import EventRange
 from com.emeraldblast.p6.document_structure.range.RangeImp import RangeImp
 

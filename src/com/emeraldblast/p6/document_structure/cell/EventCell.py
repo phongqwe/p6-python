@@ -5,7 +5,7 @@ from com.emeraldblast.p6.document_structure.cell.WrapperCell import WrapperCell
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.WorkbookUpdateCommonResponse import \
     WorkbookUpdateCommonResponse
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.CellEventData import CellEventData
+from com.emeraldblast.p6.document_structure.communication.notifier.eventData.CellEventData import CellEventData
 
 
 class EventCell(WrapperCell):

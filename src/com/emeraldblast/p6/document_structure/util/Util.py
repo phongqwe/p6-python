@@ -37,6 +37,7 @@ def default(something: Optional[Any], defaultValue: Any):
 
 
 def makeGetter(result):
+    """create a getter function that returns the input obj"""
     def getter():
         return result
 

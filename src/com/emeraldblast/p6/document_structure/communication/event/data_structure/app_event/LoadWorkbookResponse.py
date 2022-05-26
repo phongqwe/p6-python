@@ -1,5 +1,5 @@
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.AppEventData import EventData
+from com.emeraldblast.p6.document_structure.communication.notifier.eventData.AppEventData import EventData
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook

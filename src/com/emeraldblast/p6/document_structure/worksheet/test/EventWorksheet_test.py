@@ -6,7 +6,7 @@ from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import Ce
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteCell import \
     DeleteCellResponse
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.AppEventData import EventData
+from com.emeraldblast.p6.document_structure.communication.notifier.eventData.AppEventData import EventData
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
 from com.emeraldblast.p6.document_structure.worksheet.EventWorksheet import EventWorksheet

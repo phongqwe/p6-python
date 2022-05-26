@@ -4,7 +4,7 @@ from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.EventCell import EventCell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
-from com.emeraldblast.p6.document_structure.communication.internal_reactor.eventData.AppEventData import EventData
+from com.emeraldblast.p6.document_structure.communication.notifier.eventData.AppEventData import EventData
 from com.emeraldblast.p6.document_structure.range.Range import Range
 from com.emeraldblast.p6.document_structure.range.RangeWrapper import RangeWrapper
 
