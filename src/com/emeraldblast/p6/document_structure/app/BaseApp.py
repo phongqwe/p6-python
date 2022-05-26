@@ -33,7 +33,7 @@ class BaseApp(App,ABC):
     def createDefaultNewWorkbookRs(self, name: str | None = None) -> Result[Workbook, ErrorReport]:
         newWbRs: Result[Workbook, ErrorReport] = self.createNewWorkbookRs(name)
         if newWbRs.isOk():
-            wb = newWbRs.value
+            wb = newWbRs.value.rootWorkbook
             wb.createNewWorksheetRs()
         return newWbRs
 
@@ -214,6 +214,7 @@ class BaseApp(App,ABC):
         print(rt)
 
     def _makeEventWb(self, workbook: Workbook | Optional[Workbook]) -> Optional[EventWorkbook]:
+        """create eventful workbook"""
         if workbook is not None:
             if isinstance(workbook, EventWorkbook):
                 return workbook
