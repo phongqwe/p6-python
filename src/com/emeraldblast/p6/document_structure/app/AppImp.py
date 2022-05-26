@@ -221,15 +221,6 @@ class AppImp(BaseApp):
         else:
             return None
 
-    def createDefaultNewWorkbookRs(self, name: str | None = None) -> Result[Workbook, ErrorReport]:
-        newWbRs: Result[Workbook, ErrorReport] = self.createNewWorkbookRs(name)
-        if newWbRs.isOk():
-            wb = newWbRs.value
-            wb.createNewWorksheetRs()
-        return newWbRs
-
-
-
     def createNewWorkbookRs(self, name: Optional[str] = None) -> Result[Workbook, ErrorReport]:
         if name is None:
             # x: create default name for new workbook

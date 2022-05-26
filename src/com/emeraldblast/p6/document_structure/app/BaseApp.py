@@ -30,6 +30,14 @@ class BaseApp(App,ABC):
     def rootApp(self) -> 'App':
         return self
 
+    def createDefaultNewWorkbookRs(self, name: str | None = None) -> Result[Workbook, ErrorReport]:
+        newWbRs: Result[Workbook, ErrorReport] = self.createNewWorkbookRs(name)
+        if newWbRs.isOk():
+            wb = newWbRs.value
+            wb.createNewWorksheetRs()
+        return newWbRs
+
+
     def createNewWorkbook(self, name: Optional[str] = None) -> Workbook:
         createRs: Result[Workbook, ErrorReport] = self.createNewWorkbookRs(name)
         return Results.extractOrRaise(createRs)

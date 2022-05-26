@@ -2,6 +2,7 @@ from typing import Callable, Optional
 
 from com.emeraldblast.p6.document_structure.app.App import App
 from com.emeraldblast.p6.document_structure.app.AppWrapper import AppWrapper
+from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 from com.emeraldblast.p6.document_structure.communication.notifier.eventData.AppEventData import EventData
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorContainer import EventReactorContainer
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
@@ -22,15 +23,26 @@ class EventApp(AppWrapper):
             reactorContainer.triggerReactorsFor(ed.event,ed)
         return EventApp(innerApp,onEvent)
 
-    # def createDefaultNewWorkbookRs(self, name: str | None = None) -> Result[Workbook, ErrorReport]:
-    #     rt = self.rootApp.createDefaultNewWorkbookRs(name)
-    #
-    #
-    #     return rt
-    #
-    # def createNewWorkbookRs(self, name: Optional[str] = None) -> Result[Workbook, ErrorReport]:
-    #     return super().createNewWorkbookRs(name)
+    def createDefaultNewWorkbookRs(self, name: str | None = None) -> Result[Workbook, ErrorReport]:
+        rs = self.rootApp.createDefaultNewWorkbookRs(name)
+        self.__emmitCreateNeWbEvent(rs)
+        return rs
 
+    def createNewWorkbookRs(self, name: Optional[str] = None) -> Result[Workbook, ErrorReport]:
+        rs = self.rootApp.createNewWorkbookRs(name)
+        self.__emmitCreateNeWbEvent(rs)
+        return rs
+
+    def __emmitCreateNeWbEvent(self,rs:Result[Workbook, ErrorReport]):
+        eventData = EventData(
+            event = P6Events.App.CreateNewWorkbook.event,
+            isError = rs.isErr(),
+        )
+        if rs.isOk():
+            eventData.data = rs.value.toProtoBytes()
+        if rs.isErr():
+            eventData.data = rs.err.toProtoBytes()
+        self.onEvent(eventData)
 
 
 
