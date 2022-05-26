@@ -28,12 +28,12 @@ class SaveWorkbookReactor_test(unittest.TestCase):
         self.wb = WorkbookImp("file.txt", self.filePath)
         self.ag().wbContainer.addWorkbook(self.wb)
 
-        if self.filePath.exists():
-            os.remove(self.filePath)
+
 
     def tearDown(self) -> None:
         super().tearDown()
-        # os.remove(self.filePath)
+        if self.filePath.exists():
+            os.remove(self.filePath)
 
     def test_react_ok(self):
         reactor = SaveWorkbookReactor(appGetter = self.ag)
@@ -62,6 +62,8 @@ class SaveWorkbookReactor_test(unittest.TestCase):
 
         nkey=WorkbookKeys.fromNameAndPath(str(dp.name),dp)
         print(self.app.getWorkbook(nkey).workbookKey)
+        if dp.exists():
+            os.remove(dp)
 
 
 

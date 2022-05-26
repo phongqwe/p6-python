@@ -46,14 +46,6 @@ class EventServerReactors:
     def app(self)->AppEventServerReactors:
         return self._app
 
-    def setActiveWorksheetReactor(self) -> SetActiveWorksheetReactor:
-        return SetActiveWorksheetReactor(
-            uid = str(uuid.uuid4()),
-            appGetter = self.appGetter)
-
-    def createSaveWorkbookReactor(self)->SaveWorkbookReactor:
-        return SaveWorkbookReactor(self.appGetter)
-
     def deleteWorksheetReactor(self) -> DeleteWorksheetReactor:
         reactor = DeleteWorksheetReactor(str(uuid.uuid4()), self.wbGetter)
         return reactor

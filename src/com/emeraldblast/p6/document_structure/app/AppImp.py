@@ -123,9 +123,10 @@ class AppImp(BaseApp):
         }
 
         reactorForApp = {
-            P6Events.App.SetActiveWorksheet.event: er.setActiveWorksheetReactor(),
-            P6Events.App.SaveWorkbook.event: er.createSaveWorkbookReactor(),
+            P6Events.App.SetActiveWorksheet.event: er.app.setActiveWorksheetReactor(),
+            P6Events.App.SaveWorkbook.event: er.app.saveWorkbookReactor(),
             P6Events.App.LoadWorkbook.event: er.app.loadWbReactor(),
+            P6Events.App.CreateNewWorkbook.event: er.app.createNewWorkbookReactor(),
         }
 
         d = {

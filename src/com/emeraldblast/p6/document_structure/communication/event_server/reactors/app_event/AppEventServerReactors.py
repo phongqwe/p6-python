@@ -1,7 +1,16 @@
+import uuid
+
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.CreateNewWorkbookReactor import \
+    CreateNewWorkbookReactor
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook_event.SaveWorkbookReactor import \
+    SaveWorkbookReactor
+
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.TypeAliasForReactor import WbGetter, \
     AppGetter
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.LoadWorkbookReactor import \
     LoadWorkbookReactor
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.SetActiveWorksheetReactor import \
+    SetActiveWorksheetReactor
 
 
 class AppEventServerReactors:
@@ -11,3 +20,14 @@ class AppEventServerReactors:
 
     def loadWbReactor(self)->'LoadWorkbookReactor':
         return LoadWorkbookReactor(self.appGetter)
+
+    def setActiveWorksheetReactor(self) -> SetActiveWorksheetReactor:
+        return SetActiveWorksheetReactor(
+            uid = str(uuid.uuid4()),
+            appGetter = self.appGetter)
+
+    def saveWorkbookReactor(self) -> SaveWorkbookReactor:
+        return SaveWorkbookReactor(self.appGetter)
+    
+    def createNewWorkbookReactor(self)->CreateNewWorkbookReactor:
+        return CreateNewWorkbookReactor(self.appGetter)
