@@ -14,12 +14,12 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.w
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetRequest import \
     RenameWorksheetRequest
 
-WSE = "WSE"  # worksheet event
-CE = "CE"  # cell event
+WSE = "WORKSHEET_EVENT"  # worksheet event
+CE = "CELL_EVENT"  # cell event
 RE = "RE"  # range event
-WBE = "WBE"  # workbook event
+WBE = "WORKBOOK_EVENT"  # workbook event
 ESE = "ESE"  # event server event
-APPE = "APPE" # app event
+APPE = "APP_EVENT" # app event
 
 class P6Events:
 
@@ -123,3 +123,6 @@ class P6Events:
 
         class LoadWorkbook:
             event = P6Event(f"{APPE}2","load workbook")
+
+        class CreateNewWorkbook:
+            event = P6Event(f"{APPE}3","create new workbook")

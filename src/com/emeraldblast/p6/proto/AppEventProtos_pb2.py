@@ -16,7 +16,7 @@ from com.emeraldblast.p6.proto import CommonProtos_pb2 as com_dot_emeraldblast_d
 from com.emeraldblast.p6.proto import DocProtos_pb2 as com_dot_emeraldblast_dot_p6_dot_proto_dot_DocProtos__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n.com/emeraldblast/p6/proto/AppEventProtos.proto\x12\x19\x63om.emeraldblast.p6.proto\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\x1a)com/emeraldblast/p6/proto/DocProtos.proto\"y\n\x1eSetActiveWorksheetRequestProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x02 \x01(\t\"\xcd\x01\n\x1fSetActiveWorksheetResponseProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x02 \x01(\t\x12\x0f\n\x07isError\x18\x03 \x01(\x08\x12@\n\x0b\x65rrorReport\x18\x04 \x01(\x0b\x32+.com.emeraldblast.p6.proto.ErrorReportProto\":\n\x18LoadWorkbookRequestProto\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x10\n\x08windowId\x18\x02 \x01(\t\"\xbc\x01\n\x19LoadWorkbookResponseProto\x12\x0f\n\x07isError\x18\x01 \x01(\x08\x12@\n\x0b\x65rrorReport\x18\x02 \x01(\x0b\x32+.com.emeraldblast.p6.proto.ErrorReportProto\x12:\n\x08workbook\x18\x03 \x01(\x0b\x32(.com.emeraldblast.p6.proto.WorkbookProto\x12\x10\n\x08windowId\x18\x04 \x01(\tb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n.com/emeraldblast/p6/proto/AppEventProtos.proto\x12\x19\x63om.emeraldblast.p6.proto\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\x1a)com/emeraldblast/p6/proto/DocProtos.proto\"y\n\x1eSetActiveWorksheetRequestProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x02 \x01(\t\"\xcd\x01\n\x1fSetActiveWorksheetResponseProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x02 \x01(\t\x12\x0f\n\x07isError\x18\x03 \x01(\x08\x12@\n\x0b\x65rrorReport\x18\x04 \x01(\x0b\x32+.com.emeraldblast.p6.proto.ErrorReportProto\":\n\x18LoadWorkbookRequestProto\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x10\n\x08windowId\x18\x02 \x01(\t\"\xce\x01\n\x19LoadWorkbookResponseProto\x12\x0f\n\x07isError\x18\x01 \x01(\x08\x12@\n\x0b\x65rrorReport\x18\x02 \x01(\x0b\x32+.com.emeraldblast.p6.proto.ErrorReportProto\x12:\n\x08workbook\x18\x03 \x01(\x0b\x32(.com.emeraldblast.p6.proto.WorkbookProto\x12\x15\n\x08windowId\x18\x04 \x01(\tH\x00\x88\x01\x01\x42\x0b\n\t_windowId\"C\n\x1d\x43reateNewWorkbookRequestProto\x12\x15\n\x08windowId\x18\x01 \x01(\tH\x00\x88\x01\x01\x42\x0b\n\t_windowId\"\xfa\x01\n\x1e\x43reateNewWorkbookResponseProto\x12\x0f\n\x07isError\x18\x01 \x01(\x08\x12\x45\n\x0b\x65rrorReport\x18\x02 \x01(\x0b\x32+.com.emeraldblast.p6.proto.ErrorReportProtoH\x00\x88\x01\x01\x12?\n\x08workbook\x18\x03 \x01(\x0b\x32(.com.emeraldblast.p6.proto.WorkbookProtoH\x01\x88\x01\x01\x12\x15\n\x08windowId\x18\x04 \x01(\tH\x02\x88\x01\x01\x42\x0e\n\x0c_errorReportB\x0b\n\t_workbookB\x0b\n\t_windowIdb\x06proto3')
 
 
 
@@ -24,6 +24,8 @@ _SETACTIVEWORKSHEETREQUESTPROTO = DESCRIPTOR.message_types_by_name['SetActiveWor
 _SETACTIVEWORKSHEETRESPONSEPROTO = DESCRIPTOR.message_types_by_name['SetActiveWorksheetResponseProto']
 _LOADWORKBOOKREQUESTPROTO = DESCRIPTOR.message_types_by_name['LoadWorkbookRequestProto']
 _LOADWORKBOOKRESPONSEPROTO = DESCRIPTOR.message_types_by_name['LoadWorkbookResponseProto']
+_CREATENEWWORKBOOKREQUESTPROTO = DESCRIPTOR.message_types_by_name['CreateNewWorkbookRequestProto']
+_CREATENEWWORKBOOKRESPONSEPROTO = DESCRIPTOR.message_types_by_name['CreateNewWorkbookResponseProto']
 SetActiveWorksheetRequestProto = _reflection.GeneratedProtocolMessageType('SetActiveWorksheetRequestProto', (_message.Message,), {
   'DESCRIPTOR' : _SETACTIVEWORKSHEETREQUESTPROTO,
   '__module__' : 'com.emeraldblast.p6.proto.AppEventProtos_pb2'
@@ -52,6 +54,20 @@ LoadWorkbookResponseProto = _reflection.GeneratedProtocolMessageType('LoadWorkbo
   })
 _sym_db.RegisterMessage(LoadWorkbookResponseProto)
 
+CreateNewWorkbookRequestProto = _reflection.GeneratedProtocolMessageType('CreateNewWorkbookRequestProto', (_message.Message,), {
+  'DESCRIPTOR' : _CREATENEWWORKBOOKREQUESTPROTO,
+  '__module__' : 'com.emeraldblast.p6.proto.AppEventProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.emeraldblast.p6.proto.CreateNewWorkbookRequestProto)
+  })
+_sym_db.RegisterMessage(CreateNewWorkbookRequestProto)
+
+CreateNewWorkbookResponseProto = _reflection.GeneratedProtocolMessageType('CreateNewWorkbookResponseProto', (_message.Message,), {
+  'DESCRIPTOR' : _CREATENEWWORKBOOKRESPONSEPROTO,
+  '__module__' : 'com.emeraldblast.p6.proto.AppEventProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.emeraldblast.p6.proto.CreateNewWorkbookResponseProto)
+  })
+_sym_db.RegisterMessage(CreateNewWorkbookResponseProto)
+
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
@@ -62,5 +78,9 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _LOADWORKBOOKREQUESTPROTO._serialized_start=497
   _LOADWORKBOOKREQUESTPROTO._serialized_end=555
   _LOADWORKBOOKRESPONSEPROTO._serialized_start=558
-  _LOADWORKBOOKRESPONSEPROTO._serialized_end=746
+  _LOADWORKBOOKRESPONSEPROTO._serialized_end=764
+  _CREATENEWWORKBOOKREQUESTPROTO._serialized_start=766
+  _CREATENEWWORKBOOKREQUESTPROTO._serialized_end=833
+  _CREATENEWWORKBOOKRESPONSEPROTO._serialized_start=836
+  _CREATENEWWORKBOOKRESPONSEPROTO._serialized_end=1086
 # @@protoc_insertion_point(module_scope)
