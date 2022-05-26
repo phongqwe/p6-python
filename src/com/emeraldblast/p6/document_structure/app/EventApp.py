@@ -16,7 +16,6 @@ class EventApp(AppWrapper):
         super().__init__(innerApp)
         self.onEvent = onEvent
 
-
     @staticmethod
     def create(innerApp:App, reactorContainer: EventReactorContainer)->'EventApp':
         def onEvent(ed:EventData):
@@ -25,24 +24,14 @@ class EventApp(AppWrapper):
 
     def createDefaultNewWorkbookRs(self, name: str | None = None) -> Result[Workbook, ErrorReport]:
         rs = self.rootApp.createDefaultNewWorkbookRs(name)
-        self.__emmitCreateNeWbEvent(rs)
+        self.__emitCreateNeWbEvent(rs)
         return rs
 
     def createNewWorkbookRs(self, name: Optional[str] = None) -> Result[Workbook, ErrorReport]:
         rs = self.rootApp.createNewWorkbookRs(name)
-        self.__emmitCreateNeWbEvent(rs)
+        self.__emitCreateNeWbEvent(rs)
         return rs
 
-    def __emmitCreateNeWbEvent(self,rs:Result[Workbook, ErrorReport]):
-        eventData = EventData(
-            event = P6Events.App.CreateNewWorkbook.event,
-            isError = rs.isErr(),
-        )
-        if rs.isOk():
-            eventData.data = rs.value.toProtoBytes()
-        if rs.isErr():
-            eventData.data = rs.err.toProtoBytes()
+    def __emitCreateNeWbEvent(self,rs:Result[Workbook, ErrorReport]):
+        eventData = EventData.fromToProtoRs(P6Events.App.CreateNewWorkbook.event,rs)
         self.onEvent(eventData)
-
-
-
