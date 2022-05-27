@@ -19,7 +19,7 @@ CE = "CELL_EVENT"  # cell event
 RE = "RE"  # range event
 WBE = "WORKBOOK_EVENT"  # workbook event
 ESE = "ESE"  # event server event
-APPE = "APP_EVENT" # app event
+APPE = "APP_EVENT_" # app event
 
 class P6Events:
 
