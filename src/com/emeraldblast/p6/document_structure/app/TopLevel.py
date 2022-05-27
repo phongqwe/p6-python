@@ -17,7 +17,7 @@ from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 """
 This module contains functions to be used by users to control the application.
 """
-appKey = "__appInstance"
+appKey = "__P6AppInstance"
 
 
 def startApp():

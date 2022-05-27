@@ -3,7 +3,7 @@ import json
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorHeader import ErrorHeader
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 
-errPrefix = "MSE"  # message sender error
+errPrefix = "BE_MessageSenderErrors_"  # message sender error
 
 
 class MessageSenderErrors:

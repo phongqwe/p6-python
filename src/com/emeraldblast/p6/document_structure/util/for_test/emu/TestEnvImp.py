@@ -7,7 +7,7 @@ from com.emeraldblast.p6.document_structure.communication.event_server.msg.P6Mes
 from com.emeraldblast.p6.document_structure.communication.event_server.response.P6Response import P6Response
 from com.emeraldblast.p6.document_structure.util.for_test.emu.NotificationListener import NotificationListener
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
-from com.emeraldblast.p6.document_structure.app.UserFunctions import *
+from com.emeraldblast.p6.document_structure.app.TopLevel import *
 from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import findNewSocketPort
 
 class TestEnvImp:
@@ -50,7 +50,7 @@ class TestEnvImp:
         # these import will be put in local
         from com.emeraldblast.p6.document_structure.app.App import App
         from com.emeraldblast.p6.document_structure.app.GlobalScope import setIPythonGlobals
-        from com.emeraldblast.p6.document_structure.app.UserFunctions import startApp, restartApp, stopApp, getApp
+        from com.emeraldblast.p6.document_structure.app.TopLevel import startApp, restartApp, stopApp, getApp
         from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import findNewSocketPort
         from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
         from com.emeraldblast.p6.document_structure.app.worksheet_functions.WorksheetFunctions import WorksheetFunctions

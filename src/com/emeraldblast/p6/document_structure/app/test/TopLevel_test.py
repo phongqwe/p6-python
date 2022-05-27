@@ -1,7 +1,7 @@
 import unittest
 
 from com.emeraldblast.p6.document_structure.app.GlobalScope import setIPythonGlobals
-from com.emeraldblast.p6.document_structure.app.UserFunctions import *
+from com.emeraldblast.p6.document_structure.app.TopLevel import *
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 from com.emeraldblast.p6.document_structure.communication.notifier.eventData.CellEventData import CellEventData
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactors import EventReactors

@@ -4,7 +4,12 @@ import unittest
 import zmq
 
 # these 2 imports must be keep for the formula script to be able to run
-from com.emeraldblast.p6.document_structure.app.UserFunctions import *
+from com.emeraldblast.p6.proto.AppEventProtos_pb2 import CreateNewWorkbookResponseProto
+
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.app_event.CreateNewWorkbookResponse import \
+    CreateNewWorkbookResponse
+
+from com.emeraldblast.p6.document_structure.app.TopLevel import *
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateRequest import \
@@ -147,5 +152,18 @@ class IntegrationTest_test(unittest.TestCase):
         )
         o = self.testEnv.sendRequestToEventServer(p6Req.SerializeToString())
         print(o)
+
+    def test_check_createNewWB(self):
+
+        def cb(data:bytes):
+            proto = CreateNewWorkbookResponseProto()
+            proto.ParseFromString(data)
+            print(proto)
+
+        self.testEnv.notifListener.addReactorCB(P6Events.App.CreateNewWorkbook.event,cb)
+
+        rs = getApp().createDefaultNewWorkbookRs()
+        self.assertTrue(rs.isOk())
+
 
 

@@ -1,11 +1,15 @@
 from typing import Callable, Optional
 
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.app_event.CreateNewWorkbookResponse import \
+    CreateNewWorkbookResponse
+
 from com.emeraldblast.p6.document_structure.app.App import App
 from com.emeraldblast.p6.document_structure.app.AppWrapper import AppWrapper
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 from com.emeraldblast.p6.document_structure.communication.notifier.eventData.AppEventData import EventData
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorContainer import EventReactorContainer
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
+from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 
@@ -33,5 +37,13 @@ class EventApp(AppWrapper):
         return rs
 
     def __emitCreateNeWbEvent(self,rs:Result[Workbook, ErrorReport]):
-        eventData = EventData.fromToProtoRs(P6Events.App.CreateNewWorkbook.event,rs)
+        response = CreateNewWorkbookResponse(isError = rs.isErr(), windowId = None)
+        if rs.isOk():
+            response.workbook = rs.value.rootWorkbook
+        if rs.isErr():
+            response.errorReport = rs.err
+        eventData = EventData(
+            event=P6Events.App.CreateNewWorkbook.event,
+            isError = False,
+            data=response.toProtoBytes())
         self.onEvent(eventData)

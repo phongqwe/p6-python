@@ -1,7 +1,7 @@
 import unittest
 
 from com.emeraldblast.p6.document_structure.app.GlobalScope import setIPythonGlobals
-from com.emeraldblast.p6.document_structure.app.UserFunctions import getRange, startApp, getApp, getActiveWorkbook
+from com.emeraldblast.p6.document_structure.app.TopLevel import getRange, startApp, getApp, getActiveWorkbook
 from com.emeraldblast.p6.document_structure.app.worksheet_functions.WorksheetFunctions import WorksheetFunctions
 
 

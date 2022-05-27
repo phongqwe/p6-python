@@ -1,4 +1,5 @@
 import threading
+from typing import Callable
 
 import zmq
 from com.emeraldblast.p6.proto.P6MsgProtos_pb2 import P6MessageProto
@@ -31,6 +32,10 @@ class NotificationListener:
 
     def addReactor(self,event:P6Event,reactor:EventReactor):
         self.reactorContainer.addReactor(event,reactor)
+
+    def addReactorCB(self,event:P6Event, reactorCB:Callable[[bytes],None]):
+        reactor = EventReactors.makeBasicReactor(reactorCB)
+        self.addReactor(event,reactor)
 
     def addAllEventReactor(self,reactor):
         for event in P6Events.Cell.allEvents():
