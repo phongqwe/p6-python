@@ -9,7 +9,7 @@ from com.emeraldblast.p6.proto.AppEventProtos_pb2 import LoadWorkbookRequestProt
 class LoadWorkbookRequest_test(unittest.TestCase):
     def test_fromProtoBytes(self):
         protoBytes = LoadWorkbookRequestProto(path = "a_path",windowId="windowId").SerializeToString()
-        o = LoadWorkbookRequest.fromProtoByte(protoBytes)
+        o = LoadWorkbookRequest.fromProtoBytes(protoBytes)
         self.assertEqual("a_path", o.path)
         self.assertEqual("windowId", o.windowId)
 

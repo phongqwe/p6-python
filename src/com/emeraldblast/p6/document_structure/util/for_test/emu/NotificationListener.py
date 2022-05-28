@@ -27,7 +27,7 @@ class NotificationListener:
 
 
     def onReceive(self,data:bytes):
-        p6Res = P6Response.fromProtoByte(data)
+        p6Res = P6Response.fromProtoBytes(data)
         self.reactorContainer.triggerReactorsFor(p6Res.header.eventType, p6Res.data)
 
     def addReactor(self,event:P6Event,reactor:EventReactor):

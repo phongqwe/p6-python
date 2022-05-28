@@ -18,7 +18,7 @@ class LoadWorkbookReactor(BaseEventReactor[bytes, LoadWorkbookResponse]):
         self.appGetter = appGetter
 
     def react(self, data: bytes) -> LoadWorkbookResponse:
-        req = LoadWorkbookRequest.fromProtoByte(data)
+        req = LoadWorkbookRequest.fromProtoBytes(data)
         app = self.appGetter()
         loadRs: Result[Workbook, ErrorReport] = app.loadWorkbookRsNoEvent(req.absolutePath)
         res = LoadWorkbookResponse(isError = loadRs.isErr(),windowId = req.windowId)

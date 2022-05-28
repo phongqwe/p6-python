@@ -13,7 +13,7 @@ class LoadWorkbookRequest:
         return Path(self.path).absolute()
 
     @staticmethod
-    def fromProtoByte(data:bytes)->'LoadWorkbookRequest':
+    def fromProtoBytes(data:bytes)-> 'LoadWorkbookRequest':
         proto = LoadWorkbookRequestProto()
         proto.ParseFromString(data)
         return LoadWorkbookRequest(proto.path, proto.windowId)

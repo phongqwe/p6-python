@@ -125,7 +125,7 @@ class TestEnvImp:
         if self.eventServerRequestSocket:
             self.eventServerRequestSocket.send(b)
             recv = self.eventServerRequestSocket.recv()
-            rt = P6Response.fromProtoByte(recv)
+            rt = P6Response.fromProtoBytes(recv)
             return rt
         else:
             return None
