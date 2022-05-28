@@ -4,7 +4,7 @@ import unittest
 import zmq
 
 # these 2 imports must be keep for the formula script to be able to run
-from com.emeraldblast.p6.proto.AppEventProtos_pb2 import CreateNewWorkbookResponseProto
+from com.emeraldblast.p6.proto.AppEventProtos_pb2 import CreateNewWorkbookResponseProto, CloseWorkbookResponseProto
 
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.app_event.CreateNewWorkbookResponse import \
     CreateNewWorkbookResponse
@@ -166,4 +166,14 @@ class IntegrationTest_test(unittest.TestCase):
         self.assertTrue(rs.isOk())
 
 
+    def test_checkCloseWb(self):
+        def cb(data:bytes):
+            proto = CloseWorkbookResponseProto()
+            proto.ParseFromString(data)
+            print(proto)
+            print("QWE")
 
+        self.testEnv.notifListener.addReactorCB(P6Events.App.CloseWorkbook.event,cb)
+
+        rs = getApp().closeWorkbookRs(0)
+        self.assertTrue(rs.isOk())

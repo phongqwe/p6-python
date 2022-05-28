@@ -126,5 +126,5 @@ class P6Events:
 
         class CreateNewWorkbook:
             event = P6Event(f"{APPE}3","create new workbook")
-
-        CloseWorkbook = P6Event(f"{APPE}4","close workbook")
+        class CloseWorkbook:
+            event = P6Event(f"{APPE}4","close workbook")

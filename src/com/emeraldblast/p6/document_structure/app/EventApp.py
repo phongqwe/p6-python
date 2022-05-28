@@ -1,5 +1,7 @@
-from typing import Callable, Optional
+from typing import Callable, Optional, Union
 
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.app_event.CloseWorkbookResponse import \
+    CloseWorkbookResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.app_event.CreateNewWorkbookResponse import \
     CreateNewWorkbookResponse
 
@@ -12,6 +14,7 @@ from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
+from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 
 
 class EventApp(AppWrapper):
@@ -47,3 +50,14 @@ class EventApp(AppWrapper):
             isError = False,
             data=response.toProtoBytes())
         self.onEvent(eventData)
+
+    def closeWorkbookRs(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]) -> Result[WorkbookKey, ErrorReport]:
+        rs = self.rootApp.closeWorkbookRs(nameOrIndexOrKey)
+        if rs.isOk():
+            response = CloseWorkbookResponse.fromRs(rs,windowId = None)
+            self.onEvent(EventData(
+                event=P6Events.App.CloseWorkbook.event,
+                data = response.toProtoBytes()
+            ))
+        return rs
+

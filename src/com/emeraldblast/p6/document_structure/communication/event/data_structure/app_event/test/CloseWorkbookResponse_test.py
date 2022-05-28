@@ -4,6 +4,7 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.a
     CloseWorkbookResponse
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorHeader import ErrorHeader
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
+from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 
 
@@ -52,6 +53,13 @@ class CloseWorkbookResponse_test(unittest.TestCase):
         self.assertEqual(o.windowId, proto.windowId)
         self.assertEqual(o.errorReport.toProtoObj(), proto.errorReport)
 
+    def test_fromRs(self):
+        wbk = WorkbookKeys.fromNameAndPath("abc")
+        o = CloseWorkbookResponse.fromRs(Ok(wbk),None)
+        self.assertFalse(o.isError)
+        self.assertEqual(wbk, o.workbookKey)
+        self.assertIsNone(o.windowId)
+        self.assertIsNone(o.errorReport)
 
 if __name__ == '__main__':
     unittest.main()
