@@ -1,5 +1,7 @@
 import uuid
 
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.CloseWorkbookReactor import \
+    CloseWorkbookReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.CreateNewWorkbookReactor import \
     CreateNewWorkbookReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook_event.SaveWorkbookReactor import \
@@ -31,3 +33,6 @@ class AppEventServerReactors:
     
     def createNewWorkbookReactor(self)->CreateNewWorkbookReactor:
         return CreateNewWorkbookReactor(self.appGetter)
+
+    def closeWorkbookReactor(self)->CloseWorkbookReactor:
+        return CloseWorkbookReactor(self.appGetter)
