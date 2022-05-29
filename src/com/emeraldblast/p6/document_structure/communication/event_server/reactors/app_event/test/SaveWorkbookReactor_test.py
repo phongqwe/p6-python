@@ -3,12 +3,9 @@ import unittest
 from pathlib import Path
 
 from com.emeraldblast.p6.document_structure.app.App import App
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.save_wb.SaveWorkbookRequest import \
-    SaveWorkbookRequest
-from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook_event.SaveWorkbookReactor import \
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.SaveWorkbookReactor import \
     SaveWorkbookReactor
 from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import sampleApp
-from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.emeraldblast.p6.proto.WorkbookProtos_pb2 import SaveWorkbookRequestProto

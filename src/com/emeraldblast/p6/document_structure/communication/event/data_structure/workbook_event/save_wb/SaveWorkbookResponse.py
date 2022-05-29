@@ -6,7 +6,11 @@ from com.emeraldblast.p6.proto.WorkbookProtos_pb2 import SaveWorkbookResponsePro
 
 class SaveWorkbookResponse(ToProto[SaveWorkbookResponseProto]):
 
-    def __init__(self,path: str,workbookKey: WorkbookKey|None=None, isError: bool=False, errorReport: ErrorReport|None=None):
+    def __init__(
+            self,
+            path: str, workbookKey: WorkbookKey | None = None,
+            isError: bool = False,
+            errorReport: ErrorReport | None = None):
         self.path = path
         self.workbookKey = workbookKey
         self.errorReport = errorReport
@@ -24,10 +28,10 @@ class SaveWorkbookResponse(ToProto[SaveWorkbookResponseProto]):
         if self.errorReport is not None:
             proto.errorReport.CopyFrom(self.errorReport.toProtoObj())
 
-
         return proto
+
     def __eq__(self, other):
-        if isinstance(other,SaveWorkbookResponse):
+        if isinstance(other, SaveWorkbookResponse):
             return self.path == other.path and self.workbookKey == other.workbookKey and self.errorReport == self.errorReport and self.isError == self.isError
         else:
             return False

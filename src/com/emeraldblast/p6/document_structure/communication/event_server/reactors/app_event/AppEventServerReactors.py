@@ -4,7 +4,7 @@ from com.emeraldblast.p6.document_structure.communication.event_server.reactors.
     CloseWorkbookReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.CreateNewWorkbookReactor import \
     CreateNewWorkbookReactor
-from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook_event.SaveWorkbookReactor import \
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.SaveWorkbookReactor import \
     SaveWorkbookReactor
 
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.TypeAliasForReactor import WbGetter, \

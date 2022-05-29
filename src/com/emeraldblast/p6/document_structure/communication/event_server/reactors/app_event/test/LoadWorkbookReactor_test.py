@@ -16,20 +16,16 @@ class LoadWorkbookReactor_test(unittest.TestCase):
     def setUp(self) -> None:
         super().setUp()
         self.app = MagicMock()
+        self.app.rootApp = self.app
         self.reactor = LoadWorkbookReactor(
             makeGetter(self.app)
         )
 
-    def test_react(self):
-        self.app.loadWorkbookRsNoEvent = MagicMock()
-        self.reactor.react(b"")
-        self.assertEqual(1,self.app.loadWorkbookRsNoEvent.call_count)
-
     def test_react_ok(self):
         loadRs = Ok(WorkbookImp(""))
-        self.app.loadWorkbookRsNoEvent = MagicMock(return_value=loadRs)
+        self.app.loadWorkbookRs = MagicMock(return_value=loadRs)
         out = self.reactor.react(b"")
-        self.assertEqual(1,self.app.loadWorkbookRsNoEvent.call_count)
+        self.assertEqual(1,self.app.loadWorkbookRs.call_count)
         self.assertFalse(out.isError)
         self.assertEqual(loadRs.value, out.workbook)
         self.assertEqual(None, out.errorReport)
@@ -38,9 +34,9 @@ class LoadWorkbookReactor_test(unittest.TestCase):
         loadRs = Err(errReport = ErrorReport(
             header=ErrorHeader("12","qwe")
         ))
-        self.app.loadWorkbookRsNoEvent = MagicMock(return_value=loadRs)
+        self.app.loadWorkbookRs = MagicMock(return_value=loadRs)
         out = self.reactor.react(b"")
-        self.assertEqual(1,self.app.loadWorkbookRsNoEvent.call_count)
+        self.assertEqual(1,self.app.loadWorkbookRs.call_count)
         self.assertTrue(out.isError)
         self.assertEqual(None, out.workbook)
         self.assertEqual(loadRs.err, out.errorReport)

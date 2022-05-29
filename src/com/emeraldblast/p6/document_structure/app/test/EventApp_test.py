@@ -1,4 +1,6 @@
+import os
 import unittest
+from pathlib import Path
 from unittest.mock import MagicMock
 
 from com.emeraldblast.p6.document_structure.app.EventApp import EventApp
@@ -43,6 +45,43 @@ class EventApp_test(unittest.TestCase):
         # onEvent is not called when fail to close any wb
         eventApp.closeWorkbookRs(1000)
         self.assertEqual(2,onEvent.call_count)
+
+    def test_saveEvent(self):
+        """ensure that save notifier is trigger when a workbook is saved"""
+        app = sampleApp()
+        onEvent = MagicMock()
+        eventApp = EventApp(app, onEvent)
+
+        # runSave(app,onEvent)
+        path = Path("b1")
+        app.createNewWorkbook("b1")
+        eventApp.saveWorkbookAtPathRs("b1", path)
+        self.assertEqual(1, onEvent.call_count)
+
+        eventApp.saveWorkbookAtPath("b1", path)
+        self.assertEqual(2, onEvent.call_count)
+
+        eventApp.saveWorkbook("b1")
+        self.assertEqual(3, onEvent.call_count)
+
+        eventApp.saveWorkbookRs("b1")
+        self.assertEqual(4, onEvent.call_count)
+
+        if path.exists():
+            os.remove(path)
+
+    def test_loadEvent(self):
+        """ensure that save notifier is trigger when a workbook is saved"""
+        app = sampleApp()
+        onEvent = MagicMock()
+        eventApp = EventApp(app, onEvent)
+
+        path = Path("fileProto2.txt")
+        eventApp.loadWorkbookRs(path)
+        self.assertEqual(1, onEvent.call_count)
+
+        eventApp.loadWorkbook(Path("fileProto3.txt"))
+        self.assertEqual(2, onEvent.call_count)
 
 
 if __name__ == '__main__':

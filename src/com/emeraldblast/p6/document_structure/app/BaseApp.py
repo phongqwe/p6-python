@@ -11,6 +11,7 @@ from com.emeraldblast.p6.document_structure.communication.reactor import EventRe
 from com.emeraldblast.p6.document_structure.file.loader.P6FileLoader import P6FileLoader
 from com.emeraldblast.p6.document_structure.file.loader.P6FileLoaderErrors import P6FileLoaderErrors
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
+from com.emeraldblast.p6.document_structure.file.saver.P6FileSaverErrors import P6FileSaverErrors
 from com.emeraldblast.p6.document_structure.util.for_test.ZZ import writeTestLog
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
@@ -24,7 +25,7 @@ from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeyImp import W
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
 
-class BaseApp(App,ABC):
+class BaseApp(App, ABC):
 
     @property
     def rootApp(self) -> 'App':
@@ -102,7 +103,6 @@ class BaseApp(App,ABC):
             wb: Workbook = loadRs.value
             return wb
         else:
-            # raise ErrorReports.toException(loadRs.err)
             raise loadRs.err.toException()
 
     def forceLoadWorkbookRs(self, filePath: Union[str, Path]) -> Result[Workbook, ErrorReport]:
@@ -117,19 +117,8 @@ class BaseApp(App,ABC):
 
     def saveWorkbookAtPathRs(self,
                              nameOrIndexOrKey: Union[int, str, WorkbookKey],
-                             filePath: str | Path | None) -> Result[Workbook | None, ErrorReport]:
-        return self.__saveWorkbookAtPathRs(self.fileSaver, nameOrIndexOrKey, filePath)
-
-    def saveWorkbookAtPathNoEventRs(self,
-                                    nameOrIndexOrKey: Union[int, str, WorkbookKey],
-                                    filePath: str | Path | None) -> Result[Workbook | None, ErrorReport]:
-
-        return self.__saveWorkbookAtPathRs(self.fileSaver.rootSaver, nameOrIndexOrKey, filePath)
-
-    def __saveWorkbookAtPathRs(self,
-                               saver: P6FileSaver,
-                               nameOrIndexOrKey: Union[int, str, WorkbookKey],
-                               filePath: str | Path | None) -> Result[Workbook | None, ErrorReport]:
+                             filePath: str | Path) -> Result[Workbook , ErrorReport]:
+        saver: P6FileSaver = self.fileSaver
         path = Path(filePath)
         getWbRs: Result[Workbook, ErrorReport] = self.getBareWorkbookRs(nameOrIndexOrKey)
         if getWbRs.isOk():
@@ -142,7 +131,9 @@ class BaseApp(App,ABC):
                     self.wbContainer.removeWorkbook(oldKey)
                     wb.workbookKey = newKey
                     self.wbContainer.addWorkbook(wb.rootWorkbook)
-            return saveResult
+                return Ok(wb)
+            else:
+                return Err(saveResult.err)
         else:
             return getWbRs
 
@@ -151,15 +142,10 @@ class BaseApp(App,ABC):
         Results.extractOrRaise(saveRs)
 
     def saveWorkbookRs(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]) -> Result[Any, ErrorReport]:
-        return self.__saveWorkbookRs(self.fileSaver,nameOrIndexOrKey)
-    def saveWorkbookNoEventRs(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]) -> Result[Any, ErrorReport]:
-        return self.__saveWorkbookRs(self.fileSaver.rootSaver,nameOrIndexOrKey)
-
-    def __saveWorkbookRs(self, saver:P6FileSaver, nameOrIndexOrKey: Union[int, str, WorkbookKey]) -> Result[Any, ErrorReport]:
         wbRs: Result[Workbook, ErrorReport] = self.getWorkbookRs(nameOrIndexOrKey)
         if wbRs.isOk():
             wb: Workbook = wbRs.value
-            saveResult = self.__saveWorkbookAtPathRs(saver,nameOrIndexOrKey, wb.workbookKey.filePath)
+            saveResult = self.saveWorkbookAtPathRs(nameOrIndexOrKey, wb.workbookKey.filePath)
             return saveResult
         else:
             return wbRs
@@ -170,12 +156,7 @@ class BaseApp(App,ABC):
         return Results.extractOrRaise(loadRs)
 
     def loadWorkbookRs(self, filePath: Union[str, Path]) -> Result[Workbook, ErrorReport]:
-        return self.__loadWorkbookRs(self.fileLoader, filePath)
-
-    def loadWorkbookRsNoEvent(self, filePath: Union[str, Path]) -> Result[Workbook, ErrorReport]:
-        return self.__loadWorkbookRs(self.fileLoader.rootLoader,filePath)
-
-    def __loadWorkbookRs(self, loader:P6FileLoader,filePath: Union[str, Path]) -> Result[Workbook, ErrorReport]:
+        loader: P6FileLoader = self.fileLoader
         path = Path(filePath)
         wbKey = WorkbookKeyImp(str(path.name), path)
         wbRs = self.getWorkbookRs(wbKey)
@@ -196,7 +177,6 @@ class BaseApp(App,ABC):
                     data = P6FileLoaderErrors.AlreadyLoad.Data(path, None)
                 )
             )
-
 
     def refreshContainer(self):
         bookList = self.wbContainer.books()

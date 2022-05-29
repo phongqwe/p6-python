@@ -169,7 +169,7 @@ class App(ABC):
 
     def saveWorkbookAtPathRs(self,
                              nameOrIndexOrKey: Union[int, str, WorkbookKey],
-                             filePath: str | Path | None) -> Result[Workbook | None, ErrorReport]:
+                             filePath: str | Path) -> Result[Workbook, ErrorReport]:
         """
          save a workbook at nameOrIndex to a certain filePath, then update the workbook with that new path
         :param nameOrIndexOrKey:
@@ -178,11 +178,6 @@ class App(ABC):
         """
         raise NotImplementedError()
 
-    def saveWorkbookAtPathNoEventRs(self,
-                                    nameOrIndexOrKey: Union[int, str, WorkbookKey],
-                                    filePath: str | Path | None) -> Result[Workbook | None, ErrorReport]:
-
-        raise NotImplementedError()
 
 
     def saveWorkbook(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]):
@@ -194,13 +189,6 @@ class App(ABC):
         raise NotImplementedError()
 
     def saveWorkbookRs(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]) -> Result[Any, ErrorReport]:
-        """
-        save a workbook at nameOrIndex
-        :param nameOrIndexOrKey:
-        :return:
-        """
-        raise NotImplementedError()
-    def saveWorkbookNoEventRs(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]) -> Result[Any, ErrorReport]:
         """
         save a workbook at nameOrIndex
         :param nameOrIndexOrKey:
@@ -225,13 +213,6 @@ class App(ABC):
         :param filePath:
         """
 
-        raise NotImplementedError()
-
-    def loadWorkbookRsNoEvent(self, filePath: Union[str, Path]) -> Result[Workbook, ErrorReport]:
-        """
-        Load a file using the loader that does not emmit event
-        :param filePath:
-        """
         raise NotImplementedError()
 
     def refreshContainer(self):

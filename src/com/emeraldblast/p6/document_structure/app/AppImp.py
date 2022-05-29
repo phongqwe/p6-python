@@ -155,8 +155,9 @@ class AppImp(BaseApp):
             container.addReactor(event, provider.appNotifier())
 
     def __setupEventEmitter(self):
-        self.__wbSaver=EventP6FileSaver.create(self.__wbSaver, self.__notifierContainer)
-        self.__wbLoader = EventP6FileLoader.create(self.__wbLoader, self.__notifierContainer)
+        # self.__wbSaver=EventP6FileSaver.create(self.__wbSaver, self.__notifierContainer)
+        # self.__wbLoader = EventP6FileLoader.create(self.__wbLoader, self.__notifierContainer)
+        pass
 
     @property
     def eventNotifierContainer(self) -> EventReactorContainer:

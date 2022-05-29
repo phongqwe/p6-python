@@ -26,9 +26,9 @@ class SaveWorkbookReactor(BaseEventReactor[bytes, SaveWorkbookResponse]):
         pathIsDiff: bool = wbKey.filePath != targetPath
         saveRs: Result[Workbook | None, ErrorReport] = None
         if pathIsDiff:
-            saveRs = app.saveWorkbookAtPathNoEventRs(wbKey, targetPath)
+            saveRs = app.saveWorkbookAtPathRs(wbKey, targetPath)
         else:
-            saveRs = app.saveWorkbookNoEventRs(wbKey)
+            saveRs = app.saveWorkbookRs(wbKey)
 
         rt = SaveWorkbookResponse(
             isError = saveRs.isErr(),

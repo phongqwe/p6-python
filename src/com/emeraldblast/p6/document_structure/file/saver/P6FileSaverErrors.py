@@ -43,7 +43,7 @@ class P6FileSaverErrors:
         def errorReport(workbookKey:WorkbookKey):
             return ErrorReport(
                 header=ErrorHeader(
-                    f"{errPrefix()}2", f"Can't save workbook {workbookKey.fileName} because the provided path is invalid"
+                    f"{errPrefix()}2", f"Can't save workbook {workbookKey.fileName} because the provided path is invalid/None"
                 ),
                 data = workbookKey
             )

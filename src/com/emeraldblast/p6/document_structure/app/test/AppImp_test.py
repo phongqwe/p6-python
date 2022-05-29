@@ -284,31 +284,7 @@ class AppImp_test(unittest.TestCase):
         self.assertEqual(123, self.aa)
 
 
-    def test_saveEvent(self):
-        """ensure that save notifier is trigger when a workbook is saved"""
-        app = AppImp()
-        mockCallback = MagicMock()
-        app.eventNotifierContainer.addReactor(
-            P6Events.App.SaveWorkbook.event,
-            EventReactors.makeBasicReactor(mockCallback))
 
-        # runSave(app,onEvent)
-        path = Path("b1")
-        app.createNewWorkbook("b1")
-        app.saveWorkbookAtPathRs("b1", path)
-        self.assertEqual(1, mockCallback.call_count)
-
-        app.saveWorkbookAtPath("b1", path)
-        self.assertEqual(2, mockCallback.call_count)
-
-        app.saveWorkbook("b1")
-        self.assertEqual(3, mockCallback.call_count)
-
-        app.saveWorkbookRs("b1")
-        self.assertEqual(4, mockCallback.call_count)
-
-        if path.exists():
-            os.remove(path)
 
 
 
