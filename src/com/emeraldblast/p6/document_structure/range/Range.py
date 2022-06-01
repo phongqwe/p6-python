@@ -1,5 +1,7 @@
 from abc import ABC
 
+from pandas import DataFrame
+
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.cell_container.MutableCellContainer import MutableCellContainer
 from com.emeraldblast.p6.document_structure.cell_container.UserFriendlyCellContainer import UserFriendlyCellContainer
@@ -33,3 +35,6 @@ class Range(UserFriendlyCellContainer,MutableCellContainer,ABC):
         else:
             return False
 
+    def toPandasDataFrame(self)->DataFrame:
+        """create a data frame from a range"""
+        

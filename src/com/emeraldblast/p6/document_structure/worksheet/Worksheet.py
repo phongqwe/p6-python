@@ -106,3 +106,4 @@ class Worksheet(UserFriendlyCellContainer,
 
     def renameRs(self, newName: str) -> Result[None, ErrorReport]:
         raise NotImplementedError()
+

@@ -1,5 +1,7 @@
 import unittest
 
+from com.emeraldblast.p6.document_structure.cell.CellContent import CellContent
+from com.emeraldblast.p6.document_structure.cell.CellContentImp import CellContentImp
 from com.emeraldblast.p6.document_structure.cell.DataCell import DataCell
 from com.emeraldblast.p6.document_structure.cell.EventCell import EventCell
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
@@ -14,6 +16,25 @@ class DataCellTest(unittest.TestCase):
         super().setUp()
         self.wb = WorkbookImp("wb")
         self.s = self.wb.createNewWorksheet("s1")
+
+    def test_content(self):
+        c1 = DataCell(CellIndex(1, 1), 123, "formula", "script")
+        ct1 = c1.content
+        self.assertEqual(None,ct1.value)
+        self.assertEqual(c1.formula, ct1.formula)
+        self.assertEqual(c1.script, ct1.script)
+
+        c1 = DataCell(CellIndex(1, 1), 123, None, None)
+        ct1 = c1.content
+        self.assertEqual(c1.value, ct1.value)
+
+    def test_content_setter(self):
+        ct1 = CellContentImp( None, "formula", "script")
+        c1 = DataCell(CellIndex(1,2),"z","q","x")
+        c1.content = ct1
+        self.assertEqual(ct1.value, c1.bareValue)
+        self.assertEqual(ct1.formula, c1.bareFormula)
+        self.assertEqual(ct1.script, c1.bareScript)
 
 
     def test_toProtoObj1(self):

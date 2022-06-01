@@ -2,6 +2,8 @@ from typing import Any, Callable
 
 from com.emeraldblast.p6.document_structure.app.GlobalScope import getGlobals
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
+from com.emeraldblast.p6.document_structure.cell.CellContent import CellContent
+from com.emeraldblast.p6.document_structure.cell.CellContentImp import CellContentImp
 from com.emeraldblast.p6.document_structure.cell.CellJson import CellJson
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.cell.util.CellUtil import convertExceptionToStr
@@ -18,6 +20,28 @@ class DataCell(Cell):
     """
     A Cell that holds some data.
     """
+
+    @property
+    def rootCell(self) -> 'Cell':
+        return self
+
+    @property
+    def content(self) -> CellContent:
+        v = self.value
+        if self.formula or self.script:
+            v = None
+        return CellContentImp(
+            value = v,
+            formula = self.formula,
+            script = self.script
+        )
+
+    @content.setter
+    def content(self, newContent: CellContent):
+        self.__value = newContent.value
+        self.__formula = newContent.formula
+        self.__script = newContent.script
+
     texualType = [int, float, str]
     @property
     def bareScript(self) -> str:

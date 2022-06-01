@@ -1,6 +1,7 @@
 from abc import ABC
 
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
+from com.emeraldblast.p6.document_structure.cell.CellContent import CellContent
 from com.emeraldblast.p6.document_structure.cell.CellJson import CellJson
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
@@ -16,116 +17,124 @@ class WrapperCell(Cell, ABC):
         self._innerCell: Cell = innerCell
 
     @property
-    def worksheet(self) -> Worksheet | None:
-        return self._innerCell.worksheet
+    def rootCell(self) -> 'Cell':
+        return self._innerCell.rootCell
 
     @property
-    def displayValue(self) -> str:
-        return self._innerCell.displayValue
+    def content(self) -> CellContent:
+        return self.rootCell.content
+
+    @content.setter
+    def content(self, newContent: CellContent):
+        self.rootCell.content = newContent
+
+    @property
+    def worksheet(self) -> Worksheet | None:
+        return self.rootCell.worksheet
 
     @worksheet.setter
     def worksheet(self, newWorksheet: Worksheet | None):
-        self._innerCell.worksheet = newWorksheet
+        self.rootCell.worksheet = newWorksheet
 
     def toProtoObj(self) -> CellProto:
-        return self._innerCell.toProtoObj()
+        return self.rootCell.toProtoObj()
 
     @property
     def intValue(self) -> int:
-        return self._innerCell.intValue
+        return self.rootCell.intValue
 
     @property
     def floatValue(self) -> float:
-        return self._innerCell.floatValue
+        return self.rootCell.floatValue
 
     @property
     def strValue(self) -> str:
-        return self._innerCell.strValue
+        return self.rootCell.strValue
 
     def isValueEqual(self, anotherCellOrValue):
-        return self._innerCell.isValueEqual(anotherCellOrValue)
+        return self.rootCell.isValueEqual(anotherCellOrValue)
 
     def isEmpty(self):
-        return self._innerCell.isEmpty()
+        return self.rootCell.isEmpty()
 
     def reRun(self, globalScope = None, localScope = None):
-        self._innerCell.reRun(globalScope, localScope)
+        self.rootCell.reRun(globalScope, localScope)
 
     def toJsonDict(self) -> dict:
-        return self._innerCell.toJsonDict()
+        return self.rootCell.toJsonDict()
 
     @property
     def formula(self) -> str:
-        return self._innerCell.formula
+        return self.rootCell.formula
 
     @formula.setter
     def formula(self, newFormula: str):
-        self._innerCell.formula = newFormula
+        self.rootCell.formula = newFormula
 
     @property
     def bareScript(self) -> str:
-        return self._innerCell.bareScript
+        return self.rootCell.bareScript
 
     @property
     def bareFormula(self) -> str:
-        return self._innerCell.bareFormula
+        return self.rootCell.bareFormula
 
     @property
     def bareValue(self):
-        return self._innerCell.bareValue
+        return self.rootCell.bareValue
 
     def toJson(self) -> CellJson:
-        return self._innerCell.toJson()
+        return self.rootCell.toJson()
 
     @property
     def displayValue(self) -> str:
-        return self._innerCell.displayValue
+        return self.rootCell.displayValue
 
     @property
     def value(self):
-        return self._innerCell.value
+        return self.rootCell.value
 
     @value.setter
     def value(self, newValue):
-        self._innerCell.value = newValue
+        self.rootCell.value = newValue
 
     @property
     def script(self) -> str:
-        return self._innerCell.script
+        return self.rootCell.script
 
     @script.setter
     def script(self, newScript: str):
-        self._innerCell.script = newScript
+        self.rootCell.script = newScript
 
     @property
     def address(self) -> CellAddress:
-        return self._innerCell.address
+        return self.rootCell.address
 
     def __eq__(self, other):
-        return self._innerCell.__eq__(other)
+        return self.rootCell.__eq__(other)
 
     @property
     def row(self) -> int:
-        return self._innerCell.row
+        return self.rootCell.row
 
     @property
     def col(self) -> int:
-        return self._innerCell.col
+        return self.rootCell.col
 
     def runScript(self, globalScope = None, localScope = None):
-        self._innerCell.runScript(globalScope, localScope)
+        self.rootCell.runScript(globalScope, localScope)
 
     def setScriptAndRun(self, newScript, globalScope = None, localScope = None):
-        self._innerCell.setScriptAndRun(newScript, globalScope, localScope)
+        self.rootCell.setScriptAndRun(newScript, globalScope, localScope)
 
     def hasScript(self) -> bool:
-        return self._innerCell.hasScript()
+        return self.rootCell.hasScript()
 
     def __hash__(self) -> int:
-        return self._innerCell.__hash__()
+        return self.rootCell.__hash__()
 
     def clearScriptResult(self):
-        return self._innerCell.clearScriptResult()
+        return self.rootCell.clearScriptResult()
 
     def copyFrom(self, anotherCell: "Cell"):
-        self._innerCell.copyFrom(anotherCell)
+        self.rootCell.copyFrom(anotherCell)

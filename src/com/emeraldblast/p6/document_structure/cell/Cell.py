@@ -3,6 +3,7 @@ from __future__ import annotations
 from abc import ABC
 from typing import TYPE_CHECKING
 
+from com.emeraldblast.p6.document_structure.cell.CellContent import CellContent
 from com.emeraldblast.p6.document_structure.cell.CellJson import CellJson
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.util.ToJson import ToJson
@@ -163,3 +164,16 @@ class Cell(ToJson, ToProto[CellProto], ABC):
 
     def toJsonDict(self) -> dict:
         return self.toJson().toJsonDict()
+
+    @property
+    def rootCell(self)->'Cell':
+        raise NotImplementedError()
+
+    @property
+    def content(self)->CellContent:
+        """extract a CellContent object from this cell"""
+        raise NotImplementedError()
+
+    @content.setter
+    def content(self,newContent:CellContent):
+        raise NotImplementedError()
