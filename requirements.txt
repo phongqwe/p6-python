@@ -1,5 +1,6 @@
-antlr4-python3-runtime
-pyzmq
+antlr4-python3-runtime==4.9.3
+pyzmq==22.3.0
 protobuf>=3.19.4
-jupyterlab
+jupyterlab==3.3.2
 jupyter_console
+dependency-injector

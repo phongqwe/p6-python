@@ -1,5 +1,6 @@
 import re
 
+from com.emeraldblast.p6.document_structure.app.R import R
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
@@ -10,7 +11,7 @@ from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
-from com.emeraldblast.p6.document_structure.worksheet.WorksheetConst import WorksheetConst
+
 from com.emeraldblast.p6.proto.DocProtos_pb2 import RangeAddressProto
 
 
@@ -75,14 +76,14 @@ class RangeAddresses:
                     secondColIndex = AlphabetBaseNumberSystem.toDecimal(secondPart)
                     return RangeAddressImp(
                         topLeft =CellIndex(min(firstColIndex, secondColIndex), 1),
-                        botRight =CellIndex(max(firstColIndex, secondColIndex), WorksheetConst.rowLimit)
+                        botRight =CellIndex(max(firstColIndex, secondColIndex), R.WorksheetConsts.rowLimit)
                     )
                 elif firstPartIsRow and secondPartIsRow:
                     firstRowIndex = int(firstPart)
                     secondRowIndex = int(secondPart)
                     return RangeAddressImp(
                         topLeft =CellIndex(1, min(firstRowIndex, secondRowIndex)),
-                        botRight =CellIndex(WorksheetConst.colLimit, max(firstRowIndex, secondRowIndex))
+                        botRight =CellIndex(R.WorksheetConsts.colLimit, max(firstRowIndex, secondRowIndex))
                     )
                 else:
                     raise ValueError("input label \"{lb}\" is not a valid whole column/row address")

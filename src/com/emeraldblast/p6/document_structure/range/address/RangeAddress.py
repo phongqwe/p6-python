@@ -1,10 +1,11 @@
 from abc import ABC
 
+from com.emeraldblast.p6.document_structure.app.R import R
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.util.AlphabetBaseNumberSystem import AlphabetBaseNumberSystem
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
-from com.emeraldblast.p6.document_structure.worksheet.WorksheetConst import WorksheetConst
+
 from com.emeraldblast.p6.proto.DocProtos_pb2 import RangeAddressProto
 
 
@@ -20,7 +21,7 @@ class RangeAddress(ToProto[RangeAddressProto],ABC):
     @property
     def label(self) -> str:
         firstCellOnFirstRow = self.topLeft.rowIndex == 1
-        lastCellOnLastRow = self.botRight.rowIndex == WorksheetConst.rowLimit
+        lastCellOnLastRow = self.botRight.rowIndex == R.WorksheetConsts.rowLimit
         if firstCellOnFirstRow and lastCellOnLastRow:
             firstColLabel = AlphabetBaseNumberSystem.fromDecimal(self.topLeft.colIndex)
             lastColLabel = AlphabetBaseNumberSystem.fromDecimal(self.botRight.colIndex)
@@ -29,7 +30,7 @@ class RangeAddress(ToProto[RangeAddressProto],ABC):
             )
 
         firstCellOnFirstCol = self.topLeft.colIndex == 1
-        lastCellOnLastCol = self.botRight.colIndex == WorksheetConst.colLimit
+        lastCellOnLastCol = self.botRight.colIndex == R.WorksheetConsts.colLimit
         if firstCellOnFirstCol and lastCellOnLastCol:
             return "@{firstRow}:{lastRow}".format(
                 firstRow=str(self.topLeft.rowIndex),

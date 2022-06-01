@@ -4,7 +4,7 @@ from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import Ce
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
 from com.emeraldblast.p6.document_structure.range.address.RangeAddressImp import RangeAddressImp
 from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
-from com.emeraldblast.p6.document_structure.worksheet.WorksheetConst import WorksheetConst
+
 from com.emeraldblast.p6.proto.DocProtos_pb2 import RangeAddressProto
 
 

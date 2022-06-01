@@ -1,12 +1,13 @@
 import unittest
 
+from com.emeraldblast.p6.document_structure.app.R import R
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
 from com.emeraldblast.p6.document_structure.range.address.RangeAddressImp import RangeAddressImp
 from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
-from com.emeraldblast.p6.document_structure.worksheet.WorksheetConst import WorksheetConst
+
 from com.emeraldblast.p6.proto.DocProtos_pb2 import RangeAddressProto
 
 
@@ -24,13 +25,13 @@ class RangeAddresses_test(unittest.TestCase):
             "@m32:AB200": RangeAddressImp(CellIndex(13, 32), CellIndex(28, 200)),
             "@M32:ab200": RangeAddressImp(CellIndex(13, 32), CellIndex(28, 200)),
 
-            "@A:A": RangeAddressImp(CellIndex(1, 1), CellIndex(1, WorksheetConst.rowLimit)),
-            "@B:B": RangeAddressImp(CellIndex(2, 1), CellIndex(2, WorksheetConst.rowLimit)),
-            "@B:F": RangeAddressImp(CellIndex(2, 1), CellIndex(6, WorksheetConst.rowLimit)),
-            "@F:B": RangeAddressImp(CellIndex(2, 1), CellIndex(6, WorksheetConst.rowLimit)),
-            "@5:5": RangeAddressImp(CellIndex(1, 5), CellIndex(WorksheetConst.colLimit, 5)),
-            "@5:10": RangeAddressImp(CellIndex(1, 5), CellIndex(WorksheetConst.colLimit, 10)),
-            "@10:5": RangeAddressImp(CellIndex(1, 5), CellIndex(WorksheetConst.colLimit, 10)),
+            "@A:A": RangeAddressImp(CellIndex(1, 1), CellIndex(1, R.WorksheetConsts.rowLimit)),
+            "@B:B": RangeAddressImp(CellIndex(2, 1), CellIndex(2, R.WorksheetConsts.rowLimit)),
+            "@B:F": RangeAddressImp(CellIndex(2, 1), CellIndex(6, R.WorksheetConsts.rowLimit)),
+            "@F:B": RangeAddressImp(CellIndex(2, 1), CellIndex(6, R.WorksheetConsts.rowLimit)),
+            "@5:5": RangeAddressImp(CellIndex(1, 5), CellIndex(R.WorksheetConsts.colLimit, 5)),
+            "@5:10": RangeAddressImp(CellIndex(1, 5), CellIndex(R.WorksheetConsts.colLimit, 10)),
+            "@10:5": RangeAddressImp(CellIndex(1, 5), CellIndex(R.WorksheetConsts.colLimit, 10)),
         }
 
         for k, v in data.items():
@@ -97,16 +98,16 @@ class RangeAddresses_test(unittest.TestCase):
         self.assertEqual("@A:C",
                          RangeAddresses.from2Cells(
                              CellIndex(1,1),
-                             CellIndex(3,WorksheetConst.rowLimit)).label)
+                             CellIndex(3,R.WorksheetConsts.rowLimit)).label)
         self.assertEqual("@3:5",
                          RangeAddresses.from2Cells(
                              CellIndex(1, 3),
-                             CellIndex(WorksheetConst.colLimit, 5)).label)
+                             CellIndex(R.WorksheetConsts.colLimit, 5)).label)
 
         self.assertEqual("@C:Q",
                          RangeAddresses.from2Cells(
                              CellAddresses.fromLabel("@C1"),
-                             CellAddresses.fromLabel("@Q{r}".format(r=str(WorksheetConst.rowLimit)))).label)
+                             CellAddresses.fromLabel("@Q{r}".format(r=str(R.WorksheetConsts.rowLimit)))).label)
 
     def test_fromProto(self):
         topLeft = CellAddresses.fromColRow(1, 1)

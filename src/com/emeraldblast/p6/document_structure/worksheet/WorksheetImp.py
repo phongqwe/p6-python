@@ -1,5 +1,6 @@
 from typing import Optional, Union, Tuple, Callable
 
+from com.emeraldblast.p6.document_structure.app.R import R
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.DataCell import DataCell
 from com.emeraldblast.p6.document_structure.cell.WriteBackCell import WriteBackCell
@@ -21,7 +22,7 @@ from com.emeraldblast.p6.document_structure.util.result.Result import Result
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 from com.emeraldblast.p6.document_structure.workbook.WorkbookErrors import WorkbookErrors
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
-from com.emeraldblast.p6.document_structure.worksheet.WorksheetConst import WorksheetConst
+
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetErrors import WorksheetErrors
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetJson import WorksheetJson
 
@@ -160,7 +161,7 @@ class WorksheetImp(Worksheet):
     def rangeAddress(self) -> RangeAddressImp:
         return RangeAddressImp(
             CellIndex(1, 1),
-            CellIndex(WorksheetConst.colLimit, WorksheetConst.rowLimit)
+            CellIndex(R.WorksheetConsts.colLimit, R.WorksheetConsts.rowLimit)
         )
 
     ### >> MutableCellContainer << ###
