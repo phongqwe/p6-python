@@ -120,7 +120,6 @@ class EventWorksheet(WorksheetWrapper):
                         workbookKey = self.workbook.workbookKey,
                         oldName = oldName,
                         newName = newName,
-                        index = index,
                         isError = True,
                         errorReport = rs.err
                     )
@@ -168,5 +167,21 @@ class EventWorksheet(WorksheetWrapper):
         ))
         return delRs
 
-
+    
+    # def pasteFromClipboardRs(self, anchorCell: CellAddress)->Result[None,ErrorReport]:
+    #     rs= self.rootWorksheet.pasteFromClipboardRs(anchorCell)
+    #     data = WorkbookUpdateCommonResponse(
+    #         isError = rs.isErr(),
+    #         workbookKey = self.workbook.workbookKey
+    #     )
+    #     if rs.isOk():
+    #         data.newWorkbook = self.workbook.rootWorkbook
+    #     else:
+    #         data.errorReport = rs.err
+    #
+    #     self.__onWorksheetEvent(EventData(
+    #         event=P6Events.Worksheet.PasteRange.event,
+    #         data = data
+    #     ))
+    #     return rs
 

@@ -16,7 +16,7 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.w
 
 WSE = "WORKSHEET_EVENT"  # worksheet event
 CE = "CELL_EVENT"  # cell event
-RE = "RE"  # range event
+RE = "RANGE_EVENT_"  # range event
 WBE = "WORKBOOK_EVENT"  # workbook event
 ESE = "ESE"  # event server event
 APPE = "APP_EVENT_" # app event
@@ -74,6 +74,9 @@ class P6Events:
         class DeleteMulti:
             event = P6Event(f"{WSE}4", "Delete multi")
 
+        # class PasteRange:
+        #     event = P6Event(f"{WSE}5", "Paste range")
+
     class Range:
         @classmethod
         def allEvents(clazz):
@@ -81,6 +84,9 @@ class P6Events:
 
         class ReRun:
             event = P6Event(f"{RE}0", "Range rerun")
+
+        class RangeToClipBoard:
+            event = P6Event(f"{RE}1", "Range to clipboard")
 
     class Workbook:
         @classmethod
