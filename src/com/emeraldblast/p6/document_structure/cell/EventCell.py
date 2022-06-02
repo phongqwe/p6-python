@@ -5,6 +5,7 @@ from com.emeraldblast.p6.document_structure.cell.WrapperCell import WrapperCell
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.WorkbookUpdateCommonResponse import \
     WorkbookUpdateCommonResponse
+from com.emeraldblast.p6.document_structure.communication.notifier.eventData.AppEventData import EventData
 from com.emeraldblast.p6.document_structure.communication.notifier.eventData.CellEventData import CellEventData
 
 
@@ -15,7 +16,7 @@ class EventCell(WrapperCell):
 
     def __init__(self,
                  innerCell: Cell,
-                 onCellEvent: Callable[[CellEventData], None] = None):
+                 onCellEvent: Callable[[EventData], None] = None):
         super().__init__(innerCell)
         self.__onCellEvent = onCellEvent
         self._ic = innerCell
@@ -30,10 +31,9 @@ class EventCell(WrapperCell):
                 isError=False,
                 workbookKey = self.workbook.workbookKey,
                 newWorkbook = self.workbook)
-            eventData = CellEventData(
-                workbook = self.workbook,
-                cell = self._ic,
+            eventData = EventData(
                 event = P6Events.Cell.Update.event,
+                isError = False,
                 data = protoData
             )
             self.__onCellEvent(eventData)
@@ -49,10 +49,9 @@ class EventCell(WrapperCell):
                 workbookKey = self.workbook.workbookKey,
                 newWorkbook = self.workbook
             )
-            eventData = CellEventData(
-                workbook = self.workbook,
-                cell = self._ic,
+            eventData = EventData(
                 event = P6Events.Cell.Update.event,
+                isError = False,
                 data = protoData
             )
             self.__onCellEvent(eventData)
@@ -68,10 +67,9 @@ class EventCell(WrapperCell):
                 workbookKey = self.workbook.workbookKey,
                 newWorkbook = self.workbook
             )
-            eventData = CellEventData(
-                workbook = self.workbook,
-                cell = self._ic,
+            eventData = EventData(
                 event = P6Events.Cell.Update.event,
+                isError=False,
                 data = protoData
             )
             self.__onCellEvent(eventData)
@@ -87,10 +85,9 @@ class EventCell(WrapperCell):
                     workbookKey = self.workbook.workbookKey,
                     newWorkbook = self.workbook
                 )
-                eventData = CellEventData(
-                    workbook = self.workbook,
-                    cell = self._ic,
+                eventData = EventData(
                     event = P6Events.Cell.Update.event,
+                    isError=False,
                     data = protoData
                 )
                 self.__onCellEvent(eventData)
@@ -110,10 +107,9 @@ class EventCell(WrapperCell):
                     workbookKey = self.workbook.workbookKey,
                     newWorkbook = self.workbook
                 )
-                eventData = CellEventData(
-                    workbook = self.workbook,
-                    cell = self._ic,
+                eventData = EventData(
                     event = P6Events.Cell.Update.event,
+                    isError = False,
                     data = protoData
                 )
                 self.__onCellEvent(eventData)
@@ -129,10 +125,9 @@ class EventCell(WrapperCell):
                 workbookKey = self.workbook.workbookKey,
                 newWorkbook = self.workbook
             )
-            eventData = CellEventData(
-                workbook = self.workbook,
-                cell = self._ic,
+            eventData = EventData(
                 event = P6Events.Cell.Update.event,
+                isError = False,
                 data = protoData
             )
             self.__onCellEvent(eventData)
