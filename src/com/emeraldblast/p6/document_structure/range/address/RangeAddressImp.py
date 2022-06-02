@@ -1,19 +1,14 @@
+from typing import Optional
+
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.range.address.RangeAddress import RangeAddress
-from com.emeraldblast.p6.document_structure.util.ToProto import P
 from com.emeraldblast.p6.document_structure.util.Util import typeCheck
 from com.emeraldblast.p6.proto.DocProtos_pb2 import RangeAddressProto
 
 
 class RangeAddressImp(RangeAddress):
 
-
-    def toProtoObj(self) -> RangeAddressProto:
-        proto = RangeAddressProto()
-        proto.topLeft.CopyFrom(self.__firstAddress.toProtoObj())
-        proto.botRight.CopyFrom(self.__lastAddress.toProtoObj())
-        return proto
 
     def __init__(self, topLeft:CellAddress, botRight:CellAddress):
         typeCheck(topLeft, "topLeft", CellAddress)
@@ -32,6 +27,25 @@ class RangeAddressImp(RangeAddress):
             reason = "firstAddress {o} is larger than lastAddress {o}".format(o=o)
             raise ValueError("invalid firstAddress and lastAddress: {reason}".format(reason=reason))
 
+    def findIntersection(self, otherRangeAddress: 'RangeAddress') -> Optional['RangeAddress']:
+        firstCol = max(self.firstColIndex, otherRangeAddress.firstColIndex)
+        lastCol = min(self.lastColIndex, otherRangeAddress.lastColIndex)
+
+        firstRow = max(self.firstRowIndex, otherRangeAddress.firstRowIndex)
+        lastRow = min(self.lastRowIndex, otherRangeAddress.lastRowIndex)
+        if firstCol!=lastCol or firstRow!= lastRow:
+            return RangeAddressImp(
+                topLeft = CellAddresses.fromColRow(firstCol, firstRow),
+                botRight = CellAddresses.fromColRow(lastCol, lastRow)
+            )
+        else:
+            return None
+
+    def toProtoObj(self) -> RangeAddressProto:
+        proto = RangeAddressProto()
+        proto.topLeft.CopyFrom(self.__firstAddress.toProtoObj())
+        proto.botRight.CopyFrom(self.__lastAddress.toProtoObj())
+        return proto
     @property
     def topLeft(self)->CellAddress:
         return self.__firstAddress

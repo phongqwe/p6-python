@@ -1,6 +1,8 @@
 import copy
 from typing import Optional, Union, Tuple
 
+from pandas import DataFrame
+
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
@@ -13,6 +15,7 @@ from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import 
 from com.emeraldblast.p6.document_structure.util.AddressParser import AddressParser
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
+from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
 
 
@@ -34,6 +37,22 @@ class RangeImp(Range):
             raise ValueError("container {sc} does not contain range {r}".format(
                 sc = str(sourceContainer.rangeAddress), r = str(rAddress)
             ))
+
+    @property
+    def size(self) -> int:
+        rt=0
+        for r in range(self.firstRow,self.lastRow+1):
+            for c in range(self.firstCol, self.lastCol+1):
+                if self.hasCellAtIndex(c,r):
+                    rt=rt+1
+        return rt
+
+    def deleteRangeRs(self, rangeAddress: RangeAddress) -> Result[None, ErrorReport]:
+        intersect: RangeAddress | None = self.rangeAddress.findIntersection(rangeAddress)
+        if intersect:
+            return self.__sourceContainer.deleteRangeRs(intersect)
+        else:
+            return Ok(None)
 
     @staticmethod
     def fromRangeAddress(rangeAddress: RangeAddress, sourceContainer: MutableCellContainer) -> Range:
@@ -62,9 +81,18 @@ class RangeImp(Range):
     def containsAddress(self, address: CellAddress) -> bool:
         return super().containsAddress(address)
 
+    def containsAddressIndex(self, col: int, row: int) -> bool:
+        return super().containsAddressIndex(col, row)
+
     def hasCellAt(self, address: CellAddress) -> bool:
         if self.containsAddress(address):
             return self.__sourceContainer.hasCellAt(address)
+        else:
+            return False
+
+    def hasCellAtIndex(self, col: int, row: int) -> bool:
+        if self.containsAddressIndex(col,row):
+            return self.__sourceContainer.hasCellAtIndex(col, row)
         else:
             return False
 
@@ -85,6 +113,10 @@ class RangeImp(Range):
         return self.__rangeAddress
 
     ### >> Range  << ###
+
+    @property
+    def rootRange(self) -> 'Range':
+        return self
 
     @property
     def sourceContainer(self) -> MutableCellContainer:

@@ -1,5 +1,8 @@
 from typing import Optional, Union, Tuple, Callable
 
+import pandas
+from pandas import DataFrame
+
 from com.emeraldblast.p6.document_structure.app.R import R
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.DataCell import DataCell
@@ -46,6 +49,21 @@ class WorksheetImp(Worksheet):
 
         self.translatorGetter: Callable[[str], FormulaTranslator] = getTranslator
         self.__wb = workbook
+
+    def pasteFromClipboardRs(self, anchorCell: CellAddress)->Result[None,ErrorReport]:
+        df = pandas.read_clipboard(header = None)
+        if isinstance(df, DataFrame):
+            for rowIndex in range(len(df)):
+                row = df.iloc[rowIndex]
+                for colIndex in range(len(row)):
+                    content = df.iloc[rowIndex, colIndex]
+                    if not pandas.isna(content):
+                        cell = self.cell((colIndex + anchorCell.colIndex, rowIndex + anchorCell.rowIndex))
+                        cell.formula = content
+            return Ok(None)
+        else:
+            return Err(WorksheetErrors.CantPasteFromNonDataFrameObj())
+
 
     def deleteRangeRs(self, rangeAddress: RangeAddress) -> Result[None, ErrorReport]:
         tobeRemovedCells = []
@@ -148,10 +166,16 @@ class WorksheetImp(Worksheet):
 
     def hasCellAt(self, address: CellAddress) -> bool:
         typeCheck(address, "address", CellAddress)
-        return self._cellDict.get(address.toTuple()) is not None
+        return self.hasCellAtIndex(address.colIndex, address.rowIndex)
 
     def containsAddress(self, address: CellAddress) -> bool:
         return self.rangeAddress.containCellAddress(address)
+
+    def containsAddressIndex(self, col: int, row: int) -> bool:
+        return self.rangeAddress.containColRow(col, row)
+
+    def hasCellAtIndex(self, col: int, row: int) -> bool:
+        return self._cellDict.get((col,row)) is not None
 
     @property
     def cells(self) -> list[Cell]:

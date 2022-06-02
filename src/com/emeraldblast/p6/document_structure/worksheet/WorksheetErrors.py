@@ -24,3 +24,11 @@ class WorksheetErrors:
             super().__init__(
                 WorksheetErrors.IllegalNameReport.header,
                 WorksheetErrors.IllegalNameReport.Data(name))
+    @staticmethod
+    def CantPasteFromNonDataFrameObj()-> ErrorReport:
+        return ErrorReport(
+            header = ErrorHeader(
+                errorCode = f"{WSErr}2",
+                errorDescription = "Can't paste from a non-DataFrame obj in clipboard"
+            )
+        )

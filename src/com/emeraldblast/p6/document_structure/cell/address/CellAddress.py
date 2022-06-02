@@ -47,4 +47,5 @@ class CellAddress(ToProto[CellAddressProto], ABC):
         return hash(key)
 
     def toTuple(self) -> (int, int):
+        """create a tuple of [col,row]"""
         return self.colIndex, self.rowIndex

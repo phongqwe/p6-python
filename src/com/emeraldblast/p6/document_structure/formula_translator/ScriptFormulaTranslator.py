@@ -33,6 +33,6 @@ class ScriptFormulaTranslator(FormulaTranslator):
                 ErrorReport(
                     TranslatorErrors.NotAScriptCallError.header,
                     TranslatorErrors.NotAScriptCallError.Data(formula),
-                    loc=""
+                    loc="ScriptFormulaTranslator"
                 )
             )

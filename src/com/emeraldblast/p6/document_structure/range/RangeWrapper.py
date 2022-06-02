@@ -1,50 +1,78 @@
 from abc import ABC
 from typing import Optional, Union, Tuple
 
+from pandas import DataFrame
+
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
+from com.emeraldblast.p6.document_structure.cell_container.MutableCellContainer import MutableCellContainer
 from com.emeraldblast.p6.document_structure.range.Range import Range
 from com.emeraldblast.p6.document_structure.range.address.RangeAddress import RangeAddress
+from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
+from com.emeraldblast.p6.document_structure.util.result.Result import Result
 
 
 class RangeWrapper(Range,ABC):
-    
-    def __init__(self, innerRange:Range):
+    def __init__(self, innerRange: Range):
         self._innerRange = innerRange
+
+    @property
+    def sourceContainer(self) -> MutableCellContainer:
+        return self.rootRange.sourceContainer
+
+    def deleteCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
+        return self.rootRange.deleteCellRs(address)
+
+    def deleteRangeRs(self, rangeAddress: RangeAddress) -> Result[None, ErrorReport]:
+        return self.rootRange.deleteRangeRs(rangeAddress)
+
+    @property
+    def size(self) -> int:
+        return self.rootRange.size
+
+    @property
+    def rootRange(self)->'Range':
+        return self._innerRange.rootRange
     
     @property
     def firstCellAddress(self) -> CellAddress:
-        return self._innerRange.firstCellAddress
+        return self.rootRange.firstCellAddress
 
     @property
     def lastCellAddress(self) -> CellAddress:
-        return self._innerRange.lastCellAddress
+        return self.rootRange.lastCellAddress
 
     def cell(self, address: Union[str, CellAddress, Tuple[int, int]]) -> Cell:
-        return self._innerRange.cell(address)
+        return self.rootRange.cell(address)
 
     def addCell(self, cell: Cell):
-        self._innerRange.addCell(cell)
+        self.rootRange.addCell(cell)
 
     def deleteCell(self, address: CellAddress):
-        self._innerRange.deleteCell(address)
+        self.rootRange.deleteCell(address)
 
     def getOrMakeCell(self, address: CellAddress) -> Cell:
-        return self._innerRange.getOrMakeCell(address)
+        return self.rootRange.getOrMakeCell(address)
 
     def hasCellAt(self, address: CellAddress) -> bool:
-        return self._innerRange.hasCellAt(address)
+        return self.rootRange.hasCellAt(address)
+
+    def hasCellAtIndex(self, col: int, row: int) -> bool:
+        return self.rootRange.hasCellAtIndex(col,row)
+
+    def containsAddressIndex(self, col: int, row: int) -> bool:
+        return self.rootRange.containsAddressIndex(col, row)
 
     def getCell(self, address: CellAddress) -> Optional[Cell]:
-        return self._innerRange.getCell(address)
+        return self.rootRange.getCell(address)
 
     def isEmpty(self) -> bool:
-        return self._innerRange.isEmpty()
+        return self.rootRange.isEmpty()
 
     @property
     def cells(self) -> list[Cell]:
-        return self._innerRange.cells
+        return self.rootRange.cells
 
     @property
     def rangeAddress(self) -> RangeAddress:
-        return self._innerRange.rangeAddress
+        return self.rootRange.rangeAddress

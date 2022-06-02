@@ -1,4 +1,5 @@
 from abc import ABC
+from typing import Optional
 
 from com.emeraldblast.p6.document_structure.app.R import R
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
@@ -17,6 +18,9 @@ class RangeAddress(ToProto[RangeAddressProto],ABC):
     whole column: "@A:D"
     whole row: "@22:33"
     """
+
+    def findIntersection(self,otherRangeAddress:'RangeAddress') -> Optional['RangeAddress'] :
+        raise NotImplementedError()
 
     @property
     def label(self) -> str:

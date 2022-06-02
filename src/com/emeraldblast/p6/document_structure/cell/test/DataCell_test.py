@@ -17,6 +17,13 @@ class DataCellTest(unittest.TestCase):
         self.wb = WorkbookImp("wb")
         self.s = self.wb.createNewWorksheet("s1")
 
+    def test_sourceValue(self):
+        c1 = DataCell(CellIndex(1, 1), 123, "formula", "script")
+        self.assertEqual("formula", c1.sourceValue)
+
+        c1 = DataCell(CellIndex(1, 1), 123, None, None)
+        self.assertEqual(123,c1.sourceValue)
+
     def test_content(self):
         c1 = DataCell(CellIndex(1, 1), 123, "formula", "script")
         ct1 = c1.content

@@ -17,6 +17,15 @@ class WorksheetWrapper(Worksheet):
     def __init__(self, innerWorksheet: Worksheet):
         self._innerSheet: Worksheet = innerWorksheet
 
+    def pasteFromClipboardRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
+        return self.rootWorksheet.pasteFromClipboardRs(anchorCell)
+
+    def hasCellAtIndex(self, col: int, row: int) -> bool:
+        return self.rootWorksheet.hasCellAtIndex(col, row)
+
+    def containsAddressIndex(self, col: int, row: int) -> bool:
+        return self.containsAddressIndex(col, row)
+
     def deleteRangeRs(self, rangeAddress: RangeAddress) -> Result[None, ErrorReport]:
         return self.rootWorksheet.deleteRangeRs(rangeAddress)
 

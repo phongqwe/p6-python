@@ -22,6 +22,13 @@ class DataCell(Cell):
     """
 
     @property
+    def sourceValue(self) -> str:
+        if self.bareFormula:
+            return self.bareFormula
+        else:
+            return self.value
+
+    @property
     def rootCell(self) -> 'Cell':
         return self
 
@@ -42,7 +49,8 @@ class DataCell(Cell):
         self.__formula = newContent.formula
         self.__script = newContent.script
 
-    texualType = [int, float, str]
+    textualType = [int, float, str]
+
     @property
     def bareScript(self) -> str:
         return self.__script
@@ -111,7 +119,7 @@ class DataCell(Cell):
         cellProto.value = str(self.bareValue)
         cellProto.script = default(self.__script, "")
         cellProto.formula = default(self.__formula, "")
-        cellProto.isObject = type(self.__value) not in DataCell.texualType
+        cellProto.isObject = type(self.__value) not in DataCell.textualType
         return cellProto
 
     @property

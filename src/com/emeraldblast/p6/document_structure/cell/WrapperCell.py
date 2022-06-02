@@ -17,6 +17,10 @@ class WrapperCell(Cell, ABC):
         self._innerCell: Cell = innerCell
 
     @property
+    def sourceValue(self) -> str:
+        return self.rootCell.sourceValue
+
+    @property
     def rootCell(self) -> 'Cell':
         return self._innerCell.rootCell
 

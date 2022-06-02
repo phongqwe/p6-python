@@ -1,8 +1,13 @@
 import unittest
 from unittest.mock import MagicMock
 
+from pandas import DataFrame
+
+from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
 from com.emeraldblast.p6.document_structure.range.RangeImp import RangeImp
+from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
+from com.emeraldblast.p6.document_structure.worksheet.WorksheetImp import WorksheetImp
 
 
 class RangeImpTest(unittest.TestCase):
@@ -13,6 +18,62 @@ class RangeImpTest(unittest.TestCase):
         lastCell = CellIndex(3, 9)
         r = RangeImp(firstCell, lastCell, parent)
         return r, parent
+
+
+    def test_toCopiableArray(self):
+        parent = WorksheetImp("S",MagicMock())
+        parent.cell((1,1)).value=11
+        parent.cell((1,2)).formula="formula 123"
+        parent.cell((4,6)).script="script abc"
+
+        range = RangeImp(
+            firstCellAddress = CellAddresses.fromColRow(1,1),
+            lastCellAddress = CellAddresses.fromColRow(5,6),
+            sourceContainer = parent
+        )
+
+        array = range.toCopiableArray()
+        self.assertEqual(6,len(array))
+        for (r,row) in enumerate(array):
+            self.assertEqual(5,len(row))
+            for (c,e) in enumerate(row):
+                if r==1-1 and c==1-1:
+                    self.assertEqual(11, e)
+                elif r==2-1 and c==1-1:
+                    self.assertEqual("formula 123", e)
+                elif r==6-1 and c == 4-1:
+                    self.assertEqual("=SCRIPT(script abc)", e)
+                else:
+                    self.assertIsNone(e)
+
+    def test_toValueArray(self):
+
+        parent = WorksheetImp("S",MagicMock())
+        wb = WorkbookImp("asd",sheetList = [parent])
+        parent.workbook = wb
+        parent.cell((1,1)).value=11
+        parent.cell((1,2)).formula="=SCRIPT(1+2+3)"
+        parent.cell((4,6)).script="1+2+10"
+
+        range = RangeImp(
+            firstCellAddress = CellAddresses.fromColRow(1,1),
+            lastCellAddress = CellAddresses.fromColRow(5,6),
+            sourceContainer = parent
+        )
+
+        array = range.toValueArray()
+        self.assertEqual(6,len(array))
+        for (r,row) in enumerate(array):
+            self.assertEqual(5,len(row))
+            for (c,e) in enumerate(row):
+                if r==1-1 and c==1-1:
+                    self.assertEqual(11,e)
+                elif r==2-1 and c==1-1:
+                    self.assertEqual(6, e)
+                elif r==6-1 and c == 4-1:
+                    self.assertEqual(13, e)
+                else:
+                    self.assertIsNone(e)
 
 
 

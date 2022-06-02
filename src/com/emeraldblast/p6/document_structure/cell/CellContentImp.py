@@ -1,17 +1,18 @@
 from abc import ABC
+from typing import Any
 
 from com.emeraldblast.p6.document_structure.cell.CellContent import CellContent
 
 
 class CellContentImp(CellContent):
 
-    def __init__(self, value: str | None, formula: str | None, script: str | None):
+    def __init__(self, value: Any | None, formula: str | None, script: str | None):
         self._script = script
         self._formula = formula
         self._value = value
 
     @property
-    def value(self) -> str | None:
+    def value(self) -> Any | None:
         return self._value
 
     @property

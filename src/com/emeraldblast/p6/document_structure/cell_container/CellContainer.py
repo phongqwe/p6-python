@@ -17,6 +17,13 @@ class CellContainer(WithSize,ABC):
         """
         raise NotImplementedError()
 
+    def hasCellAtIndex(self,col:int, row:int)->bool:
+        """
+                Important: while this does check for valid address/index, it does NOT return true simply an address/index is inside this container. This check the existence of an object instance inside this container.
+                :return true if this container has a cell OBJECT at the specified position
+                """
+        raise NotImplementedError()
+
     def getCell(self, address: CellAddress) -> Optional[Cell]:
         """
         :return the cell at the position, None of the cell does not exist
@@ -25,6 +32,10 @@ class CellContainer(WithSize,ABC):
 
     def containsAddress(self, address: CellAddress) -> bool:
         """ :return true if a CellAddress is within address range of this container """
+        raise NotImplementedError()
+
+    def containsAddressIndex(self, col:int, row:int) -> bool:
+        """ :return true if a pair of [col,row] is within address range of this container """
         raise NotImplementedError()
 
     @property

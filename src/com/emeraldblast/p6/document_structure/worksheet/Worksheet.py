@@ -4,6 +4,10 @@ import json
 from abc import ABC
 from typing import TYPE_CHECKING
 
+import pandas
+from pandas import read_clipboard, DataFrame
+
+from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.cell_container.MutableCellContainer import MutableCellContainer
 from com.emeraldblast.p6.document_structure.cell_container.UserFriendlyCellContainer import UserFriendlyCellContainer
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
@@ -12,6 +16,7 @@ from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 from com.emeraldblast.p6.document_structure.util.report.ReportJsonStrMaker import ReportJsonStrMaker
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
+from com.emeraldblast.p6.document_structure.util.result.Results import Results
 from com.emeraldblast.p6.document_structure.worksheet.UserFriendlyWorksheet import UserFriendlyWorksheet
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetJson import WorksheetJson
 from com.emeraldblast.p6.proto.DocProtos_pb2 import WorksheetProto
@@ -26,6 +31,13 @@ class Worksheet(UserFriendlyCellContainer,
                 ToJson,
                 ToProto[WorksheetProto],
                 ABC):
+
+    def pasteFromClipboard(self,anchorCell:CellAddress):
+        rs = self.pasteFromClipboardRs(anchorCell)
+        Results.extractOrRaise(rs)
+
+    def pasteFromClipboardRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
+        raise NotImplementedError()
 
     def compareWith(self, ws2: Worksheet) -> bool:
         """compare all cell of this sheet with another. Very inefficient, use with care"""
