@@ -68,7 +68,7 @@ class EventWorksheet(WorksheetWrapper):
             )
             self.__onWorksheetEvent(eventData)
 
-    def _XonCellEvent(self, data: EventData):
+    def _onCellEvent(self, data: EventData):
         data.worksheet = self.rootWorksheet
         if self.__onCellEvent is not None:
             self.__onCellEvent(data)
@@ -77,13 +77,12 @@ class EventWorksheet(WorksheetWrapper):
         rng = self.rootWorksheet.range(rangeAddress)
 
         def onRangeEvent(data: EventData):
-            data.worksheet = self.rootWorksheet
             if self.__onRangeEvent is not None:
                 self.__onRangeEvent(data)
 
         evRange = EventRange(
             innerRange = rng,
-            onCellEvent = self._XonCellEvent,
+            onCellEvent = self._onCellEvent,
             onRangeEvent = onRangeEvent)
         return evRange
 
@@ -94,7 +93,7 @@ class EventWorksheet(WorksheetWrapper):
         return rt
 
     def _makeEventCell(self, cell: Cell) -> Cell:
-        return EventCell(cell, onCellEvent = self._XonCellEvent)
+        return EventCell(cell, onCellEvent = self._onCellEvent)
 
     def renameRs(self, newName: str) -> Result[None, ErrorReport]:
         oldName = self.name

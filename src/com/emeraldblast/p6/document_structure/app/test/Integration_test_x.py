@@ -38,7 +38,7 @@ class IntegrationTest_test(unittest.TestCase):
         super().setUp()
         self.testEnv = TestEnvImp()
         self.testEnv.startEnv()
-        self.wb = self.testEnv.app.getWorkbook("Book1")
+        self.b1 = self.testEnv.app.getWorkbook("Book1")
         self.z = False
 
     def tearDown(self) -> None:
@@ -93,7 +93,7 @@ class IntegrationTest_test(unittest.TestCase):
             P6Events.Workbook.CreateNewWorksheet.event,
             EventReactors.makeBasicReactor(onReceive))
 
-        self.wb.createNewWorksheet("SheetX")
+        self.b1.createNewWorksheet("SheetX")
 
 
     def test_rename(self):
@@ -180,3 +180,11 @@ class IntegrationTest_test(unittest.TestCase):
         proto.ParseFromString(res.data)
         # print(proto)
         print(proto.errorIndicator)
+
+    def test_rangeToClipboard_notifier(self):
+
+        def cb(data:bytes):
+            print(data)
+
+        self.testEnv.notifListener.addReactorCB(P6Events.Range.RangeToClipBoard.event, cb)
+        self.b1.getWorksheet("Sheet1").range("@A1:B3").copyToClipboard()

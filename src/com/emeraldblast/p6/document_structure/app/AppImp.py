@@ -173,6 +173,8 @@ class AppImp(BaseApp):
             container.addReactor(event, provider.worksheetNotifier())
         for event in P6Events.App.allEvents():
             container.addReactor(event, provider.appNotifier())
+        for event in P6Events.Range.allEvents():
+            container.addReactor(event, provider.appNotifier())
 
     def __setupEventEmitter(self):
         # self.__wbSaver=EventP6FileSaver.create(self.__wbSaver, self.__notifierContainer)

@@ -27,7 +27,7 @@ class P6ProtoFileLoader(P6FileLoader):
                     fileContent = file.read()
                     p6File: P6File2 = P6File2.fromProtoBytes(fileContent)
                     fileContent = P6FileContent.fromProtoBytes(p6File.content,filePath)
-                    workbook = fileContent.wb
+                    workbook = fileContent.b1
                     file.close()
                     workbookKey = WorkbookKeys.fromNameAndPath(path.name, path)
                     workbook.workbookKey = workbookKey
