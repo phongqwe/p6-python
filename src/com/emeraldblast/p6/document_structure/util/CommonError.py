@@ -5,6 +5,8 @@ from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import
 
 CE = "BE_CommonErrors_"
 class CommonErrors:
+
+
     class WrongTypeReport(ErrorReport):
         header = ErrorHeader(f"{CE}0", "Incorrect type")
         class Data(ToRepStr,ToException):
@@ -39,3 +41,7 @@ class CommonErrors:
                 header = CommonErrors.ExceptionErrorReport.header,
                 data = CommonErrors.ExceptionErrorReport.Data(exception)
             )
+
+    CommonError = ErrorReport(
+        header = ErrorHeader(f"{CE}3", "common error")
+    )
