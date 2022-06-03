@@ -7,13 +7,15 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.w
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetResponse import \
     RenameWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.TypeAliasForReactor import WbGetter, \
-    AppGetter
+    AppGetter, RangeGetter
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.AppEventServerReactors import \
     AppEventServerReactors
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.cell_event.CellMultiUpdateReactor import \
     CellMultiUpdateReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.cell_event.CellUpdateReactor import \
     CellUpdateReactor
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.range_event.RangeToClipboardReactor import \
+    RangeToClipboardReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook_event.CreateNewWorksheetReactor import \
     CreateNewWorksheetReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook_event.DeleteWorksheetReactor import \
@@ -31,13 +33,17 @@ from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor i
 
 class EventServerReactors:
 
-    def __init__(self, workbookGetter: WbGetter, appGetter: AppGetter):
+    def __init__(self, workbookGetter: WbGetter, appGetter: AppGetter, rangeGetter:RangeGetter):
         self.wbGetter = workbookGetter
         self.appGetter = appGetter
         self._app = AppEventServerReactors(self.wbGetter, self.appGetter)
+        self.rangeGetter = rangeGetter
     @property
     def app(self)->AppEventServerReactors:
         return self._app
+
+    def rangeToClipboardReactor(self)->RangeToClipboardReactor:
+        return RangeToClipboardReactor(rangeGetter = self.rangeGetter)
 
     def deleteWorksheetReactor(self) -> DeleteWorksheetReactor:
         reactor = DeleteWorksheetReactor(str(uuid.uuid4()), self.wbGetter)

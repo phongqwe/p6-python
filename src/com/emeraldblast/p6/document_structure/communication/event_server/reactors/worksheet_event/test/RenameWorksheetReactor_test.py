@@ -30,7 +30,7 @@ class RenameWorksheetReactor_test(unittest.TestCase):
             return MagicMock()
 
         self.appGetter = appGetter
-        self.er = EventServerReactors(wbGetter,appGetter = appGetter)
+        self.er = EventServerReactors(wbGetter,appGetter = appGetter, rangeGetter = MagicMock())
         self.reactor = RenameWorksheetReactor("x", self.wbGetter)
 
     def test_renameReactor_Ok(self):

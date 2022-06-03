@@ -4,6 +4,7 @@ from typing import Optional, Union, Any
 import zmq
 
 from com.emeraldblast.p6.document_structure.app.BaseApp import BaseApp
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
 from com.emeraldblast.p6.document_structure.file.loader.EventP6FileLoader import EventP6FileLoader
 
 from com.emeraldblast.p6.document_structure.app.App import App
@@ -29,6 +30,7 @@ from com.emeraldblast.p6.document_structure.file.loader.P6FileLoaders import P6F
 from com.emeraldblast.p6.document_structure.file.saver.EventP6FileSaver import EventP6FileSaver
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSavers import P6FileSavers
+from com.emeraldblast.p6.document_structure.range.Range import Range
 from com.emeraldblast.p6.document_structure.util.Util import makeGetter
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
@@ -85,11 +87,24 @@ class AppImp(BaseApp):
         self._eventServer = EventServerImp(isDaemon = True)
         self._eventServerReactors = EventServerReactors(
             workbookGetter = self.getBareWorkbookRs,
-            appGetter = makeGetter(self)
+            appGetter = makeGetter(self),
+            rangeGetter = self.getRange
         )
         self.__setupEventServerReactors()
         self.__setupEventEmitter()
 
+    def getRange(self, rangeId: RangeId)->Result[Range, ErrorReport]:
+        getWbRs = self.getBareWorkbookRs(rangeId.workbookKey)
+        if getWbRs.isOk():
+            wb = getWbRs.value
+            getWsRs = wb.getWorksheetRs(rangeId.worksheetName)
+            if getWsRs.isOk():
+                ws = getWsRs.value
+                return Ok(ws.range(rangeId.rangeAddress))
+            else:
+                return Err(getWsRs.err)
+        else:
+            return Err(getWbRs.err)
     @property
     def rootApp(self) -> 'App':
         return self
@@ -105,6 +120,10 @@ class AppImp(BaseApp):
     def __setupEventServerReactors(self):
         evSv = self._eventServer
         er = self._eventServerReactors
+
+        reactorForRange = {
+            P6Events.Range.RangeToClipBoard.event : er.rangeToClipboardReactor()
+        }
 
         reactorForWb = {
             P6Events.Workbook.DeleteWorksheet.event: er.deleteWorksheetReactor(),
@@ -131,6 +150,7 @@ class AppImp(BaseApp):
         }
 
         d = {
+            **reactorForRange,
             **reactorForWb,
             **reactorForWs,
             **reactorForCell,

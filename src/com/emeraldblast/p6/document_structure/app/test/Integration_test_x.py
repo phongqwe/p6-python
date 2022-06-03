@@ -4,6 +4,11 @@ import unittest
 import zmq
 
 # these 2 imports must be keep for the formula script to be able to run
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.range_to_clipboard.RangeToClipboardResponse import \
+    RangeToClipboardResponse
+from com.emeraldblast.p6.document_structure.communication.event_server.P6Messages import P6Messages
+from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 from com.emeraldblast.p6.proto.AppEventProtos_pb2 import CreateNewWorkbookResponseProto, CloseWorkbookResponseProto
 
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.app_event.CreateNewWorkbookResponse import \
@@ -21,6 +26,7 @@ from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import findN
 from com.emeraldblast.p6.document_structure.util.for_test.emu.TestEnvImp import TestEnvImp
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.emeraldblast.p6.proto.P6MsgProtos_pb2 import P6MessageProto, P6ResponseProto, P6MessageHeaderProto
+from com.emeraldblast.p6.proto.RangeProtos_pb2 import RangeToClipboardResponseProto, RangeToClipboardRequestProto
 from com.emeraldblast.p6.proto.WorkbookProtos_pb2 import CreateNewWorksheetResponseProto, SaveWorkbookRequestProto
 from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import RenameWorksheetResponseProto
 
@@ -57,29 +63,6 @@ class IntegrationTest_test(unittest.TestCase):
         rec = self.testEnv.sendRequestToEventServer(saveReq.SerializeToString())
         print(rec.toProtoObj())
 
-
-        # cellUpdateRequest = P6MessageProto(
-        #     header = P6MessageHeaderProto(
-        #         msgId = "2",
-        #         eventType = P6Events.Cell.Update.event.toProtoObj()
-        #     ),
-        #     data = CellUpdateRequest(
-        #         workbookKey = WorkbookKeys.fromNameAndPath(
-        #             "b1.txt",
-        #             "/home/abc/MyTemp/b1.txt",
-        #         ),
-        #         worksheetName = "Sheet1",
-        #         cellAddress = CellAddresses.fromLabel("@C1"),
-        #         value = "321",
-        #         formula = None
-        #     ).toProtoObj().SerializeToString()
-        # )
-
-        # cellUpdateResProto = P6ResponseProto()
-        # cellUpdateResProto.ParseFromString(r)
-        # cellUpdateRes = P6Response.fromProto(cellUpdateResProto)
-        # self.assertEqual(P6Response.Status.OK, cellUpdateRes.status)
-        # print(wb.getWorksheet("Sheet1").cell("@C1").value)
 
     def test_scenario_changeUpdateCell(self):
         """
@@ -177,3 +160,23 @@ class IntegrationTest_test(unittest.TestCase):
 
         rs = getApp().closeWorkbookRs(0)
         self.assertTrue(rs.isOk())
+
+    def test_rangeToClipboard_eventServer(self):
+        res:P6Response = self.testEnv.sendRequestToEventServer(
+            P6Messages.p6Message(
+                P6Events.Range.RangeToClipBoard.event,
+                data=RangeToClipboardRequestProto(
+                    rangeId = RangeId(
+                        workbookKey = WorkbookKeys.fromNameAndPath("Book1"),
+                        worksheetName = "Sheet1",
+                        rangeAddress = RangeAddresses.fromLabel("@C1:K5")
+                    ).toProtoObj(),
+                    windowId = "123"
+                ).SerializeToString()
+            )
+        )
+        self.assertEqual(P6Response.Status.OK,res.status)
+        proto = RangeToClipboardResponseProto()
+        proto.ParseFromString(res.data)
+        # print(proto)
+        print(proto.errorIndicator)
