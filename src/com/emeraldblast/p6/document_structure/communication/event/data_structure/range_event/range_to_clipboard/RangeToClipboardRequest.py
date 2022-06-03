@@ -6,9 +6,15 @@ class RangeToClipboardRequest:
     def __init__(self, rangeId:RangeId, windowId:str|None):
         self.windowId = windowId
         self.rangeId = rangeId
-    
+
     @staticmethod
-    def fromProto(proto:RangeToClipboardRequestProto):
+    def fromProtoBytes(data:bytes)->'RangeToClipboardRequest':
+        proto = RangeToClipboardRequestProto()
+        proto.ParseFromString(data)
+        return RangeToClipboardRequest.fromProto(proto)
+
+    @staticmethod
+    def fromProto(proto:RangeToClipboardRequestProto)->'RangeToClipboardRequest':
         wd = None
         if proto.HasField("windowId"):
             wd = proto.windowId
