@@ -27,3 +27,14 @@ class ErrorIndicator(ToProto[ErrorIndicatorProto]):
     @staticmethod
     def error(errReport: ErrorReport):
         return ErrorIndicator(True, errorReport = errReport)
+
+    @staticmethod
+    def fromProto(proto:ErrorIndicatorProto)->'ErrorIndicator':
+        rt = ErrorIndicator(
+            isError = proto.isError,
+            errorReport = None
+        )
+        if proto.HasField("errorReport"):
+            rt.errorReport = ErrorReport.fromProto(proto.errorReport)
+
+        return rt

@@ -10,6 +10,7 @@ from com.emeraldblast.p6.document_structure.range.Range import Range
 from com.emeraldblast.p6.document_structure.range.address.RangeAddress import RangeAddress
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
+from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
 
 class RangeWrapper(Range,ABC):
@@ -17,7 +18,7 @@ class RangeWrapper(Range,ABC):
         self._innerRange = innerRange
 
     @property
-    def sourceContainer(self) -> MutableCellContainer:
+    def sourceContainer(self) -> Worksheet:
         return self.rootRange.sourceContainer
 
     def deleteCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:

@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import Any, Callable
+from typing import Any, Callable, TYPE_CHECKING
 
 from pandas import DataFrame
 
@@ -8,6 +8,9 @@ from com.emeraldblast.p6.document_structure.cell.address.CellAddress import Cell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.cell_container.MutableCellContainer import MutableCellContainer
 from com.emeraldblast.p6.document_structure.cell_container.UserFriendlyCellContainer import UserFriendlyCellContainer
+
+if TYPE_CHECKING:
+    from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
 
 class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
@@ -74,7 +77,7 @@ class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
         raise NotImplementedError()
 
     @property
-    def sourceContainer(self) -> MutableCellContainer:
+    def sourceContainer(self) -> 'Worksheet':
         raise NotImplementedError()
 
     def containsAddress(self, address: CellAddress) -> bool:

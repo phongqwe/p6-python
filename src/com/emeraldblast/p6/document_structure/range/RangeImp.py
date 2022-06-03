@@ -17,13 +17,14 @@ from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
+from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
 
 class RangeImp(Range):
     """ an immutable sub container of a bigger cell container"""
 
     def __init__(self, firstCellAddress: CellAddress, lastCellAddress: CellAddress,
-                 sourceContainer: MutableCellContainer):
+                 sourceContainer: Worksheet):
 
         rangeIsValid = sourceContainer.containsAddress(firstCellAddress) and sourceContainer.containsAddress(
             lastCellAddress)
@@ -119,7 +120,7 @@ class RangeImp(Range):
         return self
 
     @property
-    def sourceContainer(self) -> MutableCellContainer:
+    def sourceContainer(self) -> Worksheet:
         return self.__sourceContainer
 
     @property
