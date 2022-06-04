@@ -26,16 +26,16 @@ class RangeImpTest(unittest.TestCase):
         parent.cell((1,2)).formula="formula 123"
         parent.cell((4,6)).script="script abc"
 
-        range = RangeImp(
+        rng = RangeImp(
             firstCellAddress = CellAddresses.fromColRow(1,1),
-            lastCellAddress = CellAddresses.fromColRow(5,6),
+            lastCellAddress = CellAddresses.fromColRow(2000000000,6),
             sourceContainer = parent
         )
 
-        array = range.toCopiableArray()
+        array = rng.toCopiableArray()
         self.assertEqual(6,len(array))
         for (r,row) in enumerate(array):
-            self.assertEqual(5,len(row))
+            self.assertEqual(4,len(row))
             for (c,e) in enumerate(row):
                 if r==1-1 and c==1-1:
                     self.assertEqual(11, e)

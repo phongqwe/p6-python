@@ -8,6 +8,8 @@ from com.emeraldblast.p6.document_structure.cell.address.CellAddress import Cell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.cell_container.MutableCellContainer import MutableCellContainer
 from com.emeraldblast.p6.document_structure.cell_container.UserFriendlyCellContainer import UserFriendlyCellContainer
+from com.emeraldblast.p6.document_structure.range.address.RangeAddress import RangeAddress
+from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 
 if TYPE_CHECKING:
     from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
@@ -16,12 +18,11 @@ if TYPE_CHECKING:
 class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
     """ a sub container derived from a bigger cell container """
 
-    def _toArray(self, extractValueFunction: Callable[[Cell], Any]):
-        firstRow = self.firstCellAddress.rowIndex
-        lastRow = self.lastCellAddress.rowIndex
-
-        firstCol = self.firstCellAddress.colIndex
-        lastCol = self.lastCellAddress.colIndex
+    def _toArray(self, usedRange:RangeAddress ,extractValueFunction: Callable[[Cell], Any]):
+        firstRow = usedRange.firstRowIndex
+        lastRow = usedRange.lastRowIndex
+        firstCol = usedRange.firstColIndex
+        lastCol = usedRange.lastColIndex
         rt = []
         for r in range(firstRow, lastRow + 1):
             rowArray = []
@@ -34,18 +35,44 @@ class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
                 rt.append(rowArray)
         return rt
 
+    @property
+    def usedRange(self) -> RangeAddress|None:
+        if self.isEmpty():
+            return None
+        else:
+            cells = self.cells
+            firstCell = cells[0]
+            maxRow = minRow = firstCell.row
+            maxCol = minCol = firstCell.col
+            for cell in self.cells:
+                if cell.row > maxRow:
+                    maxRow = cell.row
+                if cell.row < minRow:
+                    minRow = cell.row
+                if cell.col > maxCol:
+                    maxCol = cell.col
+                if cell.col < minCol:
+                    minCol = cell.col
+            return RangeAddresses.from2Cells(
+                firstCell = CellAddresses.fromColRow(minCol,minRow),
+                secondCell = CellAddresses.fromColRow(maxCol,maxRow)
+            )
 
     def toCopiableArray(self):
         """:return a 2d array for copy-paste operation"""
         def extractSourceValue(cell: Cell):
             return cell.sourceValue
-        return self._toArray(extractSourceValue)
+        return self._toArray(self.usedRange,extractSourceValue)
+
 
     def toValueArray(self):
         """:return a 2d array of values in cell"""
+        # todo this is slow as hell, improve it
+
         def extractCellValue(cell: Cell):
             return cell.value
-        return self._toArray(extractCellValue)
+
+        return self._toArray(self.rangeAddress,extractCellValue)
 
     def copyToClipboard(self):
         """convert this range into a data frame and copy that data frame into the clipboard"""
@@ -77,7 +104,7 @@ class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
         raise NotImplementedError()
 
     @property
-    def sourceContainer(self) -> 'Worksheet':
+    def worksheet(self) -> 'Worksheet':
         raise NotImplementedError()
 
     def containsAddress(self, address: CellAddress) -> bool:
@@ -91,7 +118,7 @@ class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
     def __eq__(self, o: object) -> bool:
         if isinstance(o, Range):
             sameRangeAddress = self.isSameRangeAddress(o)
-            sameSourceContainer = self.sourceContainer == o.sourceContainer
+            sameSourceContainer = self.worksheet == o.worksheet
             return sameSourceContainer and sameRangeAddress
         else:
             return False

@@ -18,8 +18,8 @@ class RangeWrapper(Range,ABC):
         self._innerRange = innerRange
 
     @property
-    def sourceContainer(self) -> Worksheet:
-        return self.rootRange.sourceContainer
+    def worksheet(self) -> Worksheet:
+        return self.rootRange.worksheet
 
     def deleteCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
         return self.rootRange.deleteCellRs(address)

@@ -65,8 +65,8 @@ class EventRange(RangeWrapper):
                 errorIndicator = ErrorIndicator.noError(),
                 rangeId = RangeId(
                     rangeAddress = self.rangeAddress,
-                    workbookKey = self.sourceContainer.workbook.workbookKey,
-                    worksheetName = self.sourceContainer.name
+                    workbookKey = self.worksheet.workbook.workbookKey,
+                    worksheetName = self.worksheet.name
                 ),
                 windowId = None
             ).toProtoBytes()

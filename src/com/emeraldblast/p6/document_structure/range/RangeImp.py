@@ -42,10 +42,9 @@ class RangeImp(Range):
     @property
     def size(self) -> int:
         rt=0
-        for r in range(self.firstRow,self.lastRow+1):
-            for c in range(self.firstCol, self.lastCol+1):
-                if self.hasCellAtIndex(c,r):
-                    rt=rt+1
+        for cell in self.worksheet.cells:
+            if self.rangeAddress.containCellAddress(cell.address):
+                rt+=1
         return rt
 
     def deleteRangeRs(self, rangeAddress: RangeAddress) -> Result[None, ErrorReport]:
@@ -120,7 +119,7 @@ class RangeImp(Range):
         return self
 
     @property
-    def sourceContainer(self) -> Worksheet:
+    def worksheet(self) -> Worksheet:
         return self.__sourceContainer
 
     @property

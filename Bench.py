@@ -4,7 +4,9 @@ from datetime import datetime
 import time
 from unittest.mock import MagicMock
 
+import numpy as np
 import pandas
+import pandas as pd
 from pandas import DataFrame, read_clipboard
 
 from com.emeraldblast.p6.document_structure.cell.CellContentImp import CellContentImp
@@ -23,27 +25,22 @@ class B:
 
 class Bench(unittest.TestCase):
     def test_z(self):
-        parent = WorksheetImp("S", None)
-        parent.cell((1, 1)).value = 11
-        parent.cell((1, 2)).formula = "formula 123"
-        parent.cell((4, 6)).script = "script abc"
+        nRows = 20000
+        nCols = 1
+        # sArray = pd.arrays.SparseArray([])
+        # sArray[1:5]=np.nan
+        # arr = np.random.randn(10)
+        # arr[2:-2] = np.nan
+        # ts = pandas.DataFrame(pd.arrays.SparseArray())
+        df = pd.DataFrame(index=range(nRows),columns=range(nCols),
+                          dtype = pd.SparseDtype(np.dtype('float'))
+                          )
+        # df[3:4]=123
+        print('sparse : {:0.2f} bytes'.format(df.memory_usage().sum() / 1e3))
 
-        rangex = RangeImp(
-            firstCellAddress = CellAddresses.fromColRow(1, 1),
-            lastCellAddress = CellAddresses.fromColRow(5, 6),
-            sourceContainer = parent
-        )
 
-        array = rangex.toCopiableArray()
-        rangex.copyToClipboard()
-        dataFrame = read_clipboard(header=None)
-        print(dataFrame)
-        for r in range(len(dataFrame)):
-            row = dataFrame.iloc[r]
-            for c in range(len(row)):
-                e = dataFrame.iloc[r,c]
-                if not pandas.isna(e):
-                    print(e)
+
+
 
 
 
