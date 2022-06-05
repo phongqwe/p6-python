@@ -33,6 +33,30 @@ from com.emeraldblast.p6.document_structure.worksheet.WorksheetJson import Works
 
 class WorksheetImp(Worksheet):
 
+    @property
+    def maxUsedCol(self) -> int|None:
+        return self._maxCol
+
+    @property
+    def minUsedCol(self) -> int|None:
+        return self._minCol
+
+    @property
+    def maxUsedRow(self) -> int|None:
+        return self._maxRow
+
+    @property
+    def minUsedRow(self) -> int|None:
+        return self._minRow
+
+    @property
+    def colDict(self)->dict[int, list[Cell]]:
+        return self._colDict
+
+    @property
+    def rowDict(self)->dict[int, list[Cell]]:
+        return self._rowDict
+
     def __init__(self,
                  name,
                  workbook: Workbook,
@@ -75,17 +99,6 @@ class WorksheetImp(Worksheet):
             self._minRow = None
             self._maxRow = None
 
-    @property
-    def usedRangeAddress(self) -> RangeAddress | None:
-        if self._minCol and self._maxCol and self._minRow and self._maxRow :
-            return RangeAddresses.fromColRow(
-                minCol = self._minCol,
-                maxCol = self._maxCol,
-                minRow = self._minRow,
-                maxRow = self._maxRow,
-            )
-        else:
-            return None
 
     def pasteFromClipboardRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
         df = pandas.read_clipboard(header = None)

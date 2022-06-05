@@ -7,12 +7,14 @@ from typing import TYPE_CHECKING
 import pandas
 from pandas import read_clipboard, DataFrame
 
+from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.cell_container.MutableCellContainer import MutableCellContainer
 from com.emeraldblast.p6.document_structure.cell_container.UserFriendlyCellContainer import UserFriendlyCellContainer
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from com.emeraldblast.p6.document_structure.range.Range import Range
 from com.emeraldblast.p6.document_structure.range.address.RangeAddress import RangeAddress
+from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 from com.emeraldblast.p6.document_structure.util.ToJson import ToJson
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 from com.emeraldblast.p6.document_structure.util.report.ReportJsonStrMaker import ReportJsonStrMaker
@@ -26,6 +28,7 @@ from com.emeraldblast.p6.proto.DocProtos_pb2 import WorksheetProto
 if TYPE_CHECKING:
     from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 
+
 class Worksheet(UserFriendlyCellContainer,
                 UserFriendlyWorksheet,
                 MutableCellContainer,
@@ -35,17 +38,50 @@ class Worksheet(UserFriendlyCellContainer,
                 ABC):
 
     @property
-    def usedRangeAddress(self)->RangeAddress|None:
+    def colDict(self) -> dict[int, list[Cell]]:
         raise NotImplementedError()
 
     @property
-    def usedRange(self)->Range|None:
+    def rowDict(self) -> dict[int, list[Cell]]:
+        raise NotImplementedError()
+
+
+    @property
+    def maxUsedCol(self) -> int|None:
+        raise NotImplementedError()
+
+    @property
+    def minUsedCol(self) -> int|None:
+        raise NotImplementedError()
+
+    @property
+    def maxUsedRow(self) -> int|None:
+        raise NotImplementedError()
+
+    @property
+    def minUsedRow(self) -> int|None:
+        raise NotImplementedError()
+
+    @property
+    def usedRangeAddress(self) -> RangeAddress | None:
+        if self.minUsedCol and self.maxUsedCol and self.minUsedRow and self.maxUsedRow:
+            return RangeAddresses.fromColRow(
+                minCol = self.minUsedCol,
+                maxCol = self.maxUsedCol,
+                minRow = self.minUsedRow,
+                maxRow = self.maxUsedRow,
+            )
+        else:
+            return None
+
+    @property
+    def usedRange(self) -> Range | None:
         if self.usedRangeAddress:
             return self.range(self.usedRangeAddress)
         else:
             return None
 
-    def pasteFromClipboard(self,anchorCell:CellAddress):
+    def pasteFromClipboard(self, anchorCell: CellAddress):
         rs = self.pasteFromClipboardRs(anchorCell)
         Results.extractOrRaise(rs)
 
@@ -81,7 +117,7 @@ class Worksheet(UserFriendlyCellContainer,
         return self.size
 
     @property
-    def rootWorksheet(self)->'Worksheet':
+    def rootWorksheet(self) -> 'Worksheet':
         """the root worksheet is the lowest layer (data layer) worksheet, not hooked to any event callbacks, not wrapped in any wrapper. For data-layer worksheet, this is itself. For wrapper worksheet, this is their inner worksheet"""
         raise NotImplementedError()
 
@@ -99,7 +135,7 @@ class Worksheet(UserFriendlyCellContainer,
         raise NotImplementedError()
 
     @workbook.setter
-    def workbook(self, newWorkbook:Workbook | None):
+    def workbook(self, newWorkbook: Workbook | None):
         raise NotImplementedError()
 
     def removeFromWorkbook(self):
@@ -131,4 +167,3 @@ class Worksheet(UserFriendlyCellContainer,
 
     def renameRs(self, newName: str) -> Result[None, ErrorReport]:
         raise NotImplementedError()
-

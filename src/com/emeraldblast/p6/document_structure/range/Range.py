@@ -18,6 +18,22 @@ if TYPE_CHECKING:
 class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
     """ a sub container derived from a bigger cell container """
 
+    @property
+    def maxUsedCol(self) -> int | None:
+        raise NotImplementedError()
+
+    @property
+    def minUsedCol(self) -> int | None:
+        raise NotImplementedError()
+
+    @property
+    def maxUsedRow(self) -> int | None:
+        raise NotImplementedError()
+
+    @property
+    def minUsedRow(self) -> int | None:
+        raise NotImplementedError()
+
     def _toArray(self, usedRange:RangeAddress ,extractValueFunction: Callable[[Cell], Any]):
         firstRow = usedRange.firstRowIndex
         lastRow = usedRange.lastRowIndex
@@ -36,34 +52,15 @@ class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
         return rt
 
     @property
-    def usedRange(self) -> RangeAddress|None:
+    def usedRangeAddress(self) -> RangeAddress | None:
         """:return the smallest range (inside this range) that contains all the existing cell object in this range"""
-        if self.isEmpty():
-            return None
-        else:
-            cells = self.cells
-            firstCell = cells[0]
-            maxRow = minRow = firstCell.row
-            maxCol = minCol = firstCell.col
-            for cell in self.cells:
-                if cell.row > maxRow:
-                    maxRow = cell.row
-                if cell.row < minRow:
-                    minRow = cell.row
-                if cell.col > maxCol:
-                    maxCol = cell.col
-                if cell.col < minCol:
-                    minCol = cell.col
-            return RangeAddresses.from2Cells(
-                firstCell = CellAddresses.fromColRow(minCol,minRow),
-                secondCell = CellAddresses.fromColRow(maxCol,maxRow)
-            )
+        raise NotImplementedError()
 
     def toCopiableArray(self):
         """:return a 2d array for copy-paste operation"""
         def extractSourceValue(cell: Cell):
             return cell.sourceValue
-        return self._toArray(self.usedRange,extractSourceValue)
+        return self._toArray(self.usedRangeAddress, extractSourceValue)
 
 
     def toValueArray(self):

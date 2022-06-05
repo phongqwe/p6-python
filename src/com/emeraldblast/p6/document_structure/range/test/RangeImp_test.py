@@ -6,6 +6,7 @@ from pandas import DataFrame
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
 from com.emeraldblast.p6.document_structure.range.RangeImp import RangeImp
+from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetImp import WorksheetImp
 
@@ -19,63 +20,130 @@ class RangeImpTest(unittest.TestCase):
         r = RangeImp(firstCell, lastCell, parent)
         return r, parent
 
+    def test_extremities_when_remove_range(self):
+        parent = WorksheetImp("S", MagicMock())
+        parent.cell((1, 1)).value = 11
+        parent.cell((1, 2)).value = 123
+        parent.cell((4, 6)).value = 123
+        rng = RangeImp(
+            firstCellAddress = CellAddresses.fromColRow(1, 1),
+            lastCellAddress = CellAddresses.fromColRow(2000000000, 100),
+            sourceContainer = parent
+        )
+        rng.cell((1, 11)).value = 123
+        rng.cell((20, 20)).value = 2020
+        rng.deleteRange(RangeAddresses.from2Cells(CellAddresses.fromColRow(20, 20), CellAddresses.fromColRow(20, 20)))
+        self.assertEqual(11, rng.maxUsedRow)
+        self.assertEqual(1, rng.minUsedRow)
+        self.assertEqual(4, rng.maxUsedCol)
+        self.assertEqual(1, rng.minUsedCol)
 
-    def test_toCopiableArray(self):
-        parent = WorksheetImp("S",MagicMock())
-        parent.cell((1,1)).value=11
-        parent.cell((1,2)).formula="formula 123"
-        parent.cell((4,6)).script="script abc"
+    def test_extremities_when_remove_cell(self):
+        parent = WorksheetImp("S", MagicMock())
+        parent.cell((1, 1)).value = 11
+        parent.cell((1, 2)).value = 123
+        parent.cell((4, 6)).value = 123
+        rng = RangeImp(
+            firstCellAddress = CellAddresses.fromColRow(1, 1),
+            lastCellAddress = CellAddresses.fromColRow(2000000000, 100),
+            sourceContainer = parent
+        )
+        rng.cell((1, 11)).value = 123
+        rng.cell((20, 20)).value = 2020
+        rng.deleteCell((20, 20))
+        self.assertEqual(11, rng.maxUsedRow)
+        self.assertEqual(1, rng.minUsedRow)
+        self.assertEqual(4, rng.maxUsedCol)
+        self.assertEqual(1, rng.minUsedCol)
+        rng.deleteCellRs((1, 11))
+        self.assertEqual(6, rng.maxUsedRow)
+        self.assertEqual(1, rng.minUsedRow)
+        self.assertEqual(4, rng.maxUsedCol)
+        self.assertEqual(1, rng.minUsedCol)
+
+    def test_extremities_when_add_cell(self):
+        parent = WorksheetImp("S", MagicMock())
+        parent.cell((1, 1)).value = 11
+        parent.cell((1, 2)).value = 123
+        parent.cell((4, 6)).value = 123
 
         rng = RangeImp(
-            firstCellAddress = CellAddresses.fromColRow(1,1),
-            lastCellAddress = CellAddresses.fromColRow(2000000000,6),
+            firstCellAddress = CellAddresses.fromColRow(1, 1),
+            lastCellAddress = CellAddresses.fromColRow(2000000000, 100),
+            sourceContainer = parent
+        )
+        self.assertEqual(6, rng.maxUsedRow)
+        self.assertEqual(1, rng.minUsedRow)
+        self.assertEqual(4, rng.maxUsedCol)
+        self.assertEqual(1, rng.minUsedCol)
+        c11 = rng.cell((1, 11))
+        c11.value = 123
+        print(parent.usedRangeAddress.label)
+        self.assertEqual(11, rng.maxUsedRow)
+        self.assertEqual(1, rng.minUsedRow)
+        self.assertEqual(4, rng.maxUsedCol)
+        self.assertEqual(1, rng.minUsedCol)
+
+        rng.cell((20, 20)).value = 2020
+        self.assertEqual(1, rng.minUsedCol)
+        self.assertEqual(20, rng.maxUsedCol)
+        self.assertEqual(1, rng.minUsedRow)
+        self.assertEqual(20, rng.maxUsedRow)
+
+    def test_toCopiableArray(self):
+        parent = WorksheetImp("S", MagicMock())
+        parent.cell((1, 1)).value = 11
+        parent.cell((1, 2)).formula = "formula 123"
+        parent.cell((4, 6)).script = "script abc"
+
+        rng = RangeImp(
+            firstCellAddress = CellAddresses.fromColRow(1, 1),
+            lastCellAddress = CellAddresses.fromColRow(2000000000, 6),
             sourceContainer = parent
         )
 
         array = rng.toCopiableArray()
-        self.assertEqual(6,len(array))
-        for (r,row) in enumerate(array):
-            self.assertEqual(4,len(row))
-            for (c,e) in enumerate(row):
-                if r==1-1 and c==1-1:
+        self.assertEqual(6, len(array))
+        for (r, row) in enumerate(array):
+            self.assertEqual(4, len(row))
+            for (c, e) in enumerate(row):
+                if r == 1 - 1 and c == 1 - 1:
                     self.assertEqual(11, e)
-                elif r==2-1 and c==1-1:
+                elif r == 2 - 1 and c == 1 - 1:
                     self.assertEqual("formula 123", e)
-                elif r==6-1 and c == 4-1:
+                elif r == 6 - 1 and c == 4 - 1:
                     self.assertEqual("=SCRIPT(script abc)", e)
                 else:
                     self.assertIsNone(e)
 
     def test_toValueArray(self):
 
-        parent = WorksheetImp("S",MagicMock())
-        wb = WorkbookImp("asd",sheetList = [parent])
+        parent = WorksheetImp("S", MagicMock())
+        wb = WorkbookImp("asd", sheetList = [parent])
         parent.workbook = wb
-        parent.cell((1,1)).value=11
-        parent.cell((1,2)).formula="=SCRIPT(1+2+3)"
-        parent.cell((4,6)).script="1+2+10"
+        parent.cell((1, 1)).value = 11
+        parent.cell((1, 2)).formula = "=SCRIPT(1+2+3)"
+        parent.cell((4, 6)).script = "1+2+10"
 
         range = RangeImp(
-            firstCellAddress = CellAddresses.fromColRow(1,1),
-            lastCellAddress = CellAddresses.fromColRow(5,6),
+            firstCellAddress = CellAddresses.fromColRow(1, 1),
+            lastCellAddress = CellAddresses.fromColRow(5, 6),
             sourceContainer = parent
         )
 
         array = range.toValueArray()
-        self.assertEqual(6,len(array))
-        for (r,row) in enumerate(array):
-            self.assertEqual(5,len(row))
-            for (c,e) in enumerate(row):
-                if r==1-1 and c==1-1:
-                    self.assertEqual(11,e)
-                elif r==2-1 and c==1-1:
+        self.assertEqual(6, len(array))
+        for (r, row) in enumerate(array):
+            self.assertEqual(5, len(row))
+            for (c, e) in enumerate(row):
+                if r == 1 - 1 and c == 1 - 1:
+                    self.assertEqual(11, e)
+                elif r == 2 - 1 and c == 1 - 1:
                     self.assertEqual(6, e)
-                elif r==6-1 and c == 4-1:
+                elif r == 6 - 1 and c == 4 - 1:
                     self.assertEqual(13, e)
                 else:
                     self.assertIsNone(e)
-
-
 
     def test_constructor(self):
         parent = MagicMock()
@@ -153,5 +221,5 @@ class RangeImpTest(unittest.TestCase):
             r.getOrMakeCell(CellIndex(100, 100))
 
     def test_cells(self):
-        r,parent = self.makeTestObj()
-        self.assertTrue(len(r.cells)==0)
+        r, parent = self.makeTestObj()
+        self.assertTrue(len(r.cells) == 0)

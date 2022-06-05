@@ -18,7 +18,31 @@ class WorksheetWrapper(Worksheet):
         self._innerSheet: Worksheet = innerWorksheet
 
     @property
-    def usedRangeAddress(self) -> RangeAddress|None:
+    def colDict(self) -> dict[int, list[Cell]]:
+        return self.rootWorksheet.colDict
+
+    @property
+    def rowDict(self) -> dict[int, list[Cell]]:
+        return self.rootWorksheet.rowDict
+
+    @property
+    def maxUsedCol(self) -> int | None:
+        return self.rootWorksheet.maxUsedCol
+
+    @property
+    def minUsedCol(self) -> int | None:
+        return self.rootWorksheet.minUsedCol
+
+    @property
+    def maxUsedRow(self) -> int | None:
+        return self.rootWorksheet.maxUsedRow
+
+    @property
+    def minUsedRow(self) -> int | None:
+        return self.rootWorksheet.minUsedRow
+
+    @property
+    def usedRangeAddress(self) -> RangeAddress | None:
         return self.rootWorksheet.usedRangeAddress
 
     def pasteFromClipboardRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:

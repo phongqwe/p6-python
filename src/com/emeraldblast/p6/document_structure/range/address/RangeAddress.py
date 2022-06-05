@@ -19,7 +19,7 @@ class RangeAddress(ToProto[RangeAddressProto],ABC):
     whole row: "@22:33"
     """
 
-    def findIntersection(self,otherRangeAddress:'RangeAddress') -> Optional['RangeAddress'] :
+    def intersect(self, otherRangeAddress: 'RangeAddress') -> Optional['RangeAddress'] :
         raise NotImplementedError()
 
     @property

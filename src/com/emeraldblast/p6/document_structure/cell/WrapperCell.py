@@ -12,6 +12,9 @@ class WrapperCell(Cell, ABC):
     """
     An abstract Cell decorator that wraps around another cell and carries out its work using the inner cell
     """
+    @property
+    def innerCell(self)->'Cell':
+        return self._innerCell
 
     def __init__(self, innerCell: Cell):
         self._innerCell: Cell = innerCell

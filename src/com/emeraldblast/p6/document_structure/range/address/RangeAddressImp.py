@@ -27,17 +27,29 @@ class RangeAddressImp(RangeAddress):
             reason = "firstAddress {o} is larger than lastAddress {o}".format(o=o)
             raise ValueError("invalid firstAddress and lastAddress: {reason}".format(reason=reason))
 
-    def findIntersection(self, otherRangeAddress: 'RangeAddress') -> Optional['RangeAddress']:
-        firstCol = max(self.firstColIndex, otherRangeAddress.firstColIndex)
-        lastCol = min(self.lastColIndex, otherRangeAddress.lastColIndex)
+    def intersect(self, otherRangeAddress: 'RangeAddress') -> Optional['RangeAddress']:
 
-        firstRow = max(self.firstRowIndex, otherRangeAddress.firstRowIndex)
-        lastRow = min(self.lastRowIndex, otherRangeAddress.lastRowIndex)
-        if firstCol!=lastCol or firstRow!= lastRow:
-            return RangeAddressImp(
-                topLeft = CellAddresses.fromColRow(firstCol, firstRow),
-                botRight = CellAddresses.fromColRow(lastCol, lastRow)
-            )
+        intersectionExist = self.containCellAddress(otherRangeAddress.topLeft) \
+                    or self.containCellAddress(otherRangeAddress.topRight) \
+                    or self.containCellAddress(otherRangeAddress.botLeft) \
+                    or self.containCellAddress(otherRangeAddress.botRight) \
+                    or otherRangeAddress.containCellAddress(self.topLeft) \
+                    or otherRangeAddress.containCellAddress(self.topRight) \
+                    or otherRangeAddress.containCellAddress(self.botLeft) \
+                    or otherRangeAddress.containCellAddress(self.botRight) \
+                    # or otherRangeAddress.containCellAddress(self.topLeft) \
+        if intersectionExist:
+            firstCol = max(self.firstColIndex, otherRangeAddress.firstColIndex)
+            lastCol = min(self.lastColIndex, otherRangeAddress.lastColIndex)
+            firstRow = max(self.firstRowIndex, otherRangeAddress.firstRowIndex)
+            lastRow = min(self.lastRowIndex, otherRangeAddress.lastRowIndex)
+            if firstCol<= lastCol and firstRow <= lastRow:
+                return RangeAddressImp(
+                    topLeft = CellAddresses.fromColRow(firstCol, firstRow),
+                    botRight = CellAddresses.fromColRow(lastCol, lastRow)
+                )
+            else:
+                return None
         else:
             return None
 
