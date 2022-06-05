@@ -32,6 +32,39 @@ class WorksheetImp_test(unittest.TestCase):
         self.s2 = s2
         self.s3 = s3
 
+    def test_update_usedRange_when_update_cell(self):
+        self.assertIsNone(self.s1.usedRangeAddress)
+        self.assertIsNone(self.s1.usedRange)
+
+        self.s1.cell((1,1)).value=123
+        self.assertEqual(RangeAddresses.fromColRow(1,1,1,1),self.s1.usedRangeAddress)
+        self.s1.cell((2,2)).value = 123
+        self.assertEqual(RangeAddresses.fromColRow(1,2,1,2),self.s1.usedRangeAddress)
+        self.s1.cell((2, 100)).value = 123
+
+        self.assertEqual(RangeAddresses.fromColRow(1, 2, 1, 100), self.s1.usedRangeAddress)
+
+        self.s1.cell((2, 12)).value = 123
+        self.s1.cell((2, 22)).value = 123
+        self.s1.cell((2, 32)).value = 123
+        self.s1.cell((2, 42)).value = 123
+        self.s1.cell((2, 52)).value = 123
+        self.s1.deleteCell((2,100))
+        self.assertEqual(RangeAddresses.fromColRow(1, 2, 1, 52), self.s1.usedRangeAddress)
+
+        self.s1.deleteRangeRs(RangeAddresses.fromColRow(2,2,12,22))
+        self.assertEqual(RangeAddresses.fromColRow(1, 2, 1, 52), self.s1.usedRangeAddress)
+
+        self.s1.deleteRangeRs(RangeAddresses.fromColRow(2, 2, 42, 52))
+        self.assertEqual(RangeAddresses.fromColRow(1, 2, 1, 32), self.s1.usedRangeAddress)
+
+        self.s1.cell((10, 3)).value = 123
+        self.assertEqual(RangeAddresses.fromColRow(1, 10, 1, 32), self.s1.usedRangeAddress)
+        self.s1.deleteRange(RangeAddresses.fromColRow(5,11,1,3))
+        print(self.s1.usedRangeAddress)
+        self.assertEqual(RangeAddresses.fromColRow(1, 2, 1, 32), self.s1.usedRangeAddress)
+
+
     def test_qwe(self):
         s1 = self.s1
 

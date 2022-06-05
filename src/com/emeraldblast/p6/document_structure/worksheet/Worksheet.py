@@ -11,6 +11,8 @@ from com.emeraldblast.p6.document_structure.cell.address.CellAddress import Cell
 from com.emeraldblast.p6.document_structure.cell_container.MutableCellContainer import MutableCellContainer
 from com.emeraldblast.p6.document_structure.cell_container.UserFriendlyCellContainer import UserFriendlyCellContainer
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
+from com.emeraldblast.p6.document_structure.range.Range import Range
+from com.emeraldblast.p6.document_structure.range.address.RangeAddress import RangeAddress
 from com.emeraldblast.p6.document_structure.util.ToJson import ToJson
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 from com.emeraldblast.p6.document_structure.util.report.ReportJsonStrMaker import ReportJsonStrMaker
@@ -31,6 +33,17 @@ class Worksheet(UserFriendlyCellContainer,
                 ToJson,
                 ToProto[WorksheetProto],
                 ABC):
+
+    @property
+    def usedRangeAddress(self)->RangeAddress|None:
+        raise NotImplementedError()
+
+    @property
+    def usedRange(self)->Range|None:
+        if self.usedRangeAddress:
+            return self.range(self.usedRangeAddress)
+        else:
+            return None
 
     def pasteFromClipboard(self,anchorCell:CellAddress):
         rs = self.pasteFromClipboardRs(anchorCell)

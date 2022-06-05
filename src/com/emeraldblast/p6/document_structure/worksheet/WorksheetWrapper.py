@@ -17,6 +17,10 @@ class WorksheetWrapper(Worksheet):
     def __init__(self, innerWorksheet: Worksheet):
         self._innerSheet: Worksheet = innerWorksheet
 
+    @property
+    def usedRangeAddress(self) -> RangeAddress|None:
+        return self.rootWorksheet.usedRangeAddress
+
     def pasteFromClipboardRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
         return self.rootWorksheet.pasteFromClipboardRs(anchorCell)
 

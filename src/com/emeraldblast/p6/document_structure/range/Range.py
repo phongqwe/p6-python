@@ -37,6 +37,7 @@ class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
 
     @property
     def usedRange(self) -> RangeAddress|None:
+        """:return the smallest range (inside this range) that contains all the existing cell object in this range"""
         if self.isEmpty():
             return None
         else:

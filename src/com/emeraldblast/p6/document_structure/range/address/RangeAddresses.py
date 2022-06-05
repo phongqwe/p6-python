@@ -39,6 +39,13 @@ class RangeAddresses:
         return RangeAddressImp(topLeftCell, botRightCell)
 
     @staticmethod
+    def fromColRow(minCol, maxCol, minRow, maxRow) -> RangeAddress:
+        return RangeAddresses.from2Cells(
+            firstCell = CellAddresses.fromColRow(minCol,minRow),
+            secondCell = CellAddresses.fromColRow(maxCol,maxRow)
+        )
+
+    @staticmethod
     def fromLabel(label: str) -> RangeAddress:
         isNormalRange = RangeAddresses.checkRangeAddressFormat(label)
         if isNormalRange.isOk():
@@ -97,6 +104,9 @@ class RangeAddresses:
 
     @staticmethod
     def checkWholeAddressFormat(label:str)->Result[None,ErrorReport]:
+        """
+        :return true if a range address label is a whole col or whole row, false otherwise
+        """
         return RangeAddresses.__checkAddressFormatAgainstPattern(label,RangeAddresses.__wholeRangeAddressPattern)
 
     @staticmethod

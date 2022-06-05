@@ -16,6 +16,7 @@ from com.emeraldblast.p6.document_structure.range.RangeErrors import RangeErrors
 from com.emeraldblast.p6.document_structure.range.Ranges import Ranges
 from com.emeraldblast.p6.document_structure.range.address.RangeAddress import RangeAddress
 from com.emeraldblast.p6.document_structure.range.address.RangeAddressImp import RangeAddressImp
+from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 from com.emeraldblast.p6.document_structure.util.AddressParser import AddressParser
 from com.emeraldblast.p6.document_structure.util.Util import typeCheck
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
@@ -49,8 +50,44 @@ class WorksheetImp(Worksheet):
 
         self.translatorGetter: Callable[[str], FormulaTranslator] = getTranslator
         self.__wb = workbook
+        self._minCol = None
+        self._maxCol = None
+        self._minRow = None
+        self._maxRow = None
+        self._updateExtremeColRow()
 
-    def pasteFromClipboardRs(self, anchorCell: CellAddress)->Result[None,ErrorReport]:
+    def _updateExtremeColRow(self):
+        if not self.isEmpty():
+            cols = self._colDict.keys()
+            rows = self._rowDict.keys()
+            if not self._colDict.get(self._minCol):
+                self._minCol = min(cols)
+            if not self._colDict.get(self._maxCol):
+                self._maxCol = max(cols)
+            if not self._rowDict.get(self._minRow):
+                self._minRow = min(rows)
+            if not self._rowDict.get(self._maxRow):
+                self._maxRow = max(rows)
+
+        else:
+            self._minCol = None
+            self._maxCol = None
+            self._minRow = None
+            self._maxRow = None
+
+    @property
+    def usedRangeAddress(self) -> RangeAddress | None:
+        if self._minCol and self._maxCol and self._minRow and self._maxRow :
+            return RangeAddresses.fromColRow(
+                minCol = self._minCol,
+                maxCol = self._maxCol,
+                minRow = self._minRow,
+                maxRow = self._maxRow,
+            )
+        else:
+            return None
+
+    def pasteFromClipboardRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
         df = pandas.read_clipboard(header = None)
         if isinstance(df, DataFrame):
             for rowIndex in range(len(df)):
@@ -64,7 +101,6 @@ class WorksheetImp(Worksheet):
         else:
             return Err(WorksheetErrors.CantPasteFromNonDataFrameObj())
 
-
     def deleteRangeRs(self, rangeAddress: RangeAddress) -> Result[None, ErrorReport]:
         tobeRemovedCells = []
         for cell in self.cells:
@@ -77,6 +113,8 @@ class WorksheetImp(Worksheet):
             (colIndex, rowIndex) = address.toTuple()
             self._removeCellFromDict(self._colDict, colIndex, address)
             self._removeCellFromDict(self._rowDict, rowIndex, address)
+
+        self._updateExtremeColRow()
 
         return Ok(None)
 
@@ -175,7 +213,7 @@ class WorksheetImp(Worksheet):
         return self.rangeAddress.containColRow(col, row)
 
     def hasCellAtIndex(self, col: int, row: int) -> bool:
-        return self._cellDict.get((col,row)) is not None
+        return self._cellDict.get((col, row)) is not None
 
     @property
     def cells(self) -> list[Cell]:
@@ -225,11 +263,21 @@ class WorksheetImp(Worksheet):
 
             # update cell reference
             cell.worksheet = self
+
+            # update extremities
+            if (self._maxCol is not None and cell.col > self._maxCol) or self._maxCol is None:
+                self._maxCol = cell.col
+            if (self._minCol is not None and cell.col < self._minCol) or self._minCol is None:
+                self._minCol = cell.col
+            if (self._maxRow is not None and cell.row > self._maxRow) or self._maxRow is None:
+                self._maxRow = cell.row
+            if (self._minRow is not None and cell.row < self._minRow) or self._minRow is None:
+                self._minRow = cell.row
         else:
             raise Exception(f"worksheet \'{self.name}\' can't contain cell at \'{cell.address.__str__()}\'")
 
-    def deleteCellRs(self, address: CellAddress | Tuple[int, int]|str) -> Result[None, ErrorReport]:
-        address = CellAddresses.parseAddress(address)
+    def deleteCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
+        address:CellAddress = CellAddresses.parseAddress(address)
         if self.containsAddress(address):
             key = address.toTuple()
             if key in self._cellDict.keys():
@@ -237,6 +285,9 @@ class WorksheetImp(Worksheet):
             (colIndex, rowIndex) = key
             self._removeCellFromDict(self._colDict, colIndex, address)
             self._removeCellFromDict(self._rowDict, rowIndex, address)
+
+            # update extremities
+            self._updateExtremeColRow()
             return Ok(None)
         else:
             return Err(RangeErrors.CellNotInRangeReport(address, self.rangeAddress))

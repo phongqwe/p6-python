@@ -5,6 +5,7 @@ from com.emeraldblast.p6.document_structure.range.RangeImp import RangeImp
 from com.emeraldblast.p6.document_structure.range.address.RangeAddress import RangeAddress
 
 
+
 class Ranges:
     @staticmethod
     def fromRangeAddress(rangeAddress: RangeAddress, sourceContainer: MutableCellContainer) -> Range:

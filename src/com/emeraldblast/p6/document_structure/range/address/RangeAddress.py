@@ -48,9 +48,9 @@ class RangeAddress(ToProto[RangeAddressProto],ABC):
             la=lastCellLabel
         )
 
-    def __str__(self) -> str:
-        return self.label
 
+    def __str__(self) -> str:
+        return "[{fc}:{lc}]".format(fc=str(self.topLeft), lc=str(self.botRight))
     @property
     def firstRowIndex(self) -> int:
         return self.topLeft.rowIndex

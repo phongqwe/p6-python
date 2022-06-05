@@ -60,8 +60,8 @@ class RangeAddressImp(RangeAddress):
     def colCount(self)->int:
         return self.botRight.colIndex - self.topLeft.colIndex + 1
 
-    def __str__(self) -> str:
-        return "[{fc}:{lc}]".format(fc=str(self.topLeft), lc=str(self.botRight))
+    # def __str__(self) -> str:
+    #     return "[{fc}:{lc}]".format(fc=str(self.topLeft), lc=str(self.botRight))
 
     def __eq__(self, o: object) -> bool:
         if isinstance(o, RangeAddressImp):
