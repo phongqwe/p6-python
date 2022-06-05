@@ -45,15 +45,17 @@ class EventRangeTest(unittest.TestCase):
         eventRange.copyToClipboard()
 
     def test_createEventObjs(self):
-        parent = MagicMock()
+        """event objs == event cells, event """
+        wb: Workbook = sampleWb("QWE")
+        ws = wb.getWorksheet("Sheet1")
         firstCell = CellIndex(1, 1)
         lastCell = CellIndex(3, 9)
-        r = RangeImp(firstCell, lastCell, parent)
+        r = RangeImp(firstCell, lastCell, ws)
 
         self.a = 0
         self.b = 0
 
-        def ce(cellEventData: CellEventData):
+        def ce(cellEventData: EventData):
             self.a += 1
 
         def re(rangeEventData):

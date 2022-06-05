@@ -125,13 +125,13 @@ class RangeImpTest(unittest.TestCase):
         parent.cell((1, 2)).formula = "=SCRIPT(1+2+3)"
         parent.cell((4, 6)).script = "1+2+10"
 
-        range = RangeImp(
+        rnge = RangeImp(
             firstCellAddress = CellAddresses.fromColRow(1, 1),
             lastCellAddress = CellAddresses.fromColRow(5, 6),
             sourceContainer = parent
         )
 
-        array = range.toValueArray()
+        array = rnge.toValueArray()
         self.assertEqual(6, len(array))
         for (r, row) in enumerate(array):
             self.assertEqual(5, len(row))

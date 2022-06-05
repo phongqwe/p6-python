@@ -110,12 +110,6 @@ class RangeImp(Range):
             self._minUsedRow = None
             self._maxUsedRow = None
 
-    @property
-    def usedRangeAddress(self) -> RangeAddress | None:
-        """:return the smallest range (inside this range) that contains all the existing cell object in this range"""
-        return RangeAddresses.fromColRow(
-            self._minUsedCol, self._maxUsedCol, self._minUsedRow, self._maxUsedRow
-        )
 
     @property
     def size(self) -> int:
@@ -158,12 +152,6 @@ class RangeImp(Range):
         return self.getOrMakeCell(parsedAddress)
 
     ### >> CellContainer << ###
-
-    def containsAddress(self, address: CellAddress) -> bool:
-        return super().containsAddress(address)
-
-    def containsAddressIndex(self, col: int, row: int) -> bool:
-        return super().containsAddressIndex(col, row)
 
     def hasCellAt(self, address: CellAddress) -> bool:
         if self.containsAddress(address):
@@ -240,13 +228,13 @@ class RangeImp(Range):
                 "Cannot add cell {cd} into range {rd}".format(cd = str(cell.address), rd = str(self.rangeAddress)))
 
     def __onAddCell(self, cell: Cell):
-        if cell.col > self._maxUsedCol:
+        if(self._maxUsedCol and cell.col > self._maxUsedCol) or not self._maxUsedCol:
             self._maxUsedCol = cell.col
-        if cell.col < self._minUsedCol:
+        if(self._minUsedCol and cell.col < self._minUsedCol) or not self._minUsedCol :
             self._minUsedCol = cell.col
-        if cell.row > self._maxUsedRow:
+        if (self._maxUsedRow and cell.row > self._maxUsedRow) or not self._maxUsedRow:
             self._maxUsedRow = cell.row
-        if cell.row < self._minUsedRow:
+        if (self._minUsedRow and cell.row < self._minUsedRow) or not self._minUsedRow:
             self._minUsedRow = cell.row
 
     def deleteCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:

@@ -34,7 +34,7 @@ class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
     def minUsedRow(self) -> int | None:
         raise NotImplementedError()
 
-    def _toArray(self, usedRange:RangeAddress ,extractValueFunction: Callable[[Cell], Any]):
+    def _toArray(self, usedRange: RangeAddress, extractValueFunction: Callable[[Cell], Any]):
         firstRow = usedRange.firstRowIndex
         lastRow = usedRange.lastRowIndex
         firstCol = usedRange.firstColIndex
@@ -54,23 +54,33 @@ class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
     @property
     def usedRangeAddress(self) -> RangeAddress | None:
         """:return the smallest range (inside this range) that contains all the existing cell object in this range"""
-        raise NotImplementedError()
+        if self.minUsedCol and self.maxUsedCol and self.minUsedRow and self.maxUsedRow:
+            return RangeAddresses.fromColRow(
+                self.minUsedCol, self.maxUsedCol, self.minUsedRow, self.maxUsedRow
+            )
+        else:
+            return None
 
     def toCopiableArray(self):
-        """:return a 2d array for copy-paste operation"""
-        def extractSourceValue(cell: Cell):
-            return cell.sourceValue
-        return self._toArray(self.usedRangeAddress, extractSourceValue)
+        """:return a 2d array for copy-paste operation if possible, return None other wise"""
+        usedRange = self.usedRangeAddress
+        if usedRange:
+            def extractSourceValue(cell: Cell):
+                return cell.sourceValue
 
+            return self._toArray(usedRange, extractSourceValue)
+        else:
+            return []
 
     def toValueArray(self):
         """:return a 2d array of values in cell"""
+
         # todo this is slow as hell, improve it
 
         def extractCellValue(cell: Cell):
             return cell.value
 
-        return self._toArray(self.rangeAddress,extractCellValue)
+        return self._toArray(self.rangeAddress, extractCellValue)
 
     def copyToClipboard(self):
         """convert this range into a data frame and copy that data frame into the clipboard"""
