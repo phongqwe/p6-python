@@ -1,7 +1,6 @@
 from abc import ABC
 from typing import Any, Callable, TYPE_CHECKING
 
-import pyperclip
 from pandas import DataFrame
 
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
@@ -9,9 +8,9 @@ from com.emeraldblast.p6.document_structure.cell.address.CellAddress import Cell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.cell_container.MutableCellContainer import MutableCellContainer
 from com.emeraldblast.p6.document_structure.cell_container.UserFriendlyCellContainer import UserFriendlyCellContainer
+
 from com.emeraldblast.p6.document_structure.range.address.RangeAddress import RangeAddress
 from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
-# import pyperclip
 if TYPE_CHECKING:
     from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
@@ -101,9 +100,9 @@ class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
 
     def copyToClipboardAsProto(self):
         """ convert this to RangeCopyProto proto bytes, then copy it to clipboard"""
-
-        protoBytes = self.toRangeCopy().toProtoBytes()
-        pyperclip.copy(protoBytes)
+        from com.emeraldblast.p6.document_structure.copy_paste.Copiers import Copiers
+        copier = Copiers.pandasProtoCopier
+        copier.copyRangeToClipboard(self)
 
 
     @property

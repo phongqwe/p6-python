@@ -7,6 +7,8 @@ from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.WriteBackCell import WriteBackCell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
+from com.emeraldblast.p6.document_structure.copy_paste.Copiers import Copiers
+from com.emeraldblast.p6.document_structure.copy_paste.ProtoCopier import ProtoCopier
 from com.emeraldblast.p6.document_structure.range.Range import Range
 from com.emeraldblast.p6.document_structure.range.RangeErrors import RangeErrors
 from com.emeraldblast.p6.document_structure.range.address.RangeAddress import RangeAddress
