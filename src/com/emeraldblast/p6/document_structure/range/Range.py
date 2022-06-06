@@ -63,15 +63,15 @@ class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
         else:
             return None
 
-    def toFullArray(self):
-        """:return a 2d array containing every cell in this range"""
-        return self._toArray(self.rangeAddress, self.__extractCellValue)
-
     @staticmethod
     def __extractCellValue(cell: Cell):
         return cell.value
 
-    def toUsedValueArray(self):
+    def toFullArray(self):
+        """:return a 2d array containing every cell in this range"""
+        return self._toArray(self.rangeAddress, self.__extractCellValue)
+
+    def toStrictArray(self):
         """
         Note: this contains only contains non-empty cell
         :return a 2d array of values in cell
@@ -81,21 +81,28 @@ class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
             return self._toArray(urange, self.__extractCellValue)
         else:
             return []
-
-    def copyToClipboardAsFullCSV(self):
-        """convert this range into a data frame and copy that data frame into the clipboard"""
-        df = DataFrame.from_records(self.toFullArray())
-        df.to_clipboard(excel = True, index = False, header = None)
-
-    def copyToClipboardAsProto(self):
-        """ convert this to RangeCopyProto string bytes, then move it to clipboard using pyperclip"""
+    def toRangeCopy(self):
         from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeCopy import \
             RangeCopy
         copyObj = RangeCopy(
             rangeId = self.id,
             cells = self.cells
         )
-        protoBytes = copyObj.toProtoBytes()
+        return copyObj
+
+    def copyToClipboardAsFullCSV(self):
+        """convert this range into a full data array and copy that data frame into the clipboard"""
+        df = DataFrame.from_records(self.toFullArray())
+        df.to_clipboard(excel = True, index = False, header = None)
+
+    def copyToClipboardAsStrictCSV(self):
+        df = DataFrame.from_records(self.toStrictArray())
+        df.to_clipboard(excel = True, index = False, header = None)
+
+    def copyToClipboardAsProto(self):
+        """ convert this to RangeCopyProto proto bytes, then copy it to clipboard"""
+
+        protoBytes = self.toRangeCopy().toProtoBytes()
         pyperclip.copy(protoBytes)
 
 

@@ -10,27 +10,26 @@ from com.emeraldblast.p6.proto.RangeProtos_pb2 import RangeCopyProto
 @dataclass
 class RangeCopy(ToProto[RangeCopyProto]):
 
-    def __init__(self, rangeId:RangeId, cells:list[Cell]):
+    def __init__(self, rangeId: RangeId, cells: list[Cell]):
         self.cells = cells
         self.rangeId = rangeId
 
     @staticmethod
-    def fromProto(proto:RangeCopyProto):
+    def fromProtoBytes(data: bytes) -> 'RangeCopy':
+        proto = RangeCopyProto()
+        proto.ParseFromString(data)
+        return RangeCopy.fromProto(proto)
+
+    @staticmethod
+    def fromProto(proto: RangeCopyProto) -> 'RangeCopy':
         return RangeCopy(
             rangeId = RangeId.fromProto(proto.id),
-            cells = list(map(lambda c: Cells.fromProto(c),proto.cell))
+            cells = list(map(lambda c: Cells.fromProto(c), proto.cell))
         )
 
     def toProtoObj(self) -> RangeCopyProto:
         proto = RangeCopyProto(
             id = self.rangeId.toProtoObj(),
-            cell = list(map(lambda c: c.toProtoObj(),self.cells))
+            cell = list(map(lambda c: c.toProtoObj(), self.cells))
         )
         return proto
-
-
-
-
-
-
-

@@ -1,6 +1,8 @@
 import unittest
 
 import pandas
+import pyperclip
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeCopy import RangeCopy
 
 from com.emeraldblast.p6.document_structure.app.workbook_container.WorkbookContainerImp import WorkbookContainerImp
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.common.ErrorIndicator import \
@@ -32,12 +34,13 @@ class RangeToClipboardReactor_test(unittest.TestCase):
 
     def test_react(self):
         reactor = RangeToClipboardReactor(rangeGetter = self.rangeGetter)
-        request = RangeToClipboardRequestProto(
-            rangeId = RangeId(
+        rangeId = RangeId(
                 workbookKey = self.wb.workbookKey,
                 worksheetName = "Sheet1",
                 rangeAddress = RangeAddresses.fromLabel("@C1:K5")
-            ).toProtoObj(),
+            )
+        request = RangeToClipboardRequestProto(
+            rangeId = rangeId.toProtoObj(),
             windowId = "123"
         )
         rs = reactor.react(
@@ -47,6 +50,10 @@ class RangeToClipboardReactor_test(unittest.TestCase):
         self.assertEqual(request.windowId, rs.windowId)
         self.assertEqual(request.rangeId, rs.rangeId.toProtoObj())
         self.assertEqual(ErrorIndicator.noError(), rs.errorIndicator)
+
+        # targetRange:RangeCopy = self.rangeGetter(rangeId).value.toRangeCopy()
+        # clipBoardBytes = pyperclip.paste()
+        # self.assertEqual(targetRange.toProtoBytes(),clipBoardBytes)
 
     def test_react2(self):
         err = CommonErrors.CommonError
