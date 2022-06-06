@@ -27,7 +27,7 @@ class RangeImpTest(unittest.TestCase):
         parent.cell((4, 6)).value = 123
         rng = RangeImp(
             firstCellAddress = CellAddresses.fromColRow(1, 1),
-            lastCellAddress = CellAddresses.fromColRow(2000000000, 100),
+            lastCellAddress = CellAddresses.fromColRow(1100000, 100),
             sourceContainer = parent
         )
         rng.cell((1, 11)).value = 123
@@ -45,7 +45,7 @@ class RangeImpTest(unittest.TestCase):
         parent.cell((4, 6)).value = 123
         rng = RangeImp(
             firstCellAddress = CellAddresses.fromColRow(1, 1),
-            lastCellAddress = CellAddresses.fromColRow(2000000000, 100),
+            lastCellAddress = CellAddresses.fromColRow(1100000, 100),
             sourceContainer = parent
         )
         rng.cell((1, 11)).value = 123
@@ -69,7 +69,7 @@ class RangeImpTest(unittest.TestCase):
 
         rng = RangeImp(
             firstCellAddress = CellAddresses.fromColRow(1, 1),
-            lastCellAddress = CellAddresses.fromColRow(2000000000, 100),
+            lastCellAddress = CellAddresses.fromColRow(1100000, 100),
             sourceContainer = parent
         )
         self.assertEqual(6, rng.maxUsedRow)
@@ -90,60 +90,35 @@ class RangeImpTest(unittest.TestCase):
         self.assertEqual(1, rng.minUsedRow)
         self.assertEqual(20, rng.maxUsedRow)
 
-    def test_toCopiableArray(self):
-        parent = WorksheetImp("S", MagicMock())
-        parent.cell((1, 1)).value = 11
-        parent.cell((1, 2)).formula = "formula 123"
-        parent.cell((4, 6)).script = "script abc"
-
-        rng = RangeImp(
-            firstCellAddress = CellAddresses.fromColRow(1, 1),
-            lastCellAddress = CellAddresses.fromColRow(2000000000, 6),
-            sourceContainer = parent
-        )
-
-        array = rng.toCopiableArray()
-        self.assertEqual(6, len(array))
-        for (r, row) in enumerate(array):
-            self.assertEqual(4, len(row))
-            for (c, e) in enumerate(row):
-                if r == 1 - 1 and c == 1 - 1:
-                    self.assertEqual(11, e)
-                elif r == 2 - 1 and c == 1 - 1:
-                    self.assertEqual("formula 123", e)
-                elif r == 6 - 1 and c == 4 - 1:
-                    self.assertEqual("=SCRIPT(script abc)", e)
-                else:
-                    self.assertIsNone(e)
-
-    def test_toValueArray(self):
-
-        parent = WorksheetImp("S", MagicMock())
-        wb = WorkbookImp("asd", sheetList = [parent])
-        parent.workbook = wb
-        parent.cell((1, 1)).value = 11
-        parent.cell((1, 2)).formula = "=SCRIPT(1+2+3)"
-        parent.cell((4, 6)).script = "1+2+10"
-
-        rnge = RangeImp(
-            firstCellAddress = CellAddresses.fromColRow(1, 1),
-            lastCellAddress = CellAddresses.fromColRow(5, 6),
-            sourceContainer = parent
-        )
-
-        array = rnge.toValueArray()
-        self.assertEqual(6, len(array))
-        for (r, row) in enumerate(array):
-            self.assertEqual(5, len(row))
-            for (c, e) in enumerate(row):
-                if r == 1 - 1 and c == 1 - 1:
-                    self.assertEqual(11, e)
-                elif r == 2 - 1 and c == 1 - 1:
-                    self.assertEqual(6, e)
-                elif r == 6 - 1 and c == 4 - 1:
-                    self.assertEqual(13, e)
-                else:
-                    self.assertIsNone(e)
+    #
+    # def test_toFullArray(self):
+    #
+    #     parent = WorksheetImp("S", MagicMock())
+    #     wb = WorkbookImp("asd", sheetList = [parent])
+    #     parent.workbook = wb
+    #     parent.cell((1, 1)).value = 11
+    #     parent.cell((1, 2)).formula = "=SCRIPT(1+2+3)"
+    #     parent.cell((4, 6)).script = "1+2+10"
+    #
+    #     rnge = RangeImp(
+    #         firstCellAddress = CellAddresses.fromColRow(1, 1),
+    #         lastCellAddress = CellAddresses.fromColRow(5, 6),
+    #         sourceContainer = parent
+    #     )
+    #
+    #     array = rnge.toFullArray()
+    #     self.assertEqual(6, len(array))
+    #     for (r, row) in enumerate(array):
+    #         self.assertEqual(5, len(row))
+    #         for (c, e) in enumerate(row):
+    #             if r == 1 - 1 and c == 1 - 1:
+    #                 self.assertEqual(11, e)
+    #             elif r == 2 - 1 and c == 1 - 1:
+    #                 self.assertEqual(6, e)
+    #             elif r == 6 - 1 and c == 4 - 1:
+    #                 self.assertEqual(13, e)
+    #             else:
+    #                 self.assertIsNone(e)
 
     def test_constructor(self):
         parent = MagicMock()

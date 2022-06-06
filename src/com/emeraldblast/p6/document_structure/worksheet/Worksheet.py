@@ -7,12 +7,12 @@ from typing import TYPE_CHECKING
 import pandas
 from pandas import read_clipboard, DataFrame
 
-from com.emeraldblast.p6.document_structure.cell.Cell import Cell
+
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.cell_container.MutableCellContainer import MutableCellContainer
 from com.emeraldblast.p6.document_structure.cell_container.UserFriendlyCellContainer import UserFriendlyCellContainer
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
-from com.emeraldblast.p6.document_structure.range.Range import Range
+
 from com.emeraldblast.p6.document_structure.range.address.RangeAddress import RangeAddress
 from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 from com.emeraldblast.p6.document_structure.util.ToJson import ToJson
@@ -27,6 +27,8 @@ from com.emeraldblast.p6.proto.DocProtos_pb2 import WorksheetProto
 
 if TYPE_CHECKING:
     from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
+    from com.emeraldblast.p6.document_structure.range.Range import Range
+    from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 
 
 class Worksheet(UserFriendlyCellContainer,

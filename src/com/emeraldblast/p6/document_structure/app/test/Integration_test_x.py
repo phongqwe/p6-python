@@ -187,4 +187,4 @@ class IntegrationTest_test(unittest.TestCase):
             print(data)
 
         self.testEnv.notifListener.addReactorCB(P6Events.Range.RangeToClipBoard.event, cb)
-        self.b1.getWorksheet("Sheet1").range("@A1:B3").copyToClipboard()
+        self.b1.getWorksheet("Sheet1").range("@A1:B3").copyToClipboardAsFullCSV()

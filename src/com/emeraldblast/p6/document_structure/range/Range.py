@@ -1,6 +1,7 @@
 from abc import ABC
 from typing import Any, Callable, TYPE_CHECKING
 
+import pyperclip
 from pandas import DataFrame
 
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
@@ -10,7 +11,7 @@ from com.emeraldblast.p6.document_structure.cell_container.MutableCellContainer 
 from com.emeraldblast.p6.document_structure.cell_container.UserFriendlyCellContainer import UserFriendlyCellContainer
 from com.emeraldblast.p6.document_structure.range.address.RangeAddress import RangeAddress
 from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
-
+# import pyperclip
 if TYPE_CHECKING:
     from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
@@ -44,7 +45,8 @@ class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
             rowArray = []
             for c in range(firstCol, lastCol + 1):
                 if self.hasCellAtIndex(c, r):
-                    rowArray.append(extractValueFunction(self.getCell(CellAddresses.fromColRow(c, r)).rootCell))
+                    cell = self.getCell(CellAddresses.fromColRow(c, r)).rootCell
+                    rowArray.append(extractValueFunction(cell))
                 else:
                     rowArray.append(None)
             if len(rowArray) != 0:
@@ -61,31 +63,51 @@ class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
         else:
             return None
 
-    def toCopiableArray(self):
-        """:return a 2d array for copy-paste operation if possible, return None other wise"""
-        usedRange = self.usedRangeAddress
-        if usedRange:
-            def extractSourceValue(cell: Cell):
-                return cell.sourceValue
+    def toFullArray(self):
+        """:return a 2d array containing every cell in this range"""
+        return self._toArray(self.rangeAddress, self.__extractCellValue)
 
-            return self._toArray(usedRange, extractSourceValue)
+    @staticmethod
+    def __extractCellValue(cell: Cell):
+        return cell.value
+
+    def toUsedValueArray(self):
+        """
+        Note: this contains only contains non-empty cell
+        :return a 2d array of values in cell
+        """
+        urange = self.usedRangeAddress
+        if urange:
+            return self._toArray(urange, self.__extractCellValue)
         else:
             return []
 
-    def toValueArray(self):
-        """:return a 2d array of values in cell"""
-
-        # todo this is slow as hell, improve it
-
-        def extractCellValue(cell: Cell):
-            return cell.value
-
-        return self._toArray(self.rangeAddress, extractCellValue)
-
-    def copyToClipboard(self):
+    def copyToClipboardAsFullCSV(self):
         """convert this range into a data frame and copy that data frame into the clipboard"""
-        df = DataFrame.from_records(self.toCopiableArray())
+        df = DataFrame.from_records(self.toFullArray())
         df.to_clipboard(excel = True, index = False, header = None)
+
+    def copyToClipboardAsProto(self):
+        """ convert this to RangeCopyProto string bytes, then move it to clipboard using pyperclip"""
+        from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeCopy import \
+            RangeCopy
+        copyObj = RangeCopy(
+            rangeId = self.id,
+            cells = self.cells
+        )
+        protoBytes = copyObj.toProtoBytes()
+        pyperclip.copy(protoBytes)
+
+
+    @property
+    def id(self):
+        from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeId import \
+            RangeId
+        return RangeId(
+            rangeAddress = self.rangeAddress,
+            workbookKey = self.worksheet.workbook.workbookKey,
+            worksheetName = self.worksheet.name
+        )
 
     @property
     def firstRow(self) -> int:

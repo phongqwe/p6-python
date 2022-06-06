@@ -1,4 +1,4 @@
-from typing import Any, Callable
+from typing import Any, Callable, TYPE_CHECKING
 
 from com.emeraldblast.p6.document_structure.app.GlobalScope import getGlobals
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
@@ -12,8 +12,8 @@ from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator
 from com.emeraldblast.p6.document_structure.util.Util import default
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
-from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 from com.emeraldblast.p6.proto.DocProtos_pb2 import CellProto
+from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
 
 class DataCell(Cell):
@@ -119,7 +119,7 @@ class DataCell(Cell):
         cellProto.value = str(self.bareValue)
         cellProto.script = default(self.__script, "")
         cellProto.formula = default(self.__formula, "")
-        cellProto.isObject = type(self.__value) not in DataCell.textualType
+        cellProto.isObject = (type(self.__value) not in DataCell.textualType) and self.__value is not None
         return cellProto
 
     @property

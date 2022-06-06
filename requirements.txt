@@ -5,3 +5,4 @@ jupyterlab==3.3.2
 jupyter_console
 dependency-injector
 pandas == 1.4.2
+pyperclip

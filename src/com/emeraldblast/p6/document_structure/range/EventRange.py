@@ -56,8 +56,8 @@ class EventRange(RangeWrapper):
             )
             self.__onRangeEvent(data)
 
-    def copyToClipboard(self):
-        self.rootRange.copyToClipboard()
+    def copyToClipboardAsFullCSV(self):
+        self.rootRange.copyToClipboardAsFullCSV()
         eventData = EventData(
             event = P6Events.Range.RangeToClipBoard.event,
             isError = False,
