@@ -13,8 +13,9 @@ class ProtoCopier_ProtoPaster_test(unittest.TestCase):
         copier.copyRangeToClipboard(rng)
         #
         paster = ProtoPaster()
-        out = paster.pasteRange()
-        self.assertEqual(rng.toRangeCopy(),out)
+        outRs = paster.pasteRange()
+        self.assertTrue(outRs.isOk())
+        self.assertEqual(rng.toRangeCopy(),outRs.value)
 
 
 if __name__ == '__main__':

@@ -11,6 +11,9 @@ from com.emeraldblast.p6.document_structure.cell_container.UserFriendlyCellConta
 
 from com.emeraldblast.p6.document_structure.range.address.RangeAddress import RangeAddress
 from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
+from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
+from com.emeraldblast.p6.document_structure.util.result.Result import Result
+
 if TYPE_CHECKING:
     from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
@@ -98,11 +101,11 @@ class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
         df = DataFrame.from_records(self.toStrictArray())
         df.to_clipboard(excel = True, index = False, header = None)
 
-    def copyToClipboardAsProto(self):
+    def copyToClipboardAsProto(self) -> Result[None,ErrorReport]:
         """ convert this to RangeCopyProto proto bytes, then copy it to clipboard"""
         from com.emeraldblast.p6.document_structure.copy_paste.Copiers import Copiers
         copier = Copiers.pandasProtoCopier
-        copier.copyRangeToClipboard(self)
+        return copier.copyRangeToClipboard(self)
 
 
     @property

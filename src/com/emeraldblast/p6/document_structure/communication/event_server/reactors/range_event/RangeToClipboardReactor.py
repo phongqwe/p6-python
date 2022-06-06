@@ -24,7 +24,9 @@ class RangeToClipboardReactor(BaseEventReactor[bytes, RangeToClipboardResponse])
         getRangeRs = self.rangeGetter(request.rangeId)
         if getRangeRs.isOk():
             targetRange = getRangeRs.value.rootRange
-            targetRange.copyToClipboardAsProto()
+            copyRs = targetRange.copyToClipboardAsProto()
+            if copyRs.isErr():
+                rt.errorIndicator = ErrorIndicator.error(copyRs.err)
         else:
             rt.errorIndicator = ErrorIndicator.error(getRangeRs.err)
 
