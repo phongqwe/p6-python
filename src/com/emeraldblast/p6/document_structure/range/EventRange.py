@@ -11,6 +11,8 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.r
 from com.emeraldblast.p6.document_structure.communication.notifier.eventData.AppEventData import EventData
 from com.emeraldblast.p6.document_structure.range.Range import Range
 from com.emeraldblast.p6.document_structure.range.RangeWrapper import RangeWrapper
+from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
+from com.emeraldblast.p6.document_structure.util.result.Result import Result
 
 
 class EventRange(RangeWrapper):
@@ -72,3 +74,26 @@ class EventRange(RangeWrapper):
             ).toProtoBytes()
         )
         self.__onRangeEvent(eventData)
+
+    def copyToClipboardAsProto(self) -> Result[None, ErrorReport]:
+        rs = self.rootRange.copyToClipboardAsProto()
+        errorIndicator = ErrorIndicator.noError()
+        if rs.isErr():
+            errorIndicator = ErrorIndicator.error(rs.err)
+        res = RangeToClipboardResponse(
+            errorIndicator = errorIndicator,
+            rangeId = RangeId(
+                rangeAddress = self.rangeAddress,
+                workbookKey = self.worksheet.workbook.workbookKey,
+                worksheetName = self.worksheet.name
+            ),
+            windowId = None
+        )
+
+        eventData = EventData(
+            event = P6Events.Range.RangeToClipBoard.event,
+            isError = False,
+            data =res.toProtoBytes()
+        )
+        self.__onRangeEvent(eventData)
+        return rs
