@@ -9,8 +9,8 @@ from com.emeraldblast.p6.proto.CellProtos_pb2 import CellUpdateRequestProto
 
 class CellUpdateRequest(ToProto[CellUpdateRequestProto],CanCheckEmpty):
     def __init__(self, workbookKey:WorkbookKey, worksheetName:str, cellAddress:CellAddress, value:str|None, formula:str|None):
-        self.formula:str = formula
-        self.value:str = value
+        self.formula:str|None = formula
+        self.value:str|None = value
         self.cellAddress = cellAddress
         self.worksheetName = worksheetName
         self.workbookKey = workbookKey

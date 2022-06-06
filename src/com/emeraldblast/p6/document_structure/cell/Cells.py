@@ -20,18 +20,28 @@ class Cells:
     """
     @staticmethod
     def fromProto(proto:CellProto)->Cell:
-        v = proto.value
-        try:
-            vf = float(v)
-            v = vf
-        except Exception as e:
-            pass
+        vParsed = None
+        if proto.HasField("value"):
+            v = proto.value
+            vParsed = v
+            if proto.isBoolLit:
+                if v == "True":
+                    vParsed = True
+                else:
+                    vParsed = False
+            if proto.isIntLit:
+                vParsed = int(v)
+            if proto.isFloatLit:
+                vParsed = float(v)
+
+        formula = None
+        if proto.isFormula and proto.HasField("formula"):
+            formula = proto.formula
 
         rt = DataCell(
             address = CellAddresses.fromProto(proto.address),
-            value = v,
-            formula = proto.formula,
-            script = proto.script,
+            value = vParsed,
+            formula = formula,
         )
         return rt
 

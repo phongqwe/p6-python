@@ -48,18 +48,16 @@ class DataCellTest(unittest.TestCase):
         c1 = DataCell(CellIndex(1, 1), 123, "formula", "script")
         o = c1.toProtoObj()
         self.assertEqual(c1.address.toProtoObj(), o.address)
-        self.assertEqual("123", o.displayValue)
-        self.assertEqual("script", o.script)
+        self.assertEqual("123", o.value)
         self.assertEqual("formula", o.formula)
 
     def test_toProtoObj2(self):
 
         c1 = DataCell(CellIndex(1, 1))
-        o = c1.toProtoObj()
-        self.assertEqual(c1.address.toProtoObj(), o.address)
-        self.assertEqual("", o.displayValue)
-        self.assertEqual("", o.script)
-        self.assertEqual("", o.formula)
+        proto = c1.toProtoObj()
+        self.assertEqual(c1.address.toProtoObj(), proto.address)
+        self.assertFalse(proto.HasField("value"))
+        self.assertFalse(proto.HasField("formula"))
         bt1 = c1.toProtoBytes()
         c2 = CellProto()
         c2.ParseFromString(bt1)

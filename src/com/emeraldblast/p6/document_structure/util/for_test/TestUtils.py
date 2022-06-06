@@ -6,6 +6,8 @@ import zmq
 
 from com.emeraldblast.p6.document_structure.app.App import App
 from com.emeraldblast.p6.document_structure.app.AppImp import AppImp
+from com.emeraldblast.p6.document_structure.file.loader.P6FileLoader import P6FileLoader
+from com.emeraldblast.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
@@ -30,11 +32,17 @@ def sampleWb(name):
     s2.cell((3, 3)).value = 233
     return wb
 
-def sampleApp()->App:
+def sampleApp(
+        saver: P6FileSaver|None = None,
+        loader: P6FileLoader|None = None,
+)->App:
     wb = sampleWb("Book1")
     wb2 = sampleWb("Book2")
     wb3 = sampleWb("Book3")
-    app = AppImp()
+    app = AppImp(
+        saver = saver,
+        loader = loader
+    )
     app.wbContainer.addWorkbook(wb)
     app.wbContainer.addWorkbook(wb2)
     app.wbContainer.addWorkbook(wb3)

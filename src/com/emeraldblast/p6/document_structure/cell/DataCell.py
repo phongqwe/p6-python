@@ -20,6 +20,7 @@ class DataCell(Cell):
     """
     A Cell that holds some data.
     """
+    scriptTemplate = "=SCRIPT()"
 
     @property
     def sourceValue(self) -> str:
@@ -49,7 +50,7 @@ class DataCell(Cell):
         self.__formula = newContent.formula
         self.__script = newContent.script
 
-    textualType = [int, float, str]
+    textualType = [int, float, str, bool]
 
     @property
     def bareScript(self) -> str:
@@ -92,11 +93,14 @@ class DataCell(Cell):
 
     @property
     def formula(self) -> str:
-        return self.__formula
+        if self.__formula == DataCell.scriptTemplate:
+            return f"=SCRIPT({self.__script})"
+        else:
+            return self.__formula
 
     @formula.setter
     def formula(self, newFormula):
-        if newFormula != self.__formula:
+        if newFormula != self.formula:
             self.__formula = newFormula
             if self.__translatorGetter is not None:
                 translator = self.__translatorGetter()
@@ -115,11 +119,21 @@ class DataCell(Cell):
     def toProtoObj(self) -> CellProto:
         cellProto = CellProto()
         cellProto.address.CopyFrom(self.address.toProtoObj())
-        cellProto.displayValue = self.displayValue
-        cellProto.value = str(self.bareValue)
-        cellProto.script = default(self.__script, "")
-        cellProto.formula = default(self.__formula, "")
-        cellProto.isObject = (type(self.__value) not in DataCell.textualType) and self.__value is not None
+
+        if self.__formula:
+            cellProto.formula = self.__formula
+            cellProto.isFormula = True
+            if self.__value:
+                cellProto.value = str(self.__value)
+        else:
+            cellProto.isFormula = False
+            if self.__value:
+                cellProto.value = str(self.__value)
+                cellProto.isBoolLit = isinstance(self.__value, bool)
+                cellProto.isStrLit = isinstance(self.__value, str)
+                cellProto.isIntLit = isinstance(self.__value,int)
+                cellProto.isFloatLit = isinstance(self.__value,float)
+
         return cellProto
 
     @property
@@ -177,7 +191,9 @@ class DataCell(Cell):
     def script(self, newScript: str):
         if newScript!= self.__script:
             self.__setScriptWithoutChangingFormula(newScript)
-            self.__formula = f"=SCRIPT({newScript})"
+            # self.__formula = f"=SCRIPT({newScript})"
+            # script formula will be generated on request, see formula getter for detail
+            self.__formula = "=SCRIPT()"
 
     def __setScriptWithoutChangingFormula(self, newScript):
         self.__script = newScript

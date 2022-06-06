@@ -48,7 +48,10 @@ class EventApp_test(unittest.TestCase):
 
     def test_saveEvent(self):
         """ensure that save notifier is trigger when a workbook is saved"""
-        app = sampleApp()
+        app = sampleApp(
+            saver = MagicMock(),
+            loader = MagicMock()
+        )
         onEvent = MagicMock()
         eventApp = EventApp(app, onEvent)
 
@@ -72,7 +75,10 @@ class EventApp_test(unittest.TestCase):
 
     def test_loadEvent(self):
         """ensure that save notifier is trigger when a workbook is saved"""
-        app = sampleApp()
+        app = sampleApp(
+            saver = MagicMock(),
+            loader = MagicMock()
+        )
         onEvent = MagicMock()
         eventApp = EventApp(app, onEvent)
 

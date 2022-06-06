@@ -33,12 +33,15 @@ class Bench(unittest.TestCase):
         # sdf = df
         # sdf.to_clipboard(index = False, header = None)
         # print('original: {:0.2f} bytes'.format(sdf.memory_usage().sum() / 1e3))
-        z = pandas.read_clipboard(skip_blank_lines=False, header=None)
+        # z = pandas.read_clipboard(skip_blank_lines=False, header=None)
         # z = pandas.read_csv("z.csv",skip_blank_lines=False, header=None)
         # print('readback: {:0.2f} bytes'.format(z.memory_usage().sum() / 1e3))
-        print(z.shape)
-        print(z)
+        # print(z.shape)
+        # print(z)
         # pyperclip.copy("ABC")
+
+        q = True
+        print(True)
 
 
 

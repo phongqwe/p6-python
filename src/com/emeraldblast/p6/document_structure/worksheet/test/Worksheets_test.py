@@ -22,15 +22,14 @@ class Worksheets_test(unittest.TestCase):
         a1.address.CopyFrom(CellAddresses.fromLabel("@A1").toProtoObj())
         a1.value = "123"
 
-        x12 = CellProto()
+        x12Proto = CellProto()
 
-        x12.address.CopyFrom(CellAddresses.fromLabel("@X12").toProtoObj())
-        x12.value = "a string"
-        x12.formula = "formula x12"
-        x12.script = "script x12"
+        x12Proto.address.CopyFrom(CellAddresses.fromLabel("@X12").toProtoObj())
+        x12Proto.value = "a string"
+        x12Proto.formula = "formula x12"
 
         wsProto.cell.extend([
-            a1, x12
+            a1, x12Proto
         ])
 
         ws: Worksheet = Worksheets.fromProto(wsProto, MagicMock())

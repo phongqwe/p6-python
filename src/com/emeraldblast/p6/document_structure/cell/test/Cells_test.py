@@ -17,13 +17,12 @@ class Cells_test(unittest.TestCase):
             address = address.toProtoObj(),
             value = "123qwe",
             formula = "formula z",
-            script = "script x"
+            isFormula = True,
         )
 
         cell = Cells.fromProto(proto)
         self.assertEqual(address, cell.address)
         self.assertEqual(proto.formula, cell.formula)
-        self.assertEqual(proto.script, cell.script)
         self.assertEqual(proto.value, cell.bareValue)
 
     def test_FromProto(self):
@@ -33,13 +32,12 @@ class Cells_test(unittest.TestCase):
         proto.address.CopyFrom(address.toProtoObj())
         proto.value="123"
         proto.formula= "formula z"
-        proto.script= "script x"
+        proto.isFormula = True
 
         cell = Cells.fromProto(proto)
         self.assertEqual(address,cell.address)
         self.assertEqual(proto.formula,cell.bareFormula)
-        self.assertEqual(proto.script,cell.bareScript)
-        self.assertEqual(123, cell.bareValue)
+        self.assertEqual("123", cell.bareValue)
 
     def test_CreateCellFromJson(self):
         cellJson = CellJson("value", "script", "formula", CellAddressJson(12, 33))

@@ -18,7 +18,6 @@ class Workbooks_test(unittest.TestCase):
                     address = CellAddresses.fromLabel("@C23").toProtoObj(),
                     value = "123qwe",
                     formula = "formula z",
-                    script = "script x"
                 ),
                 CellProto(
                     address = CellAddresses.fromLabel("@N5").toProtoObj(),

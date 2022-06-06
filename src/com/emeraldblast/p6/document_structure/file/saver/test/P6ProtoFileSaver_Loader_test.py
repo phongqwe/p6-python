@@ -32,7 +32,6 @@ class P6ProtoFileSaver_test(unittest.TestCase):
                     address = CellAddresses.fromLabel("@C23").toProtoObj(),
                     value = "123qwe",
                     formula = "formula z",
-                    script = "script x"
                 ),
                 CellProto(
                     address = CellAddresses.fromLabel("@N5").toProtoObj(),
@@ -80,10 +79,10 @@ class P6ProtoFileSaver_test(unittest.TestCase):
         self.assertTrue(rs.isErr())
 
 
-    def tearDown(self) -> None:
-        super().tearDown()
-        if self.filePath.exists():
-            os.remove(self.filePath)
+    # def tearDown(self) -> None:
+    #     super().tearDown()
+    #     if self.filePath.exists():
+    #         os.remove(self.filePath)
 
 
 if __name__ == '__main__':

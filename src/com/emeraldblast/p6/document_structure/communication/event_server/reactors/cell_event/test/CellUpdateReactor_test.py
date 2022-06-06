@@ -36,28 +36,6 @@ class CellUpdateReactor_test(unittest.TestCase):
         self.wbGetter = wbGetter
 
 
-    # def test_Bug(self):
-    #     proto = CellUpdateRequestProto(
-    #         workbookKey = WorkbookKeys.fromNameAndPath("b1.txt",                                               "/home/abc/Documents/gits/project2/p6/b1.txt").toProtoObj(),
-    #         worksheetName = "Sheet1",
-    #         cellAddress = CellAddresses.fromLabel("@B4").toProtoObj(),
-    #         value = b'123',
-    #         formula = None
-    #     )
-    #
-    #     wb = WorkbookImp("b1.txt",Path("/home/abc/Documents/gits/project2/p6/b1.txt"))
-    #     s1 = wb.createNewWorksheet("Sheet1")
-    #     s2 = wb.createNewWorksheet("Sheet2")
-    #
-    #     def wbGetter(identity):
-    #         return Ok(wb)
-    #
-    #     reactor = CellUpdateReactor("id", wbGetter)
-    #     o = reactor.react(proto.SerializeToString())
-    #     print(o)
-
-
-
     def test_OkBlankContent(self):
         reactor = CellUpdateReactor("id", self.wbGetter)
 
@@ -131,7 +109,7 @@ class CellUpdateReactor_test(unittest.TestCase):
             workbookKey = self.wb.workbookKey,
             worksheetName = "Sheet1",
             cellAddress = CellAddresses.fromRowCol(1, 1),
-            value = "", formula = "=SCRIPT(1+2)"
+            value = None, formula = "=SCRIPT(1+2)"
         )
         outObj = reactor.react(request.toProtoBytes())
         self.assertFalse(outObj.isError)
@@ -140,7 +118,7 @@ class CellUpdateReactor_test(unittest.TestCase):
         outProto = (outObj.newWorkbook.toProtoObj())
         print(outProto)
         self.assertEqual(3, outObj.newWorkbook.getWorksheetOrNone("Sheet1").cell((1, 1)).value)
-        self.assertEqual("3", outProto.worksheet[0].cell[0].displayValue)
+        self.assertEqual("3", outProto.worksheet[0].cell[0].value)
 
 
 if __name__ == '__main__':

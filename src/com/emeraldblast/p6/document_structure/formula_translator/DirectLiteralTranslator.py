@@ -10,10 +10,15 @@ class DirectLiteralTranslator(FormulaTranslator):
     """
     This translator handles literal input such as number, string
     """
-    strPattern = re.compile("^\".*\"$",
-                            re.IGNORECASE | re.DOTALL | re.MULTILINE | re.UNICODE)
+
+    stringPattern = re.compile("^\".*\"$",
+                               re.IGNORECASE | re.DOTALL | re.MULTILINE | re.UNICODE)
 
     def translate(self, formula: str) -> Result[str,ErrorReport]:
+        """
+        :param formula:
+        :return if the original formula is a number, return it. if it is a string, put it in a double quote and return the new string. Otherwise, return error obj
+        """
         i = None
 
         try:
@@ -24,7 +29,7 @@ class DirectLiteralTranslator(FormulaTranslator):
         if i is not None:
             return Ok(formula)
         else:
-            isStringLiteral = DirectLiteralTranslator.strPattern.fullmatch(formula) is not None
+            isStringLiteral = DirectLiteralTranslator.stringPattern.fullmatch(formula) is not None
             if isStringLiteral:
                 return Ok("\"\"{f}\"\"".format(f=formula))
             else:
