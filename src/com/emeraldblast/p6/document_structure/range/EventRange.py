@@ -9,7 +9,7 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.c
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.range_to_clipboard.RangeToClipboardResponse import \
     RangeToClipboardResponse
-from com.emeraldblast.p6.document_structure.communication.notifier.eventData.AppEventData import EventData
+from com.emeraldblast.p6.document_structure.communication.notifier.eventData.EventData import EventData
 from com.emeraldblast.p6.document_structure.range.Range import Range
 from com.emeraldblast.p6.document_structure.range.RangeWrapper import RangeWrapper
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
@@ -50,14 +50,14 @@ class EventRange(RangeWrapper):
         rt = list(map(lambda c: self.__makeEventCell(c), cs))
         return rt
 
-    def reRun(self):
-        self.rootRange.reRun()
-        if self.__onRangeEvent is not None:
-            data = EventData(
-                event = P6Events.Range.ReRun.event,
-                isError = False
-            )
-            self.__onRangeEvent(data)
+    # def reRun(self):
+    #     self.rootRange.reRun()
+    #     if self.__onRangeEvent is not None:
+    #         data = EventData(
+    #             event = P6Events.Range.ReRun.event,
+    #             isError = False
+    #         )
+    #         self.__onRangeEvent(data)
 
     def copyToClipboardAsFullCSV(self):
         self.rootRange.copyToClipboardAsFullCSV()
@@ -83,9 +83,9 @@ class EventRange(RangeWrapper):
             windowId = None
         )
 
-        eventData = EventData(
-            event = P6Events.Range.RangeToClipBoard.event,
-            isError = False,
-            data = res.toProtoBytes()
-        )
-        self.__onRangeEvent(eventData)
+        # eventData = EventData(
+        #     event = P6Events.Range.RangeToClipBoard.event,
+        #     isError = False,
+        #     data = res.toProtoBytes()
+        # )
+        self.__onRangeEvent(res.toEventData())

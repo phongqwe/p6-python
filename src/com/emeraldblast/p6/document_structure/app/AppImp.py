@@ -17,7 +17,7 @@ from com.emeraldblast.p6.document_structure.communication.event_server.reactors.
     EventServerReactors
 from com.emeraldblast.p6.document_structure.communication.notifier.InternalNotifierProvider import \
     InternalNotifierProvider
-from com.emeraldblast.p6.document_structure.communication.notifier.eventData.AppEventData import EventData
+from com.emeraldblast.p6.document_structure.communication.notifier.eventData.EventData import EventData
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorContainer import EventReactorContainer
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactorContainers import EventReactorContainers
 from com.emeraldblast.p6.document_structure.file.loader.P6FileLoader import P6FileLoader

@@ -4,7 +4,7 @@ from com.emeraldblast.p6.document_structure.communication.SocketProvider import 
 from com.emeraldblast.p6.document_structure.communication.event_server.P6Messages import P6Messages
 from com.emeraldblast.p6.document_structure.communication.event_server.msg.P6Message import P6Message
 from com.emeraldblast.p6.document_structure.communication.event_server.response.P6Response import P6Response
-from com.emeraldblast.p6.document_structure.communication.notifier.eventData.AppEventData import EventData
+from com.emeraldblast.p6.document_structure.communication.notifier.eventData.EventData import EventData
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactors import EventReactors
 from com.emeraldblast.p6.document_structure.communication.sender.MessageSender import MessageSender

@@ -12,7 +12,7 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.w
     DeleteMultiResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetResponse import \
     RenameWorksheetResponse
-from com.emeraldblast.p6.document_structure.communication.notifier.eventData.AppEventData import EventData
+from com.emeraldblast.p6.document_structure.communication.notifier.eventData.EventData import EventData
 from com.emeraldblast.p6.document_structure.range.EventRange import EventRange
 from com.emeraldblast.p6.document_structure.range.Range import Range
 from com.emeraldblast.p6.document_structure.range.address.RangeAddress import RangeAddress
@@ -96,32 +96,24 @@ class EventWorksheet(WorksheetWrapper):
 
     def renameRs(self, newName: str) -> Result[None, ErrorReport]:
         oldName = self.name
-        index = self.workbook.getIndexOfWorksheet(oldName)
         rs = self.rootWorksheet.renameRs(newName)
         if rs.isOk():
             self.__onWorksheetEvent(
-                EventData(
-                    event = P6Events.Worksheet.Rename.event,
-                    data = RenameWorksheetResponse(
-                        workbookKey = self.workbook.workbookKey,
-                        oldName = oldName,
-                        newName = newName,
-                        # index= index,
-                    )
-                )
+                RenameWorksheetResponse(
+                    workbookKey = self.workbook.workbookKey,
+                    oldName = oldName,
+                    newName = newName,
+                ).toEventData()
             )
         else:
             self.__onWorksheetEvent(
-                EventData(
-                    event = P6Events.Worksheet.Rename.event,
-                    data = RenameWorksheetResponse(
-                        workbookKey = self.workbook.workbookKey,
-                        oldName = oldName,
-                        newName = newName,
-                        isError = True,
-                        errorReport = rs.err
-                    )
-                )
+                RenameWorksheetResponse(
+                    workbookKey = self.workbook.workbookKey,
+                    oldName = oldName,
+                    newName = newName,
+                    isError = True,
+                    errorReport = rs.err
+                ).toEventData()
             )
         return rs
 
@@ -139,12 +131,7 @@ class EventWorksheet(WorksheetWrapper):
             delResponse.isError = True
             delResponse.errorReport = delRs.err
 
-        eventData = EventData(
-            event = P6Events.Worksheet.DeleteCell.event,
-            data = delResponse
-        )
-
-        self.__onWorksheetEvent(eventData)
+        self.__onWorksheetEvent(delResponse.toEventData())
         return delRs
 
     # TODO test this
@@ -159,10 +146,7 @@ class EventWorksheet(WorksheetWrapper):
         else:
             eventResponse.errorReport = delRs.err
 
-        self.__onWorksheetEvent(EventData(
-            event = P6Events.Worksheet.DeleteMulti.event,
-            data = eventResponse
-        ))
+        self.__onWorksheetEvent(eventResponse.toEventData())
         return delRs
 
     

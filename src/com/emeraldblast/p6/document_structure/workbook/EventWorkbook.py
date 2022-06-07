@@ -5,7 +5,7 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.a
     SetActiveWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.DeleteWorksheetResponse import \
     DeleteWorksheetResponse
-from com.emeraldblast.p6.document_structure.communication.notifier.eventData.AppEventData import EventData
+from com.emeraldblast.p6.document_structure.communication.notifier.eventData.EventData import EventData
 from com.emeraldblast.p6.document_structure.communication.reactor import EventReactorContainer
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
@@ -96,26 +96,24 @@ class EventWorkbook(WorkbookWrapper):
         if rs.isOk():
             name = rs.value.name
 
-        wbEventData = EventData(
-            event = P6Events.Workbook.CreateNewWorksheet.event)
         if rs.isOk():
             newWorksheet = rs.value
             if self.__onWorkbookEvent is not None:
-                wbEventData.data = P6Events.Workbook.CreateNewWorksheet.Response(self.workbookKey, name)
-                self.__onWorkbookEvent(wbEventData)
+                res = P6Events.Workbook.CreateNewWorksheet.Response(self.workbookKey, name)
+                self.__onWorkbookEvent(res.toEventData())
             return Ok(self.__wrapInEventWorksheet(newWorksheet))
         else:
             if self.__onWorkbookEvent is not None:
                 errReport: ErrorReport = rs.err
-                wbEventData.data = P6Events.Workbook.CreateNewWorksheet.Response(self.workbookKey, name, True,
-                                                                                 errReport)
-                self.__onWorkbookEvent(wbEventData)
+                res = P6Events.Workbook.CreateNewWorksheet.Response(self.workbookKey, name, True,
+                                                                    errReport)
+                self.__onWorkbookEvent(res.toEventData())
             return rs
 
-    def reRun(self):
-        self.rootWorkbook.reRun()
-        if self.__onWorkbookEvent is not None:
-            self.__onWorkbookEvent(EventData(P6Events.Workbook.ReRun.event))
+    # def reRun(self):
+    #     self.rootWorkbook.reRun()
+    #     if self.__onWorkbookEvent is not None:
+    #         self.__onWorkbookEvent(EventData(P6Events.Workbook.ReRun.event))
 
     def __wrapInEventWorksheet(self, sheet: Worksheet) -> Worksheet:
         def onRangeEvent(data: EventData):
@@ -141,20 +139,16 @@ class EventWorkbook(WorkbookWrapper):
         rs = self._iwb.deleteWorksheetByNameRs(sheetName)
         response = DeleteWorksheetResponse(
             workbookKey = self.workbookKey,
-            # targetWorksheet = [sheetName],
             isError = rs.isErr()
         )
 
-        eventData = EventData(
-            event = P6Events.Workbook.DeleteWorksheet.event,
-            data = response
-        )
         if rs.isOk():
             response.targetWorksheet = sheetName
 
         if rs.isErr():
             response.errorReport = rs.err
-        self.__onWorkbookEvent(eventData)
+
+        self.__onWorkbookEvent(response.toEventData())
         return rs
 
     def deleteWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
@@ -163,15 +157,11 @@ class EventWorkbook(WorkbookWrapper):
             workbookKey = self.workbookKey,
             isError = rs.isErr()
         )
-        eventData = EventData(
-            event = P6Events.Workbook.DeleteWorksheet.event,
-            data = response
-        )
         if rs.isOk():
             response.targetWorksheet = rs.value.name
         if rs.isErr():
             response.errorReport = rs.err
-        self.__onWorkbookEvent(eventData)
+        self.__onWorkbookEvent(response.toEventData())
         return rs
 
     def setActiveWorksheetRs(self, indexOrName: Union[int, str]) -> Result[Worksheet, ErrorReport]:
@@ -188,9 +178,5 @@ class EventWorkbook(WorkbookWrapper):
             response.isError = True
             response.errorReport = rs.err
 
-        # eventData = EventData(
-        #     event = P6Events.App.SetActiveWorksheet.event,
-        #     data = response
-        # )
         self.__onEvent(response.toEventData())
         return rs

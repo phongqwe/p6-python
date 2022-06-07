@@ -1,6 +1,6 @@
 from com.emeraldblast.p6.document_structure.communication.event.P6EventTable import P6EventTable
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.ToEventData import ToEventData
-from com.emeraldblast.p6.document_structure.communication.notifier.eventData.AppEventData import EventData
+from com.emeraldblast.p6.document_structure.communication.notifier.eventData.EventData import EventData
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Result import Result

@@ -3,10 +3,11 @@ from typing import Callable
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.WrapperCell import WrapperCell
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
-from com.emeraldblast.p6.document_structure.communication.notifier.eventData.AppEventData import EventData
+from com.emeraldblast.p6.document_structure.communication.notifier.eventData.EventData import EventData
 
 
 class EventCell(WrapperCell):
+
     """
     A cell wrapper that trigger event reactors at certain events
     """
@@ -28,12 +29,7 @@ class EventCell(WrapperCell):
                 isError=False,
                 workbookKey = self.workbook.workbookKey,
                 newWorkbook = self.workbook)
-            eventData = EventData(
-                event = P6Events.Cell.Update.event,
-                isError = False,
-                data = protoData
-            )
-            self.__onCellEvent(eventData)
+            self.__onCellEvent(protoData.toEventData())
 
     @WrapperCell.script.setter
     def script(self, newScript: str):
@@ -46,12 +42,7 @@ class EventCell(WrapperCell):
                 workbookKey = self.workbook.workbookKey,
                 newWorkbook = self.workbook
             )
-            eventData = EventData(
-                event = P6Events.Cell.Update.event,
-                isError = False,
-                data = protoData
-            )
-            self.__onCellEvent(eventData)
+            self.__onCellEvent(protoData.toEventData())
 
     @WrapperCell.formula.setter
     def formula(self, newFormula: str):
@@ -64,12 +55,7 @@ class EventCell(WrapperCell):
                 workbookKey = self.workbook.workbookKey,
                 newWorkbook = self.workbook
             )
-            eventData = EventData(
-                event = P6Events.Cell.Update.event,
-                isError=False,
-                data = protoData
-            )
-            self.__onCellEvent(eventData)
+            self.__onCellEvent(protoData.toEventData())
 
     def runScript(self, globalScope = None, localScope = None):
         if self.script is not None:
@@ -82,12 +68,7 @@ class EventCell(WrapperCell):
                     workbookKey = self.workbook.workbookKey,
                     newWorkbook = self.workbook
                 )
-                eventData = EventData(
-                    event = P6Events.Cell.Update.event,
-                    isError=False,
-                    data = protoData
-                )
-                self.__onCellEvent(eventData)
+                self.__onCellEvent(protoData.toEventData())
 
     def setScriptAndRun(self, newScript, globalScope = None, localScope = None):
         self._innerCell.script = newScript
@@ -104,12 +85,7 @@ class EventCell(WrapperCell):
                     workbookKey = self.workbook.workbookKey,
                     newWorkbook = self.workbook
                 )
-                eventData = EventData(
-                    event = P6Events.Cell.Update.event,
-                    isError = False,
-                    data = protoData
-                )
-                self.__onCellEvent(eventData)
+                self.__onCellEvent(protoData.toEventData())
 
     def reRun(self, globalScope = None, localScope = None):
         self._innerCell.clearScriptResult()
@@ -122,9 +98,4 @@ class EventCell(WrapperCell):
                 workbookKey = self.workbook.workbookKey,
                 newWorkbook = self.workbook
             )
-            eventData = EventData(
-                event = P6Events.Cell.Update.event,
-                isError = False,
-                data = protoData
-            )
-            self.__onCellEvent(eventData)
+            self.__onCellEvent(protoData.toEventData())

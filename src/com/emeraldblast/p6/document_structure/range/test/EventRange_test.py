@@ -9,7 +9,7 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.c
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.range_to_clipboard.RangeToClipboardResponse import \
     RangeToClipboardResponse
-from com.emeraldblast.p6.document_structure.communication.notifier.eventData.AppEventData import EventData
+from com.emeraldblast.p6.document_structure.communication.notifier.eventData.EventData import EventData
 from com.emeraldblast.p6.document_structure.range.EventRange import EventRange
 from com.emeraldblast.p6.document_structure.range.RangeImp import RangeImp
 from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import sampleWb
@@ -17,7 +17,6 @@ from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 
 
 class EventRangeTest(unittest.TestCase):
-
 
     def test_copyProtoToClipBoard(self):
         wb: Workbook = sampleWb("QWE")
@@ -27,7 +26,7 @@ class EventRangeTest(unittest.TestCase):
 
         def onRangeEvent(eventData: EventData):
             self.assertEqual(P6Events.Range.RangeToClipBoard.event, eventData.event)
-            res: RangeToClipboardResponse = RangeToClipboardResponse.fromProtoBytes(eventData.data)
+            res: RangeToClipboardResponse = RangeToClipboardResponse.fromProtoBytes(eventData.data.toProtoBytes())
             self.assertEqual(RangeId(
                 rangeAddress = r.rangeAddress,
                 workbookKey = wb.workbookKey,
@@ -50,7 +49,7 @@ class EventRangeTest(unittest.TestCase):
 
         def onRangeEvent(eventData: EventData):
             self.assertEqual(P6Events.Range.RangeToClipBoard.event, eventData.event)
-            res: RangeToClipboardResponse = RangeToClipboardResponse.fromProtoBytes(eventData.data)
+            res: RangeToClipboardResponse = RangeToClipboardResponse.fromProtoBytes(eventData.data.toProtoBytes())
             self.assertEqual(RangeId(
                 rangeAddress = r.rangeAddress,
                 workbookKey = wb.workbookKey,
@@ -90,10 +89,10 @@ class EventRangeTest(unittest.TestCase):
         self.assertEqual(oldA + len(er.cells), self.a)
 
         # reRun
-        er.reRun()
-        oldA = self.a
-        self.assertEqual(1, self.b)
-        self.assertEqual(oldA, self.a)
+        # er.reRun()
+        # oldA = self.a
+        # self.assertEqual(1, self.b)
+        # self.assertEqual(oldA, self.a)
 
         # getCell
         c1 = er.getCell(CellAddresses.fromLabel("@B2"))
