@@ -25,18 +25,6 @@ class EventData:
             eventData.data = rs.err.toProtoBytes()
         return eventData
 
-    # @staticmethod
-    # def fromToProto(event: P6Event, rs: ToProto):
-    #     eventData = EventData(
-    #         event = event,
-    #         isError = rs.isErr(),
-    #     )
-    #     if rs.isOk():
-    #         eventData.data = rs.value.toProtoBytes()
-    #     if rs.isErr():
-    #         eventData.data = rs.err.toProtoBytes()
-    #     return eventData
-
     def __eq__(self, other):
         if isinstance(other,EventData):
             sameEvent=self.event == other.event

@@ -29,7 +29,7 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.r
     RangeToClipboardRequest
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.range_to_clipboard.RangeToClipboardResponse import \
     RangeToClipboardResponse
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.CreateNewWorksheetData import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.CreateNewWorksheetResponse import \
     CreateNewWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.CreateNewWorksheetRequest import \
     CreateNewWorksheetRequest

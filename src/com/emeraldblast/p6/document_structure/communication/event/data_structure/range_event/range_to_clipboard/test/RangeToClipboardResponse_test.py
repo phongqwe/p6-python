@@ -1,5 +1,7 @@
 import unittest
 
+from com.emeraldblast.p6.document_structure.communication.event.P6EventTableImp import P6EventTableImp
+
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.common.ErrorIndicator import \
     ErrorIndicator
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
@@ -11,6 +13,22 @@ from com.emeraldblast.p6.proto.RangeProtos_pb2 import RangeToClipboardResponsePr
 
 
 class RangeToClipboardResponse_test(unittest.TestCase):
+
+    def test_toEventData(self):
+        o = RangeToClipboardResponse(
+            errorIndicator = ErrorIndicator.noError(),
+            rangeId = RangeId(
+                rangeAddress = RangeAddresses.fromLabel("@A1:B3"),
+                workbookKey = WorkbookKeys.fromNameAndPath(""),
+                worksheetName = "abc"
+            ),
+            windowId = "asd"
+        )
+
+        edt = o.toEventData()
+        self.assertEqual(P6EventTableImp.i().getEventForClazz(RangeToClipboardResponse),edt.event)
+        self.assertEqual(o, edt.data)
+
     def test_toProto(self):
         o = RangeToClipboardResponse(
             errorIndicator = ErrorIndicator.noError(),

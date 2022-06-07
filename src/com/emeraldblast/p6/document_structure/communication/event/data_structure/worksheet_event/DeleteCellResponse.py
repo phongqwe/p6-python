@@ -1,3 +1,5 @@
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.ToEventData import ToEventData
+
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
@@ -6,7 +8,7 @@ from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import Work
 from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import DeleteCellResponseProto
 
 
-class DeleteCellResponse(ToProto[DeleteCellResponseProto]):
+class DeleteCellResponse(ToEventData,ToProto[DeleteCellResponseProto]):
     def __init__(self, workbookKey: WorkbookKey, worksheetName: str, cellAddress: CellAddress,
                  workbook: Workbook = None, isError: bool = False, errorReport: ErrorReport = None):
         self.newWorkbook = workbook

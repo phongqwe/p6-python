@@ -1,10 +1,12 @@
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.ToEventData import ToEventData
+
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import RenameWorksheetResponseProto
 
 
-class RenameWorksheetResponse(ToProto[RenameWorksheetResponseProto]):
+class RenameWorksheetResponse(ToEventData,ToProto[RenameWorksheetResponseProto]):
     def __init__(self, workbookKey: WorkbookKey, oldName:str, newName:str,
                  # index:int=-1,
                  isError:bool = False, errorReport:ErrorReport|None = None):

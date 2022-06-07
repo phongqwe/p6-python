@@ -1,5 +1,6 @@
 import unittest
 
+from com.emeraldblast.p6.document_structure.communication.event import P6EventTableImp
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.DeleteWorksheetResponse import \
     DeleteWorksheetResponse
 from com.emeraldblast.p6.document_structure.workbook.WorkbookErrors import WorkbookErrors
@@ -7,6 +8,18 @@ from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import Wor
 
 
 class DeleteWorksheetResponse_test(unittest.TestCase):
+
+    def test_toEventData(self):
+        o = DeleteWorksheetResponse(
+            workbookKey = WorkbookKeys.fromNameAndPath("WB",None),
+            targetWorksheetList = "Sheet1",
+            isError = False,
+            errorReport = WorkbookErrors.WorksheetAlreadyExistReport("Name")
+        )
+        edt = o.toEventData()
+        self.assertEqual(P6EventTableImp.P6EventTableImp.i().getEventForClazz(DeleteWorksheetResponse),edt.event)
+        self.assertEqual(o,edt.data)
+
     def test_toProto(self):
         """ obj is converted correctly to a proto obj"""
         data = DeleteWorksheetResponse(

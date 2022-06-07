@@ -8,7 +8,7 @@ from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import Work
 from com.emeraldblast.p6.proto.AppEventProtos_pb2 import CloseWorkbookResponseProto
 
 
-class CloseWorkbookResponse(ToProto[CloseWorkbookResponseProto]):
+class CloseWorkbookResponse(ToEventData,ToProto[CloseWorkbookResponseProto]):
 
     def __init__(self, isError: bool, workbookKey: WorkbookKey | None, windowId: str | None,
                  errorReport: ErrorReport | None):

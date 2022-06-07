@@ -188,9 +188,9 @@ class EventWorkbook(WorkbookWrapper):
             response.isError = True
             response.errorReport = rs.err
 
-        eventData = EventData(
-            event = P6Events.App.SetActiveWorksheet.event,
-            data = response
-        )
-        self.__onEvent(eventData)
+        # eventData = EventData(
+        #     event = P6Events.App.SetActiveWorksheet.event,
+        #     data = response
+        # )
+        self.__onEvent(response.toEventData())
         return rs

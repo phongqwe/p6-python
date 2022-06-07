@@ -19,13 +19,13 @@ class EventP6FileLoader_test(unittest.TestCase):
         mockLoader = MagicMock()
         wb = WorkbookImp("file.txt", path = Path("folder/file.txt"))
         mockLoader.loadRs = MagicMock(return_value = Ok(wb))
-        saver = EventP6FileLoader(
+        loader = EventP6FileLoader(
             loader = mockLoader,
             onLoad = cb
         )
 
         newPath = Path("folder/file.txt")
-        saver.loadRs(newPath)
+        loader.loadRs(newPath)
         mockLoader.loadRs.assert_called_once_with(newPath)
 
         eventData = LoadWorkbookResponse(

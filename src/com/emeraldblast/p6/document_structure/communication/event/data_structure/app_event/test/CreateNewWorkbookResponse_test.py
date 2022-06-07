@@ -1,12 +1,23 @@
 import unittest
 
 from com.emeraldblast.p6.document_structure.app.errors.AppErrors import AppErrors
+from com.emeraldblast.p6.document_structure.communication.event import P6EventTableImp
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.app_event.CreateNewWorkbookResponse import \
     CreateNewWorkbookResponse
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
 
 
 class CreateNewWorkbookResponse_test(unittest.TestCase):
+
+    def test_toEventData(self):
+        o = CreateNewWorkbookResponse(
+            isError = False
+        )
+        edt = o.toEventData()
+        self.assertEqual(P6EventTableImp.P6EventTableImp.i().getEventForClazz(CreateNewWorkbookResponse),edt.event)
+        self.assertEqual(o,edt.data)
+
+
     def test_toProtoObj(self):
         o = CreateNewWorkbookResponse(
             isError = False

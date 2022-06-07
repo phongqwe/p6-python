@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.ToEventData import ToEventData
+
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.common.ErrorIndicator import \
     ErrorIndicator
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
@@ -8,7 +10,7 @@ from com.emeraldblast.p6.proto.RangeProtos_pb2 import RangeToClipboardResponsePr
 
 
 @dataclass
-class RangeToClipboardResponse(ToProto[RangeToClipboardResponseProto]):
+class RangeToClipboardResponse(ToEventData,ToProto[RangeToClipboardResponseProto]):
 
     def __init__(self, errorIndicator: ErrorIndicator, rangeId: RangeId, windowId: str | None):
         self.windowId = windowId

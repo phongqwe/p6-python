@@ -15,5 +15,5 @@ class ToEventData(ToProto,ABC):
         return EventData(
             event = eventTable.getEventFor(self),
             isError = False,
-            data = self.toProtoBytes()
+            data = self
         )

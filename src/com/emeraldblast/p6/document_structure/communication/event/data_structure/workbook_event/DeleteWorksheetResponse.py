@@ -1,3 +1,5 @@
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.ToEventData import ToEventData
+
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
@@ -5,7 +7,7 @@ from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import Wor
 from com.emeraldblast.p6.proto.WorkbookProtos_pb2 import DeleteWorksheetResponseProto
 
 
-class DeleteWorksheetResponse(ToProto[DeleteWorksheetResponseProto]):
+class DeleteWorksheetResponse(ToEventData,ToProto[DeleteWorksheetResponseProto]):
 
     def __init__(
             self,

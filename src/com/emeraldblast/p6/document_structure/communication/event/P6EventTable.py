@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import Any
+from typing import Any, Type
 
 from com.emeraldblast.p6.document_structure.communication.event.P6Event import P6Event
 
@@ -9,6 +9,9 @@ from com.emeraldblast.p6.document_structure.communication.event.P6Event import P
 
 class P6EventTable(ABC):
     def getEventFor(self, something: Any) -> P6Event:
+        raise NotImplementedError()
+
+    def getEventForClazz(self, clazz: Type) -> P6Event:
         raise NotImplementedError()
 
 

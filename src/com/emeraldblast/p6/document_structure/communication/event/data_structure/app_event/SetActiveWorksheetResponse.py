@@ -1,3 +1,4 @@
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.ToEventData import ToEventData
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
@@ -5,7 +6,7 @@ from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import Wor
 from com.emeraldblast.p6.proto.AppEventProtos_pb2 import SetActiveWorksheetResponseProto
 
 
-class SetActiveWorksheetResponse(ToProto[SetActiveWorksheetResponseProto]):
+class SetActiveWorksheetResponse(ToEventData,ToProto[SetActiveWorksheetResponseProto]):
 
     def __init__(self, workbookKey: WorkbookKey=None, worksheetName: str="",isError:bool=False, errorReport:ErrorReport=None):
         self.errorReport = errorReport
