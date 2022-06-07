@@ -22,9 +22,26 @@ class AppErrors:
                     self.index=nameOrIndexOrKey
                 if isinstance(nameOrIndexOrKey, WorkbookKey):
                     self.key = nameOrIndexOrKey
+            def __str__(self):
+                if self.index is not None:
+                    return "Workbook at index: "+str(self.index)
+                if self.name is not None:
+                    return "Workbook named "+ self.name
+                if self.key is not None:
+                    return "Workbook at key:\n"+str(self.key)
+                return ""
 
-    class WorkbookNotExist(ErrorReport):
+        @staticmethod
+        def report(nameOrIndexOrKey: Union[str, int, WorkbookKey])->ErrorReport:
+            data = AppErrors.WorkbookAlreadyExist.Data(nameOrIndexOrKey)
+            return ErrorReport(
+                header = ErrorHeader(errPrefix()+"1",f"workbook already exist.\n{str(data)}"),
+                data = data
+            )
+
+    class WorkbookNotExist:
         header = ErrorHeader(errPrefix() + "0", "workbook does not exist")
+
         class Data(ReportJsonStrMaker):
             def __init__(self, nameOrIndexOrKey: Union[str, int, WorkbookKey]):
                 self.wbName = None
@@ -47,8 +64,12 @@ class AppErrors:
                 return ""
             def reportJsonStr(self):
                 return json.dumps(self.__dict__)
-        def __init__(self,nameOrIndexOrKey: Union[str, int, WorkbookKey]):
-            super().__init__(
-                header = AppErrors.WorkbookNotExist.header,
-                data = AppErrors.WorkbookNotExist.Data(nameOrIndexOrKey)
+
+        @staticmethod
+        def report(nameOrIndexOrKey: Union[str, int, WorkbookKey] = ""):
+            data = AppErrors.WorkbookNotExist.Data(nameOrIndexOrKey)
+            header = ErrorHeader(errPrefix() + "0", f"workbook does not exist.\n{str(data)}")
+            return ErrorReport(
+                header = header,
+                data = data
             )

@@ -19,7 +19,7 @@ class ProtoPaster(Paster):
             protoBytes=ast.literal_eval(protoBytesStr)
             return Ok(RangeCopy.fromProtoBytes(protoBytes))
         except Exception as e:
-            return Err(CopyErrors.UnableToPasteRange())
+            return Err(CopyErrors.UnableToPasteRange.report())
 
     def pasteText(self) -> Result[None, ErrorReport]:
         # todo implement this

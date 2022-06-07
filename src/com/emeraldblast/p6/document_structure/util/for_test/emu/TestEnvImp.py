@@ -48,6 +48,11 @@ class TestEnvImp:
         from com.emeraldblast.p6.document_structure.app.GlobalScope import setIPythonGlobals
         from com.emeraldblast.p6.document_structure.app.TopLevel import startApp, getApp
         from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import findNewSocketPort
+        from com.emeraldblast.p6.document_structure.app.worksheet_functions.WorksheetFunctions import WorksheetFunctions
+        from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
+        from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
+        import zmq
+
         local = locals()
         globals()
 

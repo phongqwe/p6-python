@@ -26,6 +26,14 @@ class P6FileSaverErrors:
                     "path": str(self.path)
                 })
 
+        @staticmethod
+        def report(path: Path, exception: Exception = None):
+            data = P6FileSaverErrors.UnableToAccessPath.Data(path, exception)
+            return ErrorReport(
+                header = P6FileSaverErrors.UnableToAccessPath.header.concatDescription(f":{str(path)}"),
+                data = data
+            )
+
     class UnableToWriteFile:
         header = ErrorHeader(errPrefix() + "1", "unable to write file")
 
@@ -38,9 +46,16 @@ class P6FileSaverErrors:
                 return json.dumps({
                     "path": str(self.path)
                 })
+        @staticmethod
+        def report(path: Path, exception: Exception = None):
+            data = P6FileSaverErrors.UnableToWriteFile.Data(path,exception)
+            return ErrorReport(
+                header = P6FileSaverErrors.UnableToWriteFile.header.concatDescription(f":{str(path)}"),
+                data = data
+            )
     class InvalidPath:
         @staticmethod
-        def errorReport(workbookKey:WorkbookKey):
+        def report(workbookKey:WorkbookKey):
             return ErrorReport(
                 header=ErrorHeader(
                     f"{errPrefix()}2", f"Can't save workbook {workbookKey.fileName} because the provided path is invalid/None"

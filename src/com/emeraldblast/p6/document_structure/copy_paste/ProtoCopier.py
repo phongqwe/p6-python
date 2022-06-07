@@ -15,5 +15,5 @@ class ProtoCopier(Copier):
             pyperclip.copy(str(protoBytes))
             return Ok(None)
         except Exception as e:
-            return Err(CopyErrors.UnableToCopyRange(rng.id))
+            return Err(CopyErrors.UnableToCopyRange.report(rng.id))
 

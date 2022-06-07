@@ -29,7 +29,7 @@ class CreateNewWorkbookResponse_test(unittest.TestCase):
         self.assertFalse(proto.HasField("windowId"))
 
     def test_toProtoObj_errorCase(self):
-        er = AppErrors.WorkbookNotExist("qbc")
+        er = AppErrors.WorkbookNotExist.report("qbc")
         o = CreateNewWorkbookResponse(
             isError = False,
             errorReport = er

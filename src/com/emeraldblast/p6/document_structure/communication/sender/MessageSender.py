@@ -33,10 +33,7 @@ class MessageSender:
         """
         if socket.type != zmq.REQ:
             return Err(
-                ErrorReport(
-                    header = MessageSenderErrors.WrongSocketType.header,
-                    data = MessageSenderErrors.WrongSocketType.Data(socket.type, zmq.REQ)
-                )
+                MessageSenderErrors.WrongSocketType.report(socket.type, zmq.REQ)
             )
         if socket is not None:
             socket.send(msg.toProtoBytes())
@@ -45,4 +42,4 @@ class MessageSender:
             if replyStr.lower() == "ok":
                 return Ok(None)
             else:
-                return Err(MessageSenderErrors.FailToSend("Fail to send: " + str(msg.toProtoObj())))
+                return Err(MessageSenderErrors.FailToSend.report("Fail to send: " + str(msg.toProtoObj())))

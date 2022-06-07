@@ -52,7 +52,7 @@ class EventServerImp(EventServer):
                         # no reactor for the request event -> return error
                         p6Res = P6Response(
                             header = p6Msg.header,
-                            data = EventServerErrors.NoReactorReport(p6Msg.header.eventType),
+                            data = EventServerErrors.NoReactorError.report(p6Msg.header.eventType),
                             status = P6Response.Status.ERROR
                         )
                         repSocket.send(p6Res.toProtoBytes())

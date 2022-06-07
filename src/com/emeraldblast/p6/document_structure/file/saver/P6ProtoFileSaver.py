@@ -25,7 +25,7 @@ class P6ProtoFileSaver(P6FileSaver):
             pass
         else:
             return Err(
-                P6FileSaverErrors.InvalidPath.errorReport(workbook.workbookKey)
+                P6FileSaverErrors.InvalidPath.report(workbook.workbookKey)
             )
 
         wb = workbook.makeSavableCopy()
@@ -49,19 +49,9 @@ class P6ProtoFileSaver(P6FileSaver):
             except Exception as e:
                 file.close()
                 return Err(
-                    ErrorReport(
-                        header = P6FileSaverErrors.UnableToWriteFile.header,
-                        data = P6FileSaverErrors.UnableToWriteFile.Data(
-                            path, e
-                        ),
-                    )
+                    P6FileSaverErrors.UnableToWriteFile.report(path, e)
                 )
         except Exception as e:
             return Err(
-                ErrorReport(
-                    header = P6FileSaverErrors.UnableToAccessPath.header,
-                    data = P6FileSaverErrors.UnableToAccessPath.Data(
-                        path, e
-                    ),
-                )
+                P6FileSaverErrors.UnableToAccessPath.report(path, e)
             )

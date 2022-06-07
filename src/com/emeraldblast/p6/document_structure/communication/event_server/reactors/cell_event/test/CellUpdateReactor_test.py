@@ -24,7 +24,7 @@ class CellUpdateReactor_test(unittest.TestCase):
 
         def wbGetterFail(identity):
             return Err(
-                AppErrors.WorkbookNotExist("invalidWB")
+                AppErrors.WorkbookNotExist.report("invalidWB")
             )
 
         self.wbGetter = wbGetter
@@ -51,7 +51,7 @@ class CellUpdateReactor_test(unittest.TestCase):
         self.assertEqual("", outObj.newWorkbook.getWorksheetOrNone("Sheet1").cell((1, 1)).displayValue)
 
     def test_invalidWB(self):
-        err = AppErrors.WorkbookNotExist("invalidWB")
+        err = AppErrors.WorkbookNotExist.report("invalidWB")
 
         def wbGetterFail(identity):
             return Err(err)
@@ -113,6 +113,26 @@ class CellUpdateReactor_test(unittest.TestCase):
         print(outProto)
         self.assertEqual(3, outObj.newWorkbook.getWorksheetOrNone("Sheet1").cell((1, 1)).value)
         self.assertEqual("3", outProto.worksheet[0].cell[0].value)
+
+
+    # def test_OkFormula2(self):
+    #     self.s1.cell((1,1)).value=123
+    #     self.s1.cell((1,2)).value=123
+    #     self.s1.cell((2,1)).formula = "=SUM(A1:A2)"
+    #     self.s1.reRun()
+    #     reactor = CellUpdateReactor("id", self.wbGetter)
+    #     request = P6Events.Cell.Update.Request(
+    #         workbookKey = self.wb.workbookKey,
+    #         worksheetName = "Sheet1",
+    #         cellAddress = CellAddresses.fromRowCol(2, 2),
+    #         value = "123", formula = None
+    #     )
+    #     outObj = reactor.react(request.toProtoBytes())
+    #     self.assertFalse(outObj.isError)
+    #     self.assertIsNone(outObj.errorReport)
+    #     self.assertIsNotNone(outObj.newWorkbook)
+    #     outProto = (outObj.newWorkbook.toProtoObj())
+    #     print(outProto)
 
 
 if __name__ == '__main__':

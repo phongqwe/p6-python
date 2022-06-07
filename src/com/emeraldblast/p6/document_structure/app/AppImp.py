@@ -85,7 +85,7 @@ class AppImp(BaseApp):
         self.__setupEventServerReactors()
         self.__setupEventEmitter()
 
-    def getRange(self, rangeId: RangeId)->Result[Range, ErrorReport]:
+    def getRange(self, rangeId: RangeId) -> Result[Range, ErrorReport]:
         getWbRs = self.getBareWorkbookRs(rangeId.workbookKey)
         if getWbRs.isOk():
             wb = getWbRs.value
@@ -97,6 +97,7 @@ class AppImp(BaseApp):
                 return Err(getWsRs.err)
         else:
             return Err(getWbRs.err)
+
     @property
     def rootApp(self) -> 'App':
         return self
@@ -114,7 +115,7 @@ class AppImp(BaseApp):
         er = self._eventServerReactors
 
         reactorForRange = {
-            P6Events.Range.RangeToClipBoard.event : er.rangeToClipboardReactor()
+            P6Events.Range.RangeToClipBoard.event: er.rangeToClipboardReactor()
         }
 
         reactorForWb = {
@@ -138,7 +139,7 @@ class AppImp(BaseApp):
             P6Events.App.SaveWorkbook.event: er.app.saveWorkbookReactor(),
             P6Events.App.LoadWorkbook.event: er.app.loadWbReactor(),
             P6Events.App.CreateNewWorkbook.event: er.app.createNewWorkbookReactor(),
-            P6Events.App.CloseWorkbook.event : er.app.closeWorkbookReactor()
+            P6Events.App.CloseWorkbook.event: er.app.closeWorkbookReactor()
         }
 
         d = {
@@ -212,19 +213,13 @@ class AppImp(BaseApp):
         rt = self._makeEventWb(self.__activeWorkbook)
         return rt
 
-
     def setActiveWorkbookRs(self, indexOrNameOrKey: Union[int, str, WorkbookKey]) -> Result[Workbook, ErrorReport]:
         wb = self.getWorkbookOrNone(indexOrNameOrKey)
         if wb is not None:
             self.__activeWorkbook = wb.rootWorkbook
             return Ok(self.__activeWorkbook)
         else:
-            return Err(
-                ErrorReport(
-                    header = AppErrors.WorkbookNotExist.header,
-                    data = AppErrors.WorkbookNotExist.Data(indexOrNameOrKey)
-                )
-            )
+            return Err(AppErrors.WorkbookNotExist.report(indexOrNameOrKey))
 
     @property
     def wbContainer(self) -> WorkbookContainer:
@@ -252,8 +247,5 @@ class AppImp(BaseApp):
             return Ok(eventNewWb)
         else:
             return Err(
-                ErrorReport(
-                    header = AppErrors.WorkbookAlreadyExist.header,
-                    data = AppErrors.WorkbookAlreadyExist.Data(name)
-                )
+                AppErrors.WorkbookAlreadyExist.report(name)
             )

@@ -17,3 +17,15 @@ Description: {errorDescription}
             return self.errorCode == other.errorCode
         else:
             return False
+
+    def updateDescription(self,newDescription:str)->'ErrorHeader':
+        return ErrorHeader(
+            errorCode = self.errorCode,
+            errorDescription = newDescription
+        )
+
+    def concatDescription(self,newDescription:str)->'ErrorHeader':
+        return ErrorHeader(
+            errorCode = self.errorCode,
+            errorDescription = self.errorDescription+newDescription
+        )

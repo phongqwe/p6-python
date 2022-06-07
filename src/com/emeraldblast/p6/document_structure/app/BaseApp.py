@@ -68,7 +68,7 @@ class BaseApp(App, ABC):
         if wb is not None:
             return Ok(wb.rootWorkbook)
         else:
-            return Err(AppErrors.WorkbookNotExist(key))
+            return Err(AppErrors.WorkbookNotExist.report(key))
 
     def createDefaultNewWorkbook(self, name: str | None = None) -> Workbook:
         createRs: Result[Workbook, ErrorReport] = self.createDefaultNewWorkbookRs(name)

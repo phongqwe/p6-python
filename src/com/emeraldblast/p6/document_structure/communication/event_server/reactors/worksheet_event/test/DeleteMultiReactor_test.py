@@ -43,7 +43,7 @@ class DeleteMultiReactor_test(unittest.TestCase):
             if wbKey == self.wb.workbookKey:
                 return Ok(self.wb)
             else:
-                return Err(AppErrors.WorkbookNotExist(wbKey))
+                return Err(AppErrors.WorkbookNotExist.report(wbKey))
         self.getWbOk =getWbOk
         self.reactor = DeleteMultiReactor(self.getWbOk)
 
@@ -76,7 +76,7 @@ class DeleteMultiReactor_test(unittest.TestCase):
         r.workbookKey.CopyFrom(invalidWbKey.toProtoObj())
         o = self.reactor.react(r.SerializeToString())
         self.__test_failCase(o)
-        self.assertTrue(isinstance(o.errorReport, AppErrors.WorkbookNotExist))
+        self.assertTrue(o.errorReport.isSameErr(AppErrors.WorkbookNotExist.report(invalidWbKey)))
         self.assertEqual(invalidWbKey,o.errorReport.data.wbKey)
 
 

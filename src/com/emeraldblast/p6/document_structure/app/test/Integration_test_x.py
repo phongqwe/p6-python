@@ -1,12 +1,18 @@
 import unittest
 
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateResponse import \
+    CellUpdateResponse
+
 from com.emeraldblast.p6.document_structure.app.TopLevel import *
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
+from com.emeraldblast.p6.document_structure.communication.event import P6EventTableImp
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateRequest import \
     CellUpdateRequest
 # these 2 imports must be keep for the formula script to be able to run
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.save_wb.SaveWorkbookRequest import \
+    SaveWorkbookRequest
 from com.emeraldblast.p6.document_structure.communication.event_server.P6Messages import P6Messages
 from com.emeraldblast.p6.document_structure.communication.event_server.response.P6Response import P6Response
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactors import EventReactors
@@ -16,7 +22,8 @@ from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import Wor
 from com.emeraldblast.p6.proto.AppEventProtos_pb2 import CreateNewWorkbookResponseProto, CloseWorkbookResponseProto
 from com.emeraldblast.p6.proto.P6MsgProtos_pb2 import P6MessageProto, P6MessageHeaderProto
 from com.emeraldblast.p6.proto.RangeProtos_pb2 import RangeToClipboardResponseProto, RangeToClipboardRequestProto
-from com.emeraldblast.p6.proto.WorkbookProtos_pb2 import CreateNewWorksheetResponseProto, SaveWorkbookRequestProto
+from com.emeraldblast.p6.proto.WorkbookProtos_pb2 import CreateNewWorksheetResponseProto, SaveWorkbookRequestProto, \
+    WorkbookUpdateCommonResponseProto
 from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import RenameWorksheetResponseProto
 
 
@@ -29,6 +36,8 @@ class IntegrationTest_test(unittest.TestCase):
         self.testEnv.startEnv()
         self.b1 = self.testEnv.app.getWorkbook("Book1")
         self.z = False
+        self.s1 = self.b1.getWorksheet(0)
+        self.eventTable = P6EventTableImp.P6EventTableImp.i()
 
     def tearDown(self) -> None:
         self.testEnv.stopAll()
@@ -51,7 +60,6 @@ class IntegrationTest_test(unittest.TestCase):
 
         rec = self.testEnv.sendRequestToEventServer(saveReq.SerializeToString())
         print(rec.toProtoObj())
-
 
     def test_scenario_changeUpdateCell(self):
         """
@@ -84,9 +92,7 @@ class IntegrationTest_test(unittest.TestCase):
 
         self.b1.createNewWorksheet("SheetX")
 
-
     def test_rename(self):
-
         def onReceive(data):
             dataObj = RenameWorksheetResponseProto()
             dataObj.ParseFromString(data)
@@ -96,7 +102,8 @@ class IntegrationTest_test(unittest.TestCase):
             self.assertFalse(dataObj.workbookKey.HasField("path"))
             print(dataObj)
 
-        self.testEnv.notifListener.addReactor(P6Events.Worksheet.Rename.event,EventReactors.makeBasicReactor(onReceive))
+        self.testEnv.notifListener.addReactor(P6Events.Worksheet.Rename.event,
+                                              EventReactors.makeBasicReactor(onReceive))
         book = getWorkbook("Book1")
         book.getWorksheet("Sheet1").renameRs("Sheet1x")
 
@@ -115,7 +122,7 @@ class IntegrationTest_test(unittest.TestCase):
             cellAddress = CellAddresses.fromRowCol(1, 1),
             value = "123", formula = ""
         )
-        p6Req=P6MessageProto(
+        p6Req = P6MessageProto(
             header = P6MessageHeaderProto(
                 msgId = "1",
                 eventType = P6Events.Cell.Update.event.toProtoObj()
@@ -126,35 +133,33 @@ class IntegrationTest_test(unittest.TestCase):
         print(o)
 
     def test_check_createNewWB(self):
-
-        def cb(data:bytes):
+        def cb(data: bytes):
             proto = CreateNewWorkbookResponseProto()
             proto.ParseFromString(data)
             print(proto)
 
-        self.testEnv.notifListener.addReactorCB(P6Events.App.CreateNewWorkbook.event,cb)
+        self.testEnv.notifListener.addReactorCB(P6Events.App.CreateNewWorkbook.event, cb)
 
         rs = getApp().createDefaultNewWorkbookRs()
         self.assertTrue(rs.isOk())
 
-
     def test_checkCloseWb(self):
-        def cb(data:bytes):
+        def cb(data: bytes):
             proto = CloseWorkbookResponseProto()
             proto.ParseFromString(data)
             print(proto)
             print("QWE")
 
-        self.testEnv.notifListener.addReactorCB(P6Events.App.CloseWorkbook.event,cb)
+        self.testEnv.notifListener.addReactorCB(P6Events.App.CloseWorkbook.event, cb)
 
         rs = getApp().closeWorkbookRs(0)
         self.assertTrue(rs.isOk())
 
     def test_rangeToClipboard_eventServer(self):
-        res:P6Response = self.testEnv.sendRequestToEventServer(
+        res: P6Response = self.testEnv.sendRequestToEventServer(
             P6Messages.p6Message(
                 P6Events.Range.RangeToClipBoard.event,
-                data=RangeToClipboardRequestProto(
+                data = RangeToClipboardRequestProto(
                     rangeId = RangeId(
                         workbookKey = WorkbookKeys.fromNameAndPath("Book1"),
                         worksheetName = "Sheet1",
@@ -164,16 +169,41 @@ class IntegrationTest_test(unittest.TestCase):
                 ).SerializeToString()
             )
         )
-        self.assertEqual(P6Response.Status.OK,res.status)
+        self.assertEqual(P6Response.Status.OK, res.status)
         proto = RangeToClipboardResponseProto()
         proto.ParseFromString(res.data)
         # print(proto)
         print(proto.errorIndicator)
 
     def test_rangeToClipboard_notifier(self):
-
-        def cb(data:bytes):
+        def cb(data: bytes):
             print(data)
 
         self.testEnv.notifListener.addReactorCB(P6Events.Range.RangeToClipBoard.event, cb)
         self.b1.getWorksheet("Sheet1").range("@A1:B3").copyToClipboardAsFullCSV()
+
+    def test_updateCell_afterSaving(self):
+        self.s1.cell((1, 1)).value = 123
+        self.s1.cell((1, 2)).value = 123
+        self.s1.cell((2, 1)).formula = "=SUM(A1:A2)"
+        self.s1.reRun()
+
+
+        saveRequest = SaveWorkbookRequest(
+            workbookKey = self.b1.workbookKey,
+            path = "b1.txt"
+        )
+
+        saveResponse = self.testEnv.sendRequestToEventServer(saveRequest.toP6Msg())
+
+        request = P6Events.Cell.Update.Request(
+            workbookKey = self.b1.workbookKey,
+            worksheetName = "Sheet1",
+            cellAddress = CellAddresses.fromRowCol(2, 2),
+            value = "123", formula = None
+        )
+        p6Res = self.testEnv.sendRequestToEventServer(request.toP6Msg())
+
+        proto = WorkbookUpdateCommonResponseProto()
+        proto.ParseFromString(p6Res.data)
+        print(proto)

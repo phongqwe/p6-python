@@ -6,7 +6,7 @@ from com.emeraldblast.p6.document_structure.cell.CellContent import CellContent
 from com.emeraldblast.p6.document_structure.cell.CellContentImp import CellContentImp
 from com.emeraldblast.p6.document_structure.cell.CellJson import CellJson
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
-from com.emeraldblast.p6.document_structure.cell.util.CellUtil import convertExceptionToStr
+from com.emeraldblast.p6.document_structure.cell.util.CellUtils import convertExceptionToStr
 from com.emeraldblast.p6.document_structure.code_executor.CodeExecutor import CodeExecutor
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport

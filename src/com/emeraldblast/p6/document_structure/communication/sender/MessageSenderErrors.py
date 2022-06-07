@@ -9,6 +9,7 @@ errPrefix = "BE_MessageSenderErrors_"  # message sender error
 class MessageSenderErrors:
     class FailToSend(ErrorReport):
         header = ErrorHeader(f"{errPrefix}1", "fail to send message")
+
         class Data:
             def __init__(self, message: str):
                 self.message = message
@@ -18,10 +19,12 @@ class MessageSenderErrors:
                     "message": self.message
                 })
 
-        def __init__(self, message: str):
-            super().__init__(
-                MessageSenderErrors.FailToSend.header,
-                MessageSenderErrors.FailToSend.Data(message)
+        @staticmethod
+        def report(message: str):
+            data = MessageSenderErrors.FailToSend.Data(message)
+            return ErrorReport(
+                header = MessageSenderErrors.FailToSend.header.concatDescription(f"\n{str(data)}"),
+                data = data
             )
 
     class WrongSocketType:
@@ -33,7 +36,13 @@ class MessageSenderErrors:
                 self.rightType = rightType
 
             def __str__(self):
-                return json.dumps({
-                    "currentType": self.currentType,
-                    "rightType": self.rightType,
-                })
+                rt = f"current type: {self.currentType}\nright type: {self.rightType}"
+                return rt
+
+        @staticmethod
+        def report(currentType, rightType):
+            data = MessageSenderErrors.WrongSocketType.Data(currentType, rightType)
+            return ErrorReport(
+                header = MessageSenderErrors.WrongSocketType.header.concatDescription(f"\n{str(data)}"),
+                data = data
+            )

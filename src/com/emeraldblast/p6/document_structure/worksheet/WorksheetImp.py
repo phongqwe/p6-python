@@ -301,7 +301,7 @@ class WorksheetImp(Worksheet):
             self._updateExtremeColRow()
             return Ok(None)
         else:
-            return Err(RangeErrors.CellNotInRangeReport(address, self.rangeAddress))
+            return Err(RangeErrors.CellNotInRangeReport.report(address, self.rangeAddress))
 
 
     @staticmethod

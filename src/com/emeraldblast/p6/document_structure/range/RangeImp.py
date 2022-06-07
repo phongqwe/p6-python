@@ -243,4 +243,4 @@ class RangeImp(Range):
             self._updateExtremeColRow()
             return rs
         else:
-            return Err(RangeErrors.CellNotInRangeReport(address, self.rangeAddress))
+            return Err(RangeErrors.CellNotInRangeReport.report(address, self.rangeAddress))

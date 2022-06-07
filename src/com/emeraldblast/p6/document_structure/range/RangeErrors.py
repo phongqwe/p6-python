@@ -8,7 +8,7 @@ from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import
 RErr="BE_RangeErrors_" #Range errors
 
 class RangeErrors:
-    class CellNotInRangeReport(ErrorReport):
+    class CellNotInRangeReport:
         header = ErrorHeader(f"{RErr}0", "Cell not in range")
 
         class Data(ToRepStr, ToException):
@@ -23,9 +23,12 @@ class RangeErrors:
                 return Exception(
                     self.repStr()
                 )
-        def __init__(self, cellAddress:CellAddress, rangeAddress:RangeAddress):
-            super().__init__(
-                RangeErrors.CellNotInRangeReport.header,
-                RangeErrors.CellNotInRangeReport.Data(cellAddress, rangeAddress)
+        @staticmethod
+        def report(cellAddress:CellAddress, rangeAddress:RangeAddress):
+            data = RangeErrors.CellNotInRangeReport.Data(cellAddress, rangeAddress)
+            return ErrorReport(
+                RangeErrors.CellNotInRangeReport.header.updateDescription(f"{data.repStr()}"),
+                data = data
             )
+
 

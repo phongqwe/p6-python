@@ -66,7 +66,7 @@ class DeleteCellReactor_test(unittest.TestCase):
         self.assertEqual(WorkbookErrors.WorksheetNotExistReport.header,o.errorReport.header)
 
     def test_react_failToGetWb(self):
-        err = Err(AppErrors.WorkbookNotExist("invalidWB"))
+        err = Err(AppErrors.WorkbookNotExist.report("invalidWB"))
 
         def wbGetterFail(identity):
             return err

@@ -87,7 +87,7 @@ class EventServerImp_test(unittest.TestCase):
         self.assertEqual(request.header, res.header)
         errReportProto = ErrorReportProto()
         errReportProto.ParseFromString(res.data)
-        self.assertEqual(EventServerErrors.NoReactorReport.header.errorCode, errReportProto.errorCode)
+        self.assertEqual(EventServerErrors.NoReactorError.header.errorCode, errReportProto.errorCode)
         self.assertEqual(None, self.x)
 
     def test_handle_CatchAll(self):

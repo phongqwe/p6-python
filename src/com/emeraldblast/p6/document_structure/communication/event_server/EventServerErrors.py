@@ -8,7 +8,7 @@ ESErr = "BE_EventServerErrors_"
 
 
 class EventServerErrors:
-    class NoReactorReport(ErrorReport):
+    class NoReactorError:
         header = ErrorHeader(f"{ESErr}1", "no event reactor")
 
         class Data(ToRepStr):
@@ -18,8 +18,11 @@ class EventServerErrors:
             def __init__(self, event: P6Event):
                 self._e = event
 
-        def __init__(self, p6Event: P6Event):
-            super().__init__(
-                header = EventServerErrors.NoReactorReport.header,
-                data = EventServerErrors.NoReactorReport.Data(p6Event)
+
+        @staticmethod
+        def report(event: P6Event):
+            data = EventServerErrors.NoReactorError.Data(event)
+            return ErrorReport(
+                header = EventServerErrors.NoReactorError.header.updateDescription(str(data)),
+                data = data
             )
