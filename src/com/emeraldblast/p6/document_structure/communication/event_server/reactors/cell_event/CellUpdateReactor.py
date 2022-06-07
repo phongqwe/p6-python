@@ -1,9 +1,9 @@
 from typing import Callable
 
-from com.emeraldblast.p6.document_structure.util.for_test.ZZ import writeTestLog
-
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateRequest import \
     CellUpdateRequest
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateResponse import \
+    CellUpdateResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.WorkbookUpdateCommonResponse import \
     WorkbookUpdateCommonResponse
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
@@ -41,14 +41,14 @@ class CellUpdateReactor(EventReactor[bytes, WorkbookUpdateCommonResponse]):
                 else:
                     ws.deleteCell(cellAddress)
                 wb.reRun()
-                rt= WorkbookUpdateCommonResponse(
+                rt= CellUpdateResponse(
                     isError = False,
                     workbookKey = request.workbookKey,
                     newWorkbook = wb)
                 return rt
 
             else:
-                rt= WorkbookUpdateCommonResponse(
+                rt= CellUpdateResponse(
                     workbookKey = request.workbookKey,
                     newWorkbook = None,
                     isError = True,
@@ -57,7 +57,7 @@ class CellUpdateReactor(EventReactor[bytes, WorkbookUpdateCommonResponse]):
                 rt.errorReport.loc = "CellUpdateReactor"
                 return rt
         else:
-            rt= WorkbookUpdateCommonResponse(
+            rt= CellUpdateResponse(
                 workbookKey = request.workbookKey,
                 newWorkbook = None,
                 isError = True,

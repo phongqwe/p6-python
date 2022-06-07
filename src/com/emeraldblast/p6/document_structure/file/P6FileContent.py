@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from com.emeraldblast.p6.document_structure.file.P6FileMetaInfo import P6FileMetaInfo
-from com.emeraldblast.p6.document_structure.util.ToProto import ToProto, P
+from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 from com.emeraldblast.p6.document_structure.workbook.Workbooks import Workbooks
 from com.emeraldblast.p6.proto.P6FileProtos_pb2 import P6FileProto, P6FileContentProto

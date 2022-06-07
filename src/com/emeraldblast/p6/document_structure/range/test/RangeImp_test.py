@@ -1,13 +1,10 @@
 import unittest
 from unittest.mock import MagicMock
 
-from pandas import DataFrame
-
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
 from com.emeraldblast.p6.document_structure.range.RangeImp import RangeImp
 from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
-from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetImp import WorksheetImp
 
 

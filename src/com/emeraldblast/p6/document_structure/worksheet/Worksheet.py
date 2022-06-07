@@ -4,15 +4,10 @@ import json
 from abc import ABC
 from typing import TYPE_CHECKING
 
-import pandas
-from pandas import read_clipboard, DataFrame
-
-
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.cell_container.MutableCellContainer import MutableCellContainer
 from com.emeraldblast.p6.document_structure.cell_container.UserFriendlyCellContainer import UserFriendlyCellContainer
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
-
 from com.emeraldblast.p6.document_structure.range.address.RangeAddress import RangeAddress
 from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 from com.emeraldblast.p6.document_structure.util.ToJson import ToJson

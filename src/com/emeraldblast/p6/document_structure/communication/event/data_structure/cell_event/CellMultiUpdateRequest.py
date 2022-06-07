@@ -1,9 +1,8 @@
-from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
-from com.emeraldblast.p6.proto.CellProtos_pb2 import CellMultiUpdateRequestProto
-
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateEntry import \
     CellUpdateEntry
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
+from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
+from com.emeraldblast.p6.proto.CellProtos_pb2 import CellMultiUpdateRequestProto
 
 
 class CellMultiUpdateRequest:

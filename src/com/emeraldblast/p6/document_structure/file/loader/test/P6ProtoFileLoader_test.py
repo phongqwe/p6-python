@@ -2,12 +2,9 @@ import os
 import unittest
 from pathlib import Path
 
-from com.emeraldblast.p6.document_structure.file.saver.P6ProtoFileSaver import P6ProtoFileSaver
-
 from com.emeraldblast.p6.document_structure.file.loader.P6ProtoFileLoader import P6ProtoFileLoader
+from com.emeraldblast.p6.document_structure.file.saver.P6ProtoFileSaver import P6ProtoFileSaver
 from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import sampleWb, compareWs
-
-from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
 
 
 class P6ProtoFileLoader_test(unittest.TestCase):

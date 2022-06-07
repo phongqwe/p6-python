@@ -1,5 +1,3 @@
-from typing import Optional
-
 from com.emeraldblast.p6.proto.AppEventProtos_pb2 import CreateNewWorkbookRequestProto
 
 

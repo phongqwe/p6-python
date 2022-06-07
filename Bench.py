@@ -17,15 +17,22 @@ from com.emeraldblast.p6.document_structure.worksheet.WorksheetImp import Worksh
 
 
 class A:
-    def __init__(self,v):
-        self.v=v
+    def __init__(self, x:int):
+        self.x = x
 
-class B:
-    def __init__(self,a):
-        self.a=a
+    def p(self):
+        print(self.x)
+
+class B(A):
+    pass
 
 class Bench(unittest.TestCase):
     def test_z(self):
+
+        b = B(123)
+        b.p()
+
+
         # df = pd.DataFrame(np.random.randn(1000000, 1))
 
         # df.iloc[:99999] = np.nan

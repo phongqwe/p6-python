@@ -1,6 +1,5 @@
 from pathlib import Path
 
-from com.emeraldblast.p6.document_structure.util.ProtoUtils import ProtoUtils
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeyImp import WorkbookKeyImp
 from com.emeraldblast.p6.proto.DocProtos_pb2 import WorkbookKeyProto

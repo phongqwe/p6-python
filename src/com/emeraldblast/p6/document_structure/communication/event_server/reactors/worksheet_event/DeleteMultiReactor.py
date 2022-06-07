@@ -1,25 +1,24 @@
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.WorkbookUpdateCommonResponse import \
-    WorkbookUpdateCommonResponse
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteMulti import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteMultiRequest import \
      DeleteMultiRequest
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteMultiResponse import \
+    DeleteMultiResponse
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.TypeAliasForReactor import WbGetter
 from com.emeraldblast.p6.document_structure.communication.reactor.BaseEventReactor import BaseEventReactor
-from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor, I, O
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
 
-class DeleteMultiReactor(BaseEventReactor[bytes, WorkbookUpdateCommonResponse]):
+class DeleteMultiReactor(BaseEventReactor[bytes, DeleteMultiResponse]):
 
     def __init__(self, wbGetter: WbGetter):
         super().__init__()
         self._wbGetter = wbGetter
 
-    def react(self, data: bytes) -> WorkbookUpdateCommonResponse:
+    def react(self, data: bytes) -> DeleteMultiResponse:
         request = DeleteMultiRequest.fromProtoBytes(data)
         wbKey = request.workbookKey
         getWbRs = self._wbGetter(wbKey)
-        rt = WorkbookUpdateCommonResponse(
+        rt = DeleteMultiResponse(
             isError = False,
             workbookKey = wbKey,
         )

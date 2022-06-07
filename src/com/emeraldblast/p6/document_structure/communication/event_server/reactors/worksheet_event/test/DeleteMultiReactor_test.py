@@ -1,22 +1,17 @@
 import unittest
 
 from com.emeraldblast.p6.document_structure.app.errors.AppErrors import AppErrors
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.WorkbookUpdateCommonResponse import \
-    WorkbookUpdateCommonResponse
-from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
-from com.emeraldblast.p6.document_structure.util.result.Err import Err
-from com.emeraldblast.p6.document_structure.workbook.WorkbookErrors import WorkbookErrors
-from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
-from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import DeleteMultiRequestProto
-
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteMulti import \
-    DeleteMultiRequest
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteMultiResponse import \
+    DeleteMultiResponse
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.worksheet_event.DeleteMultiReactor import \
     DeleteMultiReactor
 from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
+from com.emeraldblast.p6.document_structure.util.result.Err import Err
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
+from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
+from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import DeleteMultiRequestProto
 
 
 class DeleteMultiReactor_test(unittest.TestCase):
@@ -85,12 +80,12 @@ class DeleteMultiReactor_test(unittest.TestCase):
         self.assertEqual(invalidWbKey,o.errorReport.data.wbKey)
 
 
-    def __test_okCase(self, o:WorkbookUpdateCommonResponse):
+    def __test_okCase(self, o:DeleteMultiResponse):
         self.assertFalse(o.isError)
         self.assertIsNone(o.errorReport)
         self.assertIsNotNone(o.newWorkbook)
 
-    def __test_failCase(self, o:WorkbookUpdateCommonResponse):
+    def __test_failCase(self, o:DeleteMultiResponse):
         self.assertTrue(o.isError)
         self.assertIsNotNone(o.errorReport)
         self.assertIsNone(o.newWorkbook)

@@ -3,8 +3,6 @@ import unittest
 from com.emeraldblast.p6.document_structure.app.errors.AppErrors import AppErrors
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.app_event.CreateNewWorkbookResponse import \
     CreateNewWorkbookResponse
-from com.emeraldblast.p6.document_structure.util.CommonError import CommonErrors
-from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
 
 

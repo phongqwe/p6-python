@@ -1,4 +1,4 @@
-from typing import Any, Callable, TYPE_CHECKING
+from typing import Any, Callable
 
 from com.emeraldblast.p6.document_structure.app.GlobalScope import getGlobals
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
@@ -9,11 +9,10 @@ from com.emeraldblast.p6.document_structure.cell.address.CellAddress import Cell
 from com.emeraldblast.p6.document_structure.cell.util.CellUtil import convertExceptionToStr
 from com.emeraldblast.p6.document_structure.code_executor.CodeExecutor import CodeExecutor
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
-from com.emeraldblast.p6.document_structure.util.Util import default
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
-from com.emeraldblast.p6.proto.DocProtos_pb2 import CellProto
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
+from com.emeraldblast.p6.proto.DocProtos_pb2 import CellProto
 
 
 class DataCell(Cell):

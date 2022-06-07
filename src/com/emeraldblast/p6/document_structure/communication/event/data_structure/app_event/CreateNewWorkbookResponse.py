@@ -1,4 +1,4 @@
-from com.emeraldblast.p6.document_structure.util.ToProto import ToProto, P
+from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 from com.emeraldblast.p6.proto.AppEventProtos_pb2 import CreateNewWorkbookResponseProto

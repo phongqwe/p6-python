@@ -2,11 +2,8 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.a
     LoadWorkbookRequest
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.app_event.LoadWorkbookResponse import \
     LoadWorkbookResponse
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.app_event.SetActiveWorksheetResponse import \
-    SetActiveWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.TypeAliasForReactor import AppGetter
 from com.emeraldblast.p6.document_structure.communication.reactor.BaseEventReactor import BaseEventReactor
-from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor, I, O
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook

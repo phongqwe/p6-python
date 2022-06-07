@@ -1,12 +1,11 @@
 import unittest
 
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.WorkbookUpdateCommonResponse import \
-    WorkbookUpdateCommonResponse
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteMulti import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteMultiRequest import \
     DeleteMultiRequest
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteMultiResponse import \
+    DeleteMultiResponse
 from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
-from com.emeraldblast.p6.document_structure.util.report.error.ErrorHeader import ErrorHeader
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.workbook.WorkbookErrors import WorkbookErrors
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
@@ -43,7 +42,7 @@ class DeleteMultiRequest_test(unittest.TestCase):
 
 class DeleteMultiResponse_test(unittest.TestCase):
     def test_toProto(self):
-        r = WorkbookUpdateCommonResponse(
+        r = DeleteMultiResponse(
             isError = False,
             errorReport = ErrorReport(
                 header=WorkbookErrors.WorksheetNotExistReport.header

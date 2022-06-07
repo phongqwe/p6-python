@@ -1,7 +1,5 @@
 import unittest
 
-from com.emeraldblast.p6.proto.RangeProtos_pb2 import RangeToClipboardResponseProto
-
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.common.ErrorIndicator import \
     ErrorIndicator
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
@@ -9,6 +7,7 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.r
     RangeToClipboardResponse
 from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
+from com.emeraldblast.p6.proto.RangeProtos_pb2 import RangeToClipboardResponseProto
 
 
 class RangeToClipboardResponse_test(unittest.TestCase):

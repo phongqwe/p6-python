@@ -1,10 +1,9 @@
-from com.emeraldblast.p6.proto.DocProtos_pb2 import WorksheetProto
-
 from com.emeraldblast.p6.document_structure.cell.Cells import Cells
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetImp import WorksheetImp
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetJson import WorksheetJson
+from com.emeraldblast.p6.proto.DocProtos_pb2 import WorksheetProto
 
 
 class Worksheets:

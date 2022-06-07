@@ -1,13 +1,11 @@
 import ast
 import unittest
 
-import pandas
 import pyperclip
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeCopy import RangeCopy
 
-from com.emeraldblast.p6.document_structure.app.workbook_container.WorkbookContainerImp import WorkbookContainerImp
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.common.ErrorIndicator import \
     ErrorIndicator
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeCopy import RangeCopy
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.range_event.RangeToClipboardReactor import \
     RangeToClipboardReactor

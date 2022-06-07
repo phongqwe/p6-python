@@ -5,16 +5,12 @@ from com.emeraldblast.p6.document_structure.communication.event_server.reactors.
     EventServerReactors
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.worksheet_event.RenameWorksheetReactor import \
     RenameWorksheetReactor
-from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.workbook.WorkbookErrors import WorkbookErrors
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetErrors import WorksheetErrors
 from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import RenameWorksheetRequestProto
-
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetResponse import \
-    RenameWorksheetResponse
 
 
 class RenameWorksheetReactor_test(unittest.TestCase):

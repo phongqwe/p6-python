@@ -1,9 +1,9 @@
 import unittest
 
-
 from com.emeraldblast.p6.document_structure.copy_paste.ProtoCopier import ProtoCopier
 from com.emeraldblast.p6.document_structure.copy_paste.ProtoPaster import ProtoPaster
 from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import sampleWb
+
 
 class ProtoCopier_ProtoPaster_test(unittest.TestCase):
     def test_copy_paste(self):

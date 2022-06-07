@@ -1,10 +1,12 @@
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteCellRequest import \
+    DeleteCellRequest
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteCellResponse import \
+    DeleteCellResponse
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.TypeAliasForReactor import WbGetter
-
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteCell import \
-    DeleteCellResponse, DeleteCellRequest
-from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor, I, O
+from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
+
 
 # TODO test this
 class DeleteCellReactor(EventReactor[bytes,DeleteCellResponse]):

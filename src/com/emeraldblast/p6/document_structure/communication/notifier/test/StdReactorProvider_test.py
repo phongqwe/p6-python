@@ -2,7 +2,6 @@ import unittest
 from unittest.mock import MagicMock
 
 import zmq
-from com.emeraldblast.p6.proto.WorkbookProtos_pb2 import WorkbookUpdateCommonResponseProto
 
 from com.emeraldblast.p6.document_structure.communication.SocketProviderImp import SocketProviderImp
 from com.emeraldblast.p6.document_structure.communication.notifier.InternalNotifierProvider import \
@@ -13,6 +12,7 @@ from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import findN
 from com.emeraldblast.p6.document_structure.workbook.EventWorkbook import EventWorkbook
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
 from com.emeraldblast.p6.proto.P6MsgProtos_pb2 import P6ResponseProto
+from com.emeraldblast.p6.proto.WorkbookProtos_pb2 import WorkbookUpdateCommonResponseProto
 
 port = findNewSocketPort()
 

@@ -1,15 +1,14 @@
 import unittest
 from unittest.mock import MagicMock
 
-from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
-from com.emeraldblast.p6.proto.DocProtos_pb2 import WorksheetProto, CellProto
-
 from com.emeraldblast.p6.document_structure.cell.CellJson import CellJson
 from com.emeraldblast.p6.document_structure.cell.address.CellAddressJson import CellAddressJson
+from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetJson import WorksheetJson
 from com.emeraldblast.p6.document_structure.worksheet.Worksheets import Worksheets
+from com.emeraldblast.p6.proto.DocProtos_pb2 import WorksheetProto, CellProto
 
 
 class Worksheets_test(unittest.TestCase):

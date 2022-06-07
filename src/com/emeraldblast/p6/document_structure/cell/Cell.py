@@ -8,9 +8,6 @@ from com.emeraldblast.p6.document_structure.cell.CellJson import CellJson
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.util.ToJson import ToJson
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
-from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
-from com.emeraldblast.p6.document_structure.util.result.Result import Result
-from com.emeraldblast.p6.document_structure.util.result.Results import Results
 from com.emeraldblast.p6.proto.DocProtos_pb2 import CellProto
 
 if TYPE_CHECKING:

@@ -1,16 +1,15 @@
 import uuid
 
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.TypeAliasForReactor import WbGetter, \
+    AppGetter
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.CloseWorkbookReactor import \
     CloseWorkbookReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.CreateNewWorkbookReactor import \
     CreateNewWorkbookReactor
-from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.SaveWorkbookReactor import \
-    SaveWorkbookReactor
-
-from com.emeraldblast.p6.document_structure.communication.event_server.reactors.TypeAliasForReactor import WbGetter, \
-    AppGetter
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.LoadWorkbookReactor import \
     LoadWorkbookReactor
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.SaveWorkbookReactor import \
+    SaveWorkbookReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.SetActiveWorksheetReactor import \
     SetActiveWorksheetReactor
 

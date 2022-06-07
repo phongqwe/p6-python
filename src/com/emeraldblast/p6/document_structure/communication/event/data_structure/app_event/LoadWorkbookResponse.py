@@ -1,4 +1,5 @@
-from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
+from com.emeraldblast.p6.document_structure.communication.event.P6EventTable import P6EventTable
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.ToEventData import ToEventData
 from com.emeraldblast.p6.document_structure.communication.notifier.eventData.AppEventData import EventData
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
@@ -6,9 +7,10 @@ from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 from com.emeraldblast.p6.proto.AppEventProtos_pb2 import LoadWorkbookResponseProto
 
 
-class LoadWorkbookResponse(ToProto[LoadWorkbookResponseProto]):
-    def __init__(self, isError: bool, windowId: str|None, errorReport: ErrorReport | None = None,
+class LoadWorkbookResponse(ToEventData, ToProto[LoadWorkbookResponseProto]):
+    def __init__(self, isError: bool, windowId: str | None, errorReport: ErrorReport | None = None,
                  workbook: Workbook | None = None):
+        super().__init__()
         self.windowId = windowId
         self.workbook = workbook
         self.errorReport = errorReport
@@ -21,11 +23,3 @@ class LoadWorkbookResponse(ToProto[LoadWorkbookResponseProto]):
         if self.errorReport:
             proto.errorReport.CopyFrom(self.errorReport.toProtoObj())
         return proto
-
-    def toEventData(self)->EventData:
-        evData = EventData(
-            event = P6Events.App.LoadWorkbook.event,
-            isError = False,
-            data = self.toProtoBytes(),
-        )
-        return evData

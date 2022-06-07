@@ -3,9 +3,8 @@ import unittest
 from pathlib import Path
 from unittest.mock import MagicMock
 
-from com.emeraldblast.p6.document_structure.app.EventApp import EventApp
-
 from com.emeraldblast.p6.document_structure.app.AppImp import AppImp
+from com.emeraldblast.p6.document_structure.app.EventApp import EventApp
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import sampleApp
 

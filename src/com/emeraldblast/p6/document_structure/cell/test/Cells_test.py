@@ -1,11 +1,10 @@
 import unittest
 
-from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
-from com.emeraldblast.p6.proto.DocProtos_pb2 import CellProto
-
 from com.emeraldblast.p6.document_structure.cell.CellJson import CellJson
 from com.emeraldblast.p6.document_structure.cell.Cells import Cells
 from com.emeraldblast.p6.document_structure.cell.address.CellAddressJson import CellAddressJson
+from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
+from com.emeraldblast.p6.proto.DocProtos_pb2 import CellProto
 
 
 class Cells_test(unittest.TestCase):

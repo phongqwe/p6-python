@@ -1,10 +1,4 @@
 import unittest
-from pathlib import Path
-
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateRequest import \
-    CellUpdateRequest
-from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
-from com.emeraldblast.p6.proto.CellProtos_pb2 import CellUpdateRequestProto
 
 from com.emeraldblast.p6.document_structure.app.errors.AppErrors import AppErrors
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses

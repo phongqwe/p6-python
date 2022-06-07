@@ -1,14 +1,11 @@
-import threading
-import time
-
 import zmq
 
+from com.emeraldblast.p6.document_structure.app.TopLevel import *
 from com.emeraldblast.p6.document_structure.communication.event_server.msg.P6Message import P6Message
 from com.emeraldblast.p6.document_structure.communication.event_server.response.P6Response import P6Response
 from com.emeraldblast.p6.document_structure.util.for_test.emu.NotificationListener import NotificationListener
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
-from com.emeraldblast.p6.document_structure.app.TopLevel import *
-from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import findNewSocketPort
+
 
 class TestEnvImp:
     """
@@ -48,23 +45,9 @@ class TestEnvImp:
 
     def startEnv(self):
         # these import will be put in local
-        from com.emeraldblast.p6.document_structure.app.App import App
         from com.emeraldblast.p6.document_structure.app.GlobalScope import setIPythonGlobals
-        from com.emeraldblast.p6.document_structure.app.TopLevel import startApp, restartApp, stopApp, getApp
+        from com.emeraldblast.p6.document_structure.app.TopLevel import startApp, getApp
         from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import findNewSocketPort
-        from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
-        from com.emeraldblast.p6.document_structure.app.worksheet_functions.WorksheetFunctions import WorksheetFunctions
-        from com.emeraldblast.p6.document_structure.app.worksheet_functions.WorksheetFunctions import WorksheetFunctions
-        from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
-        from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
-        from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateRequest import \
-            CellUpdateRequest
-        from com.emeraldblast.p6.document_structure.communication.event_server.response.P6Response import P6Response
-        from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
-        from com.emeraldblast.p6.proto.P6MsgProtos_pb2 import P6MessageProto, P6ResponseProto, P6MessageHeaderProto
-        from com.emeraldblast.p6.proto.WorkbookProtos_pb2 import CreateNewWorksheetResponseProto, \
-            SaveWorkbookRequestProto
-        from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import RenameWorksheetResponseProto
         local = locals()
         globals()
 

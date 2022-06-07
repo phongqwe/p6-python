@@ -2,9 +2,7 @@ import unittest
 
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
 from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
-from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
-from com.emeraldblast.p6.proto.DocProtos_pb2 import RangeIdProto
 
 
 class RangeId_test(unittest.TestCase):

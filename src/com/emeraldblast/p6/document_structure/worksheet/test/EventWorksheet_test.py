@@ -4,7 +4,7 @@ from unittest.mock import MagicMock
 from com.emeraldblast.p6.document_structure.cell.DataCell import DataCell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteCell import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteCellResponse import \
     DeleteCellResponse
 from com.emeraldblast.p6.document_structure.communication.notifier.eventData.AppEventData import EventData
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslators import FormulaTranslators

@@ -4,7 +4,7 @@ from com.emeraldblast.p6.proto.AppEventProtos_pb2 import CloseWorkbookRequestPro
 
 
 class CloseWorkbookRequest:
-    def __init__(self, workbookKey:WorkbookKey,windowId:str|None,):
+    def __init__(self, workbookKey:WorkbookKey,windowId:str|None = None,):
         self.windowId = windowId
         self.workbookKey = workbookKey
     

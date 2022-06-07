@@ -4,7 +4,8 @@ from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.EventCell import EventCell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.common.ErrorIndicator import ErrorIndicator
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.common.ErrorIndicator import \
+    ErrorIndicator
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.range_to_clipboard.RangeToClipboardResponse import \
     RangeToClipboardResponse
@@ -60,26 +61,18 @@ class EventRange(RangeWrapper):
 
     def copyToClipboardAsFullCSV(self):
         self.rootRange.copyToClipboardAsFullCSV()
-        eventData = EventData(
-            event = P6Events.Range.RangeToClipBoard.event,
-            isError = False,
-            data = RangeToClipboardResponse(
-                errorIndicator = ErrorIndicator.noError(),
-                rangeId = RangeId(
-                    rangeAddress = self.rangeAddress,
-                    workbookKey = self.worksheet.workbook.workbookKey,
-                    worksheetName = self.worksheet.name
-                ),
-                windowId = None
-            ).toProtoBytes()
-        )
-        self.__onRangeEvent(eventData)
+        self.__emitCopyEvent(ErrorIndicator.noError())
+
 
     def copyToClipboardAsProto(self) -> Result[None, ErrorReport]:
         rs = self.rootRange.copyToClipboardAsProto()
         errorIndicator = ErrorIndicator.noError()
         if rs.isErr():
             errorIndicator = ErrorIndicator.error(rs.err)
+        self.__emitCopyEvent(errorIndicator)
+        return rs
+
+    def __emitCopyEvent(self, errorIndicator):
         res = RangeToClipboardResponse(
             errorIndicator = errorIndicator,
             rangeId = RangeId(
@@ -93,7 +86,6 @@ class EventRange(RangeWrapper):
         eventData = EventData(
             event = P6Events.Range.RangeToClipBoard.event,
             isError = False,
-            data =res.toProtoBytes()
+            data = res.toProtoBytes()
         )
         self.__onRangeEvent(eventData)
-        return rs

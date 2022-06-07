@@ -11,7 +11,6 @@ from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
-
 from com.emeraldblast.p6.proto.DocProtos_pb2 import RangeAddressProto
 
 

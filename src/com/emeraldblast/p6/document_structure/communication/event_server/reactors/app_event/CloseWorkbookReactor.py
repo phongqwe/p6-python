@@ -4,7 +4,6 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.a
     CloseWorkbookResponse
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.TypeAliasForReactor import AppGetter
 from com.emeraldblast.p6.document_structure.communication.reactor.BaseEventReactor import BaseEventReactor
-from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import I, O
 
 
 class CloseWorkbookReactor(BaseEventReactor[bytes, CloseWorkbookResponse]):

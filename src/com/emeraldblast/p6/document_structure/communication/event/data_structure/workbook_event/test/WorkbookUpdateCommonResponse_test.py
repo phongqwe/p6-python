@@ -8,7 +8,7 @@ from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import Workbook
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 
 
-class CellUpdateCommonResponse_test(unittest.TestCase):
+class WorkbookUpdateCommonResponse_test(unittest.TestCase):
     def test_toProtoObj_1(self):
         o = WorkbookUpdateCommonResponse(
             isError = False,

@@ -1,24 +1,23 @@
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.WorkbookUpdateCommonResponse import \
-    WorkbookUpdateCommonResponse
-
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellMultiUpdateRequest import \
     CellMultiUpdateRequest
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellMultiUpdateResponse import \
+    CellMultiUpdateResponse
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.TypeAliasForReactor import WbGetter
 from com.emeraldblast.p6.document_structure.communication.reactor.BaseEventReactor import BaseEventReactor
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
 
-class CellMultiUpdateReactor(BaseEventReactor[bytes, WorkbookUpdateCommonResponse]):
+class CellMultiUpdateReactor(BaseEventReactor[bytes, CellMultiUpdateResponse]):
 
     def __init__(self, wbGetter: WbGetter):
         super().__init__()
         self.wbGetter = wbGetter
 
-    def react(self, data: bytes) -> WorkbookUpdateCommonResponse:
+    def react(self, data: bytes) -> CellMultiUpdateResponse:
         req = CellMultiUpdateRequest.fromProtoBytes(data)
         wbRs = self.wbGetter(req.workbookKey)
-        rt = WorkbookUpdateCommonResponse(
+        rt = CellMultiUpdateResponse(
             isError = False,
             workbookKey = req.workbookKey
         )

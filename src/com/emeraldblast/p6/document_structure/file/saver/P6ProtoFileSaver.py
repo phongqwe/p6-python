@@ -1,11 +1,9 @@
 import time
 from pathlib import Path
-from typing import Union
 
 from com.emeraldblast.p6.document_structure.file.P6File2 import P6File2
 from com.emeraldblast.p6.document_structure.file.P6FileContent import P6FileContent
 from com.emeraldblast.p6.document_structure.file.P6FileMetaInfo import P6FileMetaInfo
-from com.emeraldblast.p6.document_structure.file.P6Files import P6Files
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSaverErrors import P6FileSaverErrors
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport

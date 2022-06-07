@@ -1,4 +1,3 @@
-from abc import ABC
 from typing import Any
 
 from com.emeraldblast.p6.document_structure.cell.CellContent import CellContent

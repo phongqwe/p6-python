@@ -1,19 +1,15 @@
 import unittest
 from unittest.mock import MagicMock
 
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.common.ErrorIndicator import \
-    ErrorIndicator
-
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
-from com.emeraldblast.p6.proto.RangeProtos_pb2 import RangeToClipboardResponseProto
-
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.common.ErrorIndicator import \
+    ErrorIndicator
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.range_to_clipboard.RangeToClipboardResponse import \
     RangeToClipboardResponse
 from com.emeraldblast.p6.document_structure.communication.notifier.eventData.AppEventData import EventData
-from com.emeraldblast.p6.document_structure.communication.notifier.eventData.CellEventData import CellEventData
 from com.emeraldblast.p6.document_structure.range.EventRange import EventRange
 from com.emeraldblast.p6.document_structure.range.RangeImp import RangeImp
 from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import sampleWb
@@ -22,7 +18,31 @@ from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 
 class EventRangeTest(unittest.TestCase):
 
-    def test_copyToClipBoard(self):
+
+    def test_copyProtoToClipBoard(self):
+        wb: Workbook = sampleWb("QWE")
+
+        ws = wb.getWorksheet("Sheet1")
+        r = ws.range("@J2:K3")
+
+        def onRangeEvent(eventData: EventData):
+            self.assertEqual(P6Events.Range.RangeToClipBoard.event, eventData.event)
+            res: RangeToClipboardResponse = RangeToClipboardResponse.fromProtoBytes(eventData.data)
+            self.assertEqual(RangeId(
+                rangeAddress = r.rangeAddress,
+                workbookKey = wb.workbookKey,
+                worksheetName = ws.name
+            ), res.rangeId)
+            self.assertEqual(ErrorIndicator.noError(), res.errorIndicator)
+            print("cb was triggered")
+        eventRange = EventRange(
+            innerRange = r,
+            onCellEvent = MagicMock(),
+            onRangeEvent = onRangeEvent)
+
+        eventRange.copyToClipboardAsProto()
+
+    def test_copyFullCSVToClipBoard(self):
         wb: Workbook = sampleWb("QWE")
 
         ws = wb.getWorksheet("Sheet1")

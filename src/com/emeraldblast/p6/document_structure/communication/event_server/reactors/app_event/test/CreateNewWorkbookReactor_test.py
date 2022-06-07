@@ -1,18 +1,15 @@
 import unittest
 from unittest.mock import MagicMock
 
-from com.emeraldblast.p6.document_structure.util.report.error.ErrorHeader import ErrorHeader
-from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
-from com.emeraldblast.p6.document_structure.util.result.Err import Err
-from com.emeraldblast.p6.proto.AppEventProtos_pb2 import CreateNewWorkbookRequestProto
-
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.app_event.CreateNewWorkbookRequest import \
-    CreateNewWorkbookRequest
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.CreateNewWorkbookReactor import \
     CreateNewWorkbookReactor
 from com.emeraldblast.p6.document_structure.util.Util import makeGetter
+from com.emeraldblast.p6.document_structure.util.report.error.ErrorHeader import ErrorHeader
+from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
+from com.emeraldblast.p6.document_structure.util.result.Err import Err
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
+from com.emeraldblast.p6.proto.AppEventProtos_pb2 import CreateNewWorkbookRequestProto
 
 
 class CreateNewWorkbookReactor_test(unittest.TestCase):

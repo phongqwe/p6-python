@@ -7,7 +7,6 @@ from com.emeraldblast.p6.document_structure.range.address.RangeAddressImp import
 from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
-
 from com.emeraldblast.p6.proto.DocProtos_pb2 import RangeAddressProto
 
 

@@ -2,7 +2,6 @@ import unittest
 
 from com.emeraldblast.p6.document_structure.file.P6FileContent import P6FileContent
 from com.emeraldblast.p6.document_structure.file.P6FileMetaInfo import P6FileMetaInfo
-from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
 
 

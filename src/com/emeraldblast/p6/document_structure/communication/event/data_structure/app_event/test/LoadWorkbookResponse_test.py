@@ -1,5 +1,6 @@
 import unittest
 
+from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.app_event.LoadWorkbookResponse import \
     LoadWorkbookResponse
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorHeader import ErrorHeader
@@ -9,6 +10,17 @@ from com.emeraldblast.p6.proto.AppEventProtos_pb2 import LoadWorkbookResponsePro
 
 
 class LoadWorkbookResponse_test(unittest.TestCase):
+
+    # def test_toEventData(self):
+    #     o = LoadWorkbookResponse(
+    #         isError = False,
+    #         windowId = "123",
+    #         workbook = WorkbookImp("abc")
+    #     )
+    #     edt = o.toEventData()
+    #     self.assertEqual(P6Events.App.LoadWorkbook.event,edt.event)
+
+
     def test_toProto_1(self):
         wb = WorkbookImp("abc")
         o = LoadWorkbookResponse(

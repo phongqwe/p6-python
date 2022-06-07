@@ -5,6 +5,7 @@ from typing import Tuple
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 from com.emeraldblast.p6.proto.DocProtos_pb2 import WorkbookKeyProto
 
+
 class WorkbookKey(ToProto[WorkbookKeyProto],ABC):
     """
     An identifier class for identifying workbook.

@@ -1,31 +1,20 @@
-import time
 import unittest
-
-import zmq
-
-# these 2 imports must be keep for the formula script to be able to run
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.range_to_clipboard.RangeToClipboardResponse import \
-    RangeToClipboardResponse
-from com.emeraldblast.p6.document_structure.communication.event_server.P6Messages import P6Messages
-from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
-from com.emeraldblast.p6.proto.AppEventProtos_pb2 import CreateNewWorkbookResponseProto, CloseWorkbookResponseProto
-
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.app_event.CreateNewWorkbookResponse import \
-    CreateNewWorkbookResponse
 
 from com.emeraldblast.p6.document_structure.app.TopLevel import *
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateRequest import \
     CellUpdateRequest
+# these 2 imports must be keep for the formula script to be able to run
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
+from com.emeraldblast.p6.document_structure.communication.event_server.P6Messages import P6Messages
 from com.emeraldblast.p6.document_structure.communication.event_server.response.P6Response import P6Response
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactors import EventReactors
-from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import findNewSocketPort, startREPServerOnThread, \
-    sendClose
+from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 from com.emeraldblast.p6.document_structure.util.for_test.emu.TestEnvImp import TestEnvImp
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
-from com.emeraldblast.p6.proto.P6MsgProtos_pb2 import P6MessageProto, P6ResponseProto, P6MessageHeaderProto
+from com.emeraldblast.p6.proto.AppEventProtos_pb2 import CreateNewWorkbookResponseProto, CloseWorkbookResponseProto
+from com.emeraldblast.p6.proto.P6MsgProtos_pb2 import P6MessageProto, P6MessageHeaderProto
 from com.emeraldblast.p6.proto.RangeProtos_pb2 import RangeToClipboardResponseProto, RangeToClipboardRequestProto
 from com.emeraldblast.p6.proto.WorkbookProtos_pb2 import CreateNewWorksheetResponseProto, SaveWorkbookRequestProto
 from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import RenameWorksheetResponseProto

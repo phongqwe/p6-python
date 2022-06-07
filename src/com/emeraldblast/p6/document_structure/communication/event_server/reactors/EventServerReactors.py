@@ -1,9 +1,9 @@
 import uuid
 
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.WorkbookUpdateCommonResponse import \
-    WorkbookUpdateCommonResponse
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteCell import \
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteCellResponse import \
     DeleteCellResponse
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteMultiResponse import \
+    DeleteMultiResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetResponse import \
     RenameWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.TypeAliasForReactor import WbGetter, \
@@ -27,8 +27,6 @@ from com.emeraldblast.p6.document_structure.communication.event_server.reactors.
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.worksheet_event.RenameWorksheetReactor import \
     RenameWorksheetReactor
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
-
-
 
 
 class EventServerReactors:
@@ -70,5 +68,5 @@ class EventServerReactors:
             uid = str(uuid.uuid4()),
             wbGetter = self.appGetter().getBareWorkbookRs
         )
-    def deleteMultiReactor(self)->EventReactor[bytes, WorkbookUpdateCommonResponse]:
+    def deleteMultiReactor(self)->EventReactor[bytes, DeleteMultiResponse]:
         return DeleteMultiReactor(self.appGetter().getBareWorkbookRs)

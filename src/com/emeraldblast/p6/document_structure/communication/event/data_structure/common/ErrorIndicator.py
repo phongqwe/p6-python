@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from com.emeraldblast.p6.document_structure.util.ToProto import ToProto, P
+from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.proto.CommonProtos_pb2 import ErrorIndicatorProto
 
@@ -20,9 +20,12 @@ class ErrorIndicator(ToProto[ErrorIndicatorProto]):
             proto.errorReport.CopyFrom(self.errorReport.toProtoObj())
         return proto
 
+    __noError = None
     @staticmethod
     def noError() -> 'ErrorIndicator':
-        return ErrorIndicator(False, None)
+        if ErrorIndicator.__noError is None:
+            ErrorIndicator.__noError = ErrorIndicator(False, None)
+        return ErrorIndicator.__noError
 
     @staticmethod
     def error(errReport: ErrorReport):

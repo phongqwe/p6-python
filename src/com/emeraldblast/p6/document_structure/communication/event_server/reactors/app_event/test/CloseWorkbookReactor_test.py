@@ -1,8 +1,6 @@
 import unittest
 from unittest.mock import MagicMock
 
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.app_event.CloseWorkbookRequest import \
-    CloseWorkbookRequest
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.CloseWorkbookReactor import \
     CloseWorkbookReactor
 from com.emeraldblast.p6.document_structure.util.Util import makeGetter

@@ -6,7 +6,6 @@ from com.emeraldblast.p6.document_structure.cell.address.CellAddress import Cell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.util.AlphabetBaseNumberSystem import AlphabetBaseNumberSystem
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
-
 from com.emeraldblast.p6.proto.DocProtos_pb2 import RangeAddressProto
 
 
