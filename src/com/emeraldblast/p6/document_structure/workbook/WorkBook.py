@@ -48,10 +48,14 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
     def haveSheet(self, sheetName: str) -> bool:
         return self.getWorksheetOrNone(sheetName) is not None
 
-    def reRun(self):
+    def reRun(self, refreshScript:bool = False):
         """rerun all worksheet in this workbook"""
         for sheet in self.worksheets:
-            sheet.reRun()
+            sheet.reRun(refreshScript=refreshScript)
+
+    def refreshScript(self):
+        for sheet in self.worksheets:
+            sheet.refreshScript()
 
     @property
     def worksheets(self) -> list[Worksheet]:

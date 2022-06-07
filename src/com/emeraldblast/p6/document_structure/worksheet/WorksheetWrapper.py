@@ -128,8 +128,8 @@ class WorksheetWrapper(Worksheet):
     def isSameRangeAddress(self, other):
         return self.rootWorksheet.isSameRangeAddress(other)
 
-    def reRun(self):
-        self.rootWorksheet.reRun()
+    def reRun(self,refreshScript:bool = False):
+        self.rootWorksheet.reRun(refreshScript)
 
     @property
     def innerSheet(self):

@@ -124,6 +124,7 @@ class BaseApp(App, ABC):
                     self.wbContainer.removeWorkbook(oldKey)
                     wb.workbookKey = newKey
                     self.wbContainer.addWorkbook(wb.rootWorkbook)
+                    wb.refreshScript()
                 return Ok(wb)
             else:
                 return Err(saveResult.err)
@@ -160,6 +161,9 @@ class BaseApp(App, ABC):
                 newWb: Workbook = loadResult.value
                 eventNewWb = self._makeEventWb(newWb)
                 self.wbContainer.addWorkbook(newWb)
+                # the file may have been move, therefore has different workbook key,
+                # must refresh script because the old script contains code for the old workbook key
+                newWb.refreshScript()
                 return Ok(eventNewWb)
             else:
                 return loadResult

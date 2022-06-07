@@ -18,66 +18,66 @@ class WorkbookWrapper(Workbook):
         return self._innerWorkbook.rootWorkbook
 
     def updateSheetName(self, oldName: str, ws: Worksheet):
-        self._innerWorkbook.updateSheetName(oldName,ws)
+        self.rootWorkbook.updateSheetName(oldName,ws)
 
     def addWorksheetRs(self, ws: Worksheet) -> Result[None, ErrorReport]:
-        return self._innerWorkbook.addWorksheetRs(ws)
+        return self.rootWorkbook.addWorksheetRs(ws)
 
     def __init__(self,innerWorkbook:Workbook):
         self._innerWorkbook = innerWorkbook
 
     def getTranslator(self, sheetName: str) -> FormulaTranslator:
-        return self._innerWorkbook.getTranslator(sheetName)
+        return self.rootWorkbook.getTranslator(sheetName)
 
     @property
     def path(self) -> Path:
-        return self._innerWorkbook.path
+        return self.rootWorkbook.path
 
     @property
     def worksheets(self) -> list[Worksheet]:
-        return self._innerWorkbook.worksheets
+        return self.rootWorkbook.worksheets
 
     @property
     def workbookKey(self) -> WorkbookKey:
-        return self._innerWorkbook.workbookKey
+        return self.rootWorkbook.workbookKey
 
     @workbookKey.setter
     def workbookKey(self,newKey:WorkbookKey):
-        self._innerWorkbook.workbookKey = newKey
+        self.rootWorkbook.workbookKey = newKey
 
     @property
     def activeWorksheet(self) -> Optional[Worksheet]:
-        return self._innerWorkbook.activeWorksheet
+        return self.rootWorkbook.activeWorksheet
 
     @property
     def sheetCount(self) -> int:
-        return self._innerWorkbook.sheetCount
+        return self.rootWorkbook.sheetCount
 
     @property
     def name(self) -> str:
-        return self._innerWorkbook.name
+        return self.rootWorkbook.name
 
     @name.setter
     def name(self,newName):
-        self._innerWorkbook.name = newName
+        self.rootWorkbook.name = newName
 
     def createNewWorksheetRs(self, newSheetName: Optional[str] = None) -> Result[Worksheet, ErrorReport]:
-        return self._innerWorkbook.createNewWorksheetRs(newSheetName)
+        return self.rootWorkbook.createNewWorksheetRs(newSheetName)
 
     def deleteWorksheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
-        return self._innerWorkbook.deleteWorksheetByNameRs(sheetName)
+        return self.rootWorkbook.deleteWorksheetByNameRs(sheetName)
 
     def deleteWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
-        return self._innerWorkbook.deleteWorksheetByIndexRs(index)
+        return self.rootWorkbook.deleteWorksheetByIndexRs(index)
 
     def setActiveWorksheetRs(self, indexOrName: Union[int, str]) -> Result[Worksheet, ErrorReport]:
-        return self._innerWorkbook.setActiveWorksheetRs(indexOrName)
+        return self.rootWorkbook.setActiveWorksheetRs(indexOrName)
 
     def toJsonDict(self) -> dict:
-        return self._innerWorkbook.toJsonDict()
+        return self.rootWorkbook.toJsonDict()
 
     def isEmpty(self) -> bool:
-        return self._innerWorkbook.isEmpty()
+        return self.rootWorkbook.isEmpty()
 
     @property
     def innerWorkbook(self):
@@ -93,12 +93,12 @@ class WorkbookWrapper(Workbook):
 
 
     def getWorksheetByNameRs(self, name: str) -> Result[Worksheet, ErrorReport]:
-        return self._innerWorkbook.getWorksheetByNameRs(name)
+        return self.rootWorkbook.getWorksheetByNameRs(name)
 
     def getWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
-        return self._innerWorkbook.getWorksheetByIndexRs(index)
+        return self.rootWorkbook.getWorksheetByIndexRs(index)
 
     def getWorksheetRs(self, nameOrIndex: Union[str, int]) -> Result[Worksheet, ErrorReport]:
-        return self._innerWorkbook.getWorksheetRs(nameOrIndex)
+        return self.rootWorkbook.getWorksheetRs(nameOrIndex)
 
 

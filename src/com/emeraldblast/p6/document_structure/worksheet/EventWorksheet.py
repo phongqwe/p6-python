@@ -58,8 +58,8 @@ class EventWorksheet(WorksheetWrapper):
         else:
             return cell
 
-    def reRun(self):
-        self.rootWorksheet.reRun()
+    def reRun(self, refreshScript:bool = False):
+        self.rootWorksheet.reRun(refreshScript)
         if self.__onWorksheetEvent is not None:
             # todo incomplete data
             eventData = EventData(

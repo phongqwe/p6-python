@@ -87,9 +87,8 @@ class EventCell(WrapperCell):
                 )
                 self.__onCellEvent(protoData.toEventData())
 
-    def reRun(self, globalScope = None, localScope = None):
-        self._innerCell.clearScriptResult()
-        self._innerCell.runScript(globalScope, localScope)
+    def reRun(self, globalScope = None, localScope = None,refreshScript:bool=False):
+        self.rootCell.reRun(globalScope, localScope,refreshScript)
         if self.__onCellEvent is not None:
             if self.workbook is not None:
                 self.workbook.reRun()

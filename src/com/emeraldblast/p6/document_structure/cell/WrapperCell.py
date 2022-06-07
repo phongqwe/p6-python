@@ -64,8 +64,8 @@ class WrapperCell(Cell, ABC):
     def isEmpty(self):
         return self.rootCell.isEmpty()
 
-    def reRun(self, globalScope = None, localScope = None):
-        self.rootCell.reRun(globalScope, localScope)
+    def reRun(self, globalScope = None, localScope = None, refreshScript:bool =False):
+        self.rootCell.reRun(globalScope, localScope,refreshScript)
 
     def toJsonDict(self) -> dict:
         return self.rootCell.toJsonDict()

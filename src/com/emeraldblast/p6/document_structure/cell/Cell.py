@@ -108,12 +108,14 @@ class Cell(ToJson, ToProto[CellProto], ABC):
 
     @property
     def script(self) -> str:
-        """ return the script hold by this cell. Script is always Python"""
+        """ return the script hold by this cell. Script is always Python. The script is guranteed to be always updated"""
         raise NotImplementedError()
 
     @script.setter
     def script(self, newScript: str):
-        """ set the script hold by this cell. Script is always Python"""
+        """ set the script hold by this cell. Script is always Python.
+            @deprecated: don't use
+        """
         raise NotImplementedError()
 
     @property
@@ -159,9 +161,14 @@ class Cell(ToJson, ToProto[CellProto], ABC):
         else:
             return self.value is not None
 
-    def reRun(self, globalScope = None, localScope = None):
+    def reRun(self, globalScope = None, localScope = None, refreshScript:bool =False):
+        if refreshScript:
+            self.refreshScript()
         self.clearScriptResult()
         self.runScript(globalScope, localScope)
+
+    def refreshScript(self):
+        z = self.script
 
     def copyFrom(self, anotherCell: "Cell"):
         """copy everything (data, format, etc.) from another cell to this cell"""
