@@ -1,3 +1,4 @@
+from com.emeraldblast.p6.document_structure.cell.util.CellUtils import CellUtils
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellMultiUpdateRequest import \
     CellMultiUpdateRequest
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellMultiUpdateResponse import \
@@ -31,7 +32,7 @@ class CellMultiUpdateReactor(BaseEventReactor[bytes, CellMultiUpdateResponse]):
                     if len(content.formula)!=0:
                         ws.cell(update.cellAddress).formula = content.formula
                     else:
-                        ws.cell(update.cellAddress).value = content.literal
+                        ws.cell(update.cellAddress).value = CellUtils.parseValue(content.literal)
                 wb.reRun()
                 rt.newWorkbook = wb
             else:

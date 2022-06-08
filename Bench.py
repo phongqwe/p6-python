@@ -28,9 +28,9 @@ class B(A):
 
 class Bench(unittest.TestCase):
     def test_z(self):
+        z = "123z"
+        print(int(z)+1)
 
-        b = B(123)
-        b.p()
 
 
         # df = pd.DataFrame(np.random.randn(1000000, 1))

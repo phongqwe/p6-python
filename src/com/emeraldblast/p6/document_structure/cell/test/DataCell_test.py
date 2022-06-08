@@ -4,6 +4,7 @@ from com.emeraldblast.p6.document_structure.app.errors.AppErrors import AppError
 from com.emeraldblast.p6.document_structure.cell.CellContentImp import CellContentImp
 from com.emeraldblast.p6.document_structure.cell.DataCell import DataCell
 from com.emeraldblast.p6.document_structure.cell.EventCell import EventCell
+from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
 from com.emeraldblast.p6.document_structure.communication.notifier.eventData.CellEventData import CellEventData
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
@@ -137,7 +138,6 @@ class DataCellTest(unittest.TestCase):
         # access value a second time
         # cell mutation callback should not be invoked this time
         # because the run result was cache, the script should not run this time
-        c.value
         self.assertEqual(oldCount + 1, self.exCount)
 
     def test_setScript(self):
@@ -172,14 +172,6 @@ class DataCellTest(unittest.TestCase):
         c1.runScript()
         self.assertEqual(5, c1.value)
 
-    # def test_formula_setter(self):
-    #     c1 = self.s.cell((1,1))
-    #     c1.value=123
-    #     c1.script = "x=1;y=x*2+3;y"
-    #     print(c1.value)
-        # with self.assertRaises(Exception):
-        #     c1.formula = "new formula"
-
     def test_setFormula1(self):
         c1 = self.s.cell((1, 1))
         c1.value = 123
@@ -199,3 +191,11 @@ class DataCellTest(unittest.TestCase):
             c1.script)
         c1.script = "x=99;y=x-200;y"
         self.assertEqual("=SCRIPT(x=99;y=x-200;y)", c1.formula)
+
+    def test_value(self):
+        c1 = DataCell(
+            address = CellAddresses.fromColRow(1,1),
+        )
+        c1.value = 123
+        self.assertTrue(isinstance(c1.value,int))
+        print(c1.value)

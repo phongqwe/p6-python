@@ -1,5 +1,6 @@
 from typing import Callable
 
+from com.emeraldblast.p6.document_structure.cell.util.CellUtils import CellUtils
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateRequest import \
     CellUpdateRequest
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateResponse import \
@@ -35,7 +36,7 @@ class CellUpdateReactor(EventReactor[bytes, WorkbookUpdateCommonResponse]):
                 cell = ws.cell(cellAddress)
                 if request.isNotEmpty():
                     if request.value:
-                        cell.value = request.value
+                        cell.value = CellUtils.parseValue(request.value)
                     if request.formula:
                         cell.formula = request.formula
                 else:

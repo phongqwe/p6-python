@@ -132,6 +132,7 @@ class DataCell(Cell):
                 cellProto.isStrLit = isinstance(self.__value, str)
                 cellProto.isIntLit = isinstance(self.__value,int)
                 cellProto.isFloatLit = isinstance(self.__value,float)
+                cellProto.isError = isinstance(self.__value,Exception)
 
         return cellProto
 
