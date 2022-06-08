@@ -74,7 +74,7 @@ class WorkbookImp(Workbook):
     def workbookKey(self, newKey: WorkbookKey):
         self.__key = newKey
         # translators depend on workbook key,
-        # therefore when workbook key is changed, all the old translators must be removed
+        # therefore, when workbook key is changed, all the old translators must be removed
         self._translatorDict = {}
 
     def setActiveWorksheetRs(self, indexOrName: Union[int, str]) -> Result[Worksheet, ErrorReport]:

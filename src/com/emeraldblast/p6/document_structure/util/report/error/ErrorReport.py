@@ -14,6 +14,8 @@ class ErrorReport(ToProto[ErrorReportProto]):
         self.data = data
         self.loc = loc
 
+    def __str__(self):
+        return str(self.header)
 
     @staticmethod
     def fromProto(protoObj:ErrorReportProto)->'ErrorReport':
@@ -33,7 +35,7 @@ class ErrorReport(ToProto[ErrorReportProto]):
         if isinstance(self.data,ToException):
             return self.data.toException()
         else:
-            return Exception(str(self.data))
+            return Exception(str(self))
 
     def _makeRepStr(self) -> str:
         if isinstance(self.data, ToRepStr):

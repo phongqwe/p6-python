@@ -1,5 +1,6 @@
 import unittest
 
+from com.emeraldblast.p6.document_structure.app.errors.AppErrors import AppErrors
 from com.emeraldblast.p6.document_structure.cell.CellContentImp import CellContentImp
 from com.emeraldblast.p6.document_structure.cell.DataCell import DataCell
 from com.emeraldblast.p6.document_structure.cell.EventCell import EventCell
