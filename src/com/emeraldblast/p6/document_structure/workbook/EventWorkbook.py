@@ -1,8 +1,9 @@
 from typing import Callable, Optional, Union
 
-from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.app_event.SetActiveWorksheetResponse import \
     SetActiveWorksheetResponse
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.CreateNewWorksheetResponse import \
+    CreateNewWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.DeleteWorksheetResponse import \
     DeleteWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.notifier.eventData.EventData import EventData
@@ -99,21 +100,19 @@ class EventWorkbook(WorkbookWrapper):
         if rs.isOk():
             newWorksheet = rs.value
             if self.__onWorkbookEvent is not None:
-                res = P6Events.Workbook.CreateNewWorksheet.Response(self.workbookKey, name)
+                res = CreateNewWorksheetResponse(self.workbookKey, name)
                 self.__onWorkbookEvent(res.toEventData())
             return Ok(self.__wrapInEventWorksheet(newWorksheet))
         else:
             if self.__onWorkbookEvent is not None:
                 errReport: ErrorReport = rs.err
-                res = P6Events.Workbook.CreateNewWorksheet.Response(self.workbookKey, name, True,
-                                                                    errReport)
+                res = CreateNewWorksheetResponse(
+                    workbookKey = self.workbookKey,
+                    newWorksheetName = name,
+                    isError = True,
+                    errorReport = errReport)
                 self.__onWorkbookEvent(res.toEventData())
             return rs
-
-    # def reRun(self):
-    #     self.rootWorkbook.reRun()
-    #     if self.__onWorkbookEvent is not None:
-    #         self.__onWorkbookEvent(EventData(P6Events.Workbook.ReRun.event))
 
     def __wrapInEventWorksheet(self, sheet: Worksheet) -> Worksheet:
         def onRangeEvent(data: EventData):

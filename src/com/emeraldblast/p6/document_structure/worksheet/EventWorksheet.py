@@ -5,7 +5,6 @@ from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.EventCell import EventCell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
-from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteCellResponse import \
     DeleteCellResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteMultiResponse import \
@@ -58,14 +57,14 @@ class EventWorksheet(WorksheetWrapper):
         else:
             return cell
 
-    def reRun(self, refreshScript:bool = False):
-        self.rootWorksheet.reRun(refreshScript)
-        if self.__onWorksheetEvent is not None:
-            # todo incomplete data
-            eventData = EventData(
-                event = P6Events.Worksheet.ReRun.event,
-            )
-            self.__onWorksheetEvent(eventData)
+    # def reRun(self, refreshScript:bool = False):
+    #     self.rootWorksheet.reRun(refreshScript)
+    #     if self.__onWorksheetEvent is not None:
+    #         # todo incomplete data
+    #         eventData = EventData(
+    #             event = P6Events.Worksheet.ReRun.event,
+    #         )
+    #         self.__onWorksheetEvent(eventData)
 
     def _onCellEvent(self, data: EventData):
         data.worksheet = self.rootWorksheet

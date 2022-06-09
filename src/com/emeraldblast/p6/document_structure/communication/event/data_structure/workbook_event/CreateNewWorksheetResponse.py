@@ -7,14 +7,14 @@ from com.emeraldblast.p6.proto.WorkbookProtos_pb2 import CreateNewWorksheetRespo
 from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import RenameWorksheetResponseProto
 
 
-class CreateNewWorksheetResponse(ToEventData,ToProto[CreateNewWorksheetResponseProto]):
+class CreateNewWorksheetResponse(ToEventData, ToProto[CreateNewWorksheetResponseProto]):
     def __init__(
             self,
-            workbookKey:WorkbookKey,
-            newWorksheetName:str,
-            isError:bool = False,
-            errorReport:ErrorReport|None = None):
-        self.workbookKey:WorkbookKey = workbookKey
+            workbookKey: WorkbookKey,
+            newWorksheetName: str,
+            isError: bool = False,
+            errorReport: ErrorReport | None = None):
+        self.workbookKey: WorkbookKey = workbookKey
         self.newWorksheetName = newWorksheetName
         self.isError = isError
         self.errorReport = errorReport

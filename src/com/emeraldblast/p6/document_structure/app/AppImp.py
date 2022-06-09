@@ -9,6 +9,7 @@ from com.emeraldblast.p6.document_structure.app.workbook_container.WorkbookConta
 from com.emeraldblast.p6.document_structure.app.workbook_container.WorkbookContainerImp import WorkbookContainerImp
 from com.emeraldblast.p6.document_structure.communication.SocketProvider import SocketProvider
 from com.emeraldblast.p6.document_structure.communication.SocketProviderImp import SocketProviderImp
+from com.emeraldblast.p6.document_structure.communication.event.P6EventTableImp import P6EventTableImp
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
 from com.emeraldblast.p6.document_structure.communication.event_server.EventServer import EventServer
@@ -113,45 +114,83 @@ class AppImp(BaseApp):
     def __setupEventServerReactors(self):
         evSv = self._eventServer
         er = self._eventServerReactors
+        table = P6EventTableImp.i()
 
-        reactorForRange = {
-            P6Events.Range.RangeToClipBoard.event: er.rangeToClipboardReactor()
-        }
+        def addReactor(reactor):
+            event = table.getEventFor(reactor)
+            evSv.addReactor(event, reactor)
 
-        reactorForWb = {
-            P6Events.Workbook.DeleteWorksheet.event: er.deleteWorksheetReactor(),
-            P6Events.Workbook.CreateNewWorksheet.event: er.createNewWorksheetReactor(),
+        reactorForRange = [
+            er.rangeToClipboardReactor()
+        ]
 
-        }
-        reactorForWs = {
-            P6Events.Worksheet.Rename.event: er.renameWorksheet(),
-            P6Events.Worksheet.DeleteCell.event: er.deleteCellReactor(),
-            P6Events.Worksheet.DeleteMulti.event: er.deleteMultiReactor(),
-        }
+        reactorForWb = [
+            er.deleteWorksheetReactor(),
+            er.createNewWorksheetReactor(),
 
-        reactorForCell = {
-            P6Events.Cell.Update.event: er.cellUpdateValueReactor(),
-            P6Events.Cell.MultiUpdate.event: er.cellMultiUpdateReactor(),
-        }
+        ]
+        reactorForWs = [er.renameWorksheet(),
+                        er.deleteCellReactor(),
+                        er.deleteMultiReactor(), ]
 
-        reactorForApp = {
-            P6Events.App.SetActiveWorksheet.event: er.app.setActiveWorksheetReactor(),
-            P6Events.App.SaveWorkbook.event: er.app.saveWorkbookReactor(),
-            P6Events.App.LoadWorkbook.event: er.app.loadWbReactor(),
-            P6Events.App.CreateNewWorkbook.event: er.app.createNewWorkbookReactor(),
-            P6Events.App.CloseWorkbook.event: er.app.closeWorkbookReactor()
-        }
+        reactorForCell = [er.cellUpdateValueReactor(),
+                          er.cellMultiUpdateReactor(), ]
 
-        d = {
-            **reactorForRange,
-            **reactorForWb,
-            **reactorForWs,
-            **reactorForCell,
-            **reactorForApp,
-        }
+        reactorForApp = [er.app.setActiveWorksheetReactor(),
+                         er.app.saveWorkbookReactor(),
+                         er.app.loadWbReactor(),
+                         er.app.createNewWorkbookReactor(),
+                         er.app.closeWorkbookReactor()]
 
-        for (k, v) in d.items():
-            evSv.addReactor(k, v)
+        allReactors = [
+            *reactorForRange,
+            *reactorForWb,
+            *reactorForWs,
+            *reactorForCell,
+            *reactorForApp
+        ]
+        for reactor in allReactors:
+            addReactor(reactor)
+
+    # reactorForRange = {
+    #     P6Events.Range.RangeToClipBoard.event: er.rangeToClipboardReactor()
+    # }
+    #
+    # reactorForWb = {
+    #     P6Events.Workbook.DeleteWorksheet.event: er.deleteWorksheetReactor(),
+    #     P6Events.Workbook.CreateNewWorksheet.event: er.createNewWorksheetReactor(),
+    #
+    # }
+    # reactorForWs = {
+    #     P6Events.Worksheet.Rename.event: er.renameWorksheet(),
+    #     P6Events.Worksheet.DeleteCell.event: er.deleteCellReactor(),
+    #     P6Events.Worksheet.DeleteMulti.event: er.deleteMultiReactor(),
+    # }
+    #
+    # reactorForCell = {
+    #     P6Events.Cell.Update.event: er.cellUpdateValueReactor(),
+    #     P6Events.Cell.MultiUpdate.event: er.cellMultiUpdateReactor(),
+    # }
+    #
+    # reactorForApp = {
+    #     P6Events.App.SetActiveWorksheet.event: er.app.setActiveWorksheetReactor(),
+    #     P6Events.App.SaveWorkbook.event: er.app.saveWorkbookReactor(),
+    #     P6Events.App.LoadWorkbook.event: er.app.loadWbReactor(),
+    #     P6Events.App.CreateNewWorkbook.event: er.app.createNewWorkbookReactor(),
+    #     P6Events.App.CloseWorkbook.event: er.app.closeWorkbookReactor()
+    # }
+    #
+    # d = {
+    #     **reactorForRange,
+    #     **reactorForWb,
+    #     **reactorForWs,
+    #     **reactorForCell,
+    #     **reactorForApp,
+    # }
+    #
+    # for (k, v) in d.items():
+    #     evSv.addReactor(k, v)
+
 
     def __initNotifiers(self):
         """create internal reactors that will react to events from the app, workbooks, worksheets, cells, etc """
@@ -169,38 +208,47 @@ class AppImp(BaseApp):
         for event in P6Events.Range.allEvents():
             container.addReactor(event, provider.appNotifier())
 
+
     def __setupEventEmitter(self):
         # self.__wbSaver=EventP6FileSaver.create(self.__wbSaver, self.__notifierContainer)
         # self.__wbLoader = EventP6FileLoader.create(self.__wbLoader, self.__notifierContainer)
         pass
 
+
     @property
     def eventNotifierContainer(self) -> EventReactorContainer:
         return self.__notifierContainer
+
 
     ### >> App << ###
 
     def _getSocketProvider(self) -> SocketProvider | None:
         return self.__socketProvider
 
+
     @property
     def socketProvider(self) -> SocketProvider | None:
         return self.__socketProvider
+
 
     @socketProvider.setter
     def socketProvider(self, socketProvider):
         self.__socketProvider = socketProvider
 
+
     @property
     def fileSaver(self) -> P6FileSaver:
         return self.__wbSaver
+
 
     @property
     def fileLoader(self) -> P6FileLoader:
         return self.__wbLoader
 
+
     def hasNoWorkbook(self) -> bool:
         return self.wbContainer.isEmpty()
+
 
     @property
     def activeWorkbook(self) -> Optional[Workbook]:
@@ -213,6 +261,7 @@ class AppImp(BaseApp):
         rt = self._makeEventWb(self.__activeWorkbook)
         return rt
 
+
     def setActiveWorkbookRs(self, indexOrNameOrKey: Union[int, str, WorkbookKey]) -> Result[Workbook, ErrorReport]:
         wb = self.getWorkbookOrNone(indexOrNameOrKey)
         if wb is not None:
@@ -221,9 +270,11 @@ class AppImp(BaseApp):
         else:
             return Err(AppErrors.WorkbookNotExist.report(indexOrNameOrKey))
 
+
     @property
     def wbContainer(self) -> WorkbookContainer:
         return self.__wbCont
+
 
     @property
     def activeSheet(self) -> Optional[Worksheet]:
@@ -231,6 +282,7 @@ class AppImp(BaseApp):
             return self.activeWorkbook.activeWorksheet
         else:
             return None
+
 
     def createNewWorkbookRs(self, name: Optional[str] = None) -> Result[Workbook, ErrorReport]:
         if name is None:

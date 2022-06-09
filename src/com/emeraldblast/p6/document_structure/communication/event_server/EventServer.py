@@ -7,7 +7,9 @@ from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 
 
 class EventServer(ABC):
-    """ a server accepting requests (in P6Message) from front end and sending back responses (in P6Response) """
+    """
+     a server accepting requests (in P6Message) from front end and sending back responses (in P6Response)
+     """
 
     def start(self,port:int):
         raise NotImplementedError()

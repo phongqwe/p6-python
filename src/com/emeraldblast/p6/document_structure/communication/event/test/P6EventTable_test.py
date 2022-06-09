@@ -1,6 +1,9 @@
 import unittest
 from unittest.mock import MagicMock
 
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.CreateNewWorkbookReactor import \
+    CreateNewWorkbookReactor
+
 from com.emeraldblast.p6.document_structure.communication.event.P6EventTable import P6EventTable
 from com.emeraldblast.p6.document_structure.communication.event.P6EventTableImp import P6EventTableImp
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
@@ -11,9 +14,6 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.a
 class P6EventTable_test(unittest.TestCase):
     def test_something(self):
         table = P6EventTableImp()
-
-
-
 
         self.assertEqual(
             P6Events.Cell.Update.event,
@@ -43,6 +43,11 @@ class P6EventTable_test(unittest.TestCase):
         self.assertEqual(
             P6Events.App.CloseWorkbook.event,
             table.getEventForClazz(P6Events.App.CloseWorkbook.Response)
+        )
+
+        self.assertEqual(
+            P6Events.App.CreateNewWorkbook.event,
+            table.getEventForClazz(CreateNewWorkbookReactor)
         )
 
 

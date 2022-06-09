@@ -95,7 +95,7 @@ class CellUpdateReactor_test(unittest.TestCase):
         self.assertFalse(outObj.isError)
         self.assertIsNone(outObj.errorReport)
         self.assertIsNotNone(outObj.newWorkbook)
-        self.assertEqual(request.value, outObj.newWorkbook.getWorksheetOrNone("Sheet1").cell((1, 1)).value)
+        self.assertEqual(int(request.value), outObj.newWorkbook.getWorksheetOrNone("Sheet1").cell((1, 1)).value)
 
     def test_OkFormula(self):
         reactor = CellUpdateReactor("id", self.wbGetter)

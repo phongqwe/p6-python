@@ -1,5 +1,13 @@
 import inspect
 
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.CloseWorkbookReactor import \
+    CloseWorkbookReactor
+
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.CreateNewWorkbookReactor import \
+    CreateNewWorkbookReactor
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.LoadWorkbookReactor import \
+    LoadWorkbookReactor
+
 from com.emeraldblast.p6.document_structure.communication.event.P6Event import P6Event
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.app_event.CloseWorkbookRequest import \
     CloseWorkbookRequest
@@ -49,6 +57,24 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.w
     RenameWorksheetRequest
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetResponse import \
     RenameWorksheetResponse
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.SaveWorkbookReactor import \
+    SaveWorkbookReactor
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.SetActiveWorksheetReactor import \
+    SetActiveWorksheetReactor
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.cell_event.CellMultiUpdateReactor import \
+    CellMultiUpdateReactor
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.cell_event.CellUpdateReactor import \
+    CellUpdateReactor
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.range_event.RangeToClipboardReactor import \
+    RangeToClipboardReactor
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook_event.CreateNewWorksheetReactor import \
+    CreateNewWorksheetReactor
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook_event.DeleteWorksheetReactor import \
+    DeleteWorksheetReactor
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.worksheet_event.DeleteMultiReactor import \
+    DeleteMultiReactor
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.worksheet_event.RenameWorksheetReactor import \
+    RenameWorksheetReactor
 
 WSE = "WORKSHEET_EVENT"  # worksheet event
 CE = "CELL_EVENT"  # cell event
@@ -86,11 +112,13 @@ class P6Events:
             event = P6Event(f"{CE}1", "cell update")
             Response = CellUpdateResponse
             Request = CellUpdateRequest
+            Reactor = CellUpdateReactor
 
         class MultiUpdate:
             event = P6Event(f"{CE}2", "cell multi update")
             Request = CellMultiUpdateRequest
             Response = CellMultiUpdateResponse
+            Reactor = CellMultiUpdateReactor
 
     class Worksheet:
         @classmethod
@@ -107,6 +135,7 @@ class P6Events:
             event = P6Event(f"{WSE}2", "rename worksheet")
             Response = RenameWorksheetResponse
             Request = RenameWorksheetRequest
+            Reactor = RenameWorksheetReactor
 
         class DeleteCell:
             event = P6Event(f"{WSE}3", "Delete cell")
@@ -115,6 +144,7 @@ class P6Events:
             event = P6Event(f"{WSE}4", "Delete multi")
             Request = DeleteMultiRequest
             Response = DeleteMultiResponse
+            Reactor = DeleteMultiReactor
 
         # class PasteRange:
         #     event = P6Event(f"{WSE}5", "Paste range")
@@ -131,6 +161,7 @@ class P6Events:
             event = P6Event(f"{RE}1", "Range to clipboard")
             Request = RangeToClipboardRequest
             Response = RangeToClipboardResponse
+            Reactor = RangeToClipboardReactor
 
     class Workbook:
         @classmethod
@@ -148,11 +179,13 @@ class P6Events:
             event = P6Event(f"{WBE}2", "remove worksheet")
             Request = DeleteWorksheetRequest
             Response = DeleteWorksheetResponse
+            Reactor = DeleteWorksheetReactor
 
         class CreateNewWorksheet:
             event = P6Event(f"{WBE}3", "create new worksheet")
             Response = CreateNewWorksheetResponse
             Request = CreateNewWorksheetRequest
+            Reactor = CreateNewWorksheetReactor
 
     class EventServer:
         @classmethod
@@ -174,26 +207,31 @@ class P6Events:
             event = P6Event(f"{APPE}0", "Set active worksheet")
             Request = SetActiveWorksheetRequest
             Response = SetActiveWorksheetResponse
+            Reactor = SetActiveWorksheetReactor
 
         class SaveWorkbook:
             event = P6Event(f"{APPE}1", "save workbook")
             Request = SaveWorkbookRequest
             Response = SaveWorkbookResponse
+            Reactor = SaveWorkbookReactor
 
         class LoadWorkbook:
             event = P6Event(f"{APPE}2", "load workbook")
             Request = LoadWorkbookRequest
             Response = LoadWorkbookResponse
+            Reactor =LoadWorkbookReactor
 
         class CreateNewWorkbook:
             event = P6Event(f"{APPE}3", "create new workbook")
             Request = CreateNewWorkbookRequest
             Response = CreateNewWorkbookResponse
+            Reactor = CreateNewWorkbookReactor
 
         class CloseWorkbook:
             event = P6Event(f"{APPE}4", "close workbook")
             Request = CloseWorkbookRequest
             Response = CloseWorkbookResponse
+            Reactor = CloseWorkbookReactor
 
     class Fallback:
         class UnknownEvent:

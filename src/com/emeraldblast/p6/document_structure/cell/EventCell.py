@@ -1,8 +1,10 @@
 from typing import Callable
 
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateResponse import \
+    CellUpdateResponse
+
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.WrapperCell import WrapperCell
-from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 from com.emeraldblast.p6.document_structure.communication.notifier.eventData.EventData import EventData
 
 
@@ -25,7 +27,7 @@ class EventCell(WrapperCell):
         if self.__onCellEvent is not None:
             if self.workbook is not None:
                 self.workbook.reRun()
-            protoData = P6Events.Cell.Update.Response(
+            protoData = CellUpdateResponse(
                 isError=False,
                 workbookKey = self.workbook.workbookKey,
                 newWorkbook = self.workbook)
@@ -37,7 +39,7 @@ class EventCell(WrapperCell):
         if self.__onCellEvent is not None:
             if self.workbook is not None:
                 self.workbook.reRun()
-            protoData = P6Events.Cell.Update.Response(
+            protoData = CellUpdateResponse(
                 isError = False,
                 workbookKey = self.workbook.workbookKey,
                 newWorkbook = self.workbook
@@ -50,7 +52,7 @@ class EventCell(WrapperCell):
         if self.__onCellEvent is not None:
             if self.workbook is not None:
                 self.workbook.reRun()
-            protoData = P6Events.Cell.Update.Response(
+            protoData = CellUpdateResponse(
                 isError = False,
                 workbookKey = self.workbook.workbookKey,
                 newWorkbook = self.workbook
@@ -63,7 +65,7 @@ class EventCell(WrapperCell):
             if self.__onCellEvent is not None:
                 if self.workbook is not None:
                     self.workbook.reRun()
-                protoData = P6Events.Cell.Update.Response(
+                protoData = CellUpdateResponse(
                     isError = False,
                     workbookKey = self.workbook.workbookKey,
                     newWorkbook = self.workbook
@@ -80,7 +82,7 @@ class EventCell(WrapperCell):
             if self.__onCellEvent is not None:
                 if self.workbook is not None:
                     self.workbook.reRun()
-                protoData = P6Events.Cell.Update.Response(
+                protoData = CellUpdateResponse(
                     isError = False,
                     workbookKey = self.workbook.workbookKey,
                     newWorkbook = self.workbook
@@ -92,7 +94,7 @@ class EventCell(WrapperCell):
         if self.__onCellEvent is not None:
             if self.workbook is not None:
                 self.workbook.reRun()
-            protoData = P6Events.Cell.Update.Response(
+            protoData = CellUpdateResponse(
                 isError = False,
                 workbookKey = self.workbook.workbookKey,
                 newWorkbook = self.workbook
