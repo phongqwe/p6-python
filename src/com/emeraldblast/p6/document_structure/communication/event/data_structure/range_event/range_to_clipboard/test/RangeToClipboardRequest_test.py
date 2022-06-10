@@ -5,7 +5,7 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.r
     RangeToClipboardRequest
 from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
-from com.emeraldblast.p6.proto.RangeProtos_pb2 import RangeToClipboardRequestProto
+from com.emeraldblast.p6.proto.RangeProtos_pb2 import RangeOperationRequestProto
 
 
 class RangeToClipboardRequest_test(unittest.TestCase):
@@ -19,7 +19,7 @@ class RangeToClipboardRequest_test(unittest.TestCase):
         )
 
     def test_fromProto(self):
-        proto = RangeToClipboardRequestProto(
+        proto = RangeOperationRequestProto(
             rangeId = self.rangeId.toProtoObj(),
             windowId="wd"
         )
@@ -29,7 +29,7 @@ class RangeToClipboardRequest_test(unittest.TestCase):
         self.assertEqual(proto.windowId, o.windowId)
 
     def test_fromProto2(self):
-        proto = RangeToClipboardRequestProto(
+        proto = RangeOperationRequestProto(
             rangeId = self.rangeId.toProtoObj(),
         )
 

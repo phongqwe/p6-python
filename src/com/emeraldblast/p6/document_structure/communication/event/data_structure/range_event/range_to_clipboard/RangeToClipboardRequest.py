@@ -1,5 +1,5 @@
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
-from com.emeraldblast.p6.proto.RangeProtos_pb2 import RangeToClipboardRequestProto
+from com.emeraldblast.p6.proto.RangeProtos_pb2 import RangeOperationRequestProto
 
 
 class RangeToClipboardRequest:
@@ -9,12 +9,12 @@ class RangeToClipboardRequest:
 
     @staticmethod
     def fromProtoBytes(data:bytes)->'RangeToClipboardRequest':
-        proto = RangeToClipboardRequestProto()
+        proto = RangeOperationRequestProto()
         proto.ParseFromString(data)
         return RangeToClipboardRequest.fromProto(proto)
 
     @staticmethod
-    def fromProto(proto:RangeToClipboardRequestProto)->'RangeToClipboardRequest':
+    def fromProto(proto:RangeOperationRequestProto)->'RangeToClipboardRequest':
         wd = None
         if proto.HasField("windowId"):
             wd = proto.windowId

@@ -15,7 +15,7 @@ from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import sampl
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
-from com.emeraldblast.p6.proto.RangeProtos_pb2 import RangeToClipboardRequestProto
+from com.emeraldblast.p6.proto.RangeProtos_pb2 import RangeOperationRequestProto
 
 
 class RangeToClipboardReactor_test(unittest.TestCase):
@@ -35,7 +35,7 @@ class RangeToClipboardReactor_test(unittest.TestCase):
             worksheetName = "Sheet1",
             rangeAddress = RangeAddresses.fromLabel("@C1:K5")
         )
-        request = RangeToClipboardRequestProto(
+        request = RangeOperationRequestProto(
             rangeId = rangeId.toProtoObj(),
             windowId = "123"
         )
@@ -65,7 +65,7 @@ class RangeToClipboardReactor_test(unittest.TestCase):
         )
 
         reactor = RangeToClipboardReactor(rangeGetter = rangeGetter)
-        request = RangeToClipboardRequestProto(
+        request = RangeOperationRequestProto(
             rangeId=rangeId.toProtoObj(),
         )
         rs = reactor.react(

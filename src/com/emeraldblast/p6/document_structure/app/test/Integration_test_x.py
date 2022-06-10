@@ -21,7 +21,7 @@ from com.emeraldblast.p6.document_structure.util.for_test.emu.TestEnvImp import 
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.emeraldblast.p6.proto.AppEventProtos_pb2 import CreateNewWorkbookResponseProto, CloseWorkbookResponseProto
 from com.emeraldblast.p6.proto.P6MsgProtos_pb2 import P6MessageProto, P6MessageHeaderProto
-from com.emeraldblast.p6.proto.RangeProtos_pb2 import RangeToClipboardResponseProto, RangeToClipboardRequestProto
+from com.emeraldblast.p6.proto.RangeProtos_pb2 import RangeToClipboardResponseProto, RangeOperationRequestProto
 from com.emeraldblast.p6.proto.WorkbookProtos_pb2 import CreateNewWorksheetResponseProto, SaveWorkbookRequestProto, \
     WorkbookUpdateCommonResponseProto
 from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import RenameWorksheetResponseProto
@@ -159,7 +159,7 @@ class IntegrationTest_test(unittest.TestCase):
         res: P6Response = self.testEnv.sendRequestToEventServer(
             P6Messages.p6Message(
                 P6Events.Range.RangeToClipBoard.event,
-                data = RangeToClipboardRequestProto(
+                data = RangeOperationRequestProto(
                     rangeId = RangeId(
                         workbookKey = WorkbookKeys.fromNameAndPath("Book1"),
                         worksheetName = "Sheet1",

@@ -15,12 +15,13 @@ _sym_db = _symbol_database.Default()
 from com.emeraldblast.p6.proto import CommonProtos_pb2 as com_dot_emeraldblast_dot_p6_dot_proto_dot_CommonProtos__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n)com/emeraldblast/p6/proto/DocProtos.proto\x12\x19\x63om.emeraldblast.p6.proto\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\"\x90\x01\n\x11RangeAddressProto\x12<\n\x07topLeft\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\x12=\n\x08\x62otRight\x18\x02 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\"\xab\x01\n\x0cRangeIdProto\x12\x42\n\x0crangeAddress\x18\x01 \x01(\x0b\x32,.com.emeraldblast.p6.proto.RangeAddressProto\x12@\n\x0bworkbookKey\x18\x02 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x03 \x01(\t\",\n\x10\x43\x65llAddressProto\x12\x0b\n\x03\x63ol\x18\x01 \x01(\x05\x12\x0b\n\x03row\x18\x02 \x01(\x05\"\xf8\x01\n\tCellProto\x12\x12\n\x05value\x18\x01 \x01(\tH\x00\x88\x01\x01\x12\x14\n\x07\x66ormula\x18\x02 \x01(\tH\x01\x88\x01\x01\x12<\n\x07\x61\x64\x64ress\x18\x03 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\x12\x11\n\tisFormula\x18\x04 \x01(\x08\x12\x11\n\tisBoolLit\x18\x05 \x01(\x08\x12\x10\n\x08isStrLit\x18\x06 \x01(\x08\x12\x10\n\x08isIntLit\x18\x07 \x01(\x08\x12\x12\n\nisFloatLit\x18\x08 \x01(\x08\x12\x0f\n\x07isError\x18\t \x01(\x08\x42\x08\n\x06_valueB\n\n\x08_formula\"R\n\x0eWorksheetProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x32\n\x04\x63\x65ll\x18\x02 \x03(\x0b\x32$.com.emeraldblast.p6.proto.CellProto\"<\n\x10WorkbookKeyProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\x04path\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\x07\n\x05_path\"\x8f\x01\n\rWorkbookProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12<\n\tworksheet\x18\x02 \x03(\x0b\x32).com.emeraldblast.p6.proto.WorksheetProtob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n)com/emeraldblast/p6/proto/DocProtos.proto\x12\x19\x63om.emeraldblast.p6.proto\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\"\x90\x01\n\x11RangeAddressProto\x12<\n\x07topLeft\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\x12=\n\x08\x62otRight\x18\x02 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\"\xab\x01\n\x0cRangeIdProto\x12\x42\n\x0crangeAddress\x18\x01 \x01(\x0b\x32,.com.emeraldblast.p6.proto.RangeAddressProto\x12@\n\x0bworkbookKey\x18\x02 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x03 \x01(\t\"d\n\tWsWbProto\x12@\n\x0bworkbookKey\x18\x02 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x03 \x01(\t\",\n\x10\x43\x65llAddressProto\x12\x0b\n\x03\x63ol\x18\x01 \x01(\x05\x12\x0b\n\x03row\x18\x02 \x01(\x05\"\xf8\x01\n\tCellProto\x12\x12\n\x05value\x18\x01 \x01(\tH\x00\x88\x01\x01\x12\x14\n\x07\x66ormula\x18\x02 \x01(\tH\x01\x88\x01\x01\x12<\n\x07\x61\x64\x64ress\x18\x03 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\x12\x11\n\tisFormula\x18\x04 \x01(\x08\x12\x11\n\tisBoolLit\x18\x05 \x01(\x08\x12\x10\n\x08isStrLit\x18\x06 \x01(\x08\x12\x10\n\x08isIntLit\x18\x07 \x01(\x08\x12\x12\n\nisFloatLit\x18\x08 \x01(\x08\x12\x0f\n\x07isError\x18\t \x01(\x08\x42\x08\n\x06_valueB\n\n\x08_formula\"R\n\x0eWorksheetProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x32\n\x04\x63\x65ll\x18\x02 \x03(\x0b\x32$.com.emeraldblast.p6.proto.CellProto\"<\n\x10WorkbookKeyProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\x04path\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\x07\n\x05_path\"\x8f\x01\n\rWorkbookProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12<\n\tworksheet\x18\x02 \x03(\x0b\x32).com.emeraldblast.p6.proto.WorksheetProtob\x06proto3')
 
 
 
 _RANGEADDRESSPROTO = DESCRIPTOR.message_types_by_name['RangeAddressProto']
 _RANGEIDPROTO = DESCRIPTOR.message_types_by_name['RangeIdProto']
+_WSWBPROTO = DESCRIPTOR.message_types_by_name['WsWbProto']
 _CELLADDRESSPROTO = DESCRIPTOR.message_types_by_name['CellAddressProto']
 _CELLPROTO = DESCRIPTOR.message_types_by_name['CellProto']
 _WORKSHEETPROTO = DESCRIPTOR.message_types_by_name['WorksheetProto']
@@ -39,6 +40,13 @@ RangeIdProto = _reflection.GeneratedProtocolMessageType('RangeIdProto', (_messag
   # @@protoc_insertion_point(class_scope:com.emeraldblast.p6.proto.RangeIdProto)
   })
 _sym_db.RegisterMessage(RangeIdProto)
+
+WsWbProto = _reflection.GeneratedProtocolMessageType('WsWbProto', (_message.Message,), {
+  'DESCRIPTOR' : _WSWBPROTO,
+  '__module__' : 'com.emeraldblast.p6.proto.DocProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.emeraldblast.p6.proto.WsWbProto)
+  })
+_sym_db.RegisterMessage(WsWbProto)
 
 CellAddressProto = _reflection.GeneratedProtocolMessageType('CellAddressProto', (_message.Message,), {
   'DESCRIPTOR' : _CELLADDRESSPROTO,
@@ -82,14 +90,16 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _RANGEADDRESSPROTO._serialized_end=263
   _RANGEIDPROTO._serialized_start=266
   _RANGEIDPROTO._serialized_end=437
-  _CELLADDRESSPROTO._serialized_start=439
-  _CELLADDRESSPROTO._serialized_end=483
-  _CELLPROTO._serialized_start=486
-  _CELLPROTO._serialized_end=734
-  _WORKSHEETPROTO._serialized_start=736
-  _WORKSHEETPROTO._serialized_end=818
-  _WORKBOOKKEYPROTO._serialized_start=820
-  _WORKBOOKKEYPROTO._serialized_end=880
-  _WORKBOOKPROTO._serialized_start=883
-  _WORKBOOKPROTO._serialized_end=1026
+  _WSWBPROTO._serialized_start=439
+  _WSWBPROTO._serialized_end=539
+  _CELLADDRESSPROTO._serialized_start=541
+  _CELLADDRESSPROTO._serialized_end=585
+  _CELLPROTO._serialized_start=588
+  _CELLPROTO._serialized_end=836
+  _WORKSHEETPROTO._serialized_start=838
+  _WORKSHEETPROTO._serialized_end=920
+  _WORKBOOKKEYPROTO._serialized_start=922
+  _WORKBOOKKEYPROTO._serialized_end=982
+  _WORKBOOKPROTO._serialized_start=985
+  _WORKBOOKPROTO._serialized_end=1128
 # @@protoc_insertion_point(module_scope)
