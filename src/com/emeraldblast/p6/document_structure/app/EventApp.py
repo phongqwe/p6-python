@@ -1,6 +1,8 @@
 from pathlib import Path
 from typing import Callable, Optional, Union
 
+from com.emeraldblast.p6.document_structure.communication.event.P6EventTableImp import P6EventTableImp
+
 from com.emeraldblast.p6.document_structure.app.App import App
 from com.emeraldblast.p6.document_structure.app.AppWrapper import AppWrapper
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
@@ -58,8 +60,9 @@ class EventApp(AppWrapper):
         rs = self.rootApp.closeWorkbookRs(nameOrIndexOrKey)
         if rs.isOk():
             response = CloseWorkbookResponse.fromRs(rs,windowId = None)
+            event = P6EventTableImp.i().getEventFor(response)
             self.onEvent(EventData(
-                event=P6Events.App.CloseWorkbook.event,
+                event=event,
                 data = response.toProtoBytes()
             ))
         return rs

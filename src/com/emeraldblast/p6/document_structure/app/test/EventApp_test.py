@@ -35,6 +35,7 @@ class EventApp_test(unittest.TestCase):
         eventApp = EventApp(app, onEvent)
         eventApp.closeWorkbookRs(0)
         self.assertEqual(1,onEvent.call_count)
+        # test the validity of callback data
         eventData = onEvent.call_args[0][0]
         self.assertEqual(P6Events.App.CloseWorkbook.event, eventData.event)
 

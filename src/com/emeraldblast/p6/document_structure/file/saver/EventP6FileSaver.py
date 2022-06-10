@@ -1,6 +1,8 @@
 from pathlib import Path
 from typing import Union, Callable
 
+from com.emeraldblast.p6.document_structure.communication.event.P6EventTableImp import P6EventTableImp
+
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.save_wb.SaveWorkbookResponse import \
     SaveWorkbookResponse
@@ -44,7 +46,8 @@ class EventP6FileSaver(P6FileSaver):
         response.workbookKey = wbKey
 
         eventData = EventData(
-            event = P6Events.App.SaveWorkbook.event,
+            # event = P6Events.App.SaveWorkbook.event,
+            event = P6EventTableImp.i().getEventFor(response),
             isError = False,
             data = response
         )
