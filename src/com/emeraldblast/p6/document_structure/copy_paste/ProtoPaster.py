@@ -17,7 +17,8 @@ class ProtoPaster(Paster):
         try:
             protoBytesStr = pyperclip.paste()
             protoBytes=ast.literal_eval(protoBytesStr)
-            return Ok(RangeCopy.fromProtoBytes(protoBytes))
+            o = RangeCopy.fromProtoBytes(protoBytes)
+            return Ok(o)
         except Exception as e:
             return Err(CopyErrors.UnableToPasteRange.report())
 

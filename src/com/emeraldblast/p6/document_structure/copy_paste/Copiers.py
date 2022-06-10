@@ -3,5 +3,5 @@ from com.emeraldblast.p6.document_structure.copy_paste.ProtoPaster import ProtoP
 
 
 class Copiers:
-    pandasProtoCopier = ProtoCopier()
-    pandasProtoPaster = ProtoPaster()
+    protoCopier = ProtoCopier()
+    protoPaster = ProtoPaster()

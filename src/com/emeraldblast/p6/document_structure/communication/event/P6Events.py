@@ -1,5 +1,9 @@
 import inspect
 
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.paste_range.PasteRangeRequest import \
+    PasteRangeRequest
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.paste_range.PasteRangeResponse import \
+    PasteRangeResponse
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.CloseWorkbookReactor import \
     CloseWorkbookReactor
 
@@ -65,6 +69,8 @@ from com.emeraldblast.p6.document_structure.communication.event_server.reactors.
     CellMultiUpdateReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.cell_event.CellUpdateReactor import \
     CellUpdateReactor
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.range_event.PasteRangeReactor import \
+    PasteRangeReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.range_event.RangeToClipboardReactor import \
     RangeToClipboardReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook_event.CreateNewWorksheetReactor import \
@@ -162,6 +168,11 @@ class P6Events:
             Request = RangeToClipboardRequest
             Response = RangeToClipboardResponse
             Reactor = RangeToClipboardReactor
+        class PasteRange:
+            event = P6Event(f"{RE}2","Range to clipboard")
+            Request=PasteRangeRequest
+            Response = PasteRangeResponse
+            Reactor = PasteRangeReactor
 
     class Workbook:
         @classmethod

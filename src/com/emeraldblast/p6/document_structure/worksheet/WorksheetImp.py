@@ -1,6 +1,14 @@
 from typing import Optional, Union, Tuple, Callable
 
 import pandas
+import pyperclip
+
+from com.emeraldblast.p6.document_structure.cell.util.CellUtils import CellUtils
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeCopy import RangeCopy
+from com.emeraldblast.p6.document_structure.copy_paste.Pasters import Pasters
+from com.emeraldblast.p6.document_structure.util.CommonError import CommonErrors
+
+from com.emeraldblast.p6.proto.RangeProtos_pb2 import RangeCopyProto
 from pandas import DataFrame
 
 from com.emeraldblast.p6.document_structure.app.R import R
@@ -32,27 +40,27 @@ from com.emeraldblast.p6.document_structure.worksheet.WorksheetJson import Works
 class WorksheetImp(Worksheet):
 
     @property
-    def maxUsedCol(self) -> int|None:
+    def maxUsedCol(self) -> int | None:
         return self._maxCol
 
     @property
-    def minUsedCol(self) -> int|None:
+    def minUsedCol(self) -> int | None:
         return self._minCol
 
     @property
-    def maxUsedRow(self) -> int|None:
+    def maxUsedRow(self) -> int | None:
         return self._maxRow
 
     @property
-    def minUsedRow(self) -> int|None:
+    def minUsedRow(self) -> int | None:
         return self._minRow
 
     @property
-    def colDict(self)->dict[int, list[Cell]]:
+    def colDict(self) -> dict[int, list[Cell]]:
         return self._colDict
 
     @property
-    def rowDict(self)->dict[int, list[Cell]]:
+    def rowDict(self) -> dict[int, list[Cell]]:
         return self._rowDict
 
     def __init__(self,
@@ -97,17 +105,45 @@ class WorksheetImp(Worksheet):
             self._minRow = None
             self._maxRow = None
 
-
-    def pasteFromClipboardRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
-        df = pandas.read_clipboard(header = None)
-        if isinstance(df, DataFrame):
+    def pasteDataFrameFromClipboardRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
+        """
+        paste a data frame from clipboard into this worksheet
+        :param anchorCell:
+        :return: Ok if successfuly paste, Err otherwise
+        """
+        data = pandas.read_clipboard(header = None)
+        if isinstance(data, DataFrame):
+            df = data
             for rowIndex in range(len(df)):
                 row = df.iloc[rowIndex]
                 for colIndex in range(len(row)):
                     content = df.iloc[rowIndex, colIndex]
                     if not pandas.isna(content):
                         cell = self.cell((colIndex + anchorCell.colIndex, rowIndex + anchorCell.rowIndex))
-                        cell.formula = content
+                        contentStr = str(content)
+                        isFormula = contentStr.strip().startswith("=")
+                        if isFormula:
+                            cell.formula = content
+                        else:
+                            parsedValue = CellUtils.parseValue(content)
+                            cell.value = parsedValue
+            self.reRun()
+            return Ok(None)
+        else:
+            return Err(WorksheetErrors.CantPasteFromNonDataFrameObj())
+
+    def pasteProtoFromClipboardRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
+        paster = Pasters.protoPaster
+        rangCopyRs: Result[RangeCopy, ErrorReport] = paster.pasteRange()
+        if rangCopyRs.isOk():
+            rangeCopy = rangCopyRs.value
+            for copyCell in rangeCopy.cells:
+                destinationCell = self.cell(CellAddresses.fromColRow(
+                    col = anchorCell.colIndex + copyCell.col,
+                    row = anchorCell.rowIndex + copyCell.row
+                ))
+                destinationCell.copyFrom(copyCell)
+            self.reRun()
             return Ok(None)
         else:
             return Err(WorksheetErrors.CantPasteFromNonDataFrameObj())
@@ -288,7 +324,7 @@ class WorksheetImp(Worksheet):
             raise Exception(f"worksheet \'{self.name}\' can't contain cell at \'{cell.address.__str__()}\'")
 
     def deleteCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
-        address:CellAddress = CellAddresses.parseAddress(address)
+        address: CellAddress = CellAddresses.parseAddress(address)
         if self.containsAddress(address):
             key = address.toTuple()
             if key in self._cellDict.keys():
@@ -302,7 +338,6 @@ class WorksheetImp(Worksheet):
             return Ok(None)
         else:
             return Err(RangeErrors.CellNotInRangeReport.report(address, self.rangeAddress))
-
 
     @staticmethod
     def _removeCellFromDict(targetDict, itemIndex: int, address: CellAddress):

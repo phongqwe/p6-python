@@ -19,8 +19,8 @@ class DirectLiteralTranslator(FormulaTranslator):
         :param formula:
         :return if the original formula is a number, return it (as a string). if it is a string, put it in a triple quote and return the new string. Otherwise, return error obj
 
-        abc => \"""abc\"""
-        123 => 123
+        =abc => \"""abc\"""
+        =123 => 123
         """
         i = None
 

@@ -79,10 +79,10 @@ class Worksheet(UserFriendlyCellContainer,
             return None
 
     def pasteFromClipboard(self, anchorCell: CellAddress):
-        rs = self.pasteFromClipboardRs(anchorCell)
+        rs = self.pasteDataFrameFromClipboardRs(anchorCell)
         Results.extractOrRaise(rs)
 
-    def pasteFromClipboardRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
+    def pasteDataFrameFromClipboardRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
         raise NotImplementedError()
 
     def compareWith(self, ws2: Worksheet) -> bool:

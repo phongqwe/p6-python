@@ -45,8 +45,8 @@ class WorksheetWrapper(Worksheet):
     def usedRangeAddress(self) -> RangeAddress | None:
         return self.rootWorksheet.usedRangeAddress
 
-    def pasteFromClipboardRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
-        return self.rootWorksheet.pasteFromClipboardRs(anchorCell)
+    def pasteDataFrameFromClipboardRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
+        return self.rootWorksheet.pasteDataFrameFromClipboardRs(anchorCell)
 
     def hasCellAtIndex(self, col: int, row: int) -> bool:
         return self.rootWorksheet.hasCellAtIndex(col, row)

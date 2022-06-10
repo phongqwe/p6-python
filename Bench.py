@@ -7,6 +7,7 @@ from unittest.mock import MagicMock
 import numpy as np
 import pandas
 import pandas as pd
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeCopy import RangeCopy
 from pandas import DataFrame, read_clipboard
 import pyperclip
 
@@ -28,9 +29,11 @@ class B(A):
 
 class Bench(unittest.TestCase):
     def test_z(self):
-        z = "123z"
-        print(int(z)+1)
-
+        data = b"ad"
+        try:
+            RangeCopy.fromProtoBytes(data)
+        except:
+            print("QWEQWE")
 
 
         # df = pd.DataFrame(np.random.randn(1000000, 1))

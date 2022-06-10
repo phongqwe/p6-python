@@ -58,8 +58,8 @@ class EventRange(RangeWrapper):
     #         )
     #         self.__onRangeEvent(data)
 
-    def copyToClipboardAsFullCSV(self):
-        self.rootRange.copyToClipboardAsFullCSV()
+    def copyValueToClipboardAsFullCSV(self):
+        self.rootRange.copyValueToClipboardAsFullCSV()
         self.__emitCopyEvent(ErrorIndicator.noError())
 
 
