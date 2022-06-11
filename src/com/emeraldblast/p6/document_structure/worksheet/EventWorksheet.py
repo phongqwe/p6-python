@@ -5,6 +5,8 @@ from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.EventCell import EventCell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.paste_range.PasteRangeResponse import \
+    PasteRangeResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteCellResponse import \
     DeleteCellResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.DeleteMultiResponse import \
@@ -12,6 +14,7 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.w
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetResponse import \
     RenameWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.notifier.eventData.EventData import EventData
+from com.emeraldblast.p6.document_structure.copy_paste.Paster import Paster
 from com.emeraldblast.p6.document_structure.range.EventRange import EventRange
 from com.emeraldblast.p6.document_structure.range.Range import Range
 from com.emeraldblast.p6.document_structure.range.address.RangeAddress import RangeAddress
@@ -56,15 +59,6 @@ class EventWorksheet(WorksheetWrapper):
             return self._makeEventCell(cell)
         else:
             return cell
-
-    # def reRun(self, refreshScript:bool = False):
-    #     self.rootWorksheet.reRun(refreshScript)
-    #     if self.__onWorksheetEvent is not None:
-    #         # todo incomplete data
-    #         eventData = EventData(
-    #             event = P6Events.Worksheet.ReRun.event,
-    #         )
-    #         self.__onWorksheetEvent(eventData)
 
     def _onCellEvent(self, data: EventData):
         data.worksheet = self.rootWorksheet
@@ -116,7 +110,7 @@ class EventWorksheet(WorksheetWrapper):
             )
         return rs
 
-    def deleteCellRs(self, address: CellAddress | Tuple[int, int]|str) -> Result[None, ErrorReport]:
+    def deleteCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
         address = CellAddresses.parseAddress(address)
         delRs = self.rootWorksheet.deleteCellRs(address)
         delResponse = DeleteCellResponse(
@@ -148,7 +142,25 @@ class EventWorksheet(WorksheetWrapper):
         self.__onWorksheetEvent(eventResponse.toEventData())
         return delRs
 
-    
+    def pasteProtoFromClipboardRs(
+            self,
+            anchorCell: CellAddress,
+            paster: Paster | None = None) -> Result[None, ErrorReport]:
+        rs = self.rootWorksheet.pasteProtoFromClipboardRs(anchorCell, paster)
+
+        response = PasteRangeResponse(
+            isError = rs.isErr(),
+            windowId = None
+        )
+        if rs.isOk():
+            response.workbookKey = self.workbook.workbookKey
+            response.newWorkbook = self.workbook.rootWorkbook
+        else:
+            response.errorReport = rs.err
+
+        self.__onWorksheetEvent(response.toEventData())
+        return rs
+
     # def pasteFromClipboardRs(self, anchorCell: CellAddress)->Result[None,ErrorReport]:
     #     rs= self.rootWorksheet.pasteFromClipboardRs(anchorCell)
     #     data = WorkbookUpdateCommonResponse(
@@ -165,4 +177,3 @@ class EventWorksheet(WorksheetWrapper):
     #         data = data
     #     ))
     #     return rs
-

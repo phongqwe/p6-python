@@ -92,7 +92,7 @@ class Worksheet(UserFriendlyCellContainer,
 
     def pasteProtoFromClipboardRs(
             self,
-            anchorCell: CellAddress,
+            anchorCell: CellAddress ,
             paster: Paster | None = None) -> Result[None, ErrorReport]:
         raise NotImplementedError()
 
