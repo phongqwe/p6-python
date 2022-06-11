@@ -142,13 +142,18 @@ class WorksheetImp(Worksheet):
         rangCopyRs: Result[RangeCopy, ErrorReport] = paster.pasteRange()
         if rangCopyRs.isOk():
             rangeCopy = rangCopyRs.value
+            originalTopLeft = rangeCopy.rangeId.rangeAddress.topLeft
+            # colDif = anchorCell.colIndex - originalTopLeft.colIndex
+            # rowDif = anchorCell.colIndex - originalTopLeft.rowIndex
+
             for copyCell in rangeCopy.cells:
+                colDif = copyCell.col - originalTopLeft.colIndex
+                rowDif = copyCell.row - originalTopLeft.rowIndex
                 destinationCell = self.cell(CellAddresses.fromColRow(
-                    col = anchorCell.colIndex + copyCell.col - 1,
-                    row = anchorCell.rowIndex + copyCell.row - 1
+                    col = anchorCell.colIndex + colDif,
+                    row = anchorCell.rowIndex + rowDif
                 ))
                 destinationCell.copyFrom(copyCell)
-            # self.refreshScript()
             self.reRun()
             return Ok(None)
         else:

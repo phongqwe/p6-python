@@ -41,44 +41,44 @@ class WorksheetImp_test(unittest.TestCase):
         paster = MagicMock()
         rangeCopy = RangeCopy(
             rangeId = RangeId(
-                rangeAddress = RangeAddresses.fromLabel("@A1:A2"),
+                rangeAddress = RangeAddresses.fromLabel("@D4:G10"),
                 workbookKey = WorkbookKeys.fromNameAndPath(""),
                 worksheetName = "s123"
             ),
             cells = [
                 DataCell(
-                    address = CellAddresses.fromColRow(1,1),
-                    value=11
+                    address = CellAddresses.fromLabel("@D6"),
+                    value = 11
                 ),
                 DataCell(
-                    address = CellAddresses.fromColRow(1, 2),
+                    address = CellAddresses.fromLabel("@E8"),
                     value = 23,
                 ),
                 DataCell(
-                    address = CellAddresses.fromColRow(1, 3),
-                    value=None,
-                    formula = "=SUM(A1:A2)"
+                    address = CellAddresses.fromLabel("@G7"),
+                    value = None,
+                    formula = "=SUM(D5:E8)"
                 )
             ]
         )
-        s = WorksheetImp("ASD",MagicMock())
+        s = WorksheetImp("ASD", MagicMock())
         paster.pasteRange = MagicMock(return_value = Ok(rangeCopy))
         s.pasteProtoFromClipboardRs(
-            anchorCell = CellAddresses.fromColRow(23,32),
+            anchorCell = CellAddresses.fromLabel("@M13"),
             paster = paster
         )
-        self.assertEqual(11,s.cell((23,32)).value)
-        self.assertEqual(23,s.cell((23,32+1)).value)
-        self.assertEqual("=SUM(A1:A2)",s.cell((23,32+2)).formula)
+        self.assertEqual(11, s.cell("@M15").value)
+        self.assertEqual(23, s.cell("@N17").value)
+        self.assertEqual("=SUM(D5:E8)", s.cell("@P16").formula)
 
     def test_update_usedRange_when_update_cell(self):
         self.assertIsNone(self.s1.usedRangeAddress)
         self.assertIsNone(self.s1.usedRange)
 
-        self.s1.cell((1,1)).value=123
-        self.assertEqual(RangeAddresses.fromColRow(1,1,1,1),self.s1.usedRangeAddress)
-        self.s1.cell((2,2)).value = 123
-        self.assertEqual(RangeAddresses.fromColRow(1,2,1,2),self.s1.usedRangeAddress)
+        self.s1.cell((1, 1)).value = 123
+        self.assertEqual(RangeAddresses.fromColRow(1, 1, 1, 1), self.s1.usedRangeAddress)
+        self.s1.cell((2, 2)).value = 123
+        self.assertEqual(RangeAddresses.fromColRow(1, 2, 1, 2), self.s1.usedRangeAddress)
         self.s1.cell((2, 100)).value = 123
 
         self.assertEqual(RangeAddresses.fromColRow(1, 2, 1, 100), self.s1.usedRangeAddress)
@@ -88,10 +88,10 @@ class WorksheetImp_test(unittest.TestCase):
         self.s1.cell((2, 32)).value = 123
         self.s1.cell((2, 42)).value = 123
         self.s1.cell((2, 52)).value = 123
-        self.s1.deleteCell((2,100))
+        self.s1.deleteCell((2, 100))
         self.assertEqual(RangeAddresses.fromColRow(1, 2, 1, 52), self.s1.usedRangeAddress)
 
-        self.s1.deleteRangeRs(RangeAddresses.fromColRow(2,2,12,22))
+        self.s1.deleteRangeRs(RangeAddresses.fromColRow(2, 2, 12, 22))
         self.assertEqual(RangeAddresses.fromColRow(1, 2, 1, 52), self.s1.usedRangeAddress)
 
         self.s1.deleteRangeRs(RangeAddresses.fromColRow(2, 2, 42, 52))
@@ -99,16 +99,15 @@ class WorksheetImp_test(unittest.TestCase):
 
         self.s1.cell((10, 3)).value = 123
         self.assertEqual(RangeAddresses.fromColRow(1, 10, 1, 32), self.s1.usedRangeAddress)
-        self.s1.deleteRange(RangeAddresses.fromColRow(5,11,1,3))
+        self.s1.deleteRange(RangeAddresses.fromColRow(5, 11, 1, 3))
         print(self.s1.usedRangeAddress)
         self.assertEqual(RangeAddresses.fromColRow(1, 2, 1, 32), self.s1.usedRangeAddress)
-
 
     def test_qwe(self):
         s1 = self.s1
 
-        s1.cell((1,1)).formula = "11"
-        self.assertEqual(11,s1.cell((1,1)).value)
+        s1.cell((1, 1)).formula = "11"
+        self.assertEqual(11, s1.cell((1, 1)).value)
 
         s1.cell((1, 1)).formula = "abc"
         self.assertEqual("abc", s1.cell((1, 1)).value)
@@ -129,19 +128,19 @@ class WorksheetImp_test(unittest.TestCase):
             sourceContainer = s1
         )
         rangex.copySourceValueToClipboardAsFullCSV()
-        self.assertEqual(0,s2.size)
+        self.assertEqual(0, s2.size)
         anchorCell = CellAddresses.fromColRow(2, 4)
         rs = s2.pasteDataFrameFromClipboardRs(anchorCell)
         self.assertTrue(rs.isOk())
         self.assertEqual(3, s2.size)
         self.assertEqual(
             s1.cell((1, 1)).value,
-            s2.cell((1+2-1,1+4-1)).value
+            s2.cell((1 + 2 - 1, 1 + 4 - 1)).value
         )
 
         self.assertEqual(
-            s1.cell((1,2)).formula,
-            s2.cell((1+2-1,2+4-1)).formula,
+            s1.cell((1, 2)).formula,
+            s2.cell((1 + 2 - 1, 2 + 4 - 1)).formula,
         )
 
         self.assertEqual(
@@ -150,19 +149,17 @@ class WorksheetImp_test(unittest.TestCase):
         )
 
     def test_deleteRange(self):
-        self.s1.cell("@A1").value="a1"
-        self.s1.cell("@A2").value="a2"
-        self.s1.cell("@A3").value="a3"
-        self.s1.cell("@B2").value ="b2"
-        r1 = RangeAddresses.from2Cells(CellAddresses.fromLabel("@A1"),CellAddresses.fromLabel("@B2"))
+        self.s1.cell("@A1").value = "a1"
+        self.s1.cell("@A2").value = "a2"
+        self.s1.cell("@A3").value = "a3"
+        self.s1.cell("@B2").value = "b2"
+        r1 = RangeAddresses.from2Cells(CellAddresses.fromLabel("@A1"), CellAddresses.fromLabel("@B2"))
         rs = self.s1.deleteRangeRs(r1)
         self.assertTrue(rs.isOk())
         self.assertFalse(self.s1.hasCellAt(CellAddresses.fromLabel("@A1")))
         self.assertFalse(self.s1.hasCellAt(CellAddresses.fromLabel("@A2")))
         self.assertFalse(self.s1.hasCellAt(CellAddresses.fromLabel("@B2")))
         self.assertTrue(self.s1.hasCellAt(CellAddresses.fromLabel("@A3")))
-
-
 
     def test_rename(self):
         s1, s2, s3, w = self.makeTestObj2()
@@ -178,6 +175,7 @@ class WorksheetImp_test(unittest.TestCase):
         self.assertIsNotNone(s1.translator)
         # ensure that sheet index is not changed after name changed
         self.assertEqual(w.getWorksheetByIndex(0).name, newName)
+
     #
     def test_renameWorksheetRs_Ok(self):
         s1, s2, s3, w = self.makeTestObj2()
@@ -187,13 +185,13 @@ class WorksheetImp_test(unittest.TestCase):
         self.assertEqual(newName, s1.name, "Worksheet name is not the new name")
         self.assertEqual(s1, w.getWorksheet(0), "Worksheet index was affected by changing name")
 
-
     def test_renameWorksheetRs_InvalidNewName(self):
         s1, s2, s3, w = self.makeTestObj2()
         rs = s1.renameRs("")
         self.assertTrue(rs.isErr())
         self.assertEqual(WorksheetErrors.IllegalNameReport.header, rs.err.header, "incorrect error header")
         self.assertEqual("", rs.err.data.name, "incorrect error data")
+
     #
     def test_renameWorksheetRs_NameOfOtherSheet(self):
         s1, s2, s3, w = self.makeTestObj2()
@@ -201,6 +199,7 @@ class WorksheetImp_test(unittest.TestCase):
         self.assertTrue(rs.isErr())
         self.assertEqual(WorkbookErrors.WorksheetAlreadyExistReport.header, rs.err.header, "incorrect error header")
         self.assertEqual(s2.name, rs.err.data.name, "incorrect error data")
+
     #
     def test_renameWorksheetRs_SameName(self):
         s1, s2, s3, w = self.makeTestObj2()
@@ -223,13 +222,13 @@ class WorksheetImp_test(unittest.TestCase):
 
     def testRename(self):
         wb = WorkbookImp("w")
-        s = WorksheetImp(name = "oldName",workbook = wb)
+        s = WorksheetImp(name = "oldName", workbook = wb)
         wb.addWorksheet(s)
         s.rename("newName")
         self.assertEqual("newName", s.name)
 
     def test_cell(self):
-        s = WorksheetImp(name="s",workbook = MagicMock())
+        s = WorksheetImp(name = "s", workbook = MagicMock())
         expect = DataCell(CellIndex(1, 2))
 
         c1 = s.cell("@A2")
@@ -242,7 +241,7 @@ class WorksheetImp_test(unittest.TestCase):
         self.assertEqual(expect, c3)
 
     def test_range(self):
-        s = WorksheetImp(name="s",workbook = MagicMock())
+        s = WorksheetImp(name = "s", workbook = MagicMock())
         ad1 = CellIndex(1, 1)  # A1
         ad2 = CellIndex(20, 20)  # T20
         expect = RangeImp(ad1, ad2, s)
@@ -265,20 +264,20 @@ class WorksheetImp_test(unittest.TestCase):
         return cell, cellAddr
 
     def test_hasCellAt(self):
-        s = WorksheetImp(name="s",workbook = MagicMock())
+        s = WorksheetImp(name = "s", workbook = MagicMock())
         self.assertFalse(s.hasCellAt(CellIndex(1, 1)))
         s.addCell(DataCell(CellIndex(1, 1), value = 123, script = "script"))
         self.assertTrue(s.hasCellAt(CellIndex(1, 1)))
 
     def test_getCell(self):
-        s = WorksheetImp(name="s",workbook = MagicMock())
+        s = WorksheetImp(name = "s", workbook = MagicMock())
         cellAddr = CellIndex(12, 12)
         cell = DataCell(cellAddr, self.transGetterForCell)
         s.addCell(cell)
         self.assertEqual(cell, s.getOrMakeCell(cellAddr))
 
     def test_isEmpty(self):
-        sheet = WorksheetImp(name="s", workbook = MagicMock())
+        sheet = WorksheetImp(name = "s", workbook = MagicMock())
         self.assertTrue(sheet.isEmpty())
         cell, cellAddr = self.makeTestObj()
         sheet.addCell(cell)
@@ -287,7 +286,7 @@ class WorksheetImp_test(unittest.TestCase):
         self.assertTrue(sheet.isEmpty())
 
     def test_containAddress(self):
-        s = WorksheetImp(name="s",workbook = MagicMock())
+        s = WorksheetImp(name = "s", workbook = MagicMock())
         cell, cellAddr = self.makeTestObj()
         self.assertTrue(s.containsAddress(cellAddr))
         s.addCell(cell)
@@ -298,7 +297,7 @@ class WorksheetImp_test(unittest.TestCase):
     def test_cells(self):
         cell1, cellAddr1 = self.makeTestObj()
         cell2, cellAddr2 = self.makeTestObj()
-        s = WorksheetImp(name="s",workbook = MagicMock())
+        s = WorksheetImp(name = "s", workbook = MagicMock())
         s.addCell(cell1)
         s.addCell(cell2)
         self.assertTrue(cell1 in s.cells)
@@ -307,7 +306,7 @@ class WorksheetImp_test(unittest.TestCase):
         self.assertEqual([cell2], s.cells)
 
     def test_getNonExistenceCell(self):
-        s = WorksheetImp(name="s",workbook = MagicMock())
+        s = WorksheetImp(name = "s", workbook = MagicMock())
         c = s.getOrMakeCell(CellIndex(1, 1))
         self.assertIsNotNone(c)
         self.assertTrue(s.isEmpty())
@@ -329,4 +328,4 @@ class WorksheetImp_test(unittest.TestCase):
         self.assertIsNone(s.getCell(CellIndex(1, 1)))
 
     def makeS(self):
-        return WorksheetImp(name="s",workbook = MagicMock())
+        return WorksheetImp(name = "s", workbook = MagicMock())
