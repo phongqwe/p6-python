@@ -11,7 +11,6 @@ from com.emeraldblast.p6.document_structure.communication.SocketProvider import 
 from com.emeraldblast.p6.document_structure.communication.SocketProviderImp import SocketProviderImp
 from com.emeraldblast.p6.document_structure.communication.event.P6EventTableImp import P6EventTableImp
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
 from com.emeraldblast.p6.document_structure.communication.event_server.EventServer import EventServer
 from com.emeraldblast.p6.document_structure.communication.event_server.EventServerImp import EventServerImp
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.EventServerReactors import \
@@ -25,7 +24,6 @@ from com.emeraldblast.p6.document_structure.file.loader.P6FileLoader import P6Fi
 from com.emeraldblast.p6.document_structure.file.loader.P6FileLoaders import P6FileLoaders
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSavers import P6FileSavers
-from com.emeraldblast.p6.document_structure.range.Range import Range
 from com.emeraldblast.p6.document_structure.util.Util import makeGetter
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
@@ -81,23 +79,11 @@ class AppImp(BaseApp):
         self._eventServerReactors = EventServerReactors(
             workbookGetter = self.getBareWorkbookRs,
             appGetter = makeGetter(self),
-            rangeGetter = self.getRange
+            rangeGetter = self.getRangeRs,
+            wsGetter = self.getWorksheetRs
         )
         self.__setupEventServerReactors()
         self.__setupEventEmitter()
-
-    def getRange(self, rangeId: RangeId) -> Result[Range, ErrorReport]:
-        getWbRs = self.getBareWorkbookRs(rangeId.workbookKey)
-        if getWbRs.isOk():
-            wb = getWbRs.value
-            getWsRs = wb.getWorksheetRs(rangeId.worksheetName)
-            if getWsRs.isOk():
-                ws = getWsRs.value
-                return Ok(ws.range(rangeId.rangeAddress))
-            else:
-                return Err(getWsRs.err)
-        else:
-            return Err(getWbRs.err)
 
     @property
     def rootApp(self) -> 'App':
@@ -121,7 +107,8 @@ class AppImp(BaseApp):
             evSv.addReactor(event, reactor)
 
         reactorForRange = [
-            er.rangeToClipboardReactor()
+            er.rangeToClipboardReactor(),
+            er.rangeReactors.pasteRangeReactor()
         ]
 
         reactorForWb = [
@@ -152,44 +139,6 @@ class AppImp(BaseApp):
         for reactor in allReactors:
             addReactor(reactor)
 
-    # reactorForRange = {
-    #     P6Events.Range.RangeToClipBoard.event: er.rangeToClipboardReactor()
-    # }
-    #
-    # reactorForWb = {
-    #     P6Events.Workbook.DeleteWorksheet.event: er.deleteWorksheetReactor(),
-    #     P6Events.Workbook.CreateNewWorksheet.event: er.createNewWorksheetReactor(),
-    #
-    # }
-    # reactorForWs = {
-    #     P6Events.Worksheet.Rename.event: er.renameWorksheet(),
-    #     P6Events.Worksheet.DeleteCell.event: er.deleteCellReactor(),
-    #     P6Events.Worksheet.DeleteMulti.event: er.deleteMultiReactor(),
-    # }
-    #
-    # reactorForCell = {
-    #     P6Events.Cell.Update.event: er.cellUpdateValueReactor(),
-    #     P6Events.Cell.MultiUpdate.event: er.cellMultiUpdateReactor(),
-    # }
-    #
-    # reactorForApp = {
-    #     P6Events.App.SetActiveWorksheet.event: er.app.setActiveWorksheetReactor(),
-    #     P6Events.App.SaveWorkbook.event: er.app.saveWorkbookReactor(),
-    #     P6Events.App.LoadWorkbook.event: er.app.loadWbReactor(),
-    #     P6Events.App.CreateNewWorkbook.event: er.app.createNewWorkbookReactor(),
-    #     P6Events.App.CloseWorkbook.event: er.app.closeWorkbookReactor()
-    # }
-    #
-    # d = {
-    #     **reactorForRange,
-    #     **reactorForWb,
-    #     **reactorForWs,
-    #     **reactorForCell,
-    #     **reactorForApp,
-    # }
-    #
-    # for (k, v) in d.items():
-    #     evSv.addReactor(k, v)
 
 
     def __initNotifiers(self):

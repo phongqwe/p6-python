@@ -4,9 +4,11 @@ from typing import Optional, Union, Any
 
 from com.emeraldblast.p6.document_structure.app.App import App
 from com.emeraldblast.p6.document_structure.app.errors.AppErrors import AppErrors
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
 from com.emeraldblast.p6.document_structure.file.loader.P6FileLoader import P6FileLoader
 from com.emeraldblast.p6.document_structure.file.loader.P6FileLoaderErrors import P6FileLoaderErrors
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
+from com.emeraldblast.p6.document_structure.range.Range import Range
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
@@ -16,9 +18,33 @@ from com.emeraldblast.p6.document_structure.workbook.EventWorkbook import EventW
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeyImp import WorkbookKeyImp
+from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
 
 class BaseApp(App, ABC):
+
+
+    def getRangeRs(self, rangeId: RangeId) -> Result[Range, ErrorReport]:
+        getWbRs = self.getBareWorkbookRs(rangeId.workbookKey)
+        if getWbRs.isOk():
+            wb = getWbRs.value
+            getWsRs = wb.getWorksheetRs(rangeId.worksheetName)
+            if getWsRs.isOk():
+                ws = getWsRs.value
+                return Ok(ws.range(rangeId.rangeAddress))
+            else:
+                return Err(getWsRs.err)
+        else:
+            return Err(getWbRs.err)
+
+    def getWorksheetRs(self,workbookKey:WorkbookKey, worksheetName:str)->Result[Worksheet,ErrorReport]:
+        wbRs = self.getWorkbookRs(workbookKey)
+        if wbRs.isOk():
+            wb = wbRs.value
+            wsRs = wb.getWorksheetRs(worksheetName)
+            return wsRs
+        else:
+            return Err(wbRs.err)
 
     @property
     def rootApp(self) -> 'App':

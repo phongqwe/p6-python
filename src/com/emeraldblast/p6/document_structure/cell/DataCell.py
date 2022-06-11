@@ -122,8 +122,9 @@ class DataCell(Cell):
         if self.__formula:
             cellProto.formula = self.__formula
             cellProto.isFormula = True
-            # if self.__value:
-            #     cellProto.value = str(self.__value)
+            if self.__value:
+                # have to store value in the proto even if the cell is a formula cell because the UI need this for displaying
+                cellProto.value = str(self.__value)
         else:
             cellProto.isFormula = False
             if self.__value:

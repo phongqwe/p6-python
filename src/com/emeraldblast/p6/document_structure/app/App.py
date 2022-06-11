@@ -4,10 +4,12 @@ from typing import Optional, Union, Any
 
 from com.emeraldblast.p6.document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
 from com.emeraldblast.p6.document_structure.communication.SocketProvider import SocketProvider
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
 from com.emeraldblast.p6.document_structure.communication.event_server.EventServer import EventServer
 from com.emeraldblast.p6.document_structure.communication.reactor import EventReactorContainer
 from com.emeraldblast.p6.document_structure.file.loader.P6FileLoader import P6FileLoader
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
+from com.emeraldblast.p6.document_structure.range.Range import Range
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
 from com.emeraldblast.p6.document_structure.workbook.EventWorkbook import EventWorkbook
@@ -20,6 +22,12 @@ class App(ABC):
     """
     this class represents the state of the app.
     """
+
+    def getRangeRs(self, rangeId: RangeId) -> Result[Range, ErrorReport]:
+        raise NotImplementedError()
+
+    def getWorksheetRs(self, workbookKey: WorkbookKey, worksheetName: str) -> Result[Worksheet, ErrorReport]:
+        raise NotImplementedError()
 
     @property
     def rootApp(self) -> 'App':
@@ -171,8 +179,6 @@ class App(ABC):
         """
         raise NotImplementedError()
 
-
-
     def saveWorkbook(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]):
         """
         save a workbook at nameOrIndex
@@ -188,7 +194,6 @@ class App(ABC):
         :return:
         """
         raise NotImplementedError()
-
 
     def loadWorkbook(self, filePath: Union[str, Path]) -> Workbook:
         """

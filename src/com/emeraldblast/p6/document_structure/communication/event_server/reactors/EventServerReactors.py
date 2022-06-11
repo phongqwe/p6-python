@@ -7,13 +7,15 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.w
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetResponse import \
     RenameWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.TypeAliasForReactor import WbGetter, \
-    AppGetter, RangeGetter
+    AppGetter, RangeGetter, WsGetter
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.AppEventServerReactors import \
     AppEventServerReactors
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.cell_event.CellMultiUpdateReactor import \
     CellMultiUpdateReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.cell_event.CellUpdateReactor import \
     CellUpdateReactor
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.range_event.RangeEventReactors import \
+    RangeEventReactors
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.range_event.RangeToClipboardReactor import \
     RangeToClipboardReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook_event.CreateNewWorksheetReactor import \
@@ -31,11 +33,17 @@ from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor i
 
 class EventServerReactors:
 
-    def __init__(self, workbookGetter: WbGetter, appGetter: AppGetter, rangeGetter:RangeGetter):
+    def __init__(self,
+                 workbookGetter: WbGetter,
+                 appGetter: AppGetter,
+                 rangeGetter:RangeGetter,
+                 wsGetter:WsGetter):
         self.wbGetter = workbookGetter
         self.appGetter = appGetter
         self._app = AppEventServerReactors(self.wbGetter, self.appGetter)
         self.rangeGetter = rangeGetter
+        self.wsGetter = wsGetter
+        self.rangeReactors = RangeEventReactors(self.wsGetter)
     @property
     def app(self)->AppEventServerReactors:
         return self._app
