@@ -2,6 +2,11 @@ import random
 import unittest
 from unittest.mock import MagicMock
 
+import pyperclip
+from com.emeraldblast.p6.document_structure.copy_paste.Copiers import Copiers
+
+from com.emeraldblast.p6.document_structure.copy_paste.Pasters import Pasters
+
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeCopy import RangeCopy
 
 from com.emeraldblast.p6.document_structure.cell.DataCell import DataCell
@@ -12,6 +17,9 @@ from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator
 from com.emeraldblast.p6.document_structure.range.RangeImp import RangeImp
 from com.emeraldblast.p6.document_structure.range.address.RangeAddressImp import RangeAddressImp
 from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
+from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import TestErrorReport
+from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
+from com.emeraldblast.p6.document_structure.util.result.Err import Err
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.workbook.WorkbookErrors import WorkbookErrors
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
@@ -37,7 +45,7 @@ class WorksheetImp_test(unittest.TestCase):
         self.s2 = s2
         self.s3 = s3
 
-    def test_pasteProtoFromClipboardRs(self):
+    def test_pasteProtoFromClipboardRs_ok(self):
         paster = MagicMock()
         rangeCopy = RangeCopy(
             rangeId = RangeId(
@@ -63,13 +71,34 @@ class WorksheetImp_test(unittest.TestCase):
         )
         s = WorksheetImp("ASD", MagicMock())
         paster.pasteRange = MagicMock(return_value = Ok(rangeCopy))
-        s.pasteProtoFromClipboardRs(
+        rs=s.pasteProtoFromClipboardRs(
             anchorCell = CellAddresses.fromLabel("@M13"),
             paster = paster
         )
+        self.assertTrue(rs.isOk())
         self.assertEqual(11, s.cell("@M15").value)
         self.assertEqual(23, s.cell("@N17").value)
         self.assertEqual("=SUM(D5:E8)", s.cell("@P16").formula)
+
+    def test_pasteProtoFromClipboardRs_err(self):
+        paster = MagicMock()
+        s = WorksheetImp("ASD", MagicMock())
+        paster.pasteRange = MagicMock(return_value = Err(TestErrorReport))
+        rs = s.pasteProtoFromClipboardRs(
+            anchorCell = CellAddresses.fromLabel("@M13"),
+            paster = paster
+        )
+        self.assertTrue(rs.isErr())
+    def test_pasteProtoFromClipboardRs_err2(self):
+        content = b"abc"
+        pyperclip.copy(str(content))
+        s = WorksheetImp("ASD", MagicMock())
+        rs = s.pasteProtoFromClipboardRs(
+            anchorCell = CellAddresses.fromLabel("@M13"),
+            paster = Pasters.protoPaster
+        )
+        self.assertTrue(rs.isErr())
+        print(str(rs.err))
 
     def test_update_usedRange_when_update_cell(self):
         self.assertIsNone(self.s1.usedRangeAddress)

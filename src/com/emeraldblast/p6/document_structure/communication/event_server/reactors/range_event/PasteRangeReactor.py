@@ -20,23 +20,29 @@ class PasteRangeReactor(BaseEventReactor[bytes, PasteRangeResponse]):
 
     def react(self, data: bytes) -> PasteRangeResponse:
         try:
-            request:PasteRangeRequest = PasteRangeRequest.fromProtoBytes(data)
+            request: PasteRangeRequest = PasteRangeRequest.fromProtoBytes(data)
             windowId = None
             if request.windowId:
                 windowId = request.windowId
-            wsRs:Result[Worksheet,ErrorReport] = self.wsGetter(request.wsWb.workbookKey, request.wsWb.worksheetName)
+            wsRs: Result[Worksheet, ErrorReport] = self.wsGetter(request.wsWb.workbookKey, request.wsWb.worksheetName)
             if wsRs.isOk():
-                ws:Worksheet = wsRs.value.rootWorksheet
-                ws.pasteProtoFromClipboardRs(anchorCell = request.anchorCell)
-                ws.workbook.reRun()
-                wb = ws.workbook.rootWorkbook
-
-                return PasteRangeResponse(
-                    isError = False,
-                    workbookKey = wb.workbookKey,
-                    newWorkbook = wb,
-                    windowId = windowId
-                )
+                ws: Worksheet = wsRs.value.rootWorksheet
+                pasteRs = ws.pasteProtoFromClipboardRs(anchorCell = request.anchorCell)
+                if pasteRs.isOk():
+                    ws.workbook.reRun()
+                    wb = ws.workbook.rootWorkbook
+                    return PasteRangeResponse(
+                        isError = False,
+                        workbookKey = wb.workbookKey,
+                        newWorkbook = wb,
+                        windowId = windowId
+                    )
+                else:
+                    return PasteRangeResponse(
+                        isError = True,
+                        errorReport = pasteRs.err,
+                        windowId = windowId,
+                    )
             else:
                 return PasteRangeResponse(
                     isError = True,
@@ -48,4 +54,3 @@ class PasteRangeReactor(BaseEventReactor[bytes, PasteRangeResponse]):
                 isError = True,
                 errorReport = CommonErrors.ExceptionErrorReport(e),
             )
-    

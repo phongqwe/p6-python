@@ -79,12 +79,16 @@ class Worksheet(UserFriendlyCellContainer,
         else:
             return None
 
-    def pasteFromClipboard(self, anchorCell: CellAddress):
+    def pasteDataFrameFromClipboard(self, anchorCell: CellAddress):
         rs = self.pasteDataFrameFromClipboardRs(anchorCell)
         Results.extractOrRaise(rs)
 
     def pasteDataFrameFromClipboardRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
         raise NotImplementedError()
+
+    def pasteProtoFromClipboard(self, anchorCell: CellAddress, paster: Paster | None = None):
+        rs = self.pasteProtoFromClipboardRs(anchorCell, paster)
+        Results.extractOrRaise(rs)
 
     def pasteProtoFromClipboardRs(
             self,

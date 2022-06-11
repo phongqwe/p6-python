@@ -2,13 +2,14 @@ from dataclasses import dataclass
 
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.ToP6Msg import ToP6Msg
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.WsWb import WsWb
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto, P
 from com.emeraldblast.p6.proto.RangeProtos_pb2 import PasteRangeRequestProto
 
 
 @dataclass
-class PasteRangeRequest(ToProto[PasteRangeRequestProto]):
+class PasteRangeRequest(ToP6Msg,ToProto[PasteRangeRequestProto]):
     
 
     anchorCell: CellAddress

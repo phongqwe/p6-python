@@ -8,9 +8,17 @@ from com.emeraldblast.p6.document_structure.app.AppImp import AppImp
 from com.emeraldblast.p6.document_structure.file.loader.P6FileLoader import P6FileLoader
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
+from com.emeraldblast.p6.document_structure.util.report.error.ErrorHeader import ErrorHeader
+from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
+TestErrorReport = ErrorReport(
+    header = ErrorHeader(
+        errorCode = "123",
+        errorDescription = "error for test"
+    )
+)
 
 def compareWs(ws1:Worksheet, ws2:Worksheet)->bool:
     return ws1.compareWith(ws2)

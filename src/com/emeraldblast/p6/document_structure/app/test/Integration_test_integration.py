@@ -1,5 +1,9 @@
 import unittest
+from unittest.mock import MagicMock
 
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.WsWb import WsWb
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.paste_range.PasteRangeRequest import \
+    PasteRangeRequest
 
 from com.emeraldblast.p6.document_structure.app.TopLevel import *
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
@@ -34,7 +38,8 @@ class Integration_integration_test(unittest.TestCase):
         self.testEnv.startEnv()
         self.b1 = self.testEnv.app.getWorkbook("Book1")
         self.z = False
-        self.s1 = self.b1.getWorksheet(0)
+        self.s1:Worksheet = self.b1.getWorksheet(0)
+        self.s2:Worksheet = self.b1.getWorksheet(1)
         self.eventTable = P6EventTableImp.P6EventTableImp.i()
 
     def tearDown(self) -> None:
@@ -205,3 +210,23 @@ class Integration_integration_test(unittest.TestCase):
         proto = WorkbookUpdateCommonResponseProto()
         proto.ParseFromString(p6Res.data)
         print(proto)
+
+    def test_pasteRange_ensure_not_trigger_notifier(self):
+        self.s1.range("@C3:D4").copyToClipboardAsProto()
+        request = PasteRangeRequest(
+            anchorCell = CellAddresses.fromLabel("@H12"),
+            wsWb = WsWb(
+                workbookKey = self.b1.workbookKey,
+                worksheetName = self.s2.name
+            ),
+            windowId = "abc"
+        )
+        cb = MagicMock()
+        self.testEnv.notifListener.addReactorCB(
+            event = P6Events.Range.PasteRange.event,
+            reactorCB = cb
+        )
+        p6Res = self.testEnv.sendRequestToEventServer(
+            p6Msg = request.toP6Msg()
+        )
+        cb.assert_not_called()

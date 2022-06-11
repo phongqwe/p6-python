@@ -143,9 +143,6 @@ class WorksheetImp(Worksheet):
         if rangCopyRs.isOk():
             rangeCopy = rangCopyRs.value
             originalTopLeft = rangeCopy.rangeId.rangeAddress.topLeft
-            # colDif = anchorCell.colIndex - originalTopLeft.colIndex
-            # rowDif = anchorCell.colIndex - originalTopLeft.rowIndex
-
             for copyCell in rangeCopy.cells:
                 colDif = copyCell.col - originalTopLeft.colIndex
                 rowDif = copyCell.row - originalTopLeft.rowIndex

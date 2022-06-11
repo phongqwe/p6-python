@@ -2,6 +2,7 @@ from typing import Optional, Tuple
 
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
+from com.emeraldblast.p6.document_structure.copy_paste.Paster import Paster
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from com.emeraldblast.p6.document_structure.range.Range import Range
 from com.emeraldblast.p6.document_structure.range.address.RangeAddress import RangeAddress
@@ -16,6 +17,14 @@ class WorksheetWrapper(Worksheet):
 
     def __init__(self, innerWorksheet: Worksheet):
         self._innerSheet: Worksheet = innerWorksheet
+
+    def pasteDataFrameFromClipboardRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
+        return self.rootWorksheet.pasteDataFrameFromClipboardRs(anchorCell)
+
+    def pasteProtoFromClipboardRs(
+            self, anchorCell:
+            CellAddress, paster: Paster | None = None) -> Result[None, ErrorReport]:
+        return self.rootWorksheet.pasteProtoFromClipboardRs(anchorCell, paster)
 
     @property
     def colDict(self) -> dict[int, list[Cell]]:
@@ -128,7 +137,7 @@ class WorksheetWrapper(Worksheet):
     def isSameRangeAddress(self, other):
         return self.rootWorksheet.isSameRangeAddress(other)
 
-    def reRun(self,refreshScript:bool = False):
+    def reRun(self, refreshScript: bool = False):
         self.rootWorksheet.reRun(refreshScript)
 
     @property
