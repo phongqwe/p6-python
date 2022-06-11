@@ -8,5 +8,3 @@ from com.emeraldblast.p6.document_structure.util.result.Result import Result
 class Paster(ABC):
     def pasteRange(self)->Result[RangeCopy,ErrorReport]:
         raise NotImplementedError()
-    def pasteText(self)->Result[None,ErrorReport]:
-        raise NotImplementedError()

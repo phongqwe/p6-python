@@ -2,9 +2,11 @@ from typing import Optional, Union, Tuple, Callable
 
 import pandas
 import pyperclip
+from com.emeraldblast.p6.document_structure.copy_paste.CopyErrors import CopyErrors
 
 from com.emeraldblast.p6.document_structure.cell.util.CellUtils import CellUtils
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeCopy import RangeCopy
+from com.emeraldblast.p6.document_structure.copy_paste.Paster import Paster
 from com.emeraldblast.p6.document_structure.copy_paste.Pasters import Pasters
 from com.emeraldblast.p6.document_structure.util.CommonError import CommonErrors
 
@@ -107,7 +109,7 @@ class WorksheetImp(Worksheet):
 
     def pasteDataFrameFromClipboardRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
         """
-        paste a data frame from clipboard into this worksheet
+        paste a data frame or csv or excel-like data from clipboard into this worksheet
         :param anchorCell:
         :return: Ok if successfuly paste, Err otherwise
         """
@@ -119,7 +121,7 @@ class WorksheetImp(Worksheet):
                 for colIndex in range(len(row)):
                     content = df.iloc[rowIndex, colIndex]
                     if not pandas.isna(content):
-                        cell = self.cell((colIndex + anchorCell.colIndex, rowIndex + anchorCell.rowIndex))
+                        cell = self.cell((colIndex + anchorCell.colIndex , rowIndex + anchorCell.rowIndex ))
                         contentStr = str(content)
                         isFormula = contentStr.strip().startswith("=")
                         if isFormula:
@@ -130,23 +132,26 @@ class WorksheetImp(Worksheet):
             self.reRun()
             return Ok(None)
         else:
-            return Err(WorksheetErrors.CantPasteFromNonDataFrameObj())
+            return Err(CopyErrors.UnableToPasteRange.report())
 
-    def pasteProtoFromClipboardRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
-        paster = Pasters.protoPaster
+    def pasteProtoFromClipboardRs(self, anchorCell: CellAddress, paster: Paster | None = None) -> Result[
+        None, ErrorReport]:
+        """paste a proto byte array from clipboard into this worksheet"""
+        if paster is None:
+            paster = Pasters.protoPaster
         rangCopyRs: Result[RangeCopy, ErrorReport] = paster.pasteRange()
         if rangCopyRs.isOk():
             rangeCopy = rangCopyRs.value
             for copyCell in rangeCopy.cells:
                 destinationCell = self.cell(CellAddresses.fromColRow(
-                    col = anchorCell.colIndex + copyCell.col,
-                    row = anchorCell.rowIndex + copyCell.row
+                    col = anchorCell.colIndex + copyCell.col - 1,
+                    row = anchorCell.rowIndex + copyCell.row - 1
                 ))
                 destinationCell.copyFrom(copyCell)
             self.reRun()
             return Ok(None)
         else:
-            return Err(WorksheetErrors.CantPasteFromNonDataFrameObj())
+            return Err(CopyErrors.UnableToPasteRange.report())
 
     def deleteRangeRs(self, rangeAddress: RangeAddress) -> Result[None, ErrorReport]:
         tobeRemovedCells = []

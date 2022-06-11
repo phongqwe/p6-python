@@ -211,7 +211,7 @@ class RangeImp(Range):
             return WriteBackCell(
                 cell = self.__worksheet.getOrMakeCell(address),
                 container = self,
-                onChange = self.__onAddCell
+                onChange = self.__updateExtremities
             )
             # return self.__sourceContainer.getOrMakeCell(address)
         else:
@@ -220,12 +220,13 @@ class RangeImp(Range):
     def addCell(self, cell: Cell):
         if self.containsAddress(cell.address):
             self.__worksheet.addCell(cell)
-            self.__onAddCell(cell)
+            self.__updateExtremities(cell)
         else:
             raise ValueError(
                 "Cannot add cell {cd} into range {rd}".format(cd = str(cell.address), rd = str(self.rangeAddress)))
 
-    def __onAddCell(self, cell: Cell):
+    def __updateExtremities(self, cell: Cell):
+        """update extremities"""
         if(self._maxUsedCol and cell.col > self._maxUsedCol) or not self._maxUsedCol:
             self._maxUsedCol = cell.col
         if(self._minUsedCol and cell.col < self._minUsedCol) or not self._minUsedCol :

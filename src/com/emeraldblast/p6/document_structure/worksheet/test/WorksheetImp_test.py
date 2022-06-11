@@ -2,15 +2,20 @@ import random
 import unittest
 from unittest.mock import MagicMock
 
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeCopy import RangeCopy
+
 from com.emeraldblast.p6.document_structure.cell.DataCell import DataCell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from com.emeraldblast.p6.document_structure.range.RangeImp import RangeImp
 from com.emeraldblast.p6.document_structure.range.address.RangeAddressImp import RangeAddressImp
 from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
+from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.workbook.WorkbookErrors import WorkbookErrors
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
+from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetErrors import WorksheetErrors
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetImp import WorksheetImp
 
@@ -31,6 +36,40 @@ class WorksheetImp_test(unittest.TestCase):
         self.s1 = s1
         self.s2 = s2
         self.s3 = s3
+
+    def test_pasteProtoFromClipboardRs(self):
+        paster = MagicMock()
+        rangeCopy = RangeCopy(
+            rangeId = RangeId(
+                rangeAddress = RangeAddresses.fromLabel("@A1:A2"),
+                workbookKey = WorkbookKeys.fromNameAndPath(""),
+                worksheetName = "s123"
+            ),
+            cells = [
+                DataCell(
+                    address = CellAddresses.fromColRow(1,1),
+                    value=11
+                ),
+                DataCell(
+                    address = CellAddresses.fromColRow(1, 2),
+                    value = 23,
+                ),
+                DataCell(
+                    address = CellAddresses.fromColRow(1, 3),
+                    value=None,
+                    formula = "=SUM(A1:A2)"
+                )
+            ]
+        )
+        s = WorksheetImp("ASD",MagicMock())
+        paster.pasteRange = MagicMock(return_value = Ok(rangeCopy))
+        s.pasteProtoFromClipboardRs(
+            anchorCell = CellAddresses.fromColRow(23,32),
+            paster = paster
+        )
+        self.assertEqual(11,s.cell((23,32)).value)
+        self.assertEqual(23,s.cell((23,32+1)).value)
+        self.assertEqual("=SUM(A1:A2)",s.cell((23,32+2)).formula)
 
     def test_update_usedRange_when_update_cell(self):
         self.assertIsNone(self.s1.usedRangeAddress)

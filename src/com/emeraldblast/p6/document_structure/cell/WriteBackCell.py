@@ -30,51 +30,40 @@ class WriteBackCell(WrapperCell):
     @WrapperCell.formula.setter
     def formula(self, newFormula: str):
         self.innerCell.formula=newFormula
-        self.__writeCell()
-        if self.__onChange:
-            self.__onChange(self.rootCell)
+        self.__writeBack()
+
+    def copyFrom(self, anotherCell: "Cell"):
+        self.innerCell.copyFrom(anotherCell)
+        self.__writeBack()
 
     def clearScriptResult(self):
         self.innerCell.clearScriptResult()
         if not self.isEmpty():
-            self.__writeCell()
-        if self.__onChange:
-            self.__onChange(self.rootCell)
+            self.__writeBack()
 
     def setScriptAndRun(self, newScript, globalScope = None, localScope = None):
         self.innerCell.setScriptAndRun(newScript, globalScope, localScope)
-        self.__writeCell()
-        if self.__onChange:
-            self.__onChange(self.rootCell)
-
-    # @property
-    # def value(self):
-    #     v = self.__innerCell.value
-    #     self.__writeCell()
-    #     return v
+        self.__writeBack()
 
     @WrapperCell.value.setter
     def value(self, newValue):
         self.innerCell.value = newValue
-        self.__writeCell()
-        if self.__onChange:
-            self.__onChange(self.rootCell)
+        self.__writeBack()
 
     @WrapperCell.script.setter
     def script(self, newScript: str):
         # x: only add new code if the new code is not empty
         self.innerCell.script = newScript
-        self.__writeCell()
-        if self.__onChange:
-            self.__onChange(self.rootCell)
+        self.__writeBack()
 
-    def __writeCell(self):
+    def __writeBack(self):
+        """write the self into the container"""
         cellNotWritten = not self.__container.hasCellAt(self.__pos)
         if cellNotWritten:
             self.__container.addCell(self.innerCell)
+        if self.__onChange:
+            self.__onChange(self.rootCell)
 
     def runScript(self, globalScope = None, localScope = None):
         self.innerCell.runScript(globalScope, localScope)
-        self.__writeCell()
-        if self.__onChange:
-            self.__onChange(self.rootCell)
+        self.__writeBack()

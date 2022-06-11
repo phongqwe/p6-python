@@ -3,3 +3,4 @@ from com.emeraldblast.p6.document_structure.copy_paste.ProtoPaster import ProtoP
 
 class Pasters:
     protoPaster = ProtoPaster()
+    dataFramePaster = None
