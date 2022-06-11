@@ -1,7 +1,5 @@
 import unittest
 
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateResponse import \
-    CellUpdateResponse
 
 from com.emeraldblast.p6.document_structure.app.TopLevel import *
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
@@ -27,7 +25,7 @@ from com.emeraldblast.p6.proto.WorkbookProtos_pb2 import CreateNewWorksheetRespo
 from com.emeraldblast.p6.proto.WorksheetProtos_pb2 import RenameWorksheetResponseProto
 
 
-class IntegrationTest_test(unittest.TestCase):
+class Integration_integration_test(unittest.TestCase):
     """ this class includes re-creation of actual bugs. These tests are not run with other test because it slows down other tests """
 
     def setUp(self) -> None:

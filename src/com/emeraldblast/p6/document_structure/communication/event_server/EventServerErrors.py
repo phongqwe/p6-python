@@ -26,3 +26,4 @@ class EventServerErrors:
                 header = EventServerErrors.NoReactorError.header.updateDescription(str(data)),
                 data = data
             )
+

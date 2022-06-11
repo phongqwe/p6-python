@@ -49,7 +49,6 @@ class DataCellTest(unittest.TestCase):
         c1 = DataCell(CellIndex(1, 1), 123, "formula", "script")
         o = c1.toProtoObj()
         self.assertEqual(c1.address.toProtoObj(), o.address)
-        self.assertEqual("123", o.value)
         self.assertEqual("formula", o.formula)
 
     def test_toProtoObj2(self):

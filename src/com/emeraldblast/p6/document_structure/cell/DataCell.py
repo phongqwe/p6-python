@@ -122,17 +122,17 @@ class DataCell(Cell):
         if self.__formula:
             cellProto.formula = self.__formula
             cellProto.isFormula = True
-            if self.__value:
-                cellProto.value = str(self.__value)
+            # if self.__value:
+            #     cellProto.value = str(self.__value)
         else:
             cellProto.isFormula = False
             if self.__value:
                 cellProto.value = str(self.__value)
                 cellProto.isBoolLit = isinstance(self.__value, bool)
                 cellProto.isStrLit = isinstance(self.__value, str)
-                cellProto.isIntLit = isinstance(self.__value,int)
-                cellProto.isFloatLit = isinstance(self.__value,float)
-                cellProto.isError = isinstance(self.__value,Exception)
+                cellProto.isIntLit = isinstance(self.__value, int)
+                cellProto.isFloatLit = isinstance(self.__value, float)
+                cellProto.isError = isinstance(self.__value, Exception)
 
         return cellProto
 
@@ -189,7 +189,7 @@ class DataCell(Cell):
 
     @script.setter
     def script(self, newScript: str):
-        if newScript!= self.__script:
+        if newScript != self.__script:
             self.__setScriptWithoutChangingFormula(newScript)
             # self.__formula = f"=SCRIPT({newScript})"
             # script formula will be generated on request, see formula getter for detail
@@ -207,7 +207,7 @@ class DataCell(Cell):
     def __eq__(self, other):
         if isinstance(other, Cell):
             sameValue = self.value == other.value
-            sameScript = self.script == other.script or (not(self.script and other.script))
+            sameScript = self.script == other.script or (not (self.script and other.script))
             sameAddress = self.address == other.address
             return sameValue and sameScript and sameAddress
         else:
@@ -250,7 +250,15 @@ class DataCell(Cell):
             self.__value = None
             self.__scriptAlreadyRun = False
 
+    def __clearFormula(self):
+        self.__formula = None
+        self.clearScriptResult()
+
     def copyFrom(self, anotherCell: "Cell"):
-        self.__value = anotherCell.bareValue
-        self.__formula = anotherCell.bareFormula
-        self.__script = anotherCell.bareScript
+        if anotherCell.formula:
+            self.formula = anotherCell.bareFormula
+            return
+        if anotherCell.value:
+            self.__clearFormula()
+            self.__value = anotherCell.bareValue
+            return

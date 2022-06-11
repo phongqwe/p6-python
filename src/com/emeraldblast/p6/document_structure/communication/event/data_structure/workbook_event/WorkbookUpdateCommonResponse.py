@@ -8,14 +8,16 @@ from com.emeraldblast.p6.proto.WorkbookProtos_pb2 import WorkbookUpdateCommonRes
 class WorkbookUpdateCommonResponse(ToProto[WorkbookUpdateCommonResponseProto]):
     def __init__(self,
                  isError: bool,
-                 workbookKey: WorkbookKey,
+                 workbookKey: WorkbookKey|None = None,
                  errorReport: ErrorReport | None = None,
                  newWorkbook: Workbook | None = None,
+                 windowId:str|None=None
                   ):
         self.workbookKey = workbookKey
         self.newWorkbook = newWorkbook
         self.errorReport = errorReport
         self.isError = isError
+        self.windowId = windowId
 
     def toProtoObj(self) -> WorkbookUpdateCommonResponseProto:
         proto = WorkbookUpdateCommonResponseProto()
@@ -24,5 +26,8 @@ class WorkbookUpdateCommonResponse(ToProto[WorkbookUpdateCommonResponseProto]):
             proto.errorReport.CopyFrom(self.errorReport.toProtoObj())
         if self.newWorkbook is not None:
             proto.newWorkbook.CopyFrom(self.newWorkbook.toProtoObj())
-        proto.workbookKey.CopyFrom(self.workbookKey.toProtoObj())
+        if self.workbookKey:
+            proto.workbookKey.CopyFrom(self.workbookKey.toProtoObj())
+        if self.windowId:
+            proto.windowId = self.windowId
         return proto

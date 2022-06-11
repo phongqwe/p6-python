@@ -40,8 +40,8 @@ class P6EventTableImp(P6EventTable):
                         if hasattr(eventClazz, "Reactor"):
                             reactorClazz = eventClazz.Reactor
                             if reactorClazz:
-                                if eventGroupKey == "App":
-                                    print("qwe")
+                                # if eventGroupKey == "App":
+                                    # print("qwe")
                                 self.eMap[reactorClazz] = event
 
     def getEventFor(self, something: Any) -> P6Event:

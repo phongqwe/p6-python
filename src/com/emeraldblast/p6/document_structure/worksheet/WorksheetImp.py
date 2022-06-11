@@ -148,6 +148,7 @@ class WorksheetImp(Worksheet):
                     row = anchorCell.rowIndex + copyCell.row - 1
                 ))
                 destinationCell.copyFrom(copyCell)
+            # self.refreshScript()
             self.reRun()
             return Ok(None)
         else:

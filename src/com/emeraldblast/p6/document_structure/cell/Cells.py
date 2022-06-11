@@ -20,7 +20,8 @@ class Cells:
     @staticmethod
     def fromProto(proto:CellProto)->Cell:
         vParsed = None
-        if proto.HasField("value"):
+        isValue = not proto.isFormula
+        if proto.HasField("value") and isValue:
             v = proto.value
             vParsed = v
             if proto.isBoolLit:
