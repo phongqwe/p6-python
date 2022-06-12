@@ -147,7 +147,20 @@ class EventWorksheet(WorksheetWrapper):
             anchorCell: CellAddress,
             paster: Paster | None = None) -> Result[None, ErrorReport]:
         rs = self.rootWorksheet.pasteProtoRs(anchorCell, paster)
+        self.__emitPasteEvent(rs)
+        return rs
 
+    def pasteRs(self, anchorCell: CellAddress, paster: Paster | None = None) -> Result[None, ErrorReport]:
+        rs = self.rootWorksheet.pasteRs(anchorCell, paster)
+        self.__emitPasteEvent(rs)
+        return rs
+
+    def pasteDataFrameRs(self, anchorCell: CellAddress, paster: Paster | None = None) -> Result[None, ErrorReport]:
+        rs = self.rootWorksheet.pasteDataFrameRs(anchorCell, paster)
+        self.__emitPasteEvent(rs)
+        return rs
+    
+    def __emitPasteEvent(self,rs:Result[None, ErrorReport]):
         response = PasteRangeResponse(
             isError = rs.isErr(),
             windowId = None
@@ -159,21 +172,6 @@ class EventWorksheet(WorksheetWrapper):
             response.errorReport = rs.err
 
         self.__onWorksheetEvent(response.toEventData())
-        return rs
 
-    # def pasteFromClipboardRs(self, anchorCell: CellAddress)->Result[None,ErrorReport]:
-    #     rs= self.rootWorksheet.pasteFromClipboardRs(anchorCell)
-    #     data = WorkbookUpdateCommonResponse(
-    #         isError = rs.isErr(),
-    #         workbookKey = self.workbook.workbookKey
-    #     )
-    #     if rs.isOk():
-    #         data.newWorkbook = self.workbook.rootWorkbook
-    #     else:
-    #         data.errorReport = rs.err
-    #
-    #     self.__onWorksheetEvent(EventData(
-    #         event=P6Events.Worksheet.PasteRange.event,
-    #         data = data
-    #     ))
-    #     return rs
+
+

@@ -1,6 +1,9 @@
 import json
 from abc import ABC
 
+from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
+from com.emeraldblast.p6.document_structure.util.result.Result import Result
+
 from com.emeraldblast.p6.proto.DocProtos_pb2 import WorksheetProto
 
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
@@ -15,9 +18,13 @@ from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 class BaseWorksheet(Worksheet,ABC):
 
 
-    def pasteText(self, targetCell: CellAddress,paster:Paster|None):
-        rs = self.pasteTextRs(targetCell,paster)
+    def paste(self, anchorCell: CellAddress, paster: Paster | None = None):
+        rs = self.pasteRs(anchorCell, paster)
         rs.raiseIfErr()
+
+    # def pasteText(self, targetCell: CellAddress,paster:Paster|None):
+    #     rs = self.pasteTextRs(targetCell,paster)
+    #     rs.raiseIfErr()
 
     @property
     def usedRangeAddress(self) -> RangeAddress | None:

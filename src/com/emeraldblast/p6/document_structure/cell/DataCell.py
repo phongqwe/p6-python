@@ -5,7 +5,6 @@ from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.CellContent import CellContent
 from com.emeraldblast.p6.document_structure.cell.CellContentImp import CellContentImp
 from com.emeraldblast.p6.document_structure.cell.CellJson import CellJson
-from com.emeraldblast.p6.document_structure.cell.CellValueType import CellValueType
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.cell.util.CellUtils import convertExceptionToStr, CellUtils
 from com.emeraldblast.p6.document_structure.code_executor.CodeExecutor import CodeExecutor
@@ -71,9 +70,6 @@ class DataCell(Cell):
         self.__formula: str = formula
         self.__scriptAlreadyRun: bool = False
         self.__addr: CellAddress = address
-
-        if self.formula is None:
-            self.__valueType = CellValueType.infer(self.__value)
 
         def translatorGetter():
             if self.workbook is not None and self.worksheet is not None:
@@ -274,6 +270,3 @@ class DataCell(Cell):
             self.__value = anotherCell.bareValue
             return
 
-    @property
-    def valueType(self) -> CellValueType:
-        return CellValueType.infer(self.value)

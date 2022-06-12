@@ -19,8 +19,15 @@ class WorksheetWrapper(BaseWorksheet):
     def __init__(self, innerWorksheet: Worksheet):
         self._innerSheet: Worksheet = innerWorksheet
 
-    def pasteDataFrameRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
-        return self.rootWorksheet.pasteDataFrameRs(anchorCell)
+    # def pasteTextRs(self, targetCell: CellAddress, paster: Paster | None) -> Result[None, ErrorReport]:
+
+    def pasteRs(self,
+                anchorCell: CellAddress,
+                paster: Paster | None = None) -> Result[None, ErrorReport]:
+        return self.rootWorksheet.pasteRs(anchorCell, paster)
+
+    def pasteDataFrameRs(self, anchorCell: CellAddress, paster: Paster | None=None) -> Result[None, ErrorReport]:
+        return self.rootWorksheet.pasteDataFrameRs(anchorCell,paster)
 
     def pasteProtoRs(
             self, anchorCell:
@@ -54,9 +61,6 @@ class WorksheetWrapper(BaseWorksheet):
     @property
     def usedRangeAddress(self) -> RangeAddress | None:
         return self.rootWorksheet.usedRangeAddress
-
-    def pasteDataFrameFromClipboardRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
-        return self.rootWorksheet.pasteDataFrameRs(anchorCell)
 
     def hasCellAtIndex(self, col: int, row: int) -> bool:
         return self.rootWorksheet.hasCellAtIndex(col, row)

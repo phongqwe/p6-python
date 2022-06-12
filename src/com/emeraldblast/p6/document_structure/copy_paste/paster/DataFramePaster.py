@@ -18,7 +18,7 @@ from com.emeraldblast.p6.document_structure.util.result.Result import Result
 
 class DataFramePaster(BasePaster):
     def doPaste(self,anchorCell: CellAddress) -> Result[RangeCopy, ErrorReport]:
-        df = pandas.read_clipboard(header = None)
+        df = pandas.read_clipboard(header = None,index_col=False)
         dimen = df.shape
         colCount = dimen[1]
         rowCount = dimen[0]

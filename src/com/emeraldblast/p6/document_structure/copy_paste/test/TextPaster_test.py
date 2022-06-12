@@ -16,13 +16,11 @@ class TextPaster_test(unittest.TestCase):
         self.assertEqual(1, len(rs.value.cells))
         self.assertEqual("abc",rs.value.cells[0].bareValue)
 
-
         pyperclip.copy("=ads")
         rs = paster.pasteRange(anchorCell = anchorCell)
         self.assertTrue(rs.isOk())
         self.assertEqual(1, len(rs.value.cells))
         self.assertEqual("=ads", rs.value.cells[0].bareFormula)
-
 
         pyperclip.copy("123")
         rs = paster.pasteRange(anchorCell = anchorCell)

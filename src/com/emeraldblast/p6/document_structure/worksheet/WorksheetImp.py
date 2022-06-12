@@ -5,6 +5,7 @@ from com.emeraldblast.p6.document_structure.copy_paste.CopyPasteErrors import Co
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeCopy import RangeCopy
 from com.emeraldblast.p6.document_structure.copy_paste.paster.Paster import Paster
 from com.emeraldblast.p6.document_structure.copy_paste.paster.Pasters import Pasters
+from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 from com.emeraldblast.p6.document_structure.util.CommonError import CommonErrors
 from com.emeraldblast.p6.document_structure.worksheet.BaseWorksheet import BaseWorksheet
 
@@ -115,6 +116,12 @@ class WorksheetImp(BaseWorksheet):
             self._minRow = None
             self._maxRow = None
 
+    def pasteRs(self, anchorCell: CellAddress, paster: Paster | None = None) -> Result[None, ErrorReport]:
+        if paster is None:
+            paster = Pasters.unifiedPaster
+        pasteRs: Result[RangeCopy, ErrorReport] = paster.pasteRange(anchorCell)
+        return self._pasteRangeCopy(anchorCell, pasteRs)
+
     def pasteDataFrameRs(self, anchorCell: CellAddress, paster: Paster | None = None) -> Result[None, ErrorReport]:
         """
         paste a data frame or csv or excel-like data from clipboard into this worksheet
@@ -122,12 +129,8 @@ class WorksheetImp(BaseWorksheet):
         """
         if paster is None:
             paster = Pasters.dataFramePaster
-        rangeCopyRs = paster.pasteRange(anchorCell)
-        if rangeCopyRs.isOk():
-            rangeCopy = rangeCopyRs.value
-            return self._pasteRangeCopy(anchorCell, rangeCopy)
-        else:
-            return Err(rangeCopyRs.err)
+        pasteRs: Result[RangeCopy, ErrorReport] = paster.pasteRange(anchorCell)
+        return self._pasteRangeCopy(anchorCell, pasteRs)
 
     def pasteProtoRs(self, anchorCell: CellAddress, paster: Paster | None = None) -> Result[
         None, ErrorReport]:
@@ -135,29 +138,42 @@ class WorksheetImp(BaseWorksheet):
         if paster is None:
             paster = Pasters.protoPaster
         pasteRs: Result[RangeCopy, ErrorReport] = paster.pasteRange(anchorCell)
+        return self._pasteRangeCopy(anchorCell, pasteRs)
+
+    def _pasteRangeCopy(self, anchorCell: CellAddress, pasteRs: Result[RangeCopy, ErrorReport]) -> Result[
+        None, ErrorReport]:
+        """paste a RangeCopy object into this worksheet, starting at the anchorCell"""
         if pasteRs.isOk():
             rangeCopy = pasteRs.value
-            return self._pasteRangeCopy(anchorCell, rangeCopy)
+            originalTopLeft = rangeCopy.rangeId.rangeAddress.topLeft
+            overwrittenCell = []
+            oldRange = rangeCopy.rangeId.rangeAddress
+
+            targetRange = RangeAddresses.from2Cells(
+                firstCell = anchorCell,
+                secondCell = CellAddresses.fromColRow(
+                    col = anchorCell.colIndex + oldRange.colCount()-1,
+                    row = anchorCell.rowIndex + oldRange.rowCount()-1
+                )
+            )
+            deleteRs = self.deleteRangeRs(targetRange)
+            if deleteRs.isOk():
+                for copyCell in rangeCopy.cells:
+                    colDif = copyCell.col - originalTopLeft.colIndex
+                    rowDif = copyCell.row - originalTopLeft.rowIndex
+                    destinationCell = self.cell(CellAddresses.fromColRow(
+                        col = anchorCell.colIndex + colDif,
+                        row = anchorCell.rowIndex + rowDif
+                    ))
+                    destinationCell.copyFrom(copyCell)
+                    overwrittenCell.append(destinationCell.address)
+                self.reRun()
+            else:
+                return Err(deleteRs.err)
+            return Ok(None)
         else:
             return Err(CopyPasteErrors.UnableToPasteRange.report())
 
-    def _pasteRangeCopy(self, anchorCell: CellAddress, rangeCopy: RangeCopy) -> Result[
-        None, ErrorReport]:
-        """paste a RangeCopy object into this worksheet, starting at the anchorCell"""
-
-
-
-        originalTopLeft = rangeCopy.rangeId.rangeAddress.topLeft
-        for copyCell in rangeCopy.cells:
-            colDif = copyCell.col - originalTopLeft.colIndex
-            rowDif = copyCell.row - originalTopLeft.rowIndex
-            destinationCell = self.cell(CellAddresses.fromColRow(
-                col = anchorCell.colIndex + colDif,
-                row = anchorCell.rowIndex + rowDif
-            ))
-            destinationCell.copyFrom(copyCell)
-        self.reRun()
-        return Ok(None)
 
     def deleteRangeRs(self, rangeAddress: RangeAddress) -> Result[None, ErrorReport]:
         tobeRemovedCells = []

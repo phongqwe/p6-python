@@ -65,11 +65,11 @@ class Worksheet(UserFriendlyCellContainer,
     def usedRange(self) -> Range | None:
         raise NotImplementedError()
 
-    def pasteTextRs(self, targetCell: CellAddress, paster: Paster | None) -> Result[None, ErrorReport]:
-        raise NotImplementedError()
-
-    def pasteText(self, targetCell: CellAddress, paster: Paster | None):
-        raise NotImplementedError()
+    # def pasteTextRs(self, targetCell: CellAddress, paster: Paster | None) -> Result[None, ErrorReport]:
+    #     raise NotImplementedError()
+    #
+    # def pasteText(self, targetCell: CellAddress, paster: Paster | None):
+    #     raise NotImplementedError()
 
     def pasteDataFrame(self, anchorCell: CellAddress, paster: Paster | None=None):
         raise NotImplementedError()
@@ -84,6 +84,16 @@ class Worksheet(UserFriendlyCellContainer,
             self,
             anchorCell: CellAddress,
             paster: Paster | None = None) -> Result[None, ErrorReport]:
+        raise NotImplementedError()
+
+    def pasteRs(self,
+            anchorCell: CellAddress,
+            paster: Paster | None = None) -> Result[None, ErrorReport]:
+        raise NotImplementedError()
+
+    def paste(self,
+            anchorCell: CellAddress,
+            paster: Paster | None = None):
         raise NotImplementedError()
 
     def compareWith(self, ws2: Worksheet) -> bool:

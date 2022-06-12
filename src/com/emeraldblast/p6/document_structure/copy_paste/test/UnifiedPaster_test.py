@@ -103,6 +103,11 @@ class UnifiedPaster_test(unittest.TestCase):
         self.assertEqual(1,len(outRs.value.cells))
         self.assertEqual(text,(outRs.value.cells[0].bareValue))
 
+    def test_4(self):
+        outRs = Pasters.unifiedPaster.pasteRange(CellAddresses.fromColRow(23, 32))
+        self.assertTrue(outRs.isOk())
+
+
 
 
 
