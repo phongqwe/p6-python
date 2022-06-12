@@ -14,7 +14,7 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.w
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.worksheet_event.RenameWorksheetResponse import \
     RenameWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.notifier.eventData.EventData import EventData
-from com.emeraldblast.p6.document_structure.copy_paste.Paster import Paster
+from com.emeraldblast.p6.document_structure.copy_paste.paster.Paster import Paster
 from com.emeraldblast.p6.document_structure.range.EventRange import EventRange
 from com.emeraldblast.p6.document_structure.range.Range import Range
 from com.emeraldblast.p6.document_structure.range.address.RangeAddress import RangeAddress

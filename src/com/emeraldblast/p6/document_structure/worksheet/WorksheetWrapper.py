@@ -2,7 +2,7 @@ from typing import Optional, Tuple
 
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
-from com.emeraldblast.p6.document_structure.copy_paste.Paster import Paster
+from com.emeraldblast.p6.document_structure.copy_paste.paster.Paster import Paster
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from com.emeraldblast.p6.document_structure.range.Range import Range
 from com.emeraldblast.p6.document_structure.range.address.RangeAddress import RangeAddress

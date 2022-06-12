@@ -4,7 +4,7 @@ from abc import ABC
 from com.emeraldblast.p6.proto.DocProtos_pb2 import WorksheetProto
 
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
-from com.emeraldblast.p6.document_structure.copy_paste.Paster import Paster
+from com.emeraldblast.p6.document_structure.copy_paste.paster.Paster import Paster
 from com.emeraldblast.p6.document_structure.range.Range import Range
 from com.emeraldblast.p6.document_structure.range.address.RangeAddress import RangeAddress
 from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses

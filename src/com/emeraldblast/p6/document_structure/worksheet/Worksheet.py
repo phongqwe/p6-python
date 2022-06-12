@@ -22,7 +22,7 @@ if TYPE_CHECKING:
     from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
     from com.emeraldblast.p6.document_structure.range.Range import Range
     from com.emeraldblast.p6.document_structure.cell.Cell import Cell
-    from com.emeraldblast.p6.document_structure.copy_paste.Paster import Paster
+    from com.emeraldblast.p6.document_structure.copy_paste.paster.Paster import Paster
 
 
 class Worksheet(UserFriendlyCellContainer,

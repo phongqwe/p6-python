@@ -1,13 +1,12 @@
 from abc import ABC
-from typing import Any, Callable, TYPE_CHECKING
-
-from pandas import DataFrame
+from typing import Any, Callable, TYPE_CHECKING, Optional
 
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.cell_container.MutableCellContainer import MutableCellContainer
 from com.emeraldblast.p6.document_structure.cell_container.UserFriendlyCellContainer import UserFriendlyCellContainer
+
 from com.emeraldblast.p6.document_structure.range.address.RangeAddress import RangeAddress
 from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
@@ -15,6 +14,8 @@ from com.emeraldblast.p6.document_structure.util.result.Result import Result
 
 if TYPE_CHECKING:
     from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
+    from com.emeraldblast.p6.document_structure.copy_paste.copier.Copier import Copier
+
 
 
 class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
@@ -113,28 +114,35 @@ class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
         )
         return copyObj
 
-    def copyValueDataFrame(self):
+    def copyValueDataFrame(self, copier: Optional['Copier'] = None):
         """convert this range into a full data array and copy that data frame into the clipboard"""
-        df = DataFrame.from_records(self.toFullValueArray())
-        df.to_clipboard(excel = True, index = False, header = None)
+        if copier is None:
+            from com.emeraldblast.p6.document_structure.copy_paste.copier.Copiers import Copiers
+            copier = Copiers.fullValueDataFrameCopier
+        copier.copyRangeToClipboard(self)
 
-    def copySourceValueDataFrame(self):
+    def copyStrictValueDataFrame(self, copier: Optional['Copier'] = None):
+        if copier is None:
+            from com.emeraldblast.p6.document_structure.copy_paste.copier.Copiers import Copiers
+            copier = Copiers.strictValueDataFrameCopier
+        copier.copyRangeToClipboard(self)
+
+    def copySourceValueDataFrame(self, copier: Optional['Copier'] = None):
         """convert this range into a full data array and copy that data frame into the clipboard"""
-        df = DataFrame.from_records(self.toFullSourceValueArray())
-        df.to_clipboard(excel = True, index = False, header = None)
-        print("zx")
+        if copier is None:
+            from com.emeraldblast.p6.document_structure.copy_paste.copier.Copiers import Copiers
+            copier = Copiers.fullSourceDataFrameCopier
+        copier.copyRangeToClipboard(self)
 
-    def copyValueStrictDataFrame(self):
-        df = DataFrame.toStrictSourceValueArrayfrom_records(self.toStrictValueArray())
-        df.to_clipboard(excel = True, index = False, header = None)
-
-    def copySourceValueStrictDataFrame(self):
-        df = DataFrame.from_records(self.toStrictSourceValueArray())
-        df.to_clipboard(excel = True, index = False, header = None)
+    def copyStrictSourceValueDataFrame(self,copier: Optional['Copier'] = None):
+        if copier is None:
+            from com.emeraldblast.p6.document_structure.copy_paste.copier.Copiers import Copiers
+            copier = Copiers.strictSourceDataFrameCopier
+        copier.copyRangeToClipboard(self)
 
     def copyToClipboardAsProto(self) -> Result[None, ErrorReport]:
         """ convert this to RangeCopyProto proto bytes, then copy it to clipboard"""
-        from com.emeraldblast.p6.document_structure.copy_paste.Copiers import Copiers
+        from com.emeraldblast.p6.document_structure.copy_paste.copier.Copiers import Copiers
         copier = Copiers.protoCopier
         return copier.copyRangeToClipboard(self)
 

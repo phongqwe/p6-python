@@ -1,27 +1,18 @@
 import unittest
-from unittest.mock import MagicMock
 
-import pyperclip
 from com.emeraldblast.p6.document_structure.util.for_test.emu.TestEnvImp import TestEnvImp
 
-from com.emeraldblast.p6.document_structure.copy_paste.Copiers import Copiers
-
-from com.emeraldblast.p6.document_structure.cell.DataCell import DataCell
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeCopy import RangeCopy
+from com.emeraldblast.p6.document_structure.copy_paste.copier.Copiers import Copiers
 
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.WsWb import WsWb
-from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.paste_range.PasteRangeRequest import \
     PasteRangeRequest
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.range_event.PasteRangeReactor import \
     PasteRangeReactor
-from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 from com.emeraldblast.p6.document_structure.util.CommonError import CommonErrors
-from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import sampleWb
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
-from com.emeraldblast.p6.document_structure.worksheet.WorksheetImp import WorksheetImp
 
 
 class PasteRangeReactor_test_integration(unittest.TestCase):

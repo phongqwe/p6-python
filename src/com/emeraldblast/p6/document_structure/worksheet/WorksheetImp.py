@@ -1,18 +1,12 @@
 from typing import Optional, Union, Tuple, Callable
 
-import pandas
-import pyperclip
-from com.emeraldblast.p6.document_structure.copy_paste.CopyErrors import CopyErrors
+from com.emeraldblast.p6.document_structure.copy_paste.CopyPasteErrors import CopyPasteErrors
 
-from com.emeraldblast.p6.document_structure.cell.util.CellUtils import CellUtils
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeCopy import RangeCopy
-from com.emeraldblast.p6.document_structure.copy_paste.Paster import Paster
-from com.emeraldblast.p6.document_structure.copy_paste.Pasters import Pasters
+from com.emeraldblast.p6.document_structure.copy_paste.paster.Paster import Paster
+from com.emeraldblast.p6.document_structure.copy_paste.paster.Pasters import Pasters
 from com.emeraldblast.p6.document_structure.util.CommonError import CommonErrors
 from com.emeraldblast.p6.document_structure.worksheet.BaseWorksheet import BaseWorksheet
-
-from com.emeraldblast.p6.proto.RangeProtos_pb2 import RangeCopyProto
-from pandas import DataFrame
 
 from com.emeraldblast.p6.document_structure.app.R import R
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
@@ -128,10 +122,10 @@ class WorksheetImp(BaseWorksheet):
         """
         if paster is None:
             paster = Pasters.dataFramePaster
-        rangeCopyRs = paster.pasteRange()
+        rangeCopyRs = paster.pasteRange(anchorCell)
         if rangeCopyRs.isOk():
             rangeCopy = rangeCopyRs.value
-            return self._pasteRangeCopy(anchorCell,rangeCopy)
+            return self._pasteRangeCopy(anchorCell, rangeCopy)
         else:
             return Err(rangeCopyRs.err)
 
@@ -140,26 +134,19 @@ class WorksheetImp(BaseWorksheet):
         """paste a proto byte array from clipboard into this worksheet"""
         if paster is None:
             paster = Pasters.protoPaster
-        rangCopyRs: Result[RangeCopy, ErrorReport] = paster.pasteRange()
-        if rangCopyRs.isOk():
-            rangeCopy = rangCopyRs.value
+        pasteRs: Result[RangeCopy, ErrorReport] = paster.pasteRange(anchorCell)
+        if pasteRs.isOk():
+            rangeCopy = pasteRs.value
             return self._pasteRangeCopy(anchorCell, rangeCopy)
-            # originalTopLeft = rangeCopy.rangeId.rangeAddress.topLeft
-            # for copyCell in rangeCopy.cells:
-            #     colDif = copyCell.col - originalTopLeft.colIndex
-            #     rowDif = copyCell.row - originalTopLeft.rowIndex
-            #     destinationCell = self.cell(CellAddresses.fromColRow(
-            #         col = anchorCell.colIndex + colDif,
-            #         row = anchorCell.rowIndex + rowDif
-            #     ))
-            #     destinationCell.copyFrom(copyCell)
-            # self.reRun()
-            # return Ok(None)
         else:
-            return Err(CopyErrors.UnableToPasteRange.report())
-    def _pasteRangeCopy(self, anchorCell: CellAddress, rangeCopy:RangeCopy) -> Result[
+            return Err(CopyPasteErrors.UnableToPasteRange.report())
+
+    def _pasteRangeCopy(self, anchorCell: CellAddress, rangeCopy: RangeCopy) -> Result[
         None, ErrorReport]:
-        """paste a proto byte array from clipboard into this worksheet"""
+        """paste a RangeCopy object into this worksheet, starting at the anchorCell"""
+
+
+
         originalTopLeft = rangeCopy.rangeId.rangeAddress.topLeft
         for copyCell in rangeCopy.cells:
             colDif = copyCell.col - originalTopLeft.colIndex

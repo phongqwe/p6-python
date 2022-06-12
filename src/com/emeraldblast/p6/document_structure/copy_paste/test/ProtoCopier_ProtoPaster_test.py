@@ -1,21 +1,40 @@
 import unittest
 
-from com.emeraldblast.p6.document_structure.copy_paste.ProtoCopier import ProtoCopier
-from com.emeraldblast.p6.document_structure.copy_paste.ProtoPaster import ProtoPaster
+from com.emeraldblast.p6.document_structure.app.R import R
+
+from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
+from com.emeraldblast.p6.document_structure.copy_paste.copier.ProtoCopier import ProtoCopier
+from com.emeraldblast.p6.document_structure.copy_paste.paster.ProtoPaster import ProtoPaster
 from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import sampleWb
 
 
 class ProtoCopier_ProtoPaster_test(unittest.TestCase):
-    def test_copy_paste(self):
+
+    def setUp(self) -> None:
+        super(ProtoCopier_ProtoPaster_test, self).setUp()
         wb = sampleWb("Wb")
-        rng=wb.getWorksheet(0).range("@A1:B5")
+        rng = wb.getWorksheet(0).range("@A1:B5")
+        self.rng = rng
+
+    def test_copy_paste(self):
+        rng=self.rng
         copier = ProtoCopier()
         copier.copyRangeToClipboard(rng)
         #
         paster = ProtoPaster()
-        outRs = paster.pasteRange()
+        outRs = paster.pasteRange(CellAddresses.fromColRow(1,1))
         self.assertTrue(outRs.isOk())
         self.assertEqual(rng.toRangeCopy(),outRs.value)
+
+    def test_copy_paste_error_data_too_large(self):
+        rng=self.rng
+        copier = ProtoCopier()
+        copier.copyRangeToClipboard(rng)
+        #
+        paster = ProtoPaster()
+        outRs = paster.pasteRange(CellAddresses.fromColRow(R.WorksheetConsts.colLimit,1))
+        self.assertTrue(outRs.isErr())
+        print(outRs.err.header)
 
 
 if __name__ == '__main__':

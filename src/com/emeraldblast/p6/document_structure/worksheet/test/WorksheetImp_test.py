@@ -3,9 +3,8 @@ import unittest
 from unittest.mock import MagicMock
 
 import pyperclip
-from com.emeraldblast.p6.document_structure.copy_paste.Copiers import Copiers
 
-from com.emeraldblast.p6.document_structure.copy_paste.Pasters import Pasters
+from com.emeraldblast.p6.document_structure.copy_paste.paster.Pasters import Pasters
 
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeCopy import RangeCopy
 
@@ -18,7 +17,6 @@ from com.emeraldblast.p6.document_structure.range.RangeImp import RangeImp
 from com.emeraldblast.p6.document_structure.range.address.RangeAddressImp import RangeAddressImp
 from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import TestErrorReport
-from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.workbook.WorkbookErrors import WorkbookErrors
