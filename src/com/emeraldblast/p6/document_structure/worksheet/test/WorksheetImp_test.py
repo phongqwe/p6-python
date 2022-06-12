@@ -46,7 +46,29 @@ class WorksheetImp_test(unittest.TestCase):
         self.s3 = s3
 
     def test_pasteText(self):
-        pass
+        paster = MagicMock()
+        paster.pasteRange = MagicMock(return_value = Ok(RangeCopy(
+            rangeId = None,
+            cells = [
+                DataCell(
+                    address = None,
+                    value = "abc"
+                )
+            ]
+        )))
+        self.s1.pasteTextRs(CellAddresses.fromLabel("@B9"),paster)
+        self.assertEqual("abc",self.s1.cell("@B9").bareValue)
+        paster.pasteRange = MagicMock(return_value = Ok(RangeCopy(
+            rangeId = None,
+            cells = [
+                DataCell(
+                    address = None,
+                    formula="=SUM(A1:A9)"
+                )
+            ]
+        )))
+        self.s1.pasteTextRs(CellAddresses.fromLabel("@B9"), paster)
+        self.assertEqual("=SUM(A1:A9)", self.s1.cell("@B9").bareFormula)
 
     def test_pasteProtoFromClipboardRs_ok(self):
         paster = MagicMock()
