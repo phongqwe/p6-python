@@ -24,8 +24,8 @@ class EventWorksheet_test_integration(unittest.TestCase):
             reactorCB = cb
         )
         self.s1.range("@J12:F22").copyToClipboardAsProto()
-        self.s1.pasteProtoFromClipboardRs(CellAddresses.fromLabel("@V10"))
-        self.s1.pasteProtoFromClipboard(CellAddresses.fromLabel("@X10"))
+        self.s1.pasteProtoRs(CellAddresses.fromLabel("@V10"))
+        self.s1.pasteProto(CellAddresses.fromLabel("@X10"))
         self.assertEqual(2,cb.call_count)
 
 

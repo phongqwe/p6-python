@@ -142,11 +142,11 @@ class EventWorksheet(WorksheetWrapper):
         self.__onWorksheetEvent(eventResponse.toEventData())
         return delRs
 
-    def pasteProtoFromClipboardRs(
+    def pasteProtoRs(
             self,
             anchorCell: CellAddress,
             paster: Paster | None = None) -> Result[None, ErrorReport]:
-        rs = self.rootWorksheet.pasteProtoFromClipboardRs(anchorCell, paster)
+        rs = self.rootWorksheet.pasteProtoRs(anchorCell, paster)
 
         response = PasteRangeResponse(
             isError = rs.isErr(),

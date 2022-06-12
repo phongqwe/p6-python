@@ -22,3 +22,6 @@ class CellUtils:
                 if value == "False":
                     return False
                 return value
+    @staticmethod
+    def isFormula(text:str)->bool:
+        return text.strip().startswith("=")

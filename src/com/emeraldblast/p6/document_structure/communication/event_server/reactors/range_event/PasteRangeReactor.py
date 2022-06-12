@@ -27,7 +27,7 @@ class PasteRangeReactor(BaseEventReactor[bytes, PasteRangeResponse]):
             wsRs: Result[Worksheet, ErrorReport] = self.wsGetter(request.wsWb.workbookKey, request.wsWb.worksheetName)
             if wsRs.isOk():
                 ws: Worksheet = wsRs.value.rootWorksheet
-                pasteRs = ws.pasteProtoFromClipboardRs(anchorCell = request.anchorCell)
+                pasteRs = ws.pasteProtoRs(anchorCell = request.anchorCell)
                 if pasteRs.isOk():
                     ws.workbook.reRun()
                     wb = ws.workbook.rootWorkbook

@@ -65,16 +65,22 @@ class Worksheet(UserFriendlyCellContainer,
     def usedRange(self) -> Range | None:
         raise NotImplementedError()
 
-    def pasteDataFrameFromClipboard(self, anchorCell: CellAddress):
+    def pasteTextRs(self,targetCell:CellAddress, paster:Paster|None)->Result[None,ErrorReport]:
         raise NotImplementedError()
 
-    def pasteDataFrameFromClipboardRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
+    def pasteText(self,targetCell:CellAddress, paster:Paster|None):
         raise NotImplementedError()
 
-    def pasteProtoFromClipboard(self, anchorCell: CellAddress, paster: Paster | None = None):
+    def pasteDataFrame(self, anchorCell: CellAddress):
         raise NotImplementedError()
 
-    def pasteProtoFromClipboardRs(
+    def pasteDataFrameRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
+        raise NotImplementedError()
+
+    def pasteProto(self, anchorCell: CellAddress, paster: Paster | None = None):
+        raise NotImplementedError()
+
+    def pasteProtoRs(
             self,
             anchorCell: CellAddress ,
             paster: Paster | None = None) -> Result[None, ErrorReport]:

@@ -45,6 +45,9 @@ class WorksheetImp_test(unittest.TestCase):
         self.s2 = s2
         self.s3 = s3
 
+    def test_pasteText(self):
+        pass
+
     def test_pasteProtoFromClipboardRs_ok(self):
         paster = MagicMock()
         rangeCopy = RangeCopy(
@@ -71,7 +74,7 @@ class WorksheetImp_test(unittest.TestCase):
         )
         s = WorksheetImp("ASD", MagicMock())
         paster.pasteRange = MagicMock(return_value = Ok(rangeCopy))
-        rs=s.pasteProtoFromClipboardRs(
+        rs=s.pasteProtoRs(
             anchorCell = CellAddresses.fromLabel("@M13"),
             paster = paster
         )
@@ -84,7 +87,7 @@ class WorksheetImp_test(unittest.TestCase):
         paster = MagicMock()
         s = WorksheetImp("ASD", MagicMock())
         paster.pasteRange = MagicMock(return_value = Err(TestErrorReport))
-        rs = s.pasteProtoFromClipboardRs(
+        rs = s.pasteProtoRs(
             anchorCell = CellAddresses.fromLabel("@M13"),
             paster = paster
         )
@@ -93,7 +96,7 @@ class WorksheetImp_test(unittest.TestCase):
         content = b"abc"
         pyperclip.copy(str(content))
         s = WorksheetImp("ASD", MagicMock())
-        rs = s.pasteProtoFromClipboardRs(
+        rs = s.pasteProtoRs(
             anchorCell = CellAddresses.fromLabel("@M13"),
             paster = Pasters.protoPaster
         )
@@ -159,7 +162,7 @@ class WorksheetImp_test(unittest.TestCase):
         rangex.copySourceValueToClipboardAsFullCSV()
         self.assertEqual(0, s2.size)
         anchorCell = CellAddresses.fromColRow(2, 4)
-        rs = s2.pasteDataFrameFromClipboardRs(anchorCell)
+        rs = s2.pasteDataFrameRs(anchorCell)
         self.assertTrue(rs.isOk())
         self.assertEqual(3, s2.size)
         self.assertEqual(

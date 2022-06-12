@@ -19,13 +19,13 @@ class WorksheetWrapper(BaseWorksheet):
     def __init__(self, innerWorksheet: Worksheet):
         self._innerSheet: Worksheet = innerWorksheet
 
-    def pasteDataFrameFromClipboardRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
-        return self.rootWorksheet.pasteDataFrameFromClipboardRs(anchorCell)
+    def pasteDataFrameRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
+        return self.rootWorksheet.pasteDataFrameRs(anchorCell)
 
-    def pasteProtoFromClipboardRs(
+    def pasteProtoRs(
             self, anchorCell:
             CellAddress, paster: Paster | None = None) -> Result[None, ErrorReport]:
-        return self.rootWorksheet.pasteProtoFromClipboardRs(anchorCell, paster)
+        return self.rootWorksheet.pasteProtoRs(anchorCell, paster)
 
     @property
     def colDict(self) -> dict[int, list[Cell]]:
@@ -56,7 +56,7 @@ class WorksheetWrapper(BaseWorksheet):
         return self.rootWorksheet.usedRangeAddress
 
     def pasteDataFrameFromClipboardRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
-        return self.rootWorksheet.pasteDataFrameFromClipboardRs(anchorCell)
+        return self.rootWorksheet.pasteDataFrameRs(anchorCell)
 
     def hasCellAtIndex(self, col: int, row: int) -> bool:
         return self.rootWorksheet.hasCellAtIndex(col, row)

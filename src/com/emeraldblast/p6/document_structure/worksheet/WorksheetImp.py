@@ -42,6 +42,20 @@ from com.emeraldblast.p6.document_structure.worksheet.WorksheetJson import Works
 
 class WorksheetImp(BaseWorksheet):
 
+    def pasteTextRs(self, targetCell: CellAddress, paster: Paster | None) -> Result[None, ErrorReport]:
+        pasteRs = paster.pasteRange()
+        if pasteRs.isOk():
+            try:
+                copiedCell = pasteRs.value.cells[0]
+                cell = self.cell(targetCell)
+                cell.copyFrom(copiedCell)
+                return Ok(None)
+            except Exception as e:
+                return Err(CommonErrors.ExceptionErrorReport(e))
+        else:
+            return Err(pasteRs.err)
+
+
     @property
     def maxUsedCol(self) -> int | None:
         return self._maxCol
@@ -108,7 +122,7 @@ class WorksheetImp(BaseWorksheet):
             self._minRow = None
             self._maxRow = None
 
-    def pasteDataFrameFromClipboardRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
+    def pasteDataFrameRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
         """
         paste a data frame or csv or excel-like data from clipboard into this worksheet
         :param anchorCell:
@@ -122,7 +136,7 @@ class WorksheetImp(BaseWorksheet):
                 for colIndex in range(len(row)):
                     content = df.iloc[rowIndex, colIndex]
                     if not pandas.isna(content):
-                        cell = self.cell((colIndex + anchorCell.colIndex , rowIndex + anchorCell.rowIndex ))
+                        cell = self.cell((colIndex + anchorCell.colIndex, rowIndex + anchorCell.rowIndex))
                         contentStr = str(content)
                         isFormula = contentStr.strip().startswith("=")
                         if isFormula:
@@ -135,7 +149,7 @@ class WorksheetImp(BaseWorksheet):
         else:
             return Err(CopyErrors.UnableToPasteRange.report())
 
-    def pasteProtoFromClipboardRs(self, anchorCell: CellAddress, paster: Paster | None = None) -> Result[
+    def pasteProtoRs(self, anchorCell: CellAddress, paster: Paster | None = None) -> Result[
         None, ErrorReport]:
         """paste a proto byte array from clipboard into this worksheet"""
         if paster is None:

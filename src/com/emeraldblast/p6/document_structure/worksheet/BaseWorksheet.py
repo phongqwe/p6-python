@@ -15,6 +15,10 @@ from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 class BaseWorksheet(Worksheet,ABC):
 
 
+    def pasteText(self, targetCell: CellAddress,paster:Paster|None):
+        rs = self.pasteTextRs(targetCell,paster)
+        rs.raiseIfErr()
+
     @property
     def usedRangeAddress(self) -> RangeAddress | None:
         if self.minUsedCol and self.maxUsedCol and self.minUsedRow and self.maxUsedRow:
@@ -34,16 +38,13 @@ class BaseWorksheet(Worksheet,ABC):
         else:
             return None
 
-    def pasteDataFrameFromClipboard(self, anchorCell: CellAddress):
-        rs = self.pasteDataFrameFromClipboardRs(anchorCell)
+    def pasteDataFrame(self, anchorCell: CellAddress):
+        rs = self.pasteDataFrameRs(anchorCell)
         Results.extractOrRaise(rs)
 
-
-    def pasteProtoFromClipboard(self, anchorCell: CellAddress, paster: Paster | None = None):
-        rs = self.pasteProtoFromClipboardRs(anchorCell, paster)
-        Results.extractOrRaise(rs)
-
-
+    def pasteProto(self, anchorCell: CellAddress, paster: Paster | None = None):
+        rs = self.pasteProtoRs(anchorCell, paster)
+        rs.raiseIfErr()
 
     def compareWith(self, ws2: Worksheet) -> bool:
         """compare all cell of this sheet with another. Very inefficient, use with care"""
