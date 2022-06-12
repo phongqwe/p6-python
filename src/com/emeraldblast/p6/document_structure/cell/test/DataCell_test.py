@@ -18,6 +18,15 @@ class DataCellTest(unittest.TestCase):
         self.wb = WorkbookImp("wb")
         self.s = self.wb.createNewWorksheet("s1")
 
+    def test_numeric_str_value(self):
+        c1 = DataCell(CellIndex(1, 1), "\'123")
+        self.assertEqual("123",c1.strValue)
+        self.assertEqual("123",c1.displayValue)
+
+        c2 = DataCell(CellIndex(1, 1), "\'abc")
+        self.assertEqual("\'abc", c2.strValue)
+        self.assertEqual("\'abc", c2.displayValue)
+
     def test_sourceValue(self):
         c1 = DataCell(CellIndex(1, 1), 123, "formula", "script")
         self.assertEqual("formula", c1.sourceValue)

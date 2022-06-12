@@ -128,11 +128,11 @@ class DataCell(Cell):
             cellProto.isFormula = True
             if self.__value:
                 # have to store value in the proto even if the cell is a formula cell because the UI need this for displaying
-                cellProto.value = str(self.__value)
+                cellProto.value = self.strValue
         else:
             cellProto.isFormula = False
             if self.__value:
-                cellProto.value = str(self.__value)
+                cellProto.value = self.strValue
                 cellProto.isBoolLit = isinstance(self.__value, bool)
                 cellProto.isStrLit = isinstance(self.__value, str)
                 cellProto.isIntLit = isinstance(self.__value, int)

@@ -7,6 +7,7 @@ from com.emeraldblast.p6.document_structure.cell.CellContent import CellContent
 from com.emeraldblast.p6.document_structure.cell.CellJson import CellJson
 from com.emeraldblast.p6.document_structure.cell.CellValueType import CellValueType
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
+from com.emeraldblast.p6.document_structure.cell.util.CellUtils import CellUtils
 from com.emeraldblast.p6.document_structure.util.ToJson import ToJson
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 from com.emeraldblast.p6.proto.DocProtos_pb2 import CellProto
@@ -71,10 +72,17 @@ class Cell(ToJson, ToProto[CellProto], ABC):
     def strValue(self) -> str:
         """get cell value as string"""
         # return str(self.value)
-        if self.value is None:
+        v = self.value
+        if v is None:
             return ""
         else:
-            return str(self.value)
+            if isinstance(v,str):
+                if CellUtils.isNumericString(v):
+                    return v[1:]
+                else:
+                    return v
+            else:
+                return str(v)
 
     @property
     def bareScript(self)->str:
