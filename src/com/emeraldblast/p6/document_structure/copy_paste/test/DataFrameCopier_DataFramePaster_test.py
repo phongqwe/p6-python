@@ -1,5 +1,7 @@
 import unittest
 
+import pyperclip
+
 from com.emeraldblast.p6.document_structure.app.R import R
 
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
@@ -50,11 +52,20 @@ class DataFramePaster_test(unittest.TestCase):
 
         copier = DataFrameCopier()
         copier.copyRangeToClipboard(rng)
-
         paster = DataFramePaster()
         rs = paster.pasteRange(CellAddresses.fromColRow(R.WorksheetConsts.colLimit,1))
         self.assertTrue(rs.isErr())
         print(rs.err.header)
+
+    def test_zxc(self):
+
+        rng = self.rng
+
+        copier = DataFrameCopier()
+        copier.copyRangeToClipboard(rng)
+        z = pyperclip.paste()
+
+        print(z)
 
 
 

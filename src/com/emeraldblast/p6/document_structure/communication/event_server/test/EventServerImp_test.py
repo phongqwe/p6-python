@@ -10,7 +10,8 @@ from com.emeraldblast.p6.document_structure.communication.event_server.msg.P6Mes
 from com.emeraldblast.p6.document_structure.communication.event_server.response.P6Response import P6Response
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactor import EventReactor
 from com.emeraldblast.p6.document_structure.util.CommonError import CommonErrors
-from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import findNewSocketPort, MockToProto
+from com.emeraldblast.p6.document_structure.util.for_test.MockProto import MockToProto
+from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import findNewSocketPort
 from com.emeraldblast.p6.proto.CommonProtos_pb2 import ErrorReportProto
 from com.emeraldblast.p6.proto.P6MsgProtos_pb2 import P6ResponseProto
 

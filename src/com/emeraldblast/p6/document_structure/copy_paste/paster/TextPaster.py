@@ -26,7 +26,7 @@ class TextPaster(BasePaster):
         else:
             cell = DataCell(
                 address = CellAddresses.fromColRow(1,1),
-                value = text
+                value = CellUtils.parseValue(text)
 
             )
         return Ok(RangeCopy(

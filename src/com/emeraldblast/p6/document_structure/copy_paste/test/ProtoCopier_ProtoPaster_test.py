@@ -1,14 +1,17 @@
 import unittest
 
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeCopy import RangeCopy
+
 from com.emeraldblast.p6.document_structure.app.R import R
 
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.copy_paste.copier.ProtoCopier import ProtoCopier
 from com.emeraldblast.p6.document_structure.copy_paste.paster.ProtoPaster import ProtoPaster
-from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import sampleWb
+from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import sampleWb, compareList
 
 
 class ProtoCopier_ProtoPaster_test(unittest.TestCase):
+
 
     def setUp(self) -> None:
         super(ProtoCopier_ProtoPaster_test, self).setUp()

@@ -42,3 +42,9 @@ def makeGetter(result):
         return result
 
     return getter
+
+def compareList(l1:list,l2:list)->bool:
+    sameLen = len(l1) == len(l2)
+    l1ContainL2 = all(elem in l1 for elem in l2)
+    l2ContainL1 = all(elem in l2 for elem in l1)
+    return sameLen and l1ContainL2 and l2ContainL1

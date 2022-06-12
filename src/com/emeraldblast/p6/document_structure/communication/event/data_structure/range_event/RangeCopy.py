@@ -4,15 +4,23 @@ from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.Cells import Cells
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
+from com.emeraldblast.p6.document_structure.util.Util import compareList
 from com.emeraldblast.p6.proto.RangeProtos_pb2 import RangeCopyProto
 
 
-@dataclass
 class RangeCopy(ToProto[RangeCopyProto]):
 
-    def __init__(self, rangeId: RangeId|None, cells: list[Cell]):
+    def __init__(self, rangeId: RangeId | None, cells: list[Cell]):
         self.cells = cells
         self.rangeId = rangeId
+
+    def __eq__(self, other):
+        if isinstance(other, RangeCopy):
+            sameCells = compareList(self.cells, other.cells)
+            sameRangeId = self.rangeId == other.rangeId
+            return sameCells and sameRangeId
+        else:
+            return False
 
     @staticmethod
     def fromProtoBytes(data: bytes) -> 'RangeCopy':

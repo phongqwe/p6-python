@@ -21,6 +21,15 @@ class Cell(ToJson, ToProto[CellProto], ABC):
     Cell interface
     """
 
+    def __eq__(self, other):
+        if isinstance(other, Cell):
+            sameValue = self.value == other.value
+            sameScript = self.script == other.script or (not (self.script and other.script))
+            sameAddress = self.address == other.address
+            return sameValue and sameScript and sameAddress
+        else:
+            return False
+
     @property
     def sourceValue(self)->str:
         """:return the source of the value of this cell. That is either formula (if this is a formulaic cell) or value if this is a value cell"""

@@ -2,12 +2,13 @@ import socket
 import threading
 
 import zmq
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeCopy import RangeCopy
 
 from com.emeraldblast.p6.document_structure.app.App import App
 from com.emeraldblast.p6.document_structure.app.AppImp import AppImp
 from com.emeraldblast.p6.document_structure.file.loader.P6FileLoader import P6FileLoader
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
-from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
+from com.emeraldblast.p6.document_structure.util.Util import compareList
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorHeader import ErrorHeader
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
@@ -84,12 +85,11 @@ def startREPServerOnThread(isOk, port, zContext, onReceive) -> threading.Thread:
 def sendClose(_socket):
     _socket.send("close".encode())
 
-class MockToProto(ToProto):
-    def __init__(self,str):
-        self.str = str
-    def toProtoObj(self):
-        raise NotImplementedError
 
-    def toProtoBytes(self):
-        return self.str
-
+def compareRangeCopy(self,r1, other):
+    if isinstance(other, RangeCopy):
+        sameCells = compareList(r1.cells, other.cells)
+        sameRangeId = r1.rangeId == other.rangeId
+        return sameCells and sameRangeId
+    else:
+        return False
