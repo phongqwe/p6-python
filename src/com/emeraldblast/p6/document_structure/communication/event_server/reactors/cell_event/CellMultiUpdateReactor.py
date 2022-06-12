@@ -32,7 +32,8 @@ class CellMultiUpdateReactor(BaseEventReactor[bytes, CellMultiUpdateResponse]):
                     if len(content.formula)!=0:
                         ws.cell(update.cellAddress).formula = content.formula
                     else:
-                        ws.cell(update.cellAddress).value = CellUtils.parseValue(content.literal)
+                        parsedValue = CellUtils.parseValue(content.literal)
+                        ws.cell(update.cellAddress).value = parsedValue
                 wb.reRun()
                 rt.newWorkbook = wb
             else:

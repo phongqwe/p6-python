@@ -10,7 +10,7 @@ from com.emeraldblast.p6.proto.RangeProtos_pb2 import RangeCopyProto
 @dataclass
 class RangeCopy(ToProto[RangeCopyProto]):
 
-    def __init__(self, rangeId: RangeId, cells: list[Cell]):
+    def __init__(self, rangeId: RangeId|None, cells: list[Cell]):
         self.cells = cells
         self.rangeId = rangeId
 

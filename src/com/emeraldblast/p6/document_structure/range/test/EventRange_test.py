@@ -61,7 +61,7 @@ class EventRangeTest(unittest.TestCase):
             onCellEvent = MagicMock(),
             onRangeEvent = onRangeEvent)
 
-        eventRange.copyValueToClipboardAsFullCSV()
+        eventRange.copyValueDataFrame()
 
     def test_createEventObjs(self):
         """event objs == event cells, event """

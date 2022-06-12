@@ -14,9 +14,10 @@ class EventWorksheet_test_integration(unittest.TestCase):
         self.testEnv.startEnv()
         self.b1 = self.testEnv.app.getWorkbook("Book1")
         self.z = False
-        self.s1:Worksheet = self.b1.getWorksheet(0)
-        self.s2:Worksheet = self.b1.getWorksheet(1)
+        self.s1: Worksheet = self.b1.getWorksheet(0)
+        self.s2: Worksheet = self.b1.getWorksheet(1)
         self.eventTable = P6EventTableImp.P6EventTableImp.i()
+
     def test_pasteRange(self):
         cb = MagicMock()
         self.testEnv.notifListener.addReactorCB(
@@ -26,10 +27,7 @@ class EventWorksheet_test_integration(unittest.TestCase):
         self.s1.range("@J12:F22").copyToClipboardAsProto()
         self.s1.pasteProtoRs(CellAddresses.fromLabel("@V10"))
         self.s1.pasteProto(CellAddresses.fromLabel("@X10"))
-        self.assertEqual(2,cb.call_count)
-
-
-
+        self.assertEqual(2, cb.call_count)
 
 
 if __name__ == '__main__':

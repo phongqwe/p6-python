@@ -183,7 +183,7 @@ class Integration_integration_test(unittest.TestCase):
             print(data)
 
         self.testEnv.notifListener.addReactorCB(P6Events.Range.RangeToClipBoard.event, cb)
-        self.b1.getWorksheet("Sheet1").range("@A1:B3").copyValueToClipboardAsFullCSV()
+        self.b1.getWorksheet("Sheet1").range("@A1:B3").copyValueDataFrame()
 
     def test_updateCell_afterSaving(self):
         self.s1.cell((1, 1)).value = 123

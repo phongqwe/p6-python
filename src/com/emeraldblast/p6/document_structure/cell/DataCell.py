@@ -5,8 +5,9 @@ from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.CellContent import CellContent
 from com.emeraldblast.p6.document_structure.cell.CellContentImp import CellContentImp
 from com.emeraldblast.p6.document_structure.cell.CellJson import CellJson
+from com.emeraldblast.p6.document_structure.cell.CellValueType import CellValueType
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
-from com.emeraldblast.p6.document_structure.cell.util.CellUtils import convertExceptionToStr
+from com.emeraldblast.p6.document_structure.cell.util.CellUtils import convertExceptionToStr, CellUtils
 from com.emeraldblast.p6.document_structure.code_executor.CodeExecutor import CodeExecutor
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
@@ -70,6 +71,9 @@ class DataCell(Cell):
         self.__formula: str = formula
         self.__scriptAlreadyRun: bool = False
         self.__addr: CellAddress = address
+
+        if self.formula is None:
+            self.__valueType = CellValueType.infer(self.__value)
 
         def translatorGetter():
             if self.workbook is not None and self.worksheet is not None:
@@ -157,7 +161,13 @@ class DataCell(Cell):
             if self.__value is None:
                 return ""
             else:
-                return str(self.__value)
+                if isinstance(self.__value,str):
+                    if CellUtils.isNumericString(self.__value):
+                        return self.__value[1:]
+                    else:
+                        return self.__value
+                else:
+                    return str(self.__value)
 
     @property
     def value(self):
@@ -263,3 +273,7 @@ class DataCell(Cell):
             self.__clearFormula()
             self.__value = anotherCell.bareValue
             return
+
+    @property
+    def valueType(self) -> CellValueType:
+        return CellValueType.infer(self.value)

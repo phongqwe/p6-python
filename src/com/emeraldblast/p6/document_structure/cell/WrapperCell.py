@@ -3,6 +3,7 @@ from abc import ABC
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.CellContent import CellContent
 from com.emeraldblast.p6.document_structure.cell.CellJson import CellJson
+from com.emeraldblast.p6.document_structure.cell.CellValueType import CellValueType
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 from com.emeraldblast.p6.proto.DocProtos_pb2 import CellProto
@@ -12,6 +13,11 @@ class WrapperCell(Cell, ABC):
     """
     An abstract Cell decorator that wraps around another cell and carries out its work using the inner cell
     """
+
+    @property
+    def valueType(self) -> CellValueType:
+        return self.rootCell.valueType
+
     @property
     def innerCell(self)->'Cell':
         return self._innerCell

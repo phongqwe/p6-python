@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 
 from com.emeraldblast.p6.document_structure.cell.CellContent import CellContent
 from com.emeraldblast.p6.document_structure.cell.CellJson import CellJson
+from com.emeraldblast.p6.document_structure.cell.CellValueType import CellValueType
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.util.ToJson import ToJson
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
@@ -188,4 +189,9 @@ class Cell(ToJson, ToProto[CellProto], ABC):
 
     @content.setter
     def content(self,newContent:CellContent):
+        raise NotImplementedError()
+
+    @property
+    def valueType(self)->CellValueType:
+        """type of the value, either is str, int, float, bool, exception, obj"""
         raise NotImplementedError()

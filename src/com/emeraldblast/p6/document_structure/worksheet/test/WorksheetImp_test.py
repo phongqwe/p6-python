@@ -169,19 +169,19 @@ class WorksheetImp_test(unittest.TestCase):
         s1.cell((1, 1)).formula = "=1+1"
         self.assertEqual(2, s1.cell((1, 1)).value)
 
-    def test_pasteFromClipboard(self):
+    def test_pasteDataFrame(self):
         s1 = self.s1
         s2 = self.s2
         s1.cell((1, 1)).value = 11
         s1.cell((1, 2)).formula = "=SCRIPT(1+2)"
         s1.cell((4, 6)).script = "1+2+3"
 
-        rangex = RangeImp(
+        rangeS1 = RangeImp(
             firstCellAddress = CellAddresses.fromColRow(1, 1),
             lastCellAddress = CellAddresses.fromColRow(5, 6),
             sourceContainer = s1
         )
-        rangex.copySourceValueToClipboardAsFullCSV()
+        rangeS1.copySourceValueDataFrame()
         self.assertEqual(0, s2.size)
         anchorCell = CellAddresses.fromColRow(2, 4)
         rs = s2.pasteDataFrameRs(anchorCell)

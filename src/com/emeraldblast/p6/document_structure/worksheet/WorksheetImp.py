@@ -55,7 +55,6 @@ class WorksheetImp(BaseWorksheet):
         else:
             return Err(pasteRs.err)
 
-
     @property
     def maxUsedCol(self) -> int | None:
         return self._maxCol
@@ -122,32 +121,19 @@ class WorksheetImp(BaseWorksheet):
             self._minRow = None
             self._maxRow = None
 
-    def pasteDataFrameRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
+    def pasteDataFrameRs(self, anchorCell: CellAddress, paster: Paster | None = None) -> Result[None, ErrorReport]:
         """
         paste a data frame or csv or excel-like data from clipboard into this worksheet
-        :param anchorCell:
         :return: Ok if successfuly paste, Err otherwise
         """
-        data = pandas.read_clipboard(header = None)
-        if isinstance(data, DataFrame):
-            df = data
-            for rowIndex in range(len(df)):
-                row = df.iloc[rowIndex]
-                for colIndex in range(len(row)):
-                    content = df.iloc[rowIndex, colIndex]
-                    if not pandas.isna(content):
-                        cell = self.cell((colIndex + anchorCell.colIndex, rowIndex + anchorCell.rowIndex))
-                        contentStr = str(content)
-                        isFormula = contentStr.strip().startswith("=")
-                        if isFormula:
-                            cell.formula = content
-                        else:
-                            parsedValue = CellUtils.parseValue(content)
-                            cell.value = parsedValue
-            self.reRun()
-            return Ok(None)
+        if paster is None:
+            paster = Pasters.dataFramePaster
+        rangeCopyRs = paster.pasteRange()
+        if rangeCopyRs.isOk():
+            rangeCopy = rangeCopyRs.value
+            return self._pasteRangeCopy(anchorCell,rangeCopy)
         else:
-            return Err(CopyErrors.UnableToPasteRange.report())
+            return Err(rangeCopyRs.err)
 
     def pasteProtoRs(self, anchorCell: CellAddress, paster: Paster | None = None) -> Result[
         None, ErrorReport]:
@@ -157,19 +143,34 @@ class WorksheetImp(BaseWorksheet):
         rangCopyRs: Result[RangeCopy, ErrorReport] = paster.pasteRange()
         if rangCopyRs.isOk():
             rangeCopy = rangCopyRs.value
-            originalTopLeft = rangeCopy.rangeId.rangeAddress.topLeft
-            for copyCell in rangeCopy.cells:
-                colDif = copyCell.col - originalTopLeft.colIndex
-                rowDif = copyCell.row - originalTopLeft.rowIndex
-                destinationCell = self.cell(CellAddresses.fromColRow(
-                    col = anchorCell.colIndex + colDif,
-                    row = anchorCell.rowIndex + rowDif
-                ))
-                destinationCell.copyFrom(copyCell)
-            self.reRun()
-            return Ok(None)
+            return self._pasteRangeCopy(anchorCell, rangeCopy)
+            # originalTopLeft = rangeCopy.rangeId.rangeAddress.topLeft
+            # for copyCell in rangeCopy.cells:
+            #     colDif = copyCell.col - originalTopLeft.colIndex
+            #     rowDif = copyCell.row - originalTopLeft.rowIndex
+            #     destinationCell = self.cell(CellAddresses.fromColRow(
+            #         col = anchorCell.colIndex + colDif,
+            #         row = anchorCell.rowIndex + rowDif
+            #     ))
+            #     destinationCell.copyFrom(copyCell)
+            # self.reRun()
+            # return Ok(None)
         else:
             return Err(CopyErrors.UnableToPasteRange.report())
+    def _pasteRangeCopy(self, anchorCell: CellAddress, rangeCopy:RangeCopy) -> Result[
+        None, ErrorReport]:
+        """paste a proto byte array from clipboard into this worksheet"""
+        originalTopLeft = rangeCopy.rangeId.rangeAddress.topLeft
+        for copyCell in rangeCopy.cells:
+            colDif = copyCell.col - originalTopLeft.colIndex
+            rowDif = copyCell.row - originalTopLeft.rowIndex
+            destinationCell = self.cell(CellAddresses.fromColRow(
+                col = anchorCell.colIndex + colDif,
+                row = anchorCell.rowIndex + rowDif
+            ))
+            destinationCell.copyFrom(copyCell)
+        self.reRun()
+        return Ok(None)
 
     def deleteRangeRs(self, rangeAddress: RangeAddress) -> Result[None, ErrorReport]:
         tobeRemovedCells = []

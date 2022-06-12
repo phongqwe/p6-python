@@ -29,12 +29,8 @@ class B(A):
 
 class Bench(unittest.TestCase):
     def test_z(self):
-        data = b"ad"
-        try:
-            RangeCopy.fromProtoBytes(data)
-        except:
-            print("QWEQWE")
-
+        a = "asb"
+        print(a[1:])
 
         # df = pd.DataFrame(np.random.randn(1000000, 1))
 

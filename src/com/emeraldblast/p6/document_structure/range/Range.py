@@ -113,21 +113,22 @@ class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
         )
         return copyObj
 
-    def copyValueToClipboardAsFullCSV(self):
+    def copyValueDataFrame(self):
         """convert this range into a full data array and copy that data frame into the clipboard"""
         df = DataFrame.from_records(self.toFullValueArray())
         df.to_clipboard(excel = True, index = False, header = None)
 
-    def copySourceValueToClipboardAsFullCSV(self):
+    def copySourceValueDataFrame(self):
         """convert this range into a full data array and copy that data frame into the clipboard"""
         df = DataFrame.from_records(self.toFullSourceValueArray())
         df.to_clipboard(excel = True, index = False, header = None)
+        print("zx")
 
-    def copyValueToClipboardAsStrictCSV(self):
-        df = DataFrame.from_records(self.toStrictValueArray())
+    def copyValueStrictDataFrame(self):
+        df = DataFrame.toStrictSourceValueArrayfrom_records(self.toStrictValueArray())
         df.to_clipboard(excel = True, index = False, header = None)
 
-    def copySourceValueToClipboardAsStrictCSV(self):
+    def copySourceValueStrictDataFrame(self):
         df = DataFrame.from_records(self.toStrictSourceValueArray())
         df.to_clipboard(excel = True, index = False, header = None)
 
