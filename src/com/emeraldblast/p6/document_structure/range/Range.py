@@ -20,7 +20,6 @@ if TYPE_CHECKING:
 
 class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
     """ a sub container derived from a bigger cell container """
-
     @property
     def maxUsedCol(self) -> int | None:
         raise NotImplementedError()

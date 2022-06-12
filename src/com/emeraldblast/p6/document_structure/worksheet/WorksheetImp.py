@@ -149,13 +149,14 @@ class WorksheetImp(BaseWorksheet):
             overwrittenCell = []
             oldRange = rangeCopy.rangeId.rangeAddress
 
-            targetRange = RangeAddresses.from2Cells(
-                firstCell = anchorCell,
-                secondCell = CellAddresses.fromColRow(
-                    col = anchorCell.colIndex + oldRange.colCount()-1,
-                    row = anchorCell.rowIndex + oldRange.rowCount()-1
-                )
-            )
+            # targetRange = RangeAddresses.from2Cells(
+            #     firstCell = anchorCell,
+            #     secondCell = CellAddresses.fromColRow(
+            #         col = anchorCell.colIndex + oldRange.colCount()-1,
+            #         row = anchorCell.rowIndex + oldRange.rowCount()-1
+            #     )
+            # )
+            targetRange = oldRange.moveByTopLeftTo(anchorCell)
             deleteRs = self.deleteRangeRs(targetRange)
             if deleteRs.isOk():
                 for copyCell in rangeCopy.cells:

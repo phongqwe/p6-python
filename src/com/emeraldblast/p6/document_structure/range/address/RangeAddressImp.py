@@ -27,6 +27,17 @@ class RangeAddressImp(RangeAddress):
             reason = "firstAddress {o} is larger than lastAddress {o}".format(o=o)
             raise ValueError("invalid firstAddress and lastAddress: {reason}".format(reason=reason))
 
+    def moveByTopLeftTo(self, newTopLeft: CellAddress) -> 'RangeAddress':
+        colDif:int = newTopLeft.minusCol(self.topLeft)
+        rowDif:int = newTopLeft.minusRow(self.topLeft)
+        return RangeAddressImp(
+            topLeft = newTopLeft,
+            botRight = CellAddresses.fromColRow(
+                col = self.botRight.colIndex + colDif,
+                row=self.botRight.rowIndex + rowDif
+            )
+        )
+
     def intersect(self, otherRangeAddress: 'RangeAddress') -> Optional['RangeAddress']:
 
         intersectionExist = self.containCellAddress(otherRangeAddress.topLeft) \

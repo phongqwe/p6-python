@@ -7,6 +7,22 @@ from com.emeraldblast.p6.proto.DocProtos_pb2 import RangeAddressProto
 
 
 class RangeAddressImp_test(unittest.TestCase):
+
+    def test_shiftTopLeftTo(self):
+        topLeft = CellAddresses.fromLabel("@B7")
+        botRight = CellAddresses.fromLabel("@J10")
+        r = RangeAddressImp(
+            topLeft = topLeft,
+            botRight = botRight,
+        )
+
+        r2 = r.moveByTopLeftTo(CellAddresses.fromLabel("@A1"))
+        self.assertEqual(RangeAddresses.fromLabel("@A1:I4"),r2)
+
+        r3 = r2.moveByTopLeftTo(CellAddresses.fromLabel("@C9"))
+        self.assertEqual(RangeAddresses.fromLabel("@C9:K12"), r3)
+
+
     def test_toProto(self):
         topLeft = CellAddresses.fromColRow(1,1)
         botRight = CellAddresses.fromColRow(20,30)

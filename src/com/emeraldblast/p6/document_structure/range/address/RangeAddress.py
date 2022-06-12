@@ -95,3 +95,10 @@ class RangeAddress(ToProto[RangeAddressProto],ABC):
     @property
     def botLeft(self) -> CellAddress:
         return CellAddresses.fromColRow(self.firstColIndex, self.lastRowIndex)
+
+    def moveByTopLeftTo(self, newTopLeft:CellAddress) -> 'RangeAddress':
+        """move this range so that its top left become the new provided top left. Consequently, this will also change the rest of the vertices
+        :return a new range address
+        """
+
+        raise NotImplementedError()
