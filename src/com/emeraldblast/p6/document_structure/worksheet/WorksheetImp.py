@@ -9,6 +9,7 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.r
 from com.emeraldblast.p6.document_structure.copy_paste.Paster import Paster
 from com.emeraldblast.p6.document_structure.copy_paste.Pasters import Pasters
 from com.emeraldblast.p6.document_structure.util.CommonError import CommonErrors
+from com.emeraldblast.p6.document_structure.worksheet.BaseWorksheet import BaseWorksheet
 
 from com.emeraldblast.p6.proto.RangeProtos_pb2 import RangeCopyProto
 from pandas import DataFrame
@@ -39,7 +40,7 @@ from com.emeraldblast.p6.document_structure.worksheet.WorksheetErrors import Wor
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetJson import WorksheetJson
 
 
-class WorksheetImp(Worksheet):
+class WorksheetImp(BaseWorksheet):
 
     @property
     def maxUsedCol(self) -> int | None:

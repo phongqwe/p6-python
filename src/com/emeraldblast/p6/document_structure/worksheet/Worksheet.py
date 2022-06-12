@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 from abc import ABC
 from typing import TYPE_CHECKING
 
@@ -10,13 +9,11 @@ from com.emeraldblast.p6.document_structure.cell_container.UserFriendlyCellConta
 
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from com.emeraldblast.p6.document_structure.range.address.RangeAddress import RangeAddress
-from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 from com.emeraldblast.p6.document_structure.util.ToJson import ToJson
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 from com.emeraldblast.p6.document_structure.util.report.ReportJsonStrMaker import ReportJsonStrMaker
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
-from com.emeraldblast.p6.document_structure.util.result.Results import Results
 from com.emeraldblast.p6.document_structure.worksheet.UserFriendlyWorksheet import UserFriendlyWorksheet
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetJson import WorksheetJson
 from com.emeraldblast.p6.proto.DocProtos_pb2 import WorksheetProto
@@ -62,33 +59,20 @@ class Worksheet(UserFriendlyCellContainer,
 
     @property
     def usedRangeAddress(self) -> RangeAddress | None:
-        if self.minUsedCol and self.maxUsedCol and self.minUsedRow and self.maxUsedRow:
-            return RangeAddresses.fromColRow(
-                minCol = self.minUsedCol,
-                maxCol = self.maxUsedCol,
-                minRow = self.minUsedRow,
-                maxRow = self.maxUsedRow,
-            )
-        else:
-            return None
+        raise NotImplementedError()
 
     @property
     def usedRange(self) -> Range | None:
-        if self.usedRangeAddress:
-            return self.range(self.usedRangeAddress)
-        else:
-            return None
+        raise NotImplementedError()
 
     def pasteDataFrameFromClipboard(self, anchorCell: CellAddress):
-        rs = self.pasteDataFrameFromClipboardRs(anchorCell)
-        Results.extractOrRaise(rs)
+        raise NotImplementedError()
 
     def pasteDataFrameFromClipboardRs(self, anchorCell: CellAddress) -> Result[None, ErrorReport]:
         raise NotImplementedError()
 
     def pasteProtoFromClipboard(self, anchorCell: CellAddress, paster: Paster | None = None):
-        rs = self.pasteProtoFromClipboardRs(anchorCell, paster)
-        Results.extractOrRaise(rs)
+        raise NotImplementedError()
 
     def pasteProtoFromClipboardRs(
             self,
@@ -98,31 +82,11 @@ class Worksheet(UserFriendlyCellContainer,
 
     def compareWith(self, ws2: Worksheet) -> bool:
         """compare all cell of this sheet with another. Very inefficient, use with care"""
-        ws1 = self.rootWorksheet
-        ws2 = ws2.rootWorksheet
-        sameName = ws1.name == ws2.name
-        if sameName:
-            sameCellCount = ws1.cellCount == ws1.cellCount
-            if sameCellCount:
-                z = True
-                for c1 in ws1.cells:
-                    c2 = ws2.cell(c1.address)
-                    if c1 != c2:
-                        return False
-
-                for c2 in ws2.cells:
-                    c1 = ws1.cell(c2.address)
-                    if c2 != c1:
-                        return False
-                return z
-            else:
-                return False
-        else:
-            return False
+        raise NotImplementedError()
 
     @property
     def cellCount(self):
-        return self.size
+        raise NotImplementedError()
 
     @property
     def rootWorksheet(self) -> 'Worksheet':
@@ -130,13 +94,7 @@ class Worksheet(UserFriendlyCellContainer,
         raise NotImplementedError()
 
     def toProtoObj(self) -> WorksheetProto:
-        rt = WorksheetProto()
-        rt.name = self.name
-        cells = []
-        for cell in self.cells:
-            cells.append(cell.toProtoObj())
-        rt.cell.extend(cells)
-        return rt
+        raise NotImplementedError()
 
     @property
     def workbook(self) -> Workbook | None:
@@ -147,7 +105,7 @@ class Worksheet(UserFriendlyCellContainer,
         raise NotImplementedError()
 
     def removeFromWorkbook(self):
-        self.workbook = None
+        raise NotImplementedError()
 
     @property
     def name(self) -> str:
@@ -161,17 +119,13 @@ class Worksheet(UserFriendlyCellContainer,
         raise NotImplementedError()
 
     def reportJsonStr(self) -> str:
-        return json.dumps({
-            "name": self.name
-        })
+        raise NotImplementedError()
 
     def rename(self, newName: str):
-        rs = self.renameRs(newName)
-        if rs.isErr():
-            raise rs.err.toException()
+        raise NotImplementedError()
 
     def internalRename(self, newName: str):
-        raise NotImplementedError
+        raise NotImplementedError()
 
     def renameRs(self, newName: str) -> Result[None, ErrorReport]:
         raise NotImplementedError()

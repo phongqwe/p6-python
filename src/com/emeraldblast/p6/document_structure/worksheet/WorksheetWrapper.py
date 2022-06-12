@@ -9,11 +9,12 @@ from com.emeraldblast.p6.document_structure.range.address.RangeAddress import Ra
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
+from com.emeraldblast.p6.document_structure.worksheet.BaseWorksheet import BaseWorksheet
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetJson import WorksheetJson
 
 
-class WorksheetWrapper(Worksheet):
+class WorksheetWrapper(BaseWorksheet):
 
     def __init__(self, innerWorksheet: Worksheet):
         self._innerSheet: Worksheet = innerWorksheet
