@@ -30,7 +30,6 @@ class P6FileLoaderStd(P6FileLoader):
                         ErrorReport(
                             header=P6FileLoaderErrors.UnableToReadFile.header,
                             data=P6FileLoaderErrors.UnableToReadFile.Data(path, e),
-                            loc=""
                         )
                     )
             except Exception as e:
@@ -38,7 +37,6 @@ class P6FileLoaderStd(P6FileLoader):
                     ErrorReport(
                         header=P6FileLoaderErrors.UnableToOpenFile.header,
                         data=P6FileLoaderErrors.UnableToOpenFile.Data(filePath, e),
-                        loc=""
                     )
                 )
         else:
@@ -46,7 +44,6 @@ class P6FileLoaderStd(P6FileLoader):
                 ErrorReport(
                     header=P6FileLoaderErrors.FileNotExist.header,
                     data=P6FileLoaderErrors.FileNotExist.Data(filePath, None),
-                    loc=""
                 )
             )
 

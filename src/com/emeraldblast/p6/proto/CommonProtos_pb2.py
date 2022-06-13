@@ -15,7 +15,7 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n,com/emeraldblast/p6/proto/CommonProtos.proto\x12\x19\x63om.emeraldblast.p6.proto\x1a\x1cgoogle/protobuf/struct.proto\"q\n\x10\x45rrorReportProto\x12\x11\n\terrorCode\x18\x01 \x01(\t\x12\x14\n\x0c\x65rrorMessage\x18\x02 \x01(\t\x12\x11\n\x04\x64\x61ta\x18\x03 \x01(\tH\x00\x88\x01\x01\x12\x10\n\x03loc\x18\x04 \x01(\tH\x01\x88\x01\x01\x42\x07\n\x05_dataB\x06\n\x04_loc\"}\n\x13\x45rrorIndicatorProto\x12\x0f\n\x07isError\x18\x01 \x01(\x08\x12\x45\n\x0b\x65rrorReport\x18\x02 \x01(\x0b\x32+.com.emeraldblast.p6.proto.ErrorReportProtoH\x00\x88\x01\x01\x42\x0e\n\x0c_errorReportb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n,com/emeraldblast/p6/proto/CommonProtos.proto\x12\x19\x63om.emeraldblast.p6.proto\x1a\x1cgoogle/protobuf/struct.proto\"W\n\x10\x45rrorReportProto\x12\x11\n\terrorCode\x18\x01 \x01(\t\x12\x14\n\x0c\x65rrorMessage\x18\x02 \x01(\t\x12\x11\n\x04\x64\x61ta\x18\x03 \x01(\tH\x00\x88\x01\x01\x42\x07\n\x05_data\"}\n\x13\x45rrorIndicatorProto\x12\x0f\n\x07isError\x18\x01 \x01(\x08\x12\x45\n\x0b\x65rrorReport\x18\x02 \x01(\x0b\x32+.com.emeraldblast.p6.proto.ErrorReportProtoH\x00\x88\x01\x01\x42\x0e\n\x0c_errorReportb\x06proto3')
 
 
 
@@ -39,7 +39,7 @@ if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   _ERRORREPORTPROTO._serialized_start=105
-  _ERRORREPORTPROTO._serialized_end=218
-  _ERRORINDICATORPROTO._serialized_start=220
-  _ERRORINDICATORPROTO._serialized_end=345
+  _ERRORREPORTPROTO._serialized_end=192
+  _ERRORINDICATORPROTO._serialized_start=194
+  _ERRORINDICATORPROTO._serialized_end=319
 # @@protoc_insertion_point(module_scope)

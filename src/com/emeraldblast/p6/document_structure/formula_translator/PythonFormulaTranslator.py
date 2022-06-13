@@ -50,7 +50,6 @@ class PythonFormulaTranslator(FormulaTranslator):
                     ErrorReport(
                         TranslatorErrors.TranslatingErr.header,
                         TranslatorErrors.TranslatingErr.Data(self.lexerError, self.parserError),
-                        loc = "PythonFormulaTranslator.translate"
                     )
                 )
                 return rt
