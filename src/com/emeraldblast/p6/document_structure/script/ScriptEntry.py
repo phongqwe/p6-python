@@ -7,7 +7,7 @@ from com.emeraldblast.p6.proto.ScriptProtos_pb2 import ScriptEntryProto
 @dataclass
 class ScriptEntry(ToProto[ScriptEntryProto]):
     key:ScriptEntryKey
-    script:str
+    script:str = ""
 
     @staticmethod
     def fromProto(proto:ScriptEntryProto)->'ScriptEntry':

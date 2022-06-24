@@ -4,7 +4,7 @@ from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntr
 from com.emeraldblast.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
 
 
-class ScriptEntryTest(unittest.TestCase):
+class ScriptEntry_test(unittest.TestCase):
     def test_from_to_proto(self):
         o = ScriptEntry(
             key = ScriptEntryKey(

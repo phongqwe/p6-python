@@ -9,7 +9,7 @@ from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import Workbook
 
 
 class P6FileContent_test(unittest.TestCase):
-    def test_toProto(self):
+    def test_from_toProto(self):
         o = P6FileContent(
             meta = P6FileMetaInfo(date=123),
             wb = WorkbookImp("Book1"),

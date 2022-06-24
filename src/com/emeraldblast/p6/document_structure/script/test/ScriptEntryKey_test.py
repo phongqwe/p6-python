@@ -4,7 +4,7 @@ from com.emeraldblast.p6.document_structure.script.ScriptEntryKey import ScriptE
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 
 
-class ScriptEntryKeyTest(unittest.TestCase):
+class ScriptEntryKey_test(unittest.TestCase):
     def test_from_to_proto(self):
         o = ScriptEntryKey(
             name = "qwe",

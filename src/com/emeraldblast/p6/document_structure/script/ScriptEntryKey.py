@@ -5,10 +5,10 @@ from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import Work
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.emeraldblast.p6.proto.ScriptProtos_pb2 import ScriptEntryKeyProto
 
-@dataclass
+@dataclass(frozen = True)
 class ScriptEntryKey(ToProto[ScriptEntryKeyProto]):
     name:str
-    workbookKey:WorkbookKey|None
+    workbookKey:WorkbookKey|None = None
 
     @staticmethod
     def fromProto(proto:ScriptEntryKeyProto)->'ScriptEntryKey':
