@@ -179,8 +179,8 @@ class P6Events:
         def allEvents(clazz):
             return P6Events.allEvents(clazz.__name__)
 
-        class Common:
-            event = P6Event(f"{WBE}0", "Workbook common event")
+        class Update:
+            event = P6Event(f"{WBE}0", "Workbook update event")
 
         class ReRun:
             event = P6Event(f"{WBE}1", "Workbook rerun")
