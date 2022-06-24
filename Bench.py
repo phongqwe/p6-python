@@ -1,4 +1,5 @@
 import unittest
+from dataclasses import dataclass
 from datetime import datetime
 
 import time
@@ -17,45 +18,18 @@ from com.emeraldblast.p6.document_structure.range.RangeImp import RangeImp
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetImp import WorksheetImp
 
 
+@dataclass
 class A:
-    def __init__(self, x:int):
-        self.x = x
+    x: int
+    v: str | None = "Default v"
 
-    def p(self):
-        print(self.x)
 
-class B(A):
-    pass
 
 class Bench(unittest.TestCase):
     def test_z(self):
-        a = "asb"
-        print(a[1:])
+        a = A(123)
+        print(a.v)
 
-        # df = pd.DataFrame(np.random.randn(1000000, 1))
-
-        # df.iloc[:99999] = np.nan
-        # sdf = df.astype(pd.SparseDtype("float", np.nan))
-        # sdf = df
-        # sdf.to_clipboard(index = False, header = None)
-        # print('original: {:0.2f} bytes'.format(sdf.memory_usage().sum() / 1e3))
-        # z = pandas.read_clipboard(skip_blank_lines=False, header=None)
-        # z = pandas.read_csv("z.csv",skip_blank_lines=False, header=None)
-        # print('readback: {:0.2f} bytes'.format(z.memory_usage().sum() / 1e3))
-        # print(z.shape)
-        # print(z)
-        # pyperclip.copy("ABC")
-
-        q = True
-        print(True)
-
-
-
-
-
-
-
-
-
-
-
+        l1 = [1,2,3]
+        l2 = [1,2,3]
+        print(l1 == l2)

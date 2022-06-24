@@ -3,6 +3,9 @@ from abc import ABC
 from pathlib import Path
 from typing import Optional, Union
 
+from com.emeraldblast.p6.document_structure.util import Util
+
+
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from com.emeraldblast.p6.document_structure.util.CanCheckEmpty import CanCheckEmpty
 from com.emeraldblast.p6.document_structure.util.ToJson import ToJson
@@ -17,6 +20,20 @@ from com.emeraldblast.p6.proto.DocProtos_pb2 import WorkbookProto
 
 
 class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
+
+
+    def isSimilar(self, o: object) -> bool:
+        if isinstance(o,Workbook):
+            c1 = self.workbookKey == o.workbookKey,
+            c2 = len(self.worksheets) == len(o.worksheets)
+            c3 = True
+            for i in range(len(self.worksheets)):
+                if not self.worksheets[i].compareWith(o.worksheets[i]):
+                    c3 = False
+                    break
+            return c1 and c2 and c3
+        else:
+            return False
 
     def makeSavableCopy(self)->'Workbook':
         """create a copy instance that is fit for being saved to files"""

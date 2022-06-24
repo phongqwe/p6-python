@@ -1,10 +1,13 @@
+from dataclasses import dataclass
+
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 from com.emeraldblast.p6.proto.P6FileProtos_pb2 import P6FileMetaInfoProto
 
-
+@dataclass
 class P6FileMetaInfo(ToProto[P6FileMetaInfoProto]):
-    def __init__(self, date:float):
-        self.date = date
+    date:float
+    # def __init__(self, date:float):
+    #     self.date = date
 
     def toProtoObj(self)->P6FileMetaInfoProto:
         proto = P6FileMetaInfoProto()
