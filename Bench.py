@@ -27,9 +27,7 @@ class A:
 
 class Bench(unittest.TestCase):
     def test_z(self):
-        a = A(123)
-        print(a.v)
+        d = {
+            1:"1v"
+        }
 
-        l1 = [1,2,3]
-        l2 = [1,2,3]
-        print(l1 == l2)

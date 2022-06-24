@@ -47,7 +47,19 @@ class ScriptContainerImp(ScriptContainer):
         return list(rt.values())
 
     def removeScript(self, scriptKey: ScriptEntryKey) -> 'ScriptContainer':
-        raise NotImplementedError()
+        if scriptKey.workbookKey is None:
+            if scriptKey in self.appScriptMap:
+                self.appScriptMap.pop(scriptKey)
+        else:
+            subMap = self.wbScriptMap.get(scriptKey.workbookKey)
+            if subMap:
+                if scriptKey.name in subMap:
+                    subMap.pop(scriptKey.name)
+                if len(subMap)==0:
+                    self.wbScriptMap.pop(scriptKey.workbookKey)
+        return self
 
     def removeScriptOfWb(self, wbKey: WorkbookKey) -> 'ScriptContainer':
-        raise NotImplementedError()
+        if wbKey in self.wbScriptMap:
+            self.wbScriptMap.pop(wbKey)
+        return self
