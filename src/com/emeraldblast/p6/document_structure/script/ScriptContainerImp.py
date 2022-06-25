@@ -1,9 +1,17 @@
 from com.emeraldblast.p6.document_structure.script.ScriptContainer import ScriptContainer
 from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntry
 from com.emeraldblast.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
+from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 
 
 class ScriptContainerImp(ScriptContainer):
+    def replaceWorkbookKey(self, wbKey: WorkbookKey) -> 'ScriptContainer':
+        sc = self.removeAll()
+        for script in self.allScripts:
+            newScript = script.setWorkbookKey(workbookKey = wbKey)
+            sc=sc.addScript(newScript)
+        return sc
+
     def addAllScripts(self, scripts: list[ScriptEntry]) -> ScriptContainer:
         s = self
         for script in scripts:

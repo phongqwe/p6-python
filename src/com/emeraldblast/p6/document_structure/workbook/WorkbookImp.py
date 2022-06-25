@@ -109,10 +109,8 @@ class WorkbookImp(Workbook):
         # translators depend on workbook key,
         # therefore, when workbook key is changed, all the old translators must be removed
         self._translatorDict = {}
-        allScripts:list[ScriptEntry] = self._scriptCont.allScripts
-        self._scriptCont = self._scriptCont.removeAll()
-        newScripts:list[ScriptEntry] = list(map(lambda s:s.setWorkbookKey(newKey), allScripts))
-        self._scriptCont = self._scriptCont.addAllScripts(newScripts)
+        # update workbook key of all scripts
+        self._scriptCont = self._scriptCont.replaceWorkbookKey(newKey)
 
     def setActiveWorksheetRs(self, indexOrName: Union[int, str]) -> Result[Worksheet, ErrorReport]:
         getRs = self.getWorksheetRs(indexOrName)
