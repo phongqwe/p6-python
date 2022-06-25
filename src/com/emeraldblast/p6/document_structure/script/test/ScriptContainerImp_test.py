@@ -47,10 +47,6 @@ class ScriptContainerImp_test(unittest.TestCase):
 
         self.assertIsNone(self.cont.getScript(self.entries[2].key))
 
-    def test_getScriptsOfWb(self):
-        self.assertEqual(self.wb1Entries, self.cont.getScriptsOfWb(self.wbk1))
-        self.assertEqual(self.wb2Entries, self.cont.getScriptsOfWb(self.wbk2))
-        self.assertEqual([], self.cont.getScriptsOfWb(WorkbookKeys.fromNameAndPath("zxc")))
     def test_removeScript(self):
         self.assertIsNotNone(self.cont.getScript(self.entries[0].key))
         self.cont.removeScript(self.entries[0].key)
@@ -59,12 +55,10 @@ class ScriptContainerImp_test(unittest.TestCase):
         self.assertIsNotNone(self.cont.getScript(self.wb1Entries[0].key))
         self.cont.removeScript(self.wb1Entries[0].key)
         self.assertIsNone(self.cont.getScript(self.wb1Entries[0].key))
-    def test_removeScriptOfWb(self):
-        self.assertTrue(len(self.cont.getScriptsOfWb(self.wbk1))!=0)
-        self.cont.removeScriptOfWb(self.wbk1)
-        self.assertTrue(len(self.cont.getScriptsOfWb(self.wbk1)) == 0)
 
-
+    def test_allScript(self):
+        l = [self.entries[0], *self.wb1Entries, *self.wb2Entries]
+        self.assertEqual(l, self.cont.allScripts)
 
 
 if __name__ == '__main__':

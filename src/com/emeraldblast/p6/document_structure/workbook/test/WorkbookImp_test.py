@@ -1,8 +1,12 @@
 import unittest
 from pathlib import Path
+from unittest.mock import MagicMock
 
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.communication.event.P6Event import P6Event
+from com.emeraldblast.p6.document_structure.script.ScriptContainerImp import ScriptContainerImp
+from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntry
+from com.emeraldblast.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
@@ -17,7 +21,7 @@ class WorkbookImp_test(unittest.TestCase):
         self.assertEqual(WorkbookKeys.fromNameAndPath("",None),cp.workbookKey)
         self.assertEqual(w1.sheetCount, cp.sheetCount)
         for i in range(0,w1.sheetCount):
-            self.assertEquals(w1.getWorksheet(i),cp.getWorksheet(i))
+            self.assertEqual(w1.getWorksheet(i),cp.getWorksheet(i))
 
     def test_toProtoObj(self):
         s1, s2, s3, w1 = self.makeTestObj()
@@ -168,7 +172,7 @@ class WorkbookImp_test(unittest.TestCase):
         self.assertEqual(expect, w1.toJsonStr())
         print(w1.toJsonStr())
 
-    def test_translator_when_change_key(self):
+    def test_translator_when_change_workbookKey(self):
         # when a workbook change its path, translators of its children obj (sheets, cells) must be regenerated.
         w1 = WorkbookImp("w1", path = Path("p1"))
         s1 = w1.createNewWorksheet("s1")
@@ -189,3 +193,41 @@ class WorkbookImp_test(unittest.TestCase):
         self.assertEqual(
             outputTemplate.format(bookName = "newBook", bookPath = "newPath", sheetName = "s1"),
             c1.script)
+    def test_scriptContainer_when_change_workbookKey(self):
+        w1 = WorkbookImp("w1", path = Path("p1"))
+        wb1Entries = list(map(
+            lambda e: ScriptEntry(
+                key = ScriptEntryKey(e, workbookKey = w1.workbookKey),
+                script = f"{e} script"
+            ),
+            ["wbe1", "wbe2", "wbe3"]
+        ))
+        w1.scriptContainer.addAllScripts(wb1Entries)
+        newWbKey = WorkbookKeys.fromNameAndPath("newWbKey")
+        w1.workbookKey =newWbKey
+        for script in w1.scriptContainer.allScripts:
+            self.assertEqual(newWbKey, script.key.workbookKey)
+
+    def test_scriptCont_delegation(self):
+        scriptCont = MagicMock()
+        scriptCont.getScript = MagicMock()
+        
+        w1 = WorkbookImp("w1", path = Path("p1"), scriptContainer = scriptCont)
+        w1.getScript(MagicMock())
+        scriptCont.getScript.assert_called_once()
+        
+        scriptCont.removeScript=MagicMock(return_value=scriptCont)
+        w1.removeScript(MagicMock())
+        scriptCont.removeScript.assert_called_once()
+
+        scriptCont.removeAll = MagicMock(return_value=scriptCont)
+        w1.removeAllScript()
+        scriptCont.removeAll.assert_called_once()
+
+        scriptCont.addScript = MagicMock(return_value=scriptCont)
+        w1.addScript(MagicMock())
+        scriptCont.addScript.assert_called_once()
+
+        scriptCont.addAllScripts = MagicMock(return_value = scriptCont)
+        w1.addAllScripts(MagicMock())
+        scriptCont.addAllScripts.assert_called_once()

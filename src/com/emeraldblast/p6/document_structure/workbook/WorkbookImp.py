@@ -3,6 +3,10 @@ from typing import Union, Optional, Tuple
 
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslators import FormulaTranslators
+from com.emeraldblast.p6.document_structure.script.ScriptContainer import ScriptContainer
+from com.emeraldblast.p6.document_structure.script.ScriptContainerImp import ScriptContainerImp
+from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntry
+from com.emeraldblast.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
 from com.emeraldblast.p6.document_structure.util.CommonError import CommonErrors
 from com.emeraldblast.p6.document_structure.util.Util import typeCheck
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
@@ -22,7 +26,12 @@ class WorkbookImp(Workbook):
 
     def __init__(self, name: str,
                  path: Path = None,
-                 sheetList: list[Worksheet] = None):
+                 sheetList: list[Worksheet] = None,
+                 scriptContainer:ScriptContainer|None = None):
+        if scriptContainer is None:
+            scriptContainer = ScriptContainerImp()
+        self._scriptCont = scriptContainer
+
         self.__key = WorkbookKeyImp(name, path)
         if sheetList is None:
             sheetList = []
@@ -41,6 +50,30 @@ class WorkbookImp(Workbook):
         self._translatorDict: dict[Tuple[str, WorkbookKey], FormulaTranslator] = {}
 
     ### >> Workbook << ###
+
+    def addScript(self, scriptEntry: ScriptEntry):
+        self._scriptCont = self._scriptCont.addScript(scriptEntry)
+
+    def getScript(self, key: ScriptEntryKey) -> ScriptEntry | None:
+        return self._scriptCont.getScript(key)
+
+    def removeScript(self, scriptKey: ScriptEntryKey):
+        self._scriptCont = self._scriptCont.removeScript(scriptKey)
+
+    def removeAllScript(self):
+        self._scriptCont = self._scriptCont.removeAll()
+
+    def addAllScripts(self, scripts: list[ScriptEntry]):
+        self._scriptCont = self._scriptCont.addAllScripts(scripts)
+
+    @property
+    def allScripts(self) -> list[ScriptEntry]:
+        return self._scriptCont.allScripts
+
+    @property
+    def scriptContainer(self) -> ScriptContainer:
+        return self._scriptCont
+
 
     def makeSavableCopy(self) -> 'Workbook':
         """a copy without workbook key"""
@@ -76,6 +109,10 @@ class WorkbookImp(Workbook):
         # translators depend on workbook key,
         # therefore, when workbook key is changed, all the old translators must be removed
         self._translatorDict = {}
+        allScripts:list[ScriptEntry] = self._scriptCont.allScripts
+        self._scriptCont = self._scriptCont.removeAll()
+        newScripts:list[ScriptEntry] = list(map(lambda s:s.setWorkbookKey(newKey), allScripts))
+        self._scriptCont = self._scriptCont.addAllScripts(newScripts)
 
     def setActiveWorksheetRs(self, indexOrName: Union[int, str]) -> Result[Worksheet, ErrorReport]:
         getRs = self.getWorksheetRs(indexOrName)

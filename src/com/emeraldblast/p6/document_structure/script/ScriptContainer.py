@@ -6,19 +6,21 @@ from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import Work
 
 
 class ScriptContainer(ABC):
-    def addScript(self,scriptEntry:ScriptEntry)->'ScriptContainer':
+    def addScript(self, scriptEntry: ScriptEntry) -> 'ScriptContainer':
         raise NotImplementedError()
 
-    def getScript(self,key:ScriptEntryKey)->ScriptEntry|None:
+    def getScript(self, key: ScriptEntryKey) -> ScriptEntry | None:
         raise NotImplementedError()
 
-    def getScriptsOfWb(self,wbKey:WorkbookKey)->list[ScriptEntry]:
+    def removeScript(self, scriptKey: ScriptEntryKey) -> 'ScriptContainer':
         raise NotImplementedError()
 
-    def removeScript(self,scriptKey:ScriptEntryKey)->'ScriptContainer':
+    def removeAll(self) -> 'ScriptContainer':
         raise NotImplementedError()
 
-    def removeScriptOfWb(self,wbKey:WorkbookKey)->'ScriptContainer':
+    def addAllScripts(self,scripts:list[ScriptEntry])->'ScriptContainer':
         raise NotImplementedError()
 
-
+    @property
+    def allScripts(self) -> list[ScriptEntry]:
+        raise NotImplementedError()

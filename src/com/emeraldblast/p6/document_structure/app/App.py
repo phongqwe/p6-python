@@ -10,6 +10,9 @@ from com.emeraldblast.p6.document_structure.communication.reactor import EventRe
 from com.emeraldblast.p6.document_structure.file.loader.P6FileLoader import P6FileLoader
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
 from com.emeraldblast.p6.document_structure.range.Range import Range
+from com.emeraldblast.p6.document_structure.script.ScriptContainer import ScriptContainer
+from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntry
+from com.emeraldblast.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
 from com.emeraldblast.p6.document_structure.workbook.EventWorkbook import EventWorkbook
@@ -22,6 +25,30 @@ class App(ABC):
     """
     this class represents the state of the app.
     """
+
+    def addScript(self, scriptEntry: ScriptEntry):
+        raise NotImplementedError()
+
+    def getScript(self, key: ScriptEntryKey) -> ScriptEntry | None:
+        raise NotImplementedError()
+
+    def removeScript(self, scriptKey: ScriptEntryKey):
+        raise NotImplementedError()
+
+    def removeAllScript(self):
+        raise NotImplementedError()
+
+    def addAllScripts(self,scripts:list[ScriptEntry]):
+        raise NotImplementedError()
+
+    @property
+    def allScripts(self) -> list[ScriptEntry]:
+        raise NotImplementedError()
+
+
+    @property
+    def scriptContainer(self)->ScriptContainer:
+        raise NotImplementedError()
 
     def getRangeRs(self, rangeId: RangeId) -> Result[Range, ErrorReport]:
         raise NotImplementedError()

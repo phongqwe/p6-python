@@ -24,6 +24,10 @@ from com.emeraldblast.p6.document_structure.file.loader.P6FileLoader import P6Fi
 from com.emeraldblast.p6.document_structure.file.loader.P6FileLoaders import P6FileLoaders
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSavers import P6FileSavers
+from com.emeraldblast.p6.document_structure.script.ScriptContainer import ScriptContainer
+from com.emeraldblast.p6.document_structure.script.ScriptContainerImp import ScriptContainerImp
+from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntry
+from com.emeraldblast.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
 from com.emeraldblast.p6.document_structure.util.Util import makeGetter
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
@@ -46,7 +50,12 @@ class AppImp(BaseApp):
                  saver: Optional[P6FileSaver] = None,
                  socketProvider: SocketProvider | None = None,
                  eventReactorContainer: EventReactorContainer[EventData] | None = None,
+                 scriptContainer:ScriptContainer | None = None
                  ):
+        if scriptContainer is None:
+            scriptContainer = ScriptContainerImp()
+        self._scriptCont = scriptContainer
+
         if workbookContainer is None:
             workbookContainer = WorkbookContainerImp()
 
@@ -84,6 +93,29 @@ class AppImp(BaseApp):
         )
         self.__setupEventServerReactors()
         self.__setupEventEmitter()
+
+    def addScript(self, scriptEntry: ScriptEntry):
+        self._scriptCont = self._scriptCont.addScript(scriptEntry)
+
+    def getScript(self, key: ScriptEntryKey) -> ScriptEntry | None:
+        return self._scriptCont.getScript(key)
+
+    def removeScript(self, scriptKey: ScriptEntryKey):
+        self._scriptCont = self._scriptCont.removeScript(scriptKey)
+
+    def removeAllScript(self):
+        self._scriptCont = self._scriptCont.removeAll()
+
+    def addAllScripts(self, scripts: list[ScriptEntry]):
+        self._scriptCont = self._scriptCont.addAllScripts(scripts)
+
+    @property
+    def allScripts(self) -> list[ScriptEntry]:
+        return self._scriptCont.allScripts
+
+    @property
+    def scriptContainer(self) -> ScriptContainer:
+        return self._scriptCont
 
     @property
     def rootApp(self) -> 'App':

@@ -28,3 +28,14 @@ class ScriptEntryKey(ToProto[ScriptEntryKeyProto]):
         if self.workbookKey:
             proto.workbookKey.CopyFrom(self.workbookKey.toProtoObj())
         return proto
+
+    def setWorkbookKey(self,workbookKey:WorkbookKey)->'ScriptEntryKey':
+        return ScriptEntryKey(
+            name = self.name,
+            workbookKey = workbookKey
+        )
+    def setName(self, name:str)->'ScriptEntryKey':
+        return ScriptEntryKey(
+            name = name,
+            workbookKey = self.workbookKey
+        )

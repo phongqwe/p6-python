@@ -3,6 +3,9 @@ from abc import ABC
 from pathlib import Path
 from typing import Optional, Union
 
+from com.emeraldblast.p6.document_structure.script.ScriptContainer import ScriptContainer
+from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntry
+from com.emeraldblast.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
 from com.emeraldblast.p6.document_structure.util import Util
 
 
@@ -21,6 +24,28 @@ from com.emeraldblast.p6.proto.DocProtos_pb2 import WorkbookProto
 
 class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
 
+    def addScript(self, scriptEntry: ScriptEntry):
+        raise NotImplementedError()
+
+    def getScript(self, key: ScriptEntryKey) -> ScriptEntry | None:
+        raise NotImplementedError()
+
+    def removeScript(self, scriptKey: ScriptEntryKey):
+        raise NotImplementedError()
+
+    def removeAllScript(self):
+        raise NotImplementedError()
+
+    def addAllScripts(self,scripts:list[ScriptEntry]):
+        raise NotImplementedError()
+
+    @property
+    def allScripts(self) -> list[ScriptEntry]:
+        raise NotImplementedError()
+
+    @property
+    def scriptContainer(self)->ScriptContainer:
+        raise NotImplementedError()
 
     def isSimilar(self, o: object) -> bool:
         if isinstance(o,Workbook):

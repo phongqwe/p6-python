@@ -2,6 +2,9 @@ from pathlib import Path
 from typing import Union, Optional
 
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
+from com.emeraldblast.p6.document_structure.script.ScriptContainer import ScriptContainer
+from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntry
+from com.emeraldblast.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
@@ -10,6 +13,30 @@ from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
 
 class WorkbookWrapper(Workbook):
+
+    @property
+    def allScripts(self) -> list[ScriptEntry]:
+        return self.rootWorkbook.allScripts
+
+    def addScript(self, scriptEntry: ScriptEntry):
+        return self.rootWorkbook.addScript(scriptEntry)
+
+    def getScript(self, key: ScriptEntryKey) -> ScriptEntry | None:
+        return self.rootWorkbook.getScript(key)
+
+    def removeScript(self, scriptKey: ScriptEntryKey):
+        return self.rootWorkbook.removeScript(scriptKey)
+
+    def removeAllScript(self):
+        return self.rootWorkbook.removeAllScript()
+
+    def addAllScripts(self, scripts: list[ScriptEntry]):
+        return self.rootWorkbook.addAllScripts(scripts)
+
+    @property
+    def scriptContainer(self) -> ScriptContainer:
+        return self.rootWorkbook.scriptContainer
+
     def makeSavableCopy(self) -> 'Workbook':
         return self.rootWorkbook.makeSavableCopy()
 
@@ -18,12 +45,12 @@ class WorkbookWrapper(Workbook):
         return self._innerWorkbook.rootWorkbook
 
     def updateSheetName(self, oldName: str, ws: Worksheet):
-        self.rootWorkbook.updateSheetName(oldName,ws)
+        self.rootWorkbook.updateSheetName(oldName, ws)
 
     def addWorksheetRs(self, ws: Worksheet) -> Result[None, ErrorReport]:
         return self.rootWorkbook.addWorksheetRs(ws)
 
-    def __init__(self,innerWorkbook:Workbook):
+    def __init__(self, innerWorkbook: Workbook):
         self._innerWorkbook = innerWorkbook
 
     def getTranslator(self, sheetName: str) -> FormulaTranslator:
@@ -42,7 +69,7 @@ class WorkbookWrapper(Workbook):
         return self.rootWorkbook.workbookKey
 
     @workbookKey.setter
-    def workbookKey(self,newKey:WorkbookKey):
+    def workbookKey(self, newKey: WorkbookKey):
         self.rootWorkbook.workbookKey = newKey
 
     @property
@@ -58,7 +85,7 @@ class WorkbookWrapper(Workbook):
         return self.rootWorkbook.name
 
     @name.setter
-    def name(self,newName):
+    def name(self, newName):
         self.rootWorkbook.name = newName
 
     def createNewWorksheetRs(self, newSheetName: Optional[str] = None) -> Result[Worksheet, ErrorReport]:
@@ -84,13 +111,12 @@ class WorkbookWrapper(Workbook):
         return self._innerWorkbook
 
     def __eq__(self, o: object) -> bool:
-        if isinstance(o,WorkbookWrapper):
+        if isinstance(o, WorkbookWrapper):
             return self._innerWorkbook == o._innerWorkbook
-        elif isinstance(o,Workbook):
+        elif isinstance(o, Workbook):
             return self._innerWorkbook == o
         else:
             return False
-
 
     def getWorksheetByNameRs(self, name: str) -> Result[Worksheet, ErrorReport]:
         return self.rootWorkbook.getWorksheetByNameRs(name)
@@ -100,5 +126,3 @@ class WorkbookWrapper(Workbook):
 
     def getWorksheetRs(self, nameOrIndex: Union[str, int]) -> Result[Worksheet, ErrorReport]:
         return self.rootWorkbook.getWorksheetRs(nameOrIndex)
-
-
