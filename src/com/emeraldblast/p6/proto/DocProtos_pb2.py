@@ -15,7 +15,7 @@ _sym_db = _symbol_database.Default()
 from com.emeraldblast.p6.proto import CommonProtos_pb2 as com_dot_emeraldblast_dot_p6_dot_proto_dot_CommonProtos__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n)com/emeraldblast/p6/proto/DocProtos.proto\x12\x19\x63om.emeraldblast.p6.proto\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\"\x90\x01\n\x11RangeAddressProto\x12<\n\x07topLeft\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\x12=\n\x08\x62otRight\x18\x02 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\"\xab\x01\n\x0cRangeIdProto\x12\x42\n\x0crangeAddress\x18\x01 \x01(\x0b\x32,.com.emeraldblast.p6.proto.RangeAddressProto\x12@\n\x0bworkbookKey\x18\x02 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x03 \x01(\t\"d\n\tWsWbProto\x12@\n\x0bworkbookKey\x18\x02 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x03 \x01(\t\",\n\x10\x43\x65llAddressProto\x12\x0b\n\x03\x63ol\x18\x01 \x01(\x05\x12\x0b\n\x03row\x18\x02 \x01(\x05\"\xf8\x01\n\tCellProto\x12\x12\n\x05value\x18\x01 \x01(\tH\x00\x88\x01\x01\x12\x14\n\x07\x66ormula\x18\x02 \x01(\tH\x01\x88\x01\x01\x12<\n\x07\x61\x64\x64ress\x18\x03 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\x12\x11\n\tisFormula\x18\x04 \x01(\x08\x12\x11\n\tisBoolLit\x18\x05 \x01(\x08\x12\x10\n\x08isStrLit\x18\x06 \x01(\x08\x12\x10\n\x08isIntLit\x18\x07 \x01(\x08\x12\x12\n\nisFloatLit\x18\x08 \x01(\x08\x12\x0f\n\x07isError\x18\t \x01(\x08\x42\x08\n\x06_valueB\n\n\x08_formula\"R\n\x0eWorksheetProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x32\n\x04\x63\x65ll\x18\x02 \x03(\x0b\x32$.com.emeraldblast.p6.proto.CellProto\"<\n\x10WorkbookKeyProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\x04path\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\x07\n\x05_path\"\x8f\x01\n\rWorkbookProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12<\n\tworksheet\x18\x02 \x03(\x0b\x32).com.emeraldblast.p6.proto.WorksheetProtob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n)com/emeraldblast/p6/proto/DocProtos.proto\x12\x19\x63om.emeraldblast.p6.proto\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\"\x90\x01\n\x11RangeAddressProto\x12<\n\x07topLeft\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\x12=\n\x08\x62otRight\x18\x02 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\"\xab\x01\n\x0cRangeIdProto\x12\x42\n\x0crangeAddress\x18\x01 \x01(\x0b\x32,.com.emeraldblast.p6.proto.RangeAddressProto\x12@\n\x0bworkbookKey\x18\x02 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x03 \x01(\t\"d\n\tWsWbProto\x12@\n\x0bworkbookKey\x18\x02 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x03 \x01(\t\",\n\x10\x43\x65llAddressProto\x12\x0b\n\x03\x63ol\x18\x01 \x01(\x05\x12\x0b\n\x03row\x18\x02 \x01(\x05\"\xf8\x01\n\tCellProto\x12\x12\n\x05value\x18\x01 \x01(\tH\x00\x88\x01\x01\x12\x14\n\x07\x66ormula\x18\x02 \x01(\tH\x01\x88\x01\x01\x12<\n\x07\x61\x64\x64ress\x18\x03 \x01(\x0b\x32+.com.emeraldblast.p6.proto.CellAddressProto\x12\x11\n\tisFormula\x18\x04 \x01(\x08\x12\x11\n\tisBoolLit\x18\x05 \x01(\x08\x12\x10\n\x08isStrLit\x18\x06 \x01(\x08\x12\x10\n\x08isIntLit\x18\x07 \x01(\x08\x12\x12\n\nisFloatLit\x18\x08 \x01(\x08\x12\x0f\n\x07isError\x18\t \x01(\x08\x42\x08\n\x06_valueB\n\n\x08_formula\"R\n\x0eWorksheetProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x32\n\x04\x63\x65ll\x18\x02 \x03(\x0b\x32$.com.emeraldblast.p6.proto.CellProto\"<\n\x10WorkbookKeyProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\x04path\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\x07\n\x05_path\"6\n\x16SimpleScriptEntryProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06script\x18\x02 \x01(\t\"\xd3\x01\n\rWorkbookProto\x12@\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12<\n\tworksheet\x18\x02 \x03(\x0b\x32).com.emeraldblast.p6.proto.WorksheetProto\x12\x42\n\x07scripts\x18\x03 \x03(\x0b\x32\x31.com.emeraldblast.p6.proto.SimpleScriptEntryProtob\x06proto3')
 
 
 
@@ -26,6 +26,7 @@ _CELLADDRESSPROTO = DESCRIPTOR.message_types_by_name['CellAddressProto']
 _CELLPROTO = DESCRIPTOR.message_types_by_name['CellProto']
 _WORKSHEETPROTO = DESCRIPTOR.message_types_by_name['WorksheetProto']
 _WORKBOOKKEYPROTO = DESCRIPTOR.message_types_by_name['WorkbookKeyProto']
+_SIMPLESCRIPTENTRYPROTO = DESCRIPTOR.message_types_by_name['SimpleScriptEntryProto']
 _WORKBOOKPROTO = DESCRIPTOR.message_types_by_name['WorkbookProto']
 RangeAddressProto = _reflection.GeneratedProtocolMessageType('RangeAddressProto', (_message.Message,), {
   'DESCRIPTOR' : _RANGEADDRESSPROTO,
@@ -76,6 +77,13 @@ WorkbookKeyProto = _reflection.GeneratedProtocolMessageType('WorkbookKeyProto', 
   })
 _sym_db.RegisterMessage(WorkbookKeyProto)
 
+SimpleScriptEntryProto = _reflection.GeneratedProtocolMessageType('SimpleScriptEntryProto', (_message.Message,), {
+  'DESCRIPTOR' : _SIMPLESCRIPTENTRYPROTO,
+  '__module__' : 'com.emeraldblast.p6.proto.DocProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.emeraldblast.p6.proto.SimpleScriptEntryProto)
+  })
+_sym_db.RegisterMessage(SimpleScriptEntryProto)
+
 WorkbookProto = _reflection.GeneratedProtocolMessageType('WorkbookProto', (_message.Message,), {
   'DESCRIPTOR' : _WORKBOOKPROTO,
   '__module__' : 'com.emeraldblast.p6.proto.DocProtos_pb2'
@@ -100,6 +108,8 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _WORKSHEETPROTO._serialized_end=920
   _WORKBOOKKEYPROTO._serialized_start=922
   _WORKBOOKKEYPROTO._serialized_end=982
-  _WORKBOOKPROTO._serialized_start=985
-  _WORKBOOKPROTO._serialized_end=1128
+  _SIMPLESCRIPTENTRYPROTO._serialized_start=984
+  _SIMPLESCRIPTENTRYPROTO._serialized_end=1038
+  _WORKBOOKPROTO._serialized_start=1041
+  _WORKBOOKPROTO._serialized_end=1252
 # @@protoc_insertion_point(module_scope)

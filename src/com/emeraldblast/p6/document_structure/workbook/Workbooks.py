@@ -1,6 +1,12 @@
 from pathlib import Path
 from typing import Union
 
+from com.emeraldblast.p6.document_structure.script.ScriptContainerImp import ScriptContainerImp
+
+from com.emeraldblast.p6.document_structure.script.ScriptContainer import ScriptContainer
+
+from com.emeraldblast.p6.document_structure.script.SimpleScriptEntry import SimpleScriptEntry
+
 from com.emeraldblast.p6.document_structure.cell.Cells import Cells
 from com.emeraldblast.p6.document_structure.file.P6Files import P6Files
 from com.emeraldblast.p6.document_structure.workbook import WorkbookJson
@@ -16,9 +22,15 @@ class Workbooks:
     @staticmethod
     def fromProto(proto: WorkbookProto, filePath: Path | None = None) -> Workbook:
         wbName = proto.workbookKey.name
+
+        scriptCont = ScriptContainerImp()
+        for scriptProto in proto.scripts:
+            scriptCont.addScriptEntry(SimpleScriptEntry.fromProto(scriptProto))
+
         wb = WorkbookImp(
             name = wbName,
-            path = filePath
+            path = filePath,
+            scriptContainer = scriptCont
         )
         for wsProto in proto.worksheet:
             ws:Worksheet = Worksheets.fromProto(wsProto,wb)

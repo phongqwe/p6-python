@@ -17,12 +17,11 @@ from com.emeraldblast.p6.proto import DocProtos_pb2 as com_dot_emeraldblast_dot_
 from com.emeraldblast.p6.proto import ScriptProtos_pb2 as com_dot_emeraldblast_dot_p6_dot_proto_dot_ScriptProtos__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n,com/emeraldblast/p6/proto/P6FileProtos.proto\x12\x19\x63om.emeraldblast.p6.proto\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\x1a)com/emeraldblast/p6/proto/DocProtos.proto\x1a,com/emeraldblast/p6/proto/ScriptProtos.proto\"#\n\x13P6FileMetaInfoProto\x12\x0c\n\x04\x64\x61te\x18\x01 \x01(\x02\"1\n\x11ScriptInFileProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06script\x18\x02 \x01(\t\"\xcd\x01\n\x12P6FileContentProto\x12<\n\x04meta\x18\x01 \x01(\x0b\x32..com.emeraldblast.p6.proto.P6FileMetaInfoProto\x12:\n\x08workbook\x18\x02 \x01(\x0b\x32(.com.emeraldblast.p6.proto.WorkbookProto\x12=\n\x07scripts\x18\x03 \x03(\x0b\x32,.com.emeraldblast.p6.proto.ScriptInFileProto\"/\n\x0bP6FileProto\x12\x0f\n\x07version\x18\x01 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x02 \x01(\x0c\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n,com/emeraldblast/p6/proto/P6FileProtos.proto\x12\x19\x63om.emeraldblast.p6.proto\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\x1a)com/emeraldblast/p6/proto/DocProtos.proto\x1a,com/emeraldblast/p6/proto/ScriptProtos.proto\"#\n\x13P6FileMetaInfoProto\x12\x0c\n\x04\x64\x61te\x18\x01 \x01(\x02\"\x8e\x01\n\x12P6FileContentProto\x12<\n\x04meta\x18\x01 \x01(\x0b\x32..com.emeraldblast.p6.proto.P6FileMetaInfoProto\x12:\n\x08workbook\x18\x02 \x01(\x0b\x32(.com.emeraldblast.p6.proto.WorkbookProto\"/\n\x0bP6FileProto\x12\x0f\n\x07version\x18\x01 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x02 \x01(\x0c\x62\x06proto3')
 
 
 
 _P6FILEMETAINFOPROTO = DESCRIPTOR.message_types_by_name['P6FileMetaInfoProto']
-_SCRIPTINFILEPROTO = DESCRIPTOR.message_types_by_name['ScriptInFileProto']
 _P6FILECONTENTPROTO = DESCRIPTOR.message_types_by_name['P6FileContentProto']
 _P6FILEPROTO = DESCRIPTOR.message_types_by_name['P6FileProto']
 P6FileMetaInfoProto = _reflection.GeneratedProtocolMessageType('P6FileMetaInfoProto', (_message.Message,), {
@@ -31,13 +30,6 @@ P6FileMetaInfoProto = _reflection.GeneratedProtocolMessageType('P6FileMetaInfoPr
   # @@protoc_insertion_point(class_scope:com.emeraldblast.p6.proto.P6FileMetaInfoProto)
   })
 _sym_db.RegisterMessage(P6FileMetaInfoProto)
-
-ScriptInFileProto = _reflection.GeneratedProtocolMessageType('ScriptInFileProto', (_message.Message,), {
-  'DESCRIPTOR' : _SCRIPTINFILEPROTO,
-  '__module__' : 'com.emeraldblast.p6.proto.P6FileProtos_pb2'
-  # @@protoc_insertion_point(class_scope:com.emeraldblast.p6.proto.ScriptInFileProto)
-  })
-_sym_db.RegisterMessage(ScriptInFileProto)
 
 P6FileContentProto = _reflection.GeneratedProtocolMessageType('P6FileContentProto', (_message.Message,), {
   'DESCRIPTOR' : _P6FILECONTENTPROTO,
@@ -58,10 +50,8 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
   _P6FILEMETAINFOPROTO._serialized_start=210
   _P6FILEMETAINFOPROTO._serialized_end=245
-  _SCRIPTINFILEPROTO._serialized_start=247
-  _SCRIPTINFILEPROTO._serialized_end=296
-  _P6FILECONTENTPROTO._serialized_start=299
-  _P6FILECONTENTPROTO._serialized_end=504
-  _P6FILEPROTO._serialized_start=506
-  _P6FILEPROTO._serialized_end=553
+  _P6FILECONTENTPROTO._serialized_start=248
+  _P6FILECONTENTPROTO._serialized_end=390
+  _P6FILEPROTO._serialized_start=392
+  _P6FILEPROTO._serialized_end=439
 # @@protoc_insertion_point(module_scope)

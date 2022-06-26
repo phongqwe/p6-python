@@ -1,6 +1,8 @@
 import unittest
 from pathlib import Path
 
+from com.emeraldblast.p6.document_structure.script.SimpleScriptEntry import SimpleScriptEntry
+
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.workbook.Workbooks import Workbooks
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
@@ -29,14 +31,25 @@ class Workbooks_test(unittest.TestCase):
             workbookKey = wbKey.toProtoObj(),
             worksheet = [
                 ws1
+            ],
+            scripts = [
+                SimpleScriptEntry("s1", "c1").toProtoObj(),
+                SimpleScriptEntry("s2", "c2").toProtoObj(),
             ]
         )
         wb = Workbooks.fromProto(proto,path)
         self.assertEqual(WorkbookKeys.fromNameAndPath(wbKey.fileName,path),wb.workbookKey)
         self.assertEqual(1, len(wb.worksheets))
+
         ws = wb.getWorksheet(0)
         ws.cell("@B2").formula="""=SCRIPT(1+2+3)"""
         self.assertEqual(6, ws.cell("@B2").value)
+
+        for scriptProto in proto.scripts:
+            name = scriptProto.name
+            script = scriptProto.script
+            self.assertEqual(script,wb.getScript(name))
+
 
 
 

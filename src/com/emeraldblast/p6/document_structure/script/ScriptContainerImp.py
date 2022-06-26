@@ -26,6 +26,10 @@ class ScriptContainerImp(ScriptContainer, WithSize):
         self.scriptMap[name] = script
         return self
 
+    def addScriptEntry(self, entry:SimpleScriptEntry) -> 'ScriptContainer':
+        self.scriptMap[entry.name] = entry.script
+        return self
+
     def getScript(self, name: str) -> str | None:
         return self.scriptMap.get(name)
 

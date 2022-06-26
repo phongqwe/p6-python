@@ -6,13 +6,16 @@ from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntr
 
 class ScriptContainer(ABC):
 
-    def addScript(self, name:str, script:str) -> 'ScriptContainer':
+    def addScriptEntry(self, entry: SimpleScriptEntry) -> 'ScriptContainer':
         raise NotImplementedError()
 
-    def getScript(self, name:str) -> str | None:
+    def addScript(self, name: str, script: str) -> 'ScriptContainer':
         raise NotImplementedError()
 
-    def removeScript(self, name:str) -> 'ScriptContainer':
+    def getScript(self, name: str) -> str | None:
+        raise NotImplementedError()
+
+    def removeScript(self, name: str) -> 'ScriptContainer':
         raise NotImplementedError()
 
     def removeAll(self) -> 'ScriptContainer':
@@ -25,8 +28,8 @@ class ScriptContainer(ABC):
     def allScripts(self) -> list[SimpleScriptEntry]:
         raise NotImplementedError()
 
-    def allAsScriptEntry(self,wbKey) -> list[ScriptEntry]:
+    def allAsScriptEntry(self, wbKey) -> list[ScriptEntry]:
         raise NotImplementedError()
 
-    def renameScript(self,oldName:str, newName:str)-> 'ScriptContainer':
+    def renameScript(self, oldName: str, newName: str) -> 'ScriptContainer':
         raise NotImplementedError()

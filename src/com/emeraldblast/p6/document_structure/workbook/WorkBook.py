@@ -88,6 +88,10 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
         for sheet in self.worksheets:
             sheets.append(sheet.toProtoObj())
         rt.worksheet.extend(sheets)
+        scriptProto = []
+        for script in self.allScripts:
+            scriptProto.extend(script.toProtoObj())
+        rt.scripts.extend(scriptProto)
         return rt
 
     def getTranslator(self, sheetName: str) -> FormulaTranslator:

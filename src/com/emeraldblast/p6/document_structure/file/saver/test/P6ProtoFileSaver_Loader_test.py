@@ -3,6 +3,8 @@ import unittest
 from pathlib import Path
 from unittest.mock import MagicMock
 
+from com.emeraldblast.p6.document_structure.script.SimpleScriptEntry import SimpleScriptEntry
+
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.file.loader.P6ProtoFileLoader import P6ProtoFileLoader
 from com.emeraldblast.p6.document_structure.file.saver.P6ProtoFileSaver import P6ProtoFileSaver
@@ -37,6 +39,10 @@ class P6ProtoFileSaver_test(unittest.TestCase):
             workbookKey = wbKey.toProtoObj(),
             worksheet = [
                 ws1
+            ],
+            scripts = [
+                SimpleScriptEntry("s1","c1").toProtoObj(),
+                SimpleScriptEntry("s2","c2").toProtoObj(),
             ]
         )
 
