@@ -9,6 +9,8 @@ from com.emeraldblast.p6.document_structure.file.loader.P6FileLoader import P6Fi
 from com.emeraldblast.p6.document_structure.file.loader.P6FileLoaderErrors import P6FileLoaderErrors
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
 from com.emeraldblast.p6.document_structure.range.Range import Range
+from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntry
+from com.emeraldblast.p6.document_structure.script.SimpleScriptEntry import SimpleScriptEntry
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
@@ -22,7 +24,28 @@ from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
 
 class BaseApp(App, ABC):
+    @property
+    def allScripts2(self) -> list[SimpleScriptEntry]:
+        return self.scriptContainer2.allScripts
 
+    def addScript2(self, name: str, script: str):
+        self.scriptContainer2.addScript(name, script)
+
+    def getScript2(self, name: str) -> str | None:
+        return self.scriptContainer2.getScript(name)
+
+    def removeScript2(self, name: str):
+        self.scriptContainer2.removeScript(name)
+
+    def removeAllScript2(self):
+        self.scriptContainer2.removeAll()
+
+    def addAllScripts2(self, scripts: list[SimpleScriptEntry]):
+        self.scriptContainer2.addAllScripts(scripts)
+
+    @property
+    def allAsScriptEntry(self) -> list[ScriptEntry]:
+        return self.scriptContainer2.allAsScriptEntry(None)
 
     def getRangeRs(self, rangeId: RangeId) -> Result[Range, ErrorReport]:
         getWbRs = self.getBareWorkbookRs(rangeId.workbookKey)

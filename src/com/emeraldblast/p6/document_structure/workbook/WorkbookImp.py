@@ -3,7 +3,10 @@ from typing import Union, Optional, Tuple
 
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslators import FormulaTranslators
+from com.emeraldblast.p6.document_structure.script import SimpleScriptEntry
 from com.emeraldblast.p6.document_structure.script.ScriptContainer import ScriptContainer
+from com.emeraldblast.p6.document_structure.script.ScriptContainer import ScriptContainer
+from com.emeraldblast.p6.document_structure.script.ScriptContainerImp import ScriptContainerImp
 from com.emeraldblast.p6.document_structure.script.ScriptContainerImp import ScriptContainerImp
 from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntry
 from com.emeraldblast.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
@@ -24,10 +27,40 @@ from com.emeraldblast.p6.document_structure.worksheet.WorksheetImp import Worksh
 
 class WorkbookImp(Workbook):
 
-    def __init__(self, name: str,
-                 path: Path = None,
-                 sheetList: list[Worksheet] = None,
-                 scriptContainer:ScriptContainer|None = None):
+    @property
+    def allAsScriptEntry(self) -> list[ScriptEntry]:
+        return self._scriptCont.allAsScriptEntry(self.workbookKey)
+
+    def addScript2(self, name:str,script:str):
+        self._scriptCont = self._scriptCont.addScript(name, script)
+
+    def getScript(self, name:str) -> str | None:
+        return self._scriptCont.getScript(name)
+
+    def removeScript(self, name:str):
+        self._scriptCont = self._scriptCont.removeScript(name)
+
+
+    def removeAllScript(self):
+        self._scriptCont = self._scriptCont.removeAll()
+
+    def addAllScripts(self, scripts: list[SimpleScriptEntry]):
+        self._scriptCont = self._scriptCont.addAllScripts(scripts)
+
+    @property
+    def allScripts(self) -> list[ScriptEntry]:
+        return self._scriptCont.allScripts
+
+    @property
+    def scriptContainer(self) -> ScriptContainer:
+        return self._scriptCont
+
+    def __init__(
+            self, name: str,
+            path: Path = None,
+            sheetList: list[Worksheet] = None,
+            scriptContainer: ScriptContainer | None = None,
+    ):
         if scriptContainer is None:
             scriptContainer = ScriptContainerImp()
         self._scriptCont = scriptContainer
@@ -51,34 +84,10 @@ class WorkbookImp(Workbook):
 
     ### >> Workbook << ###
 
-    def addScript(self, scriptEntry: ScriptEntry):
-        self._scriptCont = self._scriptCont.addScript(scriptEntry)
-
-    def getScript(self, key: ScriptEntryKey) -> ScriptEntry | None:
-        return self._scriptCont.getScript(key)
-
-    def removeScript(self, scriptKey: ScriptEntryKey):
-        self._scriptCont = self._scriptCont.removeScript(scriptKey)
-
-    def removeAllScript(self):
-        self._scriptCont = self._scriptCont.removeAll()
-
-    def addAllScripts(self, scripts: list[ScriptEntry]):
-        self._scriptCont = self._scriptCont.addAllScripts(scripts)
-
-    @property
-    def allScripts(self) -> list[ScriptEntry]:
-        return self._scriptCont.allScripts
-
-    @property
-    def scriptContainer(self) -> ScriptContainer:
-        return self._scriptCont
-
-
     def makeSavableCopy(self) -> 'Workbook':
         """a copy without workbook key"""
         return WorkbookImp(
-            name="",
+            name = "",
             path = None,
             sheetList = self._sheetList
         )
@@ -109,8 +118,6 @@ class WorkbookImp(Workbook):
         # translators depend on workbook key,
         # therefore, when workbook key is changed, all the old translators must be removed
         self._translatorDict = {}
-        # update workbook key of all scripts
-        self._scriptCont = self._scriptCont.replaceWorkbookKey(newKey)
 
     def setActiveWorksheetRs(self, indexOrName: Union[int, str]) -> Result[Worksheet, ErrorReport]:
         getRs = self.getWorksheetRs(indexOrName)
@@ -150,7 +157,6 @@ class WorkbookImp(Workbook):
             return self.getWorksheetByIndexRs(nameOrIndex)
         else:
             return Err(CommonErrors.WrongTypeReport("nameOrIndex", "str or int"))
-
 
     @property
     def sheetCount(self) -> int:
@@ -226,7 +232,6 @@ class WorkbookImp(Workbook):
         else:
             return Err(WorkbookErrors.WorksheetNotExistReport(index))
 
-
     def addWorksheetRs(self, ws: Worksheet) -> Result[None, ErrorReport]:
         if self.haveSheet(ws.name):
             return Err(WorkbookErrors.WorksheetAlreadyExistReport(ws.name))
@@ -242,12 +247,12 @@ class WorkbookImp(Workbook):
     def toJsonDict(self) -> dict:
         return self.toJson().toJsonDict()
 
-    def updateSheetName(self, oldName:str,ws: Worksheet):
+    def updateSheetName(self, oldName: str, ws: Worksheet):
         if ws in self.worksheets:
             self._sheetDictByName.pop(oldName)
             self._sheetDictByName[ws.name] = ws
 
-            translatorKey = (oldName,self.workbookKey)
+            translatorKey = (oldName, self.workbookKey)
             if translatorKey in self._translatorDict.keys():
                 self._translatorDict.pop(translatorKey)
         else:
@@ -256,5 +261,3 @@ class WorkbookImp(Workbook):
     @property
     def rootWorkbook(self) -> 'Workbook':
         return self
-
-

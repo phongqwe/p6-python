@@ -3,6 +3,8 @@ from abc import ABC
 from pathlib import Path
 from typing import Optional, Union
 
+from com.emeraldblast.p6.document_structure.script import SimpleScriptEntry
+from com.emeraldblast.p6.document_structure.script.ScriptContainer import ScriptContainer
 from com.emeraldblast.p6.document_structure.script.ScriptContainer import ScriptContainer
 from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntry
 from com.emeraldblast.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
@@ -24,23 +26,27 @@ from com.emeraldblast.p6.proto.DocProtos_pb2 import WorkbookProto
 
 class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
 
-    def addScript(self, scriptEntry: ScriptEntry):
+    def addScript(self, name:str, script:str):
         raise NotImplementedError()
 
-    def getScript(self, key: ScriptEntryKey) -> ScriptEntry | None:
+    def getScript(self, name:str) -> str | None:
         raise NotImplementedError()
 
-    def removeScript(self, scriptKey: ScriptEntryKey):
+    def removeScript(self, name:str):
         raise NotImplementedError()
 
     def removeAllScript(self):
         raise NotImplementedError()
 
-    def addAllScripts(self,scripts:list[ScriptEntry]):
+    def addAllScripts(self, scripts:list[SimpleScriptEntry]):
         raise NotImplementedError()
 
     @property
-    def allScripts(self) -> list[ScriptEntry]:
+    def allScripts(self) -> list[SimpleScriptEntry]:
+        raise NotImplementedError()
+
+    @property
+    def allAsScriptEntry(self) -> list[ScriptEntry]:
         raise NotImplementedError()
 
     @property

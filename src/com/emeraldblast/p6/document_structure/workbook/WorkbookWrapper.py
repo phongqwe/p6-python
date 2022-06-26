@@ -2,6 +2,8 @@ from pathlib import Path
 from typing import Union, Optional
 
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
+from com.emeraldblast.p6.document_structure.script import SimpleScriptEntry
+from com.emeraldblast.p6.document_structure.script.ScriptContainer import ScriptContainer
 from com.emeraldblast.p6.document_structure.script.ScriptContainer import ScriptContainer
 from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntry
 from com.emeraldblast.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
@@ -14,24 +16,28 @@ from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
 class WorkbookWrapper(Workbook):
 
-    @property
-    def allScripts(self) -> list[ScriptEntry]:
-        return self.rootWorkbook.allScripts
+    def addScript2(self, name: str, script: str):
+        self.rootWorkbook.addScript2(name, script)
 
-    def addScript(self, scriptEntry: ScriptEntry):
-        return self.rootWorkbook.addScript(scriptEntry)
+    def getScript(self, name: str) -> str | None:
+        return self.rootWorkbook.getScript(name)
 
-    def getScript(self, key: ScriptEntryKey) -> ScriptEntry | None:
-        return self.rootWorkbook.getScript(key)
-
-    def removeScript(self, scriptKey: ScriptEntryKey):
-        return self.rootWorkbook.removeScript(scriptKey)
+    def removeScript(self, name: str):
+        self.rootWorkbook.removeScript(name)
 
     def removeAllScript(self):
-        return self.rootWorkbook.removeAllScript()
+        self.rootWorkbook.removeAllScript()
 
-    def addAllScripts(self, scripts: list[ScriptEntry]):
-        return self.rootWorkbook.addAllScripts(scripts)
+    def addAllScripts(self, scripts: list[SimpleScriptEntry]):
+        self.rootWorkbook.addAllScripts(scripts)
+
+    @property
+    def allScripts(self) -> list[SimpleScriptEntry]:
+        return self.rootWorkbook.allScripts
+
+    @property
+    def allAsScriptEntry(self) -> list[ScriptEntry]:
+        return self.rootWorkbook.allAsScriptEntry
 
     @property
     def scriptContainer(self) -> ScriptContainer:

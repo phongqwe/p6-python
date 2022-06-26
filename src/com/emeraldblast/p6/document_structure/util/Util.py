@@ -48,3 +48,15 @@ def compareList(l1:list,l2:list)->bool:
     l1ContainL2 = all(elem in l1 for elem in l2)
     l2ContainL1 = all(elem in l2 for elem in l1)
     return sameLen and l1ContainL2 and l2ContainL1
+
+def replaceKey(mp:dict, oldKey:Any, newKey:Any)->dict:
+    newMap = {}
+    for (k,v) in mp.items():
+        key = k
+        if k == oldKey:
+            key = newKey
+        newMap[key] = v
+    return newMap
+
+
+

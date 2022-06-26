@@ -8,6 +8,7 @@ from com.emeraldblast.p6.document_structure.communication.event_server.EventServ
 from com.emeraldblast.p6.document_structure.communication.reactor import EventReactorContainer
 from com.emeraldblast.p6.document_structure.file.loader.P6FileLoader import P6FileLoader
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
+from com.emeraldblast.p6.document_structure.script.ScriptContainer import ScriptContainer
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
@@ -19,6 +20,10 @@ class AppWrapper(BaseApp):
     """
     a wrapper for app class
     """
+
+    @property
+    def scriptContainer2(self) -> ScriptContainer:
+        return self.rootApp.scriptContainer2
 
     def __init__(self, innerApp: App):
         self.innerApp = innerApp

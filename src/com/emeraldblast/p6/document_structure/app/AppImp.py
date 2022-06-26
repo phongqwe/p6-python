@@ -25,9 +25,12 @@ from com.emeraldblast.p6.document_structure.file.loader.P6FileLoaders import P6F
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSavers import P6FileSavers
 from com.emeraldblast.p6.document_structure.script.ScriptContainer import ScriptContainer
+from com.emeraldblast.p6.document_structure.script.ScriptContainer import ScriptContainer
+from com.emeraldblast.p6.document_structure.script.ScriptContainerImp import ScriptContainerImp
 from com.emeraldblast.p6.document_structure.script.ScriptContainerImp import ScriptContainerImp
 from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntry
 from com.emeraldblast.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
+from com.emeraldblast.p6.document_structure.script.SimpleScriptEntry import SimpleScriptEntry
 from com.emeraldblast.p6.document_structure.util.Util import makeGetter
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
@@ -44,17 +47,19 @@ class AppImp(BaseApp):
     Standard implementation of App interface
     """
 
-    def __init__(self,
-                 workbookContainer: Optional[WorkbookContainer] = None,
-                 loader: Optional[P6FileLoader] = None,
-                 saver: Optional[P6FileSaver] = None,
-                 socketProvider: SocketProvider | None = None,
-                 eventReactorContainer: EventReactorContainer[EventData] | None = None,
-                 scriptContainer:ScriptContainer | None = None
-                 ):
-        if scriptContainer is None:
-            scriptContainer = ScriptContainerImp()
-        self._scriptCont = scriptContainer
+    def __init__(
+            self,
+            workbookContainer: Optional[WorkbookContainer] = None,
+            loader: Optional[P6FileLoader] = None,
+            saver: Optional[P6FileSaver] = None,
+            socketProvider: SocketProvider | None = None,
+            eventReactorContainer: EventReactorContainer[EventData] | None = None,
+            scriptContainer2: ScriptContainer | None = None,
+    ):
+
+        if scriptContainer2 is None:
+            scriptContainer2 = ScriptContainerImp()
+        self._scriptCont2 = scriptContainer2
 
         if workbookContainer is None:
             workbookContainer = WorkbookContainerImp()
@@ -94,28 +99,32 @@ class AppImp(BaseApp):
         self.__setupEventServerReactors()
         self.__setupEventEmitter()
 
-    def addScript(self, scriptEntry: ScriptEntry):
-        self._scriptCont = self._scriptCont.addScript(scriptEntry)
-
-    def getScript(self, key: ScriptEntryKey) -> ScriptEntry | None:
-        return self._scriptCont.getScript(key)
-
-    def removeScript(self, scriptKey: ScriptEntryKey):
-        self._scriptCont = self._scriptCont.removeScript(scriptKey)
-
-    def removeAllScript(self):
-        self._scriptCont = self._scriptCont.removeAll()
-
-    def addAllScripts(self, scripts: list[ScriptEntry]):
-        self._scriptCont = self._scriptCont.addAllScripts(scripts)
-
     @property
-    def allScripts(self) -> list[ScriptEntry]:
-        return self._scriptCont.allScripts
+    def scriptContainer2(self) -> ScriptContainer:
+        return self._scriptCont2
 
-    @property
-    def scriptContainer(self) -> ScriptContainer:
-        return self._scriptCont
+    # def addScript(self, scriptEntry: ScriptEntry):
+    #     self._scriptCont = self._scriptCont.addScript(scriptEntry)
+    #
+    # def getScript(self, key: ScriptEntryKey) -> ScriptEntry | None:
+    #     return self._scriptCont.getScript(key)
+    #
+    # def removeScript(self, scriptKey: ScriptEntryKey):
+    #     self._scriptCont = self._scriptCont.removeScript(scriptKey)
+    #
+    # def removeAllScript(self):
+    #     self._scriptCont = self._scriptCont.removeAll()
+    #
+    # def addAllScripts(self, scripts: list[ScriptEntry]):
+    #     self._scriptCont = self._scriptCont.addAllScripts(scripts)
+    #
+    # @property
+    # def allScripts(self) -> list[ScriptEntry]:
+    #     return self._scriptCont.allScripts
+    #
+    # @property
+    # def scriptContainer(self) -> ScriptContainer:
+    #     return self._scriptCont
 
     @property
     def rootApp(self) -> 'App':
@@ -171,8 +180,6 @@ class AppImp(BaseApp):
         for reactor in allReactors:
             addReactor(reactor)
 
-
-
     def __initNotifiers(self):
         """create internal reactors that will react to events from the app, workbooks, worksheets, cells, etc """
         container = self.__notifierContainer
@@ -189,47 +196,38 @@ class AppImp(BaseApp):
         for event in P6Events.Range.allEvents():
             container.addReactor(event, provider.appNotifier())
 
-
     def __setupEventEmitter(self):
         # self.__wbSaver=EventP6FileSaver.create(self.__wbSaver, self.__notifierContainer)
         # self.__wbLoader = EventP6FileLoader.create(self.__wbLoader, self.__notifierContainer)
         pass
 
-
     @property
     def eventNotifierContainer(self) -> EventReactorContainer:
         return self.__notifierContainer
-
 
     ### >> App << ###
 
     def _getSocketProvider(self) -> SocketProvider | None:
         return self.__socketProvider
 
-
     @property
     def socketProvider(self) -> SocketProvider | None:
         return self.__socketProvider
-
 
     @socketProvider.setter
     def socketProvider(self, socketProvider):
         self.__socketProvider = socketProvider
 
-
     @property
     def fileSaver(self) -> P6FileSaver:
         return self.__wbSaver
-
 
     @property
     def fileLoader(self) -> P6FileLoader:
         return self.__wbLoader
 
-
     def hasNoWorkbook(self) -> bool:
         return self.wbContainer.isEmpty()
-
 
     @property
     def activeWorkbook(self) -> Optional[Workbook]:
@@ -242,7 +240,6 @@ class AppImp(BaseApp):
         rt = self._makeEventWb(self.__activeWorkbook)
         return rt
 
-
     def setActiveWorkbookRs(self, indexOrNameOrKey: Union[int, str, WorkbookKey]) -> Result[Workbook, ErrorReport]:
         wb = self.getWorkbookOrNone(indexOrNameOrKey)
         if wb is not None:
@@ -251,11 +248,9 @@ class AppImp(BaseApp):
         else:
             return Err(AppErrors.WorkbookNotExist.report(indexOrNameOrKey))
 
-
     @property
     def wbContainer(self) -> WorkbookContainer:
         return self.__wbCont
-
 
     @property
     def activeSheet(self) -> Optional[Worksheet]:
@@ -263,7 +258,6 @@ class AppImp(BaseApp):
             return self.activeWorkbook.activeWorksheet
         else:
             return None
-
 
     def createNewWorkbookRs(self, name: Optional[str] = None) -> Result[Workbook, ErrorReport]:
         if name is None:

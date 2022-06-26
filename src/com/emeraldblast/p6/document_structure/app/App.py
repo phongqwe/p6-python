@@ -11,8 +11,10 @@ from com.emeraldblast.p6.document_structure.file.loader.P6FileLoader import P6Fi
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
 from com.emeraldblast.p6.document_structure.range.Range import Range
 from com.emeraldblast.p6.document_structure.script.ScriptContainer import ScriptContainer
+from com.emeraldblast.p6.document_structure.script.ScriptContainer import ScriptContainer
 from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntry
 from com.emeraldblast.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
+from com.emeraldblast.p6.document_structure.script.SimpleScriptEntry import SimpleScriptEntry
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
 from com.emeraldblast.p6.document_structure.workbook.EventWorkbook import EventWorkbook
@@ -25,29 +27,56 @@ class App(ABC):
     """
     this class represents the state of the app.
     """
+    #
+    # def addScript(self, scriptEntry: ScriptEntry):
+    #     raise NotImplementedError()
+    #
+    # def getScript(self, key: ScriptEntryKey) -> ScriptEntry | None:
+    #     raise NotImplementedError()
+    #
+    # def removeScript(self, scriptKey: ScriptEntryKey):
+    #     raise NotImplementedError()
+    #
+    # def removeAllScript(self):
+    #     raise NotImplementedError()
+    #
+    # def addAllScripts(self,scripts:list[ScriptEntry]):
+    #     raise NotImplementedError()
+    #
+    # @property
+    # def allScripts(self) -> list[ScriptEntry]:
+    #     raise NotImplementedError()
+    #
+    #
+    # @property
+    # def scriptContainer(self)->ScriptContainer:
+    #     raise NotImplementedError()
 
-    def addScript(self, scriptEntry: ScriptEntry):
+    def addScript2(self, name:str,script:str):
         raise NotImplementedError()
 
-    def getScript(self, key: ScriptEntryKey) -> ScriptEntry | None:
+    def getScript2(self, name:str) -> str | None:
         raise NotImplementedError()
 
-    def removeScript(self, scriptKey: ScriptEntryKey):
+    def removeScript2(self, name:str):
         raise NotImplementedError()
 
-    def removeAllScript(self):
+    def removeAllScript2(self):
         raise NotImplementedError()
 
-    def addAllScripts(self,scripts:list[ScriptEntry]):
+    def addAllScripts2(self, scripts:list[SimpleScriptEntry]):
         raise NotImplementedError()
 
     @property
-    def allScripts(self) -> list[ScriptEntry]:
+    def allScripts2(self)->list[SimpleScriptEntry]:
         raise NotImplementedError()
 
+    @property
+    def allAsScriptEntry(self) -> list[ScriptEntry]:
+        raise NotImplementedError()
 
     @property
-    def scriptContainer(self)->ScriptContainer:
+    def scriptContainer2(self) -> ScriptContainer:
         raise NotImplementedError()
 
     def getRangeRs(self, rangeId: RangeId) -> Result[Range, ErrorReport]:
