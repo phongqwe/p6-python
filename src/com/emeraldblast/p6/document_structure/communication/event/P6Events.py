@@ -4,6 +4,10 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.r
     PasteRangeRequest
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.paste_range.PasteRangeResponse import \
     PasteRangeResponse
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.script_event.new_script.NewScriptRequest import \
+    NewScriptRequest
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.script_event.new_script.NewScriptResponse import \
+    NewScriptResponse
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.app_event.CloseWorkbookReactor import \
     CloseWorkbookReactor
 
@@ -73,6 +77,8 @@ from com.emeraldblast.p6.document_structure.communication.event_server.reactors.
     PasteRangeReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.range_event.RangeToClipboardReactor import \
     RangeToClipboardReactor
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.script_event.new_script.NewScriptReactor import \
+    NewScriptReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook_event.CreateNewWorksheetReactor import \
     CreateNewWorksheetReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook_event.DeleteWorksheetReactor import \
@@ -88,7 +94,8 @@ RE = "RANGE_EVENT_"  # range event
 WBE = "WORKBOOK_EVENT"  # workbook event
 ESE = "ESE"  # event server event
 APPE = "APP_EVENT_"  # app event
-FBE = "FALL_BACK_EVENT_"
+FBE = "FALL_BACK_EVENT_" 
+SCRIPT_EVENT="SCRIPT_EVENT_"
 
 
 class P6Events:
@@ -104,6 +111,13 @@ class P6Events:
                     if inspect.isclass(event):
                         rt.append(event.event)
         return rt
+    
+    class Script:
+        class NewScript:
+            event = P6Event(f"{SCRIPT_EVENT}0","new script event")
+            Request = NewScriptRequest
+            Response = NewScriptResponse
+            Reactor = NewScriptReactor
 
     class Cell:
 

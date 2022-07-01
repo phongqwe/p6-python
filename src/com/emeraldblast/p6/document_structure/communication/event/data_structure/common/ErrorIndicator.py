@@ -8,7 +8,7 @@ from com.emeraldblast.p6.proto.CommonProtos_pb2 import ErrorIndicatorProto
 @dataclass
 class ErrorIndicator(ToProto[ErrorIndicatorProto]):
 
-    def __init__(self, isError: bool, errorReport: ErrorReport | None):
+    def __init__(self, isError: bool, errorReport: ErrorReport | None = None):
         self.isError = isError
         self.errorReport = errorReport
 
