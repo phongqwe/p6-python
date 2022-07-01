@@ -24,6 +24,9 @@ class CommonErrors:
             super().__init__(CommonErrors.WrongTypeReport.header, data)
 
     class ExceptionErrorReport(ErrorReport):
+        """
+        for reporting exception as ErrorReport
+        """
         header = ErrorHeader(f"{CE}1", "Exception error")
 
         class Data(ToRepStr, ToException):
@@ -41,6 +44,9 @@ class CommonErrors:
                 header = CommonErrors.ExceptionErrorReport.header,
                 data = CommonErrors.ExceptionErrorReport.Data(exception)
             )
+        @staticmethod
+        def report(exception: Exception)->ErrorReport:
+            return CommonErrors.ExceptionErrorReport(exception)
 
     CommonError = ErrorReport(
         header = ErrorHeader(f"{CE}3", "common error")

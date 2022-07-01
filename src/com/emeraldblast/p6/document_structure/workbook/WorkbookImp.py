@@ -27,19 +27,26 @@ from com.emeraldblast.p6.document_structure.worksheet.WorksheetImp import Worksh
 
 class WorkbookImp(Workbook):
 
+    def addScriptRs(self, name: str, script: str) -> Result[None, ErrorReport]:
+        rs = self._scriptCont.addScriptRs(name, script)
+        if rs.isOk():
+            self._scriptCont = rs.value
+            return Ok(None)
+        else:
+            return Err(rs.err)
+
     @property
     def allAsScriptEntry(self) -> list[ScriptEntry]:
         return self._scriptCont.allAsScriptEntry(self.workbookKey)
 
-    def addScript2(self, name:str,script:str):
+    def addScript(self, name: str, script: str):
         self._scriptCont = self._scriptCont.addScript(name, script)
 
-    def getScript(self, name:str) -> str | None:
+    def getScript(self, name: str) -> str | None:
         return self._scriptCont.getScript(name)
 
-    def removeScript(self, name:str):
+    def removeScript(self, name: str):
         self._scriptCont = self._scriptCont.removeScript(name)
-
 
     def removeAllScript(self):
         self._scriptCont = self._scriptCont.removeAll()
@@ -89,7 +96,8 @@ class WorkbookImp(Workbook):
         return WorkbookImp(
             name = "",
             path = None,
-            sheetList = self._sheetList
+            sheetList = self._sheetList,
+            scriptContainer = self._scriptCont
         )
 
     def getTranslator(self, sheetName: str) -> FormulaTranslator:

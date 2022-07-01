@@ -2,11 +2,19 @@ from abc import ABC
 
 from com.emeraldblast.p6.document_structure.script import SimpleScriptEntry
 from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntry
+from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
+from com.emeraldblast.p6.document_structure.util.result.Result import Result
 
 
 class ScriptContainer(ABC):
 
+    def contains(self, scriptName:str) -> bool:
+        raise NotImplementedError()
+
     def addScriptEntry(self, entry: SimpleScriptEntry) -> 'ScriptContainer':
+        raise NotImplementedError()
+
+    def addScriptRs(self, name: str, script: str) -> Result['ScriptContainer',ErrorReport]:
         raise NotImplementedError()
 
     def addScript(self, name: str, script: str) -> 'ScriptContainer':

@@ -7,6 +7,7 @@ from com.emeraldblast.p6.document_structure.communication.event.P6Event import P
 from com.emeraldblast.p6.document_structure.script.ScriptContainerImp import ScriptContainerImp
 from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntry
 from com.emeraldblast.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
+from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
@@ -210,7 +211,7 @@ class WorkbookImp_test(unittest.TestCase):
 
     def test_scriptCont_delegation(self):
         scriptCont = MagicMock()
-        scriptCont.getScript2 = MagicMock()
+        scriptCont.getScript = MagicMock()
         
         w1 = WorkbookImp("w1", path = Path("p1"), scriptContainer = scriptCont)
         w1.getScript(MagicMock())
@@ -225,9 +226,24 @@ class WorkbookImp_test(unittest.TestCase):
         scriptCont.removeAll.assert_called_once()
 
         scriptCont.addScript = MagicMock(return_value=scriptCont)
-        w1.addScript2(MagicMock(),MagicMock())
+        w1.addScript(MagicMock(),MagicMock())
         scriptCont.addScript.assert_called_once()
 
         scriptCont.addAllScripts = MagicMock(return_value = scriptCont)
         w1.addAllScripts(MagicMock())
         scriptCont.addAllScripts.assert_called_once()
+
+        scriptCont.addScriptRs = MagicMock(return_value=Ok(scriptCont))
+        w1.addScriptRs(MagicMock(),MagicMock())
+        scriptCont.addScriptRs.assert_called_once()
+
+    def test_addScriptRs(self):
+        scriptCont = ScriptContainerImp()
+        w1 = WorkbookImp("w1", path = Path("p1"), scriptContainer = scriptCont)
+
+        rs = w1.addScriptRs("s1","abc")
+        self.assertTrue(rs.isOk())
+        self.assertTrue(w1.scriptContainer.contains("s1"))
+
+        rs2 = w1.addScriptRs("s1","qwe")
+        self.assertTrue(rs2.isErr())

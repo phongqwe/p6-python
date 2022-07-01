@@ -1,12 +1,21 @@
-from com.emeraldblast.p6.document_structure.script import SimpleScriptEntry
+from com.emeraldblast.p6.document_structure.script.ScriptContainerErrors import ScriptContainerErrors
+from com.emeraldblast.p6.document_structure.script.SimpleScriptEntry import SimpleScriptEntry
 from com.emeraldblast.p6.document_structure.script.ScriptContainer import ScriptContainer
 from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntry
 from com.emeraldblast.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
 from com.emeraldblast.p6.document_structure.util.Util import replaceKey
 from com.emeraldblast.p6.document_structure.util.WithSize import WithSize
+from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
+from com.emeraldblast.p6.document_structure.util.result.Err import Err
+from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
+from com.emeraldblast.p6.document_structure.util.result.Result import Result
+from com.emeraldblast.p6.document_structure.util.result.Results import Results
 
 
 class ScriptContainerImp(ScriptContainer, WithSize):
+
+    def contains(self, scriptName: str) -> bool:
+        return scriptName in self.scriptMap.keys()
 
     def renameScript(self, oldName: str, newName: str):
         newMap = replaceKey(self.scriptMap, oldName,newName)
@@ -22,9 +31,17 @@ class ScriptContainerImp(ScriptContainer, WithSize):
             scriptMap = {}
         self.scriptMap = scriptMap
 
+    def addScriptRs(self, name: str, script: str) -> Result['ScriptContainer', ErrorReport]:
+        if name in self.scriptMap.keys():
+            return Err(ScriptContainerErrors.ScriptAlreadyExist.report(name))
+        else:
+            self.scriptMap[name] = script
+            return Ok(self)
+
     def addScript(self, name: str, script: str) -> 'ScriptContainer':
-        self.scriptMap[name] = script
-        return self
+        rs = self.addScriptRs(name, script)
+        rt = rs.getOrRaise()
+        return rt
 
     def addScriptEntry(self, entry:SimpleScriptEntry) -> 'ScriptContainer':
         self.scriptMap[entry.name] = entry.script
@@ -49,7 +66,10 @@ class ScriptContainerImp(ScriptContainer, WithSize):
 
     @property
     def allScripts(self) -> list[SimpleScriptEntry]:
-        return list(self.scriptMap.values())
+        rt = []
+        for scriptName in self.scriptMap.keys():
+            rt.append(SimpleScriptEntry(scriptName, self.scriptMap[scriptName]))
+        return rt
 
     def allAsScriptEntry(self, wbKey) -> list[ScriptEntry]:
         rt = []

@@ -52,5 +52,5 @@ class PasteRangeReactor(BaseEventReactor[bytes, PasteRangeResponse]):
         except Exception as e:
             return PasteRangeResponse(
                 isError = True,
-                errorReport = CommonErrors.ExceptionErrorReport(e),
+                errorReport = CommonErrors.ExceptionErrorReport.report(e),
             )

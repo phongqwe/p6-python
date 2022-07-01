@@ -7,7 +7,10 @@ from com.emeraldblast.p6.document_structure.util.result.Result import Result
 class Results:
     @staticmethod
     def extractOrRaise(result:Result[Any,ErrorReport]):
-        """extract the value or raise the err as an exception"""
+        """
+        @deprecated: don't use this. use "getOrRaise" directly on Result objs
+        extract the value or raise the err as an exception
+        """
         if result.isOk():
             return result.value
         else:

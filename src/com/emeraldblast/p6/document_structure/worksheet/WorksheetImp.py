@@ -46,7 +46,7 @@ class WorksheetImp(BaseWorksheet):
                 cell.copyFrom(copiedCell)
                 return Ok(None)
             except Exception as e:
-                return Err(CommonErrors.ExceptionErrorReport(e))
+                return Err(CommonErrors.ExceptionErrorReport.report(e))
         else:
             return Err(pasteRs.err)
 

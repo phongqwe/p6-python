@@ -74,16 +74,16 @@ class P6ProtoFileSaver_test(unittest.TestCase):
         ws.cell("@B33").formula="""=SCRIPT(1+2+3)"""
         self.assertEqual(6, ws.cell("@B33").value)
 
+        self.assertEqual(workbook.allScripts,loadedWb.allScripts)
+
     def test_saveRs_invalidPath(self):
         rs = self.saver.saveRs(MagicMock(),None)
         self.assertTrue(rs.isErr())
 
-
-    # def tearDown(self) -> None:
-    #     super().tearDown()
-    #     if self.filePath.exists():
-    #         os.remove(self.filePath)
-
-
+    # def test_z(self):
+    #     loader = P6ProtoFileLoader()
+    #     lrs = loader.loadRs("/home/abc/Documents/gits/project2/p6/b1.txt")
+    #     loadedWb = lrs.value
+    #     self.assertTrue(len(loadedWb.allScripts)!=0)
 if __name__ == '__main__':
     unittest.main()

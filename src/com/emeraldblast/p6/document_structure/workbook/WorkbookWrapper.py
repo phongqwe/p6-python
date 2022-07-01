@@ -16,8 +16,11 @@ from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
 class WorkbookWrapper(Workbook):
 
-    def addScript2(self, name: str, script: str):
-        self.rootWorkbook.addScript2(name, script)
+    def addScriptRs(self, name: str, script: str) -> Result[None, ErrorReport]:
+        return self.rootWorkbook.addScriptRs(name, script)
+
+    def addScript(self, name: str, script: str):
+        self.rootWorkbook.addScript(name, script)
 
     def getScript(self, name: str) -> str | None:
         return self.rootWorkbook.getScript(name)

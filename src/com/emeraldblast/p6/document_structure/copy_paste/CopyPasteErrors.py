@@ -31,7 +31,7 @@ class CopyPasteErrors:
                     )
                 )
             else:
-                return CommonErrors.ExceptionErrorReport(e)
+                return CommonErrors.ExceptionErrorReport.report(e)
 
     class CantPasteBecauseDataLargerThanSheetLimit:
         @staticmethod

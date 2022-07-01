@@ -29,6 +29,9 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
     def addScript(self, name:str, script:str):
         raise NotImplementedError()
 
+    def addScriptRs(self, name:str, script:str) -> Result[None,ErrorReport]:
+        raise NotImplementedError()
+
     def getScript(self, name:str) -> str | None:
         raise NotImplementedError()
 
@@ -88,10 +91,10 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
         for sheet in self.worksheets:
             sheets.append(sheet.toProtoObj())
         rt.worksheet.extend(sheets)
-        scriptProto = []
+        scriptProtos = []
         for script in self.allScripts:
-            scriptProto.extend(script.toProtoObj())
-        rt.scripts.extend(scriptProto)
+            scriptProtos.append(script.toProtoObj())
+        rt.scripts.extend(scriptProtos)
         return rt
 
     def getTranslator(self, sheetName: str) -> FormulaTranslator:

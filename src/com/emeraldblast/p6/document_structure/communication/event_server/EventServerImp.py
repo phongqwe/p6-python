@@ -61,7 +61,7 @@ class EventServerImp(EventServer):
                     # catch-all response
                     p6Res: P6Response = P6Response.create(
                         event = P6Events.EventServer.UnknownError.event,
-                        data = CommonErrors.ExceptionErrorReport(e),
+                        data = CommonErrors.ExceptionErrorReport.report(e),
                         status = P6Response.Status.ERROR)
                     repSocket.send(p6Res.toProtoBytes())
 
