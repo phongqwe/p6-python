@@ -1,12 +1,13 @@
 from dataclasses import dataclass
 
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.ToP6Msg import ToP6Msg
 from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntry
 
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 from com.emeraldblast.p6.proto.ScriptProtos_pb2 import NewScriptRequestProto
 
 @dataclass
-class NewScriptRequest(ToProto[NewScriptRequestProto]):
+class NewScriptRequest(ToP6Msg,ToProto[NewScriptRequestProto]):
     scriptEntry:ScriptEntry
 
     @staticmethod

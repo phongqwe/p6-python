@@ -13,6 +13,12 @@ class SingleSignalResponse(ToProto[SingleSignalResponseProto]):
     errIndicator: ErrorIndicator
     
     @staticmethod
+    def fromProtoBytes(data:bytes)->'SingleSignalResponse':
+        proto = SingleSignalResponseProto()
+        proto.ParseFromString(data)
+        return SingleSignalResponse.fromProto(proto)
+
+    @staticmethod
     def fromProto(proto:SingleSignalResponseProto)->'SingleSignalResponse':
         rt=SingleSignalResponse(
             errIndicator = ErrorIndicator.fromProto(proto.errIndicator)

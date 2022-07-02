@@ -1,6 +1,11 @@
 import unittest
 from unittest.mock import MagicMock
 
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.script_event.new_script.NewScriptResponse import \
+    NewScriptResponse
+
+from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntry
+
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.WsWb import WsWb
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.paste_range.PasteRangeRequest import \
     PasteRangeRequest
@@ -13,12 +18,15 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.c
     CellUpdateRequest
 # these 2 imports must be keep for the formula script to be able to run
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.script_event.new_script.NewScriptRequest import \
+    NewScriptRequest
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.save_wb.SaveWorkbookRequest import \
     SaveWorkbookRequest
 from com.emeraldblast.p6.document_structure.communication.event_server.P6Messages import P6Messages
 from com.emeraldblast.p6.document_structure.communication.event_server.response.P6Response import P6Response
 from com.emeraldblast.p6.document_structure.communication.reactor.EventReactors import EventReactors
 from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
+from com.emeraldblast.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
 from com.emeraldblast.p6.document_structure.util.for_test.emu.TestEnvImp import TestEnvImp
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.emeraldblast.p6.proto.AppEventProtos_pb2 import CreateNewWorkbookResponseProto, CloseWorkbookResponseProto
@@ -44,6 +52,22 @@ class Integration_integration_test(unittest.TestCase):
 
     def tearDown(self) -> None:
         self.testEnv.stopAll()
+
+    def test_no_reactor_for_new_script_request(self):
+        """new script request from UI returns no reactor error"""
+        req = NewScriptRequest(
+            scriptEntry = ScriptEntry(
+                key = ScriptEntryKey("Script1"),
+                script = ""
+            )
+        )
+
+        p6Res = self.testEnv.sendRequestToEventServer(req.toP6Msg())
+        self.assertEqual(P6Response.Status.OK,p6Res.status)
+
+        data = p6Res.data
+        NewScriptResponse.fromProtoBytes(data)
+
 
     def test_bug3(self):
         """

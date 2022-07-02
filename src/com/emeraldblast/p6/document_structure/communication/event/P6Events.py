@@ -114,7 +114,7 @@ class P6Events:
     
     class Script:
         class NewScript:
-            event = P6Event(f"{SCRIPT_EVENT}0","new script event")
+            event = P6Event(f"{SCRIPT_EVENT}1","new script event")
             Request = NewScriptRequest
             Response = NewScriptResponse
             Reactor = NewScriptReactor
