@@ -54,12 +54,12 @@ class AppImp(BaseApp):
             saver: Optional[P6FileSaver] = None,
             socketProvider: SocketProvider | None = None,
             eventReactorContainer: EventReactorContainer[EventData] | None = None,
-            scriptContainer2: ScriptContainer | None = None,
+            scriptContainer: ScriptContainer | None = None,
     ):
 
-        if scriptContainer2 is None:
-            scriptContainer2 = ScriptContainerImp()
-        self._scriptCont2 = scriptContainer2
+        if scriptContainer is None:
+            scriptContainer = ScriptContainerImp()
+        self._scriptCont = scriptContainer
 
         if workbookContainer is None:
             workbookContainer = WorkbookContainerImp()
@@ -100,31 +100,8 @@ class AppImp(BaseApp):
         self.__setupEventEmitter()
 
     @property
-    def scriptContainer2(self) -> ScriptContainer:
-        return self._scriptCont2
-
-    # def addScript(self, scriptEntry: ScriptEntry):
-    #     self._scriptCont = self._scriptCont.addScript(scriptEntry)
-    #
-    # def getScript(self, key: ScriptEntryKey) -> ScriptEntry | None:
-    #     return self._scriptCont.getScript(key)
-    #
-    # def removeScript(self, scriptKey: ScriptEntryKey):
-    #     self._scriptCont = self._scriptCont.removeScript(scriptKey)
-    #
-    # def removeAllScript(self):
-    #     self._scriptCont = self._scriptCont.removeAll()
-    #
-    # def addAllScripts(self, scripts: list[ScriptEntry]):
-    #     self._scriptCont = self._scriptCont.addAllScripts(scripts)
-    #
-    # @property
-    # def allScripts(self) -> list[ScriptEntry]:
-    #     return self._scriptCont.allScripts
-    #
-    # @property
-    # def scriptContainer(self) -> ScriptContainer:
-    #     return self._scriptCont
+    def scriptContainer(self) -> ScriptContainer:
+        return self._scriptCont
 
     @property
     def rootApp(self) -> 'App':
@@ -146,6 +123,10 @@ class AppImp(BaseApp):
         def addReactor(reactor):
             event = table.getEventFor(reactor)
             evSv.addReactor(event, reactor)
+
+        reactorsForScript = [
+            er.script.newScriptReactor()
+        ]
 
         reactorForRange = [
             er.rangeToClipboardReactor(),
@@ -175,7 +156,8 @@ class AppImp(BaseApp):
             *reactorForWb,
             *reactorForWs,
             *reactorForCell,
-            *reactorForApp
+            *reactorForApp,
+            *reactorsForScript,
         ]
         for reactor in allReactors:
             addReactor(reactor)

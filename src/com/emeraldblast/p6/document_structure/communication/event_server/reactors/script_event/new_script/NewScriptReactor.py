@@ -22,7 +22,7 @@ class NewScriptReactor(BaseEventReactor[bytes, NewScriptResponse]):
         wbKey = req.scriptEntry.key.workbookKey
         scriptContainer = None
         if wbKey is None:
-            scriptContainer = self.appGetter().scriptContainer2
+            scriptContainer = self.appGetter().scriptContainer
         else:
             getWbRs = self.wbGetter(wbKey)
             if getWbRs.isOk():

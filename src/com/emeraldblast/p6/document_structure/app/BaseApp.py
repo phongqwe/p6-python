@@ -25,27 +25,27 @@ from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
 class BaseApp(App, ABC):
     @property
-    def allScripts2(self) -> list[SimpleScriptEntry]:
-        return self.scriptContainer2.allScripts
+    def allScripts(self) -> list[SimpleScriptEntry]:
+        return self.scriptContainer.allScripts
 
-    def addScript2(self, name: str, script: str):
-        self.scriptContainer2.addScript(name, script)
+    def addScript(self, name: str, script: str):
+        self.scriptContainer.addScript(name, script)
 
-    def getScript2(self, name: str) -> str | None:
-        return self.scriptContainer2.getScript(name)
+    def getScript(self, name: str) -> str | None:
+        return self.scriptContainer.getScript(name)
 
-    def removeScript2(self, name: str):
-        self.scriptContainer2.removeScript(name)
+    def removeScript(self, name: str):
+        self.scriptContainer.removeScript(name)
 
-    def removeAllScript2(self):
-        self.scriptContainer2.removeAll()
+    def removeAllScript(self):
+        self.scriptContainer.removeAll()
 
-    def addAllScripts2(self, scripts: list[SimpleScriptEntry]):
-        self.scriptContainer2.addAllScripts(scripts)
+    def addAllScripts(self, scripts: list[SimpleScriptEntry]):
+        self.scriptContainer.addAllScripts(scripts)
 
     @property
     def allAsScriptEntry(self) -> list[ScriptEntry]:
-        return self.scriptContainer2.allAsScriptEntry(None)
+        return self.scriptContainer.allAsScriptEntry(None)
 
     def getRangeRs(self, rangeId: RangeId) -> Result[Range, ErrorReport]:
         getWbRs = self.getBareWorkbookRs(rangeId.workbookKey)

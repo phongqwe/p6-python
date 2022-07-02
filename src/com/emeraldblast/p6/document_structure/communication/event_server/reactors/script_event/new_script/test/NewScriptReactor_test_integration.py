@@ -35,9 +35,9 @@ class NewScriptReactor_test_integration(unittest.TestCase):
             )
         )
 
-        self.assertFalse(self.app.scriptContainer2.contains("s1"))
+        self.assertFalse(self.app.scriptContainer.contains("s1"))
         res1 = self.reactor.react(req1.toProtoBytes())
-        self.assertTrue(self.app.scriptContainer2.contains("s1"))
+        self.assertTrue(self.app.scriptContainer.contains("s1"))
         self.assertFalse(res1.errIndicator.isError)
         self.assertIsNone(res1.errIndicator.errorReport)
 

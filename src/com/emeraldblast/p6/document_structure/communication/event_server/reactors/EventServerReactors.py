@@ -18,6 +18,8 @@ from com.emeraldblast.p6.document_structure.communication.event_server.reactors.
     RangeEventReactors
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.range_event.RangeToClipboardReactor import \
     RangeToClipboardReactor
+from com.emeraldblast.p6.document_structure.communication.event_server.reactors.script_event.ScriptEventReactors import \
+    ScriptEventReactors
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook_event.CreateNewWorksheetReactor import \
     CreateNewWorksheetReactor
 from com.emeraldblast.p6.document_structure.communication.event_server.reactors.workbook_event.DeleteWorksheetReactor import \
@@ -44,6 +46,16 @@ class EventServerReactors:
         self.rangeGetter = rangeGetter
         self.wsGetter = wsGetter
         self.rangeReactors = RangeEventReactors(self.wsGetter)
+        self.scriptReactors = ScriptEventReactors(
+            wbGetter = workbookGetter,
+            appGetter = appGetter
+        )
+
+
+
+    @property
+    def script(self)->ScriptEventReactors:
+        return self.scriptReactors
     @property
     def app(self)->AppEventServerReactors:
         return self._app

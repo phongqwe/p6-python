@@ -27,48 +27,24 @@ class App(ABC):
     """
     this class represents the state of the app.
     """
-    #
-    # def addScript(self, scriptEntry: ScriptEntry):
-    #     raise NotImplementedError()
-    #
-    # def getScript(self, key: ScriptEntryKey) -> ScriptEntry | None:
-    #     raise NotImplementedError()
-    #
-    # def removeScript(self, scriptKey: ScriptEntryKey):
-    #     raise NotImplementedError()
-    #
-    # def removeAllScript(self):
-    #     raise NotImplementedError()
-    #
-    # def addAllScripts(self,scripts:list[ScriptEntry]):
-    #     raise NotImplementedError()
-    #
-    # @property
-    # def allScripts(self) -> list[ScriptEntry]:
-    #     raise NotImplementedError()
-    #
-    #
-    # @property
-    # def scriptContainer(self)->ScriptContainer:
-    #     raise NotImplementedError()
 
-    def addScript2(self, name:str,script:str):
+    def addScript(self, name:str, script:str):
         raise NotImplementedError()
 
-    def getScript2(self, name:str) -> str | None:
+    def getScript(self, name:str) -> str | None:
         raise NotImplementedError()
 
-    def removeScript2(self, name:str):
+    def removeScript(self, name:str):
         raise NotImplementedError()
 
-    def removeAllScript2(self):
+    def removeAllScript(self):
         raise NotImplementedError()
 
-    def addAllScripts2(self, scripts:list[SimpleScriptEntry]):
+    def addAllScripts(self, scripts:list[SimpleScriptEntry]):
         raise NotImplementedError()
 
     @property
-    def allScripts2(self)->list[SimpleScriptEntry]:
+    def allScripts(self)->list[SimpleScriptEntry]:
         raise NotImplementedError()
 
     @property
@@ -76,7 +52,7 @@ class App(ABC):
         raise NotImplementedError()
 
     @property
-    def scriptContainer2(self) -> ScriptContainer:
+    def scriptContainer(self) -> ScriptContainer:
         raise NotImplementedError()
 
     def getRangeRs(self, rangeId: RangeId) -> Result[Range, ErrorReport]:

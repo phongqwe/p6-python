@@ -22,8 +22,8 @@ class AppWrapper(BaseApp):
     """
 
     @property
-    def scriptContainer2(self) -> ScriptContainer:
-        return self.rootApp.scriptContainer2
+    def scriptContainer(self) -> ScriptContainer:
+        return self.rootApp.scriptContainer
 
     def __init__(self, innerApp: App):
         self.innerApp = innerApp
