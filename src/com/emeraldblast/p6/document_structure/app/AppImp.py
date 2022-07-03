@@ -25,12 +25,7 @@ from com.emeraldblast.p6.document_structure.file.loader.P6FileLoaders import P6F
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
 from com.emeraldblast.p6.document_structure.file.saver.P6FileSavers import P6FileSavers
 from com.emeraldblast.p6.document_structure.script.ScriptContainer import ScriptContainer
-from com.emeraldblast.p6.document_structure.script.ScriptContainer import ScriptContainer
 from com.emeraldblast.p6.document_structure.script.ScriptContainerImp import ScriptContainerImp
-from com.emeraldblast.p6.document_structure.script.ScriptContainerImp import ScriptContainerImp
-from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntry
-from com.emeraldblast.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
-from com.emeraldblast.p6.document_structure.script.SimpleScriptEntry import SimpleScriptEntry
 from com.emeraldblast.p6.document_structure.util.Util import makeGetter
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
@@ -167,6 +162,8 @@ class AppImp(BaseApp):
         container = self.__notifierContainer
         provider = self.__reactorProvider
 
+        for event in P6Events.Script.allEvents():
+            container.addReactor(event, provider.scriptNotifier())
         for event in P6Events.Cell.allEvents():
             container.addReactor(event, provider.cellNotifier())
         for event in P6Events.Workbook.allEvents():

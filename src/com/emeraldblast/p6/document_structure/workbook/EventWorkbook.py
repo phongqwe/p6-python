@@ -1,13 +1,21 @@
 from typing import Callable, Optional, Union
 
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.common.ErrorIndicator import \
+    ErrorIndicator
+
+from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntry
+
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.app_event.SetActiveWorksheetResponse import \
     SetActiveWorksheetResponse
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.script_event.new_script.NewScriptNotification import \
+    NewScriptNotification
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.CreateNewWorksheetResponse import \
     CreateNewWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.DeleteWorksheetResponse import \
     DeleteWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.notifier.eventData.EventData import EventData
 from com.emeraldblast.p6.document_structure.communication.reactor import EventReactorContainer
+from com.emeraldblast.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
@@ -27,14 +35,17 @@ class EventWorkbook(WorkbookWrapper):
                  onWorksheetEvent: Callable[[EventData], None] = None,
                  onRangeEvent: Callable[[EventData], None] = None,
                  onWorkbookEvent: Callable[[EventData], None] = None,
-                 onEvent: Callable[[EventData], None] = None
+                 onOtherEvent: Callable[[EventData], None] = None,
+                 onScriptEvent:Callable[[EventData], None] = None,
                  ):
         super().__init__(innerWorkbook)
         self.__onCellChange: Callable[[EventData], None] = onCellEvent
         self.__onWorksheetEvent: Callable[[EventData], None] = onWorksheetEvent
         self.__onRangeEvent: Callable[[EventData], None] = onRangeEvent
         self.__onWorkbookEvent: Callable[[EventData], None] = onWorkbookEvent
-        self.__onEvent: Callable[[EventData], None] = onEvent
+        self.__onOtherEvent: Callable[[EventData], None] = onOtherEvent
+        self.__onScriptEvent: Callable[[EventData], None] = onScriptEvent
+
         self._iwb = self._innerWorkbook
 
     @staticmethod
@@ -49,8 +60,36 @@ class EventWorkbook(WorkbookWrapper):
             onWorksheetEvent = triggerEventReactor,
             onRangeEvent = triggerEventReactor,
             onWorkbookEvent = triggerEventReactor,
-            onEvent = triggerEventReactor,
+            onOtherEvent = triggerEventReactor,
+            onScriptEvent = triggerEventReactor,
         )
+
+    def _makeScriptEntry(self,name,script)->ScriptEntry:
+        return ScriptEntry(
+            key = ScriptEntryKey(
+                name = name,
+                workbookKey = self.workbookKey
+            ),
+            script = script
+        )
+
+    def addScriptRs(self, name: str, script: str) -> Result[None, ErrorReport]:
+        rs= self.rootWorkbook.addScriptRs(name, script)
+        notif = None
+        if rs.isOk():
+            notif = NewScriptNotification(
+                scriptEntries = [
+                    self._makeScriptEntry(name,script)
+                ],
+                errorIndicator = ErrorIndicator.noError()
+            )
+        else:
+            notif = NewScriptNotification(
+                scriptEntries = [],
+                errorIndicator = ErrorIndicator.error(rs.err)
+            )
+        self.__onScriptEvent(notif.toEventData())
+        return rs
 
     @property
     def worksheets(self) -> list[Worksheet]:
@@ -177,5 +216,5 @@ class EventWorkbook(WorkbookWrapper):
             response.isError = True
             response.errorReport = rs.err
 
-        self.__onEvent(response.toEventData())
+        self.__onOtherEvent(response.toEventData())
         return rs

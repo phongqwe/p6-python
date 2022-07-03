@@ -4,7 +4,6 @@ from unittest.mock import MagicMock
 from com.emeraldblast.p6.document_structure.cell.DataCell import DataCell
 from com.emeraldblast.p6.document_structure.cell.EventCell import EventCell
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
-from com.emeraldblast.p6.document_structure.communication.notifier.eventData.CellEventData import CellEventData
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
 
 
@@ -21,7 +20,7 @@ class EventCellTest(unittest.TestCase):
 
     def test_emitEvent(self):
         self.a=0
-        def cb(data:CellEventData):
+        def cb(data):
             self.a=self.a+1
         wb = WorkbookImp("Wb")
         c1 = wb.createNewWorksheet("Sheet1").cell((1,1))

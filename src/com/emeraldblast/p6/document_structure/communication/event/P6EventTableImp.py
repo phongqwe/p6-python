@@ -17,10 +17,7 @@ class P6EventTableImp(P6EventTable):
 
     def __init__(self):
 
-        self.eMap = {
-            # CloseWorkbookRequest: p6Events.P6Events.App.CloseWorkbook.event,
-            # CloseWorkbookResponse: p6Events.P6Events.App.CloseWorkbook.event
-        }
+        self.eMap = {}
 
         for eventGroupKey in P6Events.__dict__:
             eventGroup = P6Events.__dict__[eventGroupKey]
@@ -40,9 +37,18 @@ class P6EventTableImp(P6EventTable):
                         if hasattr(eventClazz, "Reactor"):
                             reactorClazz = eventClazz.Reactor
                             if reactorClazz:
-                                # if eventGroupKey == "App":
-                                    # print("qwe")
                                 self.eMap[reactorClazz] = event
+                        if hasattr(eventClazz,"Notification"):
+                            notifClazz = eventClazz.Notification
+                            if notifClazz:
+                                self.eMap[notifClazz] = event
+                        if hasattr(eventClazz,"Other"):
+                            otherList = eventClazz.Other
+                            if otherList:
+                                if isinstance(otherList, list):
+                                    for o in otherList:
+                                        self.eMap[o] = event
+
 
     def getEventFor(self, something: Any) -> P6Event:
         return self.getEventForClazz(type(something))

@@ -14,6 +14,5 @@ class ToEventData(ToProto,ABC):
         eventTable: P6EventTable = P6EventTableImp.i()
         return EventData(
             event = eventTable.getEventFor(self),
-            isError = False,
             data = self
         )

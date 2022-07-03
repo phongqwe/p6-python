@@ -2,14 +2,22 @@ import unittest
 from pathlib import Path
 from unittest.mock import MagicMock
 
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.common.ErrorIndicator import \
+    ErrorIndicator
+from com.emeraldblast.p6.document_structure.script.ScriptContainerErrors import ScriptContainerErrors
+
+from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntry
+
 from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.app_event.SetActiveWorksheetResponse import \
     SetActiveWorksheetResponse
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.script_event.new_script.NewScriptNotification import \
+    NewScriptNotification
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.workbook_event.DeleteWorksheetResponse import \
     DeleteWorksheetResponse
 from com.emeraldblast.p6.document_structure.communication.notifier.eventData.EventData import EventData
-from com.emeraldblast.p6.document_structure.communication.notifier.eventData.CellEventData import CellEventData
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslators import FormulaTranslators
+from com.emeraldblast.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
 from com.emeraldblast.p6.document_structure.workbook.EventWorkbook import EventWorkbook
@@ -23,68 +31,112 @@ class EventWorkbook_test(unittest.TestCase):
         super().setUp()
         self.s1, self.s2, self.s3, self.wb = self.makeTestObj()
         self.eventData = None
-        self.x=0
+        self.x = 0
+
     def setActiveWorksheet_callback_fail(self, workFunction, moreTest):
-        def onEvent(eventData:EventData):
+        def onEvent(eventData: EventData):
             self.eventData = eventData
             self.x = 1
 
         eventWb = EventWorkbook(
             innerWorkbook = self.wb,
-            onEvent = onEvent
+            onOtherEvent = onEvent
         )
         workFunction(eventWb)
 
         self.assertIsNotNone(self.eventData)
-        self.assertEqual(1,self.x)
+        self.assertEqual(1, self.x)
         self.assertEqual(P6Events.App.SetActiveWorksheet.event, self.eventData.event)
-        dataObj:SetActiveWorksheetResponse = self.eventData.data
-        self.assertEqual(True,dataObj.isError)
+        dataObj: SetActiveWorksheetResponse = self.eventData.data
+        self.assertEqual(True, dataObj.isError)
         self.assertIsNotNone(dataObj.errorReport)
-        self.assertEqual(eventWb.workbookKey,dataObj.workbookKey)
+        self.assertEqual(eventWb.workbookKey, dataObj.workbookKey)
         moreTest(dataObj)
 
+
+    def test_addScriptRs_callback_run_fail(self):
+        def ose(eventData: EventData):
+            self.assertEqual(NewScriptNotification(
+                scriptEntries=[],
+                errorIndicator = ErrorIndicator.error(
+                    ScriptContainerErrors.ScriptAlreadyExist.report("s1")
+                )
+            ), eventData.data)
+
+        eventWb = EventWorkbook(
+            innerWorkbook = self.wb,
+            onScriptEvent = ose,
+        )
+        self.wb.addScriptRs("s1","abc")
+        eventWb.addScriptRs("s1", "abc")
+
+    def test_addScriptRs_callback_run_ok(self):
+        def ose(eventData: EventData):
+            self.assertEqual(NewScriptNotification(
+                scriptEntries=[
+                    ScriptEntry(
+                        key = ScriptEntryKey(
+                            name = "s1",
+                            workbookKey = self.wb.workbookKey
+                        ),
+                        script = "abc"
+                    )
+                ],
+                errorIndicator = ErrorIndicator.noError()
+            ), eventData.data)
+
+        eventWb = EventWorkbook(
+            innerWorkbook = self.wb,
+            onScriptEvent = ose
+        )
+        eventWb.addScriptRs("s1", "abc")
+
     def test_setActiveWorksheet_callback_fail(self):
-        def workFunction(eventWorkbook:EventWorkbook):
+        def workFunction(eventWorkbook: EventWorkbook):
             eventWorkbook.setActiveWorksheetRs("Invalid name")
-        def moreTest(data:SetActiveWorksheetResponse):
+
+        def moreTest(data: SetActiveWorksheetResponse):
             self.assertEqual("Invalid name", data.worksheetName)
-        self.setActiveWorksheet_callback_fail(workFunction,moreTest)
+
+        self.setActiveWorksheet_callback_fail(workFunction, moreTest)
 
     def test_setActiveWorksheet_callback_fail_blankName(self):
-        def workFunction(eventWorkbook:EventWorkbook):
+        def workFunction(eventWorkbook: EventWorkbook):
             eventWorkbook.setActiveWorksheetRs("")
-        def moreTest(data:SetActiveWorksheetResponse):
-            self.assertEqual("", data.worksheetName)
-        self.setActiveWorksheet_callback_fail(workFunction,moreTest)
 
+        def moreTest(data: SetActiveWorksheetResponse):
+            self.assertEqual("", data.worksheetName)
+
+        self.setActiveWorksheet_callback_fail(workFunction, moreTest)
 
     def setActiveWorksheet_callback_ok(self, workFunction, moreTest):
-        def onEvent(eventData:EventData):
+        def onEvent(eventData: EventData):
             self.eventData = eventData
             self.x = 1
 
         eventWb = EventWorkbook(
             innerWorkbook = self.wb,
-            onEvent = onEvent
+            onOtherEvent = onEvent
         )
         workFunction(eventWb)
 
         self.assertIsNotNone(self.eventData)
-        self.assertEqual(1,self.x)
+        self.assertEqual(1, self.x)
         self.assertEqual(P6Events.App.SetActiveWorksheet.event, self.eventData.event)
-        dataObj:SetActiveWorksheetResponse = self.eventData.data
-        self.assertEqual(False,dataObj.isError)
+        dataObj: SetActiveWorksheetResponse = self.eventData.data
+        self.assertEqual(False, dataObj.isError)
         self.assertIsNone(dataObj.errorReport)
-        self.assertEqual(eventWb.workbookKey,dataObj.workbookKey)
+        self.assertEqual(eventWb.workbookKey, dataObj.workbookKey)
         moreTest(dataObj)
 
     def test_setActiveWorksheet_callback_ok(self):
-        def workFunction(eventWorkbook:EventWorkbook):
+        def workFunction(eventWorkbook: EventWorkbook):
             eventWorkbook.setActiveWorksheet(self.s1.name)
-        def moreTest(data:SetActiveWorksheetResponse):
+
+        def moreTest(data: SetActiveWorksheetResponse):
             self.assertEqual(self.s1.name, data.worksheetName)
-        self.setActiveWorksheet_callback_ok(workFunction,moreTest)
+
+        self.setActiveWorksheet_callback_ok(workFunction, moreTest)
 
     def removeWorksheet_callback_fail(self, removeWork):
         """ test that the call back was called. And the data passed to the call back is correct"""
@@ -253,7 +305,7 @@ class EventWorkbook_test(unittest.TestCase):
         w = WorkbookImp("w1")
         self.a = 0
 
-        def cellCallback(eventData: CellEventData):
+        def cellCallback(eventData):
             self.a += 1
 
         eventWb = EventWorkbook(w, onCellEvent = cellCallback)

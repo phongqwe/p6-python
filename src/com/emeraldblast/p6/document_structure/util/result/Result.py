@@ -28,6 +28,9 @@ class Result(Generic[V, E]):
         return self.err is not None
 
     def getOrRaise(self) -> V:
+        """
+        :return the enclosed value if this is an "Ok". If it is an "Err", raise it as an exception.
+        """
         if self.isOk():
             return self.value
         else:

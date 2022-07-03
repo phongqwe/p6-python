@@ -10,7 +10,6 @@ from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntr
 from com.emeraldblast.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
 from com.emeraldblast.p6.document_structure.util import Util
 
-
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from com.emeraldblast.p6.document_structure.util.CanCheckEmpty import CanCheckEmpty
 from com.emeraldblast.p6.document_structure.util.ToJson import ToJson
@@ -26,22 +25,37 @@ from com.emeraldblast.p6.proto.DocProtos_pb2 import WorkbookProto
 
 class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
 
-    def addScript(self, name:str, script:str):
+
+    def addScript(self, name: str, script: str):
+        rs = self.addScriptRs(name, script)
+        rs.getOrRaise()
+
+    def addScriptRs(self, name: str, script: str) -> Result[None, ErrorReport]:
         raise NotImplementedError()
 
-    def addScriptRs(self, name:str, script:str) -> Result[None,ErrorReport]:
+    def addAllScripts(self, scripts: list[SimpleScriptEntry]):
         raise NotImplementedError()
 
-    def getScript(self, name:str) -> str | None:
+    def addAllScriptsRs(self, scripts: list[SimpleScriptEntry]) -> Result[None, ErrorReport]:
         raise NotImplementedError()
 
-    def removeScript(self, name:str):
+    def overwriteScriptRs(self, name: str, newScript: str) -> Result[None, ErrorReport]:
         raise NotImplementedError()
+
+    def overwriteScript(self, name: str, newScript: str):
+        self.overwriteScript(name, newScript)
+
+    def getScript(self, name: str) -> str | None:
+        raise NotImplementedError()
+
+    def removeScriptRs(self,name: str)->Result[None,ErrorReport]:
+        raise NotImplementedError()
+
+    def removeScript(self, name: str):
+        rs = self.removeScriptRs(name)
+        rs.getOrRaise()
 
     def removeAllScript(self):
-        raise NotImplementedError()
-
-    def addAllScripts(self, scripts:list[SimpleScriptEntry]):
         raise NotImplementedError()
 
     @property
@@ -53,11 +67,11 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
         raise NotImplementedError()
 
     @property
-    def scriptContainer(self)->ScriptContainer:
+    def scriptContainer(self) -> ScriptContainer:
         raise NotImplementedError()
 
     def isSimilar(self, o: object) -> bool:
-        if isinstance(o,Workbook):
+        if isinstance(o, Workbook):
             c1 = self.workbookKey == o.workbookKey,
             c2 = len(self.worksheets) == len(o.worksheets)
             c3 = True
@@ -69,12 +83,12 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
         else:
             return False
 
-    def makeSavableCopy(self)->'Workbook':
+    def makeSavableCopy(self) -> 'Workbook':
         """create a copy instance that is fit for being saved to files"""
         raise NotImplementedError()
 
     @property
-    def rootWorkbook(self)->'Workbook':
+    def rootWorkbook(self) -> 'Workbook':
         raise NotImplementedError()
 
     def getIndexOfWorksheet(self, sheetName: str) -> int:
@@ -103,10 +117,10 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
     def haveSheet(self, sheetName: str) -> bool:
         return self.getWorksheetOrNone(sheetName) is not None
 
-    def reRun(self, refreshScript:bool = False):
+    def reRun(self, refreshScript: bool = False):
         """rerun all worksheet in this workbook"""
         for sheet in self.worksheets:
-            sheet.reRun(refreshScript=refreshScript)
+            sheet.reRun(refreshScript = refreshScript)
 
     def refreshScript(self):
         for sheet in self.worksheets:
@@ -129,10 +143,10 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
     def activeWorksheet(self) -> Optional[Worksheet]:
         raise NotImplementedError()
 
-    def setActiveWorksheetRs(self, indexOrName: Union[int, str])->Result[Worksheet,ErrorReport]:
+    def setActiveWorksheetRs(self, indexOrName: Union[int, str]) -> Result[Worksheet, ErrorReport]:
         raise NotImplementedError()
 
-    def setActiveWorksheet(self, indexOrName: Union[int, str])->Worksheet:
+    def setActiveWorksheet(self, indexOrName: Union[int, str]) -> Worksheet:
         rs = self.setActiveWorksheetRs(indexOrName)
         return Results.extractOrRaise(rs)
 

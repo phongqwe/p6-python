@@ -4,32 +4,61 @@ from com.emeraldblast.p6.document_structure.script.ScriptContainer import Script
 from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntry
 from com.emeraldblast.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
 from com.emeraldblast.p6.document_structure.util.Util import replaceKey
-from com.emeraldblast.p6.document_structure.util.WithSize import WithSize
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
-from com.emeraldblast.p6.document_structure.util.result.Results import Results
 
 
-class ScriptContainerImp(ScriptContainer, WithSize):
+class ScriptContainerImp(ScriptContainer):
+
+    def overwriteScriptRs(self, name: str, newScript: str) -> Result['ScriptContainer', ErrorReport]:
+        """TODO this is a placeholder for future logic such as script name checking"""
+        self.scriptMap[name] = newScript
+        return Ok(self)
+
+    def overwriteScript(self, name: str, newScript: str)->ScriptContainer:
+        rs = self.overwriteScriptRs(name, newScript)
+        rt = rs.getOrRaise()
+        return rt
+
+    def addAllScriptsRs(self, scripts: list[SimpleScriptEntry]) -> Result['ScriptContainer', ErrorReport]:
+        illegalScriptNameList = []
+        for sc in scripts:
+            if self.contains(sc.name):
+                illegalScriptNameList.append(sc.name)
+        allScriptsAreOk = len(illegalScriptNameList) == 0
+        if allScriptsAreOk:
+            c = self
+            for sc in scripts:
+                c = c.addScriptEntry(sc)
+            return Ok(c)
+        else:
+            return Err(ScriptContainerErrors.MultipleScriptAlreadyExist.report(illegalScriptNameList))
+
+    def __init__(self, scriptMap: dict[str, str] | None = None):
+        if scriptMap is None:
+            scriptMap = {}
+        self.scriptMap = scriptMap
+
+    def addScriptEntryRs(self, entry: SimpleScriptEntry) -> Result['ScriptContainer', ErrorReport]:
+        return self.addScriptRs(entry.name, entry.script)
+
+    @property
+    def rootCont(self) -> 'ScriptContainer':
+        return self
 
     def contains(self, scriptName: str) -> bool:
         return scriptName in self.scriptMap.keys()
 
     def renameScript(self, oldName: str, newName: str):
-        newMap = replaceKey(self.scriptMap, oldName,newName)
+        newMap = replaceKey(self.scriptMap, oldName, newName)
         self.scriptMap = newMap
         return self
 
     @property
     def size(self) -> int:
         return len(self.scriptMap)
-
-    def __init__(self, scriptMap: dict[str, str] | None = None):
-        if scriptMap is None:
-            scriptMap = {}
-        self.scriptMap = scriptMap
 
     def addScriptRs(self, name: str, script: str) -> Result['ScriptContainer', ErrorReport]:
         if name in self.scriptMap.keys():
@@ -43,9 +72,10 @@ class ScriptContainerImp(ScriptContainer, WithSize):
         rt = rs.getOrRaise()
         return rt
 
-    def addScriptEntry(self, entry:SimpleScriptEntry) -> 'ScriptContainer':
-        self.scriptMap[entry.name] = entry.script
-        return self
+    def addScriptEntry(self, entry: SimpleScriptEntry) -> 'ScriptContainer':
+        rs = self.addScriptEntryRs(entry)
+        rt = rs.getOrRaise()
+        return rt
 
     def getScript(self, name: str) -> str | None:
         return self.scriptMap.get(name)

@@ -4,6 +4,8 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.r
     PasteRangeRequest
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.paste_range.PasteRangeResponse import \
     PasteRangeResponse
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.script_event.new_script.NewScriptNotification import \
+    NewScriptNotification
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.script_event.new_script.NewScriptRequest import \
     NewScriptRequest
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.script_event.new_script.NewScriptResponse import \
@@ -113,11 +115,17 @@ class P6Events:
         return rt
     
     class Script:
+        @classmethod
+        def allEvents(clazz):
+            return P6Events.allEvents(clazz.__name__)
+
         class NewScript:
             event = P6Event(f"{SCRIPT_EVENT}1","new script event")
             Request = NewScriptRequest
             Response = NewScriptResponse
             Reactor = NewScriptReactor
+            Notification = NewScriptNotification
+            Other = []
 
     class Cell:
 

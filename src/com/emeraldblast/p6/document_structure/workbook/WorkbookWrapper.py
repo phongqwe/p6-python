@@ -16,17 +16,20 @@ from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 
 class WorkbookWrapper(Workbook):
 
+    def addAllScriptsRs(self, scripts: list[SimpleScriptEntry]) -> Result[None, ErrorReport]:
+        return self.rootWorkbook.addAllScriptsRs(scripts)
+
+    def overwriteScriptRs(self, name: str, newScript: str) -> Result[None, ErrorReport]:
+        return self.rootWorkbook.overwriteScriptRs(name, newScript)
+
     def addScriptRs(self, name: str, script: str) -> Result[None, ErrorReport]:
         return self.rootWorkbook.addScriptRs(name, script)
-
-    def addScript(self, name: str, script: str):
-        self.rootWorkbook.addScript(name, script)
 
     def getScript(self, name: str) -> str | None:
         return self.rootWorkbook.getScript(name)
 
-    def removeScript(self, name: str):
-        self.rootWorkbook.removeScript(name)
+    def removeScriptRs(self,name: str)->Result[None,ErrorReport]:
+        return self.rootWorkbook.removeScriptRs(name)
 
     def removeAllScript(self):
         self.rootWorkbook.removeAllScript()

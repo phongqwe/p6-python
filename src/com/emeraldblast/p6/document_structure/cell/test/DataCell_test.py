@@ -6,7 +6,6 @@ from com.emeraldblast.p6.document_structure.cell.DataCell import DataCell
 from com.emeraldblast.p6.document_structure.cell.EventCell import EventCell
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.cell.address.CellIndex import CellIndex
-from com.emeraldblast.p6.document_structure.communication.notifier.eventData.CellEventData import CellEventData
 from com.emeraldblast.p6.document_structure.workbook.WorkbookImp import WorkbookImp
 from com.emeraldblast.p6.proto.DocProtos_pb2 import CellProto
 
@@ -91,7 +90,7 @@ class DataCellTest(unittest.TestCase):
     def test_rerun(self):
         self.exCountA = 0
 
-        def increaseExCount(eventData:CellEventData):
+        def increaseExCount(eventData):
             self.exCountA += 1
 
         wb = WorkbookImp("B1")
@@ -129,7 +128,7 @@ class DataCellTest(unittest.TestCase):
     def test_caching(self):
         self.exCount = 0
 
-        def increaseExCount(data:CellEventData):
+        def increaseExCount(data):
             self.exCount += 1
 
         wb = WorkbookImp("B1")

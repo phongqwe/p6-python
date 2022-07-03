@@ -11,7 +11,6 @@ from com.emeraldblast.p6.document_structure.communication.sender.MessageSender i
 
 
 class InternalNotifierProvider:
-
     """All these reactors do is wrapping the data in P6Response/P6Message and sending the data away. Nothing more."""
 
     def __init__(self, socketProviderGetter: Callable[[], SocketProvider]):
@@ -21,13 +20,16 @@ class InternalNotifierProvider:
     def __commonNotifier(self) -> EventReactor[EventData, None]:
         def cb(data: EventData):
             msg = P6Messages.p6Response(
-                event=data.event,
-                data= data.data)
+                event = data.event,
+                data = data.data)
             self.__send(msg)
 
         # reactor = EventReactors.makeBasicReactor(cb)
         reactor = EventReactors.makeSyncBasicReactor(cb)
         return reactor
+
+    def scriptNotifier(self) -> EventReactor[EventData, None]:
+        return self.__commonNotifier()
 
     def workbookNotifier(self) -> EventReactor[EventData, None]:
         return self.__commonNotifier()
@@ -38,9 +40,8 @@ class InternalNotifierProvider:
     def worksheetNotifier(self) -> EventReactor[EventData, None]:
         return self.__commonNotifier()
 
-    def appNotifier(self)->EventReactor[EventData,None]:
+    def appNotifier(self) -> EventReactor[EventData, None]:
         return self.__commonNotifier()
 
-    def __send(self,p6MsgOrRes:P6Message|P6Response):
+    def __send(self, p6MsgOrRes: P6Message | P6Response):
         MessageSender.sendP6MsgRes(self.__socketProvider(), p6MsgOrRes)
-

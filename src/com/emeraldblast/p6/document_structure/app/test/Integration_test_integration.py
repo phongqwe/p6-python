@@ -53,6 +53,19 @@ class Integration_integration_test(unittest.TestCase):
     def tearDown(self) -> None:
         self.testEnv.stopAll()
 
+    def test_addScript_notif_on_wb_is_sent(self):
+
+        reactorCB = MagicMock()
+        self.testEnv.notifListener.addReactorCB(
+            event = P6Events.Script.NewScript.event,
+            reactorCB = reactorCB
+        )
+        self.b1.addScriptRs("s1", "abc")
+        self.b1.addScript("s2", "abc")
+        self.assertEqual(2,reactorCB.call_count)
+
+
+
     def test_no_reactor_for_new_script_request(self):
         """new script request from UI returns no reactor error"""
         req = NewScriptRequest(

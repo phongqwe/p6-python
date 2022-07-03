@@ -6,7 +6,6 @@ import zmq
 from com.emeraldblast.p6.document_structure.communication.SocketProviderImp import SocketProviderImp
 from com.emeraldblast.p6.document_structure.communication.notifier.InternalNotifierProvider import \
     InternalNotifierProvider
-from com.emeraldblast.p6.document_structure.communication.notifier.eventData.CellEventData import CellEventData
 from com.emeraldblast.p6.document_structure.util.for_test.TestUtils import findNewSocketPort, startREPServerOnThread, \
     sendClose
 from com.emeraldblast.p6.document_structure.workbook.EventWorkbook import EventWorkbook
@@ -66,7 +65,7 @@ class StdReactorProvider_test(unittest.TestCase):
         self.reactorProvider = InternalNotifierProvider(gs)
         reactor = self.reactorProvider.cellNotifier()
 
-        def onCellEvent(data: CellEventData):
+        def onCellEvent(data):
             reactor.react(data)
             self.sentObj = data.data.toProtoObj()
 
@@ -85,7 +84,7 @@ class StdReactorProvider_test(unittest.TestCase):
             # start mock server
             reactor = self.reactorProvider.cellNotifier()
 
-            def onCellEvent(data:CellEventData):
+            def onCellEvent(data):
                 reactor.react(data)
 
             wb = EventWorkbook(WorkbookImp("bookz1"), onCellEvent = onCellEvent, onWorkbookEvent = MagicMock())
@@ -97,7 +96,7 @@ class StdReactorProvider_test(unittest.TestCase):
         """ why should there be an exception? """
         reactor = self.reactorProvider.cellNotifier()
 
-        def onCellEvent(data:CellEventData):
+        def onCellEvent(data):
             reactor.react(data)
 
         wb = EventWorkbook(WorkbookImp("bookz1"), onCellEvent = onCellEvent)

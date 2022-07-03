@@ -52,8 +52,7 @@ class EventApp(AppWrapper):
             response.errorReport = rs.err
         eventData = EventData(
             event=P6Events.App.CreateNewWorkbook.event,
-            isError = False,
-            data=response.toProtoBytes())
+            data=response)
         self.onEvent(eventData)
 
     def closeWorkbookRs(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]) -> Result[WorkbookKey, ErrorReport]:
@@ -63,7 +62,7 @@ class EventApp(AppWrapper):
             event = P6EventTableImp.i().getEventFor(response)
             self.onEvent(EventData(
                 event=event,
-                data = response.toProtoBytes()
+                data = response
             ))
         return rs
 
@@ -84,7 +83,6 @@ class EventApp(AppWrapper):
             response.errorReport = rs.err
         eventData = EventData(
             event = P6Events.App.SaveWorkbook.event,
-            isError = False,
             data = response
         )
         self.onEvent(eventData)
@@ -102,13 +100,7 @@ class EventApp(AppWrapper):
             response.errorReport = rs.err
         eventData = EventData(
             event = P6Events.App.LoadWorkbook.event,
-            isError = False,
             data = response
         )
         self.onEvent(eventData)
         return rs
-
-
-
-
-

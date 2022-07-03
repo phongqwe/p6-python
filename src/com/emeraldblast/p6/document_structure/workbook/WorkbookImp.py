@@ -27,6 +27,31 @@ from com.emeraldblast.p6.document_structure.worksheet.WorksheetImp import Worksh
 
 class WorkbookImp(Workbook):
 
+    def removeScriptRs(self, name: str) -> Result[None, ErrorReport]:
+        # TODO this is a place holder for future checking
+        self._scriptCont = self._scriptCont.removeScript(name)
+        return Ok(None)
+
+    def addAllScriptsRs(self, scripts: list[SimpleScriptEntry]) -> Result[None, ErrorReport]:
+        rs = self._scriptCont.addAllScriptsRs(scripts)
+        if rs.isOk():
+            self._scriptCont = rs.value
+            return Ok(None)
+        else:
+            return Err(rs.err)
+
+    def overwriteScriptRs(self, name: str, newScript: str) -> Result[None, ErrorReport]:
+        rs = self._scriptCont.overwriteScriptRs(name, newScript)
+        if rs.isOk():
+            self._scriptCont = rs.value
+            return Ok(None)
+        else:
+            return Err(rs.err)
+
+    def overwriteScript(self, name: str, newScript: str):
+        rs = self.overwriteScriptRs(name, newScript)
+        rs.getOrRaise()
+
     def addScriptRs(self, name: str, script: str) -> Result[None, ErrorReport]:
         rs = self._scriptCont.addScriptRs(name, script)
         if rs.isOk():
@@ -39,14 +64,9 @@ class WorkbookImp(Workbook):
     def allAsScriptEntry(self) -> list[ScriptEntry]:
         return self._scriptCont.allAsScriptEntry(self.workbookKey)
 
-    def addScript(self, name: str, script: str):
-        self._scriptCont = self._scriptCont.addScript(name, script)
 
     def getScript(self, name: str) -> str | None:
         return self._scriptCont.getScript(name)
-
-    def removeScript(self, name: str):
-        self._scriptCont = self._scriptCont.removeScript(name)
 
     def removeAllScript(self):
         self._scriptCont = self._scriptCont.removeAll()

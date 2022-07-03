@@ -16,7 +16,7 @@ from com.emeraldblast.p6.proto import CommonProtos_pb2 as com_dot_emeraldblast_d
 from com.emeraldblast.p6.proto import DocProtos_pb2 as com_dot_emeraldblast_dot_p6_dot_proto_dot_DocProtos__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n,com/emeraldblast/p6/proto/ScriptProtos.proto\x12\x19\x63om.emeraldblast.p6.proto\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\x1a)com/emeraldblast/p6/proto/DocProtos.proto\"z\n\x13ScriptEntryKeyProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x45\n\x0bworkbookKey\x18\x02 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProtoH\x00\x88\x01\x01\x42\x0e\n\x0c_workbookKey\"_\n\x10ScriptEntryProto\x12;\n\x03key\x18\x01 \x01(\x0b\x32..com.emeraldblast.p6.proto.ScriptEntryKeyProto\x12\x0e\n\x06script\x18\x02 \x01(\t\"j\n\x18ScriptChangeRequestProto\x12\x11\n\tnewScript\x18\x02 \x01(\t\x12;\n\x03key\x18\x01 \x01(\x0b\x32..com.emeraldblast.p6.proto.ScriptEntryKeyProto\"Y\n\x15NewScriptRequestProto\x12@\n\x0bscriptEntry\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.ScriptEntryProto\"\xa6\x01\n\x1aNewScriptNotificationProto\x12@\n\x0bscriptEntry\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.ScriptEntryProto\x12\x46\n\x0e\x65rrorIndicator\x18\x02 \x01(\x0b\x32..com.emeraldblast.p6.proto.ErrorIndicatorProtob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n,com/emeraldblast/p6/proto/ScriptProtos.proto\x12\x19\x63om.emeraldblast.p6.proto\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\x1a)com/emeraldblast/p6/proto/DocProtos.proto\"z\n\x13ScriptEntryKeyProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x45\n\x0bworkbookKey\x18\x02 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProtoH\x00\x88\x01\x01\x42\x0e\n\x0c_workbookKey\"_\n\x10ScriptEntryProto\x12;\n\x03key\x18\x01 \x01(\x0b\x32..com.emeraldblast.p6.proto.ScriptEntryKeyProto\x12\x0e\n\x06script\x18\x02 \x01(\t\"j\n\x18ScriptChangeRequestProto\x12\x11\n\tnewScript\x18\x02 \x01(\t\x12;\n\x03key\x18\x01 \x01(\x0b\x32..com.emeraldblast.p6.proto.ScriptEntryKeyProto\"Y\n\x15NewScriptRequestProto\x12@\n\x0bscriptEntry\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.ScriptEntryProto\"\xa8\x01\n\x1aNewScriptNotificationProto\x12\x42\n\rscriptEntries\x18\x01 \x03(\x0b\x32+.com.emeraldblast.p6.proto.ScriptEntryProto\x12\x46\n\x0e\x65rrorIndicator\x18\x02 \x01(\x0b\x32..com.emeraldblast.p6.proto.ErrorIndicatorProtob\x06proto3')
 
 
 
@@ -72,5 +72,5 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _NEWSCRIPTREQUESTPROTO._serialized_start=493
   _NEWSCRIPTREQUESTPROTO._serialized_end=582
   _NEWSCRIPTNOTIFICATIONPROTO._serialized_start=585
-  _NEWSCRIPTNOTIFICATIONPROTO._serialized_end=751
+  _NEWSCRIPTNOTIFICATIONPROTO._serialized_end=753
 # @@protoc_insertion_point(module_scope)
