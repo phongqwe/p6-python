@@ -203,11 +203,6 @@ class WorkbookImp_test(unittest.TestCase):
             ),
             ["wbe1", "wbe2", "wbe3"]
         ))
-        # w1.scriptContainer.addAllScripts(wb1Entries)
-        # newWbKey = WorkbookKeys.fromNameAndPath("newWbKey")
-        # w1.workbookKey =newWbKey
-        # for script in w1.scriptContainer.allScripts:
-        #     self.assertEqual(newWbKey, script.key.workbookKey)
 
     def test_scriptCont_delegation(self):
         scriptCont = MagicMock()
@@ -224,10 +219,6 @@ class WorkbookImp_test(unittest.TestCase):
         scriptCont.removeAll = MagicMock(return_value=scriptCont)
         w1.removeAllScript()
         scriptCont.removeAll.assert_called_once()
-
-        scriptCont.addScript = MagicMock(return_value=scriptCont)
-        w1.addScript(MagicMock(),MagicMock())
-        scriptCont.addScript.assert_called_once()
 
         scriptCont.addAllScripts = MagicMock(return_value = scriptCont)
         w1.addAllScripts(MagicMock())

@@ -34,7 +34,8 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
         raise NotImplementedError()
 
     def addAllScripts(self, scripts: list[SimpleScriptEntry]):
-        raise NotImplementedError()
+        rs = self.addAllScriptsRs(scripts)
+        rs.getOrRaise()
 
     def addAllScriptsRs(self, scripts: list[SimpleScriptEntry]) -> Result[None, ErrorReport]:
         raise NotImplementedError()

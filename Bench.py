@@ -27,7 +27,13 @@ class A:
 
 class Bench(unittest.TestCase):
     def test_z(self):
-        d = {
-            1:"1v"
-        }
+        from py4j.java_gateway import JavaGateway
+        gateway = JavaGateway()
+        appXMs = gateway.entry_point
+        print(appXMs.getValue().getX1())
+        newApp = appXMs.getValue().increaseX()
+        appXMs.setValue(newApp)
+        print(appXMs.getValue().getX())
+
+
 

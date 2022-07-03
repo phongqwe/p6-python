@@ -22,9 +22,6 @@ class WorkbookWrapper(Workbook):
     def overwriteScriptRs(self, name: str, newScript: str) -> Result[None, ErrorReport]:
         return self.rootWorkbook.overwriteScriptRs(name, newScript)
 
-    def addScriptRs(self, name: str, script: str) -> Result[None, ErrorReport]:
-        return self.rootWorkbook.addScriptRs(name, script)
-
     def getScript(self, name: str) -> str | None:
         return self.rootWorkbook.getScript(name)
 
@@ -33,9 +30,6 @@ class WorkbookWrapper(Workbook):
 
     def removeAllScript(self):
         self.rootWorkbook.removeAllScript()
-
-    def addAllScripts(self, scripts: list[SimpleScriptEntry]):
-        self.rootWorkbook.addAllScripts(scripts)
 
     @property
     def allScripts(self) -> list[SimpleScriptEntry]:
