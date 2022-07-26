@@ -1,4 +1,5 @@
 from abc import ABC
+from typing import Optional
 
 from com.emeraldblast.p6.document_structure.script import SimpleScriptEntry
 from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntry
@@ -34,7 +35,7 @@ class ScriptContainer(WithSize,ABC):
     def addScript(self, name: str, script: str) -> 'ScriptContainer':
         raise NotImplementedError()
 
-    def getScript(self, name: str) -> str | None:
+    def getScript(self, name: str) -> Optional[str]:
         raise NotImplementedError()
 
     def removeScript(self, name: str) -> 'ScriptContainer':

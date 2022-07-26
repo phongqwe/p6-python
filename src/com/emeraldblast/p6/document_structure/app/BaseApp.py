@@ -31,7 +31,7 @@ class BaseApp(App, ABC):
     def addScript(self, name: str, script: str):
         self.scriptContainer.addScript(name, script)
 
-    def getScript(self, name: str) -> str | None:
+    def getScript(self, name: str) -> Optional[str]:
         return self.scriptContainer.getScript(name)
 
     def removeScript(self, name: str):
@@ -73,7 +73,7 @@ class BaseApp(App, ABC):
     def rootApp(self) -> 'App':
         return self
 
-    def createDefaultNewWorkbookRs(self, name: str | None = None) -> Result[Workbook, ErrorReport]:
+    def createDefaultNewWorkbookRs(self, name: Optional[str] = None) -> Result[Workbook, ErrorReport]:
         newWbRs: Result[Workbook, ErrorReport] = self.createNewWorkbookRs(name)
         if newWbRs.isOk():
             wb = newWbRs.value.rootWorkbook
@@ -101,7 +101,7 @@ class BaseApp(App, ABC):
         rs: Result[Workbook, ErrorReport] = self.getWorkbookRs(key)
         return Results.extractOrRaise(rs)
 
-    def getWorkbookOrNone(self, key: Union[str, int, WorkbookKey]) -> Workbook | None:
+    def getWorkbookOrNone(self, key: Union[str, int, WorkbookKey]) -> Optional[Workbook]:
         rs: Result[Workbook, ErrorReport] = self.getWorkbookRs(key)
         return Results.extractOrNone(rs)
 
@@ -119,7 +119,7 @@ class BaseApp(App, ABC):
         else:
             return Err(AppErrors.WorkbookNotExist.report(key))
 
-    def createDefaultNewWorkbook(self, name: str | None = None) -> Workbook:
+    def createDefaultNewWorkbook(self, name: Optional[str] = None) -> Workbook:
         createRs: Result[Workbook, ErrorReport] = self.createDefaultNewWorkbookRs(name)
         return Results.extractOrRaise(createRs)
 

@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Optional
 
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
@@ -14,7 +15,7 @@ class PasteRangeRequest(ToP6Msg,ToProto[PasteRangeRequestProto]):
 
     anchorCell: CellAddress
     wsWb: WsWb
-    windowId: str | None
+    windowId: Optional[str]
 
     @staticmethod
     def fromProtoBytes(data: bytes) -> 'PasteRangeRequest':

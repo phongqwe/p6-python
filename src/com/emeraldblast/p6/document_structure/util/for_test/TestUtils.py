@@ -38,8 +38,8 @@ def sampleWb(name):
     return wb
 
 def sampleApp(
-        saver: P6FileSaver|None = None,
-        loader: P6FileLoader|None = None,
+        saver: P6FileSaver = None,
+        loader: P6FileLoader = None,
 )->App:
     wb = sampleWb("Book1")
     wb2 = sampleWb("Book2")

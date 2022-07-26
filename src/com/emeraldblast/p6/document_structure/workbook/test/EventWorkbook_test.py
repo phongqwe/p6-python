@@ -193,7 +193,7 @@ class EventWorkbook_test(unittest.TestCase):
         """ test that the call back was called. And the data passed to the call back is correct"""
 
         self.x = 0
-        self.errorReport: ErrorReport | None = None
+        self.errorReport: Optional[ErrorReport] = None
         self.eventData: EventData | None = None
 
         def onWbEvent(eventData: EventData):
@@ -236,7 +236,7 @@ class EventWorkbook_test(unittest.TestCase):
 
     def test_createNewWorksheet_callback_fail(self):
         self.x = 0
-        self.errorReport: ErrorReport | None = None
+        self.errorReport: Optional[ErrorReport] = None
         self.eventData: EventData | None = None
 
         def onWbEvent(eventData: EventData):

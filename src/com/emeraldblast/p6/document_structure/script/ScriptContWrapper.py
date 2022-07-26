@@ -64,7 +64,7 @@ class ScriptContWrapper(ScriptContainer):
         self._rc = self._rc.addScript(name, script)
         return self
 
-    def getScript(self, name: str) -> str | None:
+    def getScript(self, name: str) -> Optional[str]:
         return self.rootCont.getScript(name)
 
     def removeScript(self, name: str) -> 'ScriptContainer':

@@ -31,7 +31,7 @@ class App(ABC):
     def addScript(self, name:str, script:str):
         raise NotImplementedError()
 
-    def getScript(self, name:str) -> str | None:
+    def getScript(self, name:str) -> Optional[str]:
         raise NotImplementedError()
 
     def removeScript(self, name:str):
@@ -125,7 +125,7 @@ class App(ABC):
         """
         raise NotImplementedError()
 
-    def getWorkbookOrNone(self, key: Union[str, int, WorkbookKey]) -> Workbook | None:
+    def getWorkbookOrNone(self, key: Union[str, int, WorkbookKey]) -> Optional[Workbook]:
         """:return workbook at a key that is either a name, an index, or a WorkbookKey. The returned workbook is connected to all the reactors of this app. Return none if the workbook is not available"""
         raise NotImplementedError()
 
@@ -143,14 +143,14 @@ class App(ABC):
         """
         raise NotImplementedError()
 
-    def createDefaultNewWorkbook(self, name: str | None = None) -> Workbook:
+    def createDefaultNewWorkbook(self, name: Optional[str] = None) -> Workbook:
         """
         create a new workbook with an auto generated name, a blank worksheet with auto generated name
         :return a the newly created workbook or raising an exception if there's an error
         """
         raise NotImplementedError()
 
-    def createDefaultNewWorkbookRs(self, name: str | None = None) -> Result[Workbook, ErrorReport]:
+    def createDefaultNewWorkbookRs(self, name: Optional[str] = None) -> Result[Workbook, ErrorReport]:
         """
         create a new workbook with an auto generated name, a blank worksheet with auto generated name
         :return a Result object if there are error instead of raising an exception

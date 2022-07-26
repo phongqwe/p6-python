@@ -1,11 +1,11 @@
-from typing import Any
+from typing import Any, Optional
 
 from com.emeraldblast.p6.document_structure.cell.CellContent import CellContent
 
 
 class CellContentImp(CellContent):
 
-    def __init__(self, value: Any | None, formula: str | None, script: str | None):
+    def __init__(self, value: Any | None, formula: Optional[str], script: Optional[str]):
         self._script = script
         self._formula = formula
         self._value = value
@@ -15,9 +15,9 @@ class CellContentImp(CellContent):
         return self._value
 
     @property
-    def formula(self) -> str | None:
+    def formula(self) -> Optional[str]:
         return self._formula
 
     @property
-    def script(self) -> str | None:
+    def script(self) -> Optional[str]:
         return self._script

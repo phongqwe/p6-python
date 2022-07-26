@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Optional
 
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
@@ -8,7 +9,7 @@ from com.emeraldblast.p6.proto.CommonProtos_pb2 import ErrorIndicatorProto
 @dataclass
 class ErrorIndicator(ToProto[ErrorIndicatorProto]):
 
-    def __init__(self, isError: bool, errorReport: ErrorReport | None = None):
+    def __init__(self, isError: bool, errorReport: Optional[ErrorReport] = None):
         self.isError = isError
         self.errorReport = errorReport
 

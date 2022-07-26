@@ -46,7 +46,7 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
     def overwriteScript(self, name: str, newScript: str):
         self.overwriteScript(name, newScript)
 
-    def getScript(self, name: str) -> str | None:
+    def getScript(self, name: str) -> Optional[str]:
         raise NotImplementedError()
 
     def removeScriptRs(self,name: str)->Result[None,ErrorReport]:
@@ -167,7 +167,7 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
     def getWorksheetRs(self, nameOrIndex: Union[str, int]) -> Result[Worksheet, ErrorReport]:
         raise NotImplementedError()
 
-    def getWorksheetByNameOrNone(self, name: str) -> Worksheet | None:
+    def getWorksheetByNameOrNone(self, name: str) -> Optional[Worksheet]:
         """
         :param name: sheet name
         :return: the sheet having that name or None if no such sheet exists

@@ -1,3 +1,5 @@
+from typing import Optional
+
 from com.emeraldblast.p6.document_structure.communication.event.P6EventTable import P6EventTable
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.ToEventData import ToEventData
 from com.emeraldblast.p6.document_structure.communication.notifier.eventData.EventData import EventData
@@ -10,8 +12,8 @@ from com.emeraldblast.p6.proto.AppEventProtos_pb2 import CloseWorkbookResponsePr
 
 class CloseWorkbookResponse(ToEventData,ToProto[CloseWorkbookResponseProto]):
 
-    def __init__(self, isError: bool, workbookKey: WorkbookKey | None, windowId: str | None,
-                 errorReport: ErrorReport | None):
+    def __init__(self, isError: bool, workbookKey: WorkbookKey | None, windowId: Optional[str],
+                 errorReport: Optional[ErrorReport]):
         # super().__init__()
         self.errorReport = errorReport
         self.windowId = windowId
@@ -19,7 +21,7 @@ class CloseWorkbookResponse(ToEventData,ToProto[CloseWorkbookResponseProto]):
         self.isError = isError
 
     @staticmethod
-    def fromRs(rs: Result[WorkbookKey, ErrorReport], windowId: str | None) -> 'CloseWorkbookResponse':
+    def fromRs(rs: Result[WorkbookKey, ErrorReport], windowId: Optional[str]) -> 'CloseWorkbookResponse':
         if rs.isOk():
             wbKey = rs.value
             return CloseWorkbookResponse(isError = rs.isErr(), workbookKey = wbKey, windowId = windowId,

@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import Any
+from typing import Any, Optional
 
 
 class CellContent(ABC):
@@ -8,11 +8,11 @@ class CellContent(ABC):
         raise NotImplementedError()
 
     @property
-    def formula(self) -> str | None:
+    def formula(self) -> Optional[str]:
         raise NotImplementedError()
 
     @property
-    def script(self) -> str | None:
+    def script(self) -> Optional[str]:
         raise NotImplementedError()
 
     def __eq__(self, other):

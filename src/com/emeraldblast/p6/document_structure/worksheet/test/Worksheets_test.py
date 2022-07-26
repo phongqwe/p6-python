@@ -8,7 +8,7 @@ from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetJson import WorksheetJson
 from com.emeraldblast.p6.document_structure.worksheet.Worksheets import Worksheets
-from com.emeraldblast.p6.proto.DocProtos_pb2 import WorksheetProto, CellProto
+from com.emeraldblast.p6.proto.DocProtos_pb2 import WorksheetProto, CellProto, CellValueProto
 
 
 class Worksheets_test(unittest.TestCase):
@@ -19,12 +19,16 @@ class Worksheets_test(unittest.TestCase):
 
         a1 = CellProto()
         a1.address.CopyFrom(CellAddresses.fromLabel("@A1").toProtoObj())
-        a1.value = "123"
+        a1.value.CopyFrom(CellValueProto(
+            num=123
+        ))
 
         x12Proto = CellProto()
 
         x12Proto.address.CopyFrom(CellAddresses.fromLabel("@X12").toProtoObj())
-        x12Proto.value = "a string"
+        x12Proto.value.CopyFrom(CellValueProto(
+            str="a string"
+        ))
         x12Proto.formula = "formula x12"
 
         wsProto.cell.extend([

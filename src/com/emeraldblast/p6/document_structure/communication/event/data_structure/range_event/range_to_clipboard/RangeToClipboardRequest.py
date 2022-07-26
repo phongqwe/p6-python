@@ -1,9 +1,11 @@
+from typing import Optional
+
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
 from com.emeraldblast.p6.proto.RangeProtos_pb2 import RangeOperationRequestProto
 
 
 class RangeToClipboardRequest:
-    def __init__(self, rangeId:RangeId, windowId:str|None):
+    def __init__(self, rangeId:RangeId, windowId:Optional[str]):
         self.windowId = windowId
         self.rangeId = rangeId
 

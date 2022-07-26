@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Union
 
 from com.emeraldblast.p6.document_structure.util.ToException import ToException
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
@@ -12,7 +12,7 @@ class ErrorReport(ToProto[ErrorReportProto]):
     def __init__(
             self,
             header: ErrorHeader,
-            data: Any | ToProto | ToRepStr | str | None = None,
+            data: Union[Any, ToProto, ToRepStr, str, None] = None,
             exception: Exception | None = None
     ):
         self.header = header
@@ -37,7 +37,7 @@ class ErrorReport(ToProto[ErrorReportProto]):
 
     def toException(self) -> Exception:
         if self.exception is not None:
-            if isinstance(self.exception,Exception):
+            if isinstance(self.exception, Exception):
                 return self.exception
 
         if isinstance(self.data, ToException):

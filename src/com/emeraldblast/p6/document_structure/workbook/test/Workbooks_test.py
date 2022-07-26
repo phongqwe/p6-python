@@ -6,7 +6,7 @@ from com.emeraldblast.p6.document_structure.script.SimpleScriptEntry import Simp
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.workbook.Workbooks import Workbooks
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
-from com.emeraldblast.p6.proto.DocProtos_pb2 import WorkbookProto, WorksheetProto, CellProto
+from com.emeraldblast.p6.proto.DocProtos_pb2 import WorkbookProto, WorksheetProto, CellProto, CellValueProto
 
 
 class Workbooks_test(unittest.TestCase):
@@ -18,12 +18,12 @@ class Workbooks_test(unittest.TestCase):
             cell = [
                 CellProto(
                     address = CellAddresses.fromLabel("@C23").toProtoObj(),
-                    value = "123qwe",
+                    value = CellValueProto(str="123qwe"),
                     formula = "formula z",
                 ),
                 CellProto(
                     address = CellAddresses.fromLabel("@N5").toProtoObj(),
-                    value = "555",
+                    value = CellValueProto(num=555),
                 )
             ]
         )

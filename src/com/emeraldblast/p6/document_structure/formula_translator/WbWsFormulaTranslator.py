@@ -1,3 +1,5 @@
+from typing import Optional
+
 from com.emeraldblast.p6.document_structure.formula_translator.DirectLiteralTranslator import DirectLiteralTranslator
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from com.emeraldblast.p6.document_structure.formula_translator.PythonFormulaTranslator import PythonFormulaTranslator
@@ -11,8 +13,8 @@ class WbWsFormulaTranslator(FormulaTranslator):
     """
     A translator with a workbook key. The output script of this translator always explicitly specify the workbook, worksheet it depends/runs on.
     """
-    def __init__(self, worksheetName: str | None = None, workbookKey: WorkbookKey | None = None):
-        self.wsName: str | None = worksheetName
+    def __init__(self, worksheetName: Optional[str] = None, workbookKey: WorkbookKey | None = None):
+        self.wsName: Optional[str] = worksheetName
         self.wbKey: WorkbookKey | None = workbookKey
         self.pythonTranslator = PythonFormulaTranslator(
             visitor = WbWsVisitor(

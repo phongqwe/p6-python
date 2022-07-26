@@ -1,10 +1,12 @@
+from typing import Optional
+
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.emeraldblast.p6.proto.AppEventProtos_pb2 import CloseWorkbookRequestProto
 
 
 class CloseWorkbookRequest:
-    def __init__(self, workbookKey:WorkbookKey,windowId:str|None = None,):
+    def __init__(self, workbookKey:WorkbookKey,windowId:Optional[str] = None,):
         self.windowId = windowId
         self.workbookKey = workbookKey
     

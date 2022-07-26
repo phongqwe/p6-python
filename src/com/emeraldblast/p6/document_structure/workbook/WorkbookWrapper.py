@@ -22,7 +22,7 @@ class WorkbookWrapper(Workbook):
     def overwriteScriptRs(self, name: str, newScript: str) -> Result[None, ErrorReport]:
         return self.rootWorkbook.overwriteScriptRs(name, newScript)
 
-    def getScript(self, name: str) -> str | None:
+    def getScript(self, name: str) -> Optional[str]:
         return self.rootWorkbook.getScript(name)
 
     def removeScriptRs(self,name: str)->Result[None,ErrorReport]:

@@ -1,3 +1,5 @@
+from typing import Optional
+
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
@@ -8,10 +10,10 @@ from com.emeraldblast.p6.proto.WorkbookProtos_pb2 import WorkbookUpdateCommonRes
 class WorkbookUpdateCommonResponse(ToProto[WorkbookUpdateCommonResponseProto]):
     def __init__(self,
                  isError: bool,
-                 workbookKey: WorkbookKey|None = None,
-                 errorReport: ErrorReport | None = None,
-                 newWorkbook: Workbook | None = None,
-                 windowId:str|None=None
+                 workbookKey: WorkbookKey = None,
+                 errorReport: Optional[ErrorReport] = None,
+                 newWorkbook: Optional[Workbook] = None,
+                 windowId:Optional[str]=None
                   ):
         self.workbookKey = workbookKey
         self.newWorkbook = newWorkbook

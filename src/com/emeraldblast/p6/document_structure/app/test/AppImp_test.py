@@ -112,7 +112,7 @@ class AppImp_test(unittest.TestCase):
         app = self.app
         fileName = "fileProto4.txt"
 
-        # x: load a valid file with result function
+        # x: load a valid file with rs function
         loadRs0 = app.loadWorkbookRs(fileName)
         self.assertTrue(loadRs0.isOk(),)
         self.assertIsNotNone(app.getWorkbookOrNone(0))

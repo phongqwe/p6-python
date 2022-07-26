@@ -17,7 +17,7 @@ class FormulaTranslators:
         return FormulaTranslators.__standard
 
     @staticmethod
-    def standardWbWs(worksheetName: str | None, workbookKey: WorkbookKey) -> FormulaTranslator:
+    def standardWbWs(worksheetName: Optional[str], workbookKey: WorkbookKey) -> FormulaTranslator:
         return WbWsFormulaTranslator(worksheetName, workbookKey)
 
     @staticmethod

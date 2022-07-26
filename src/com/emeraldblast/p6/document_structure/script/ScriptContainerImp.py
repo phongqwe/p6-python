@@ -1,3 +1,5 @@
+from typing import Optional
+
 from com.emeraldblast.p6.document_structure.script.ScriptContainerErrors import ScriptContainerErrors
 from com.emeraldblast.p6.document_structure.script.SimpleScriptEntry import SimpleScriptEntry
 from com.emeraldblast.p6.document_structure.script.ScriptContainer import ScriptContainer
@@ -77,7 +79,7 @@ class ScriptContainerImp(ScriptContainer):
         rt = rs.getOrRaise()
         return rt
 
-    def getScript(self, name: str) -> str | None:
+    def getScript(self, name: str) -> Optional[str]:
         return self.scriptMap.get(name)
 
     def removeScript(self, name: str) -> 'ScriptContainer':

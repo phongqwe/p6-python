@@ -65,7 +65,7 @@ class WorkbookImp(Workbook):
         return self._scriptCont.allAsScriptEntry(self.workbookKey)
 
 
-    def getScript(self, name: str) -> str | None:
+    def getScript(self, name: str) -> Optional[str]:
         return self._scriptCont.getScript(name)
 
     def removeAllScript(self):

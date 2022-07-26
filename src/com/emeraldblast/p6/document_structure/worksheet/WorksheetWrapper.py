@@ -79,11 +79,11 @@ class WorksheetWrapper(BaseWorksheet):
         return self._innerSheet.rootWorksheet
 
     @property
-    def workbook(self) -> Workbook | None:
+    def workbook(self) -> Optional[Workbook]:
         return self.rootWorksheet.workbook
 
     @workbook.setter
-    def workbook(self, newWorkbook: Workbook | None):
+    def workbook(self, newWorkbook: Optional[Workbook]):
         self.rootWorksheet.workbook = newWorkbook
 
     @property

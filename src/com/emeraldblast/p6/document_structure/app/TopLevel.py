@@ -49,7 +49,7 @@ def getApp() -> App:
     return g[appKey]
 
 
-def getActiveWorkbook() -> Workbook | None:
+def getActiveWorkbook() -> Optional[Workbook]:
     return getApp().activeWorkbook
 
 

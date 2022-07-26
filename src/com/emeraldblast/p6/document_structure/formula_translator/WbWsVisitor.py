@@ -1,3 +1,5 @@
+from typing import Optional
+
 from com.emeraldblast.p6.document_structure.formula_translator.PythonFormulaVisitor import PythonFormulaVisitor
 from com.emeraldblast.p6.document_structure.formula_translator.antlr4.FormulaParser import FormulaParser
 from com.emeraldblast.p6.document_structure.formula_translator.mapper.PythonMapper import PythonMapper
@@ -8,11 +10,11 @@ from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import Work
 
 class WbWsVisitor(PythonFormulaVisitor):
     def __init__(self,
-                 sheetName: str | None = None,
+                 sheetName: Optional[str] = None,
                  workbookKey: WorkbookKey | None = None
                  ):
         super().__init__()
-        self._sheetName: str | None = sheetName
+        self._sheetName: Optional[str] = sheetName
         self._wbKey: WorkbookKey | None = workbookKey
         self.mapper = PythonMapper.instance()
         self.wsMapper = WorksheetMapper.instance()

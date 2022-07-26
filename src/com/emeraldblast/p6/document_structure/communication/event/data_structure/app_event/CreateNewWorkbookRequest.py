@@ -1,8 +1,10 @@
+from typing import Optional
+
 from com.emeraldblast.p6.proto.AppEventProtos_pb2 import CreateNewWorkbookRequestProto
 
 
 class CreateNewWorkbookRequest:
-    def __init__(self, windowId: str | None = None):
+    def __init__(self, windowId: Optional[str] = None):
         self.windowId = windowId
 
     @staticmethod

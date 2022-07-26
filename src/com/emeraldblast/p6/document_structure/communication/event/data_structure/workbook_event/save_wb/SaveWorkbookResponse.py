@@ -1,3 +1,5 @@
+from typing import Optional
+
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
@@ -10,7 +12,7 @@ class SaveWorkbookResponse(ToProto[SaveWorkbookResponseProto]):
             self,
             path: str, workbookKey: WorkbookKey | None = None,
             isError: bool = False,
-            errorReport: ErrorReport | None = None):
+            errorReport: Optional[ErrorReport] = None):
         self.path = path
         self.workbookKey = workbookKey
         self.errorReport = errorReport

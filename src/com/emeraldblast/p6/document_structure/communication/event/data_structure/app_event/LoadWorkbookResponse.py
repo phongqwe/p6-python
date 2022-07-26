@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Optional
 
 from com.emeraldblast.p6.document_structure.communication.event.P6EventTable import P6EventTable
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.ToEventData import ToEventData
@@ -14,8 +15,8 @@ from com.emeraldblast.p6.proto.AppEventProtos_pb2 import LoadWorkbookResponsePro
 #
 @dataclass
 class LoadWorkbookResponse(ToEventData,ToProto[LoadWorkbookResponseProto] ):
-    def __init__(self, isError: bool, windowId: str | None, errorReport: ErrorReport | None = None,
-                 workbook: Workbook | None = None):
+    def __init__(self, isError: bool, windowId: Optional[str], errorReport: Optional[ErrorReport] = None,
+                 workbook: Optional[Workbook] = None):
         super().__init__()
         self.windowId = windowId
         self.workbook = workbook

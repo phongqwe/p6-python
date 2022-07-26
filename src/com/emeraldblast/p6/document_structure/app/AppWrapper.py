@@ -62,7 +62,7 @@ class AppWrapper(BaseApp):
     def hasNoWorkbook(self) -> bool:
         return self.rootApp.hasNoWorkbook()
 
-    def createDefaultNewWorkbookRs(self, name: str | None = None) -> Result[Workbook, ErrorReport]:
+    def createDefaultNewWorkbookRs(self, name: Optional[str] = None) -> Result[Workbook, ErrorReport]:
         return self.rootApp.createDefaultNewWorkbookRs(name)
 
     def createNewWorkbookRs(self, name: Optional[str] = None) -> Result[Workbook, ErrorReport]:

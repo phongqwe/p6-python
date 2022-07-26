@@ -113,11 +113,11 @@ class Worksheet(UserFriendlyCellContainer,
         raise NotImplementedError()
 
     @property
-    def workbook(self) -> Workbook | None:
+    def workbook(self) -> Optional[Workbook]:
         raise NotImplementedError()
 
     @workbook.setter
-    def workbook(self, newWorkbook: Workbook | None):
+    def workbook(self, newWorkbook: Optional[Workbook]):
         raise NotImplementedError()
 
     def removeFromWorkbook(self):

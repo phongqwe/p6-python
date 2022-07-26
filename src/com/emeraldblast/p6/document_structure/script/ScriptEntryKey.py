@@ -8,7 +8,7 @@ from com.emeraldblast.p6.proto.ScriptProtos_pb2 import ScriptEntryKeyProto
 @dataclass(frozen = True)
 class ScriptEntryKey(ToProto[ScriptEntryKeyProto]):
     name:str
-    workbookKey:WorkbookKey|None = None
+    workbookKey:WorkbookKey = None
 
     @staticmethod
     def fromProto(proto:ScriptEntryKeyProto)->'ScriptEntryKey':

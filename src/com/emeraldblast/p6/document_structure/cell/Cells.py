@@ -20,22 +20,20 @@ class Cells:
     @staticmethod
     def fromProto(proto:CellProto)->Cell:
         vParsed = None
-        isValue = not proto.isFormula
+        isValue = not proto.HasField("formula")
         if proto.HasField("value") and isValue:
             v = proto.value
-            vParsed = v
-            if proto.isBoolLit:
-                if v == "True":
+            vParsed = None
+            if v.HasField("bool"):
+                if v.bool == "True":
                     vParsed = True
                 else:
                     vParsed = False
-            if proto.isIntLit:
-                vParsed = int(v)
-            if proto.isFloatLit:
-                vParsed = float(v)
+            if v.HasField("num"):
+                vParsed = float(v.num)
 
         formula = None
-        if proto.isFormula and proto.HasField("formula"):
+        if proto.HasField("formula"):
             formula = proto.formula
 
         rt = DataCell(

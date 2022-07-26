@@ -39,18 +39,18 @@ class Cell(ToJson, ToProto[CellProto], ABC):
         raise NotImplementedError()
 
     @property
-    def worksheet(self) -> Worksheet | None:
+    def worksheet(self) -> Optional[Worksheet]:
         raise NotImplementedError()
 
     @worksheet.setter
-    def worksheet(self, newWorksheet: Worksheet | None):
+    def worksheet(self, newWorksheet: Optional[Worksheet]):
         raise NotImplementedError()
 
     def removeFromWorksheet(self):
         self.worksheet = None
 
     @property
-    def workbook(self)->Workbook | None:
+    def workbook(self)->Optional[Workbook]:
         if self.worksheet is not None:
             return self.worksheet.workbook
         else:

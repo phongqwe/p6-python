@@ -205,11 +205,11 @@ class WorksheetImp(BaseWorksheet):
         return self
 
     @property
-    def workbook(self) -> Workbook | None:
+    def workbook(self) -> Optional[Workbook]:
         return self.__wb
 
     @workbook.setter
-    def workbook(self, newWorkbook: Workbook | None):
+    def workbook(self, newWorkbook: Optional[Workbook]):
         if newWorkbook is not None:
             self.__wb = newWorkbook.rootWorkbook
         else:

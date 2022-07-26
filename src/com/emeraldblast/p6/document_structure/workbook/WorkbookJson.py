@@ -1,4 +1,5 @@
 import json
+from typing import Optional
 
 from com.emeraldblast.p6.document_structure.util.ToJson import ToJson
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetJson import WorksheetJson
@@ -6,9 +7,9 @@ from com.emeraldblast.p6.document_structure.worksheet.WorksheetJson import Works
 
 class WorkbookJson(ToJson):
 
-    def __init__(self, name: str, path: str | None, worksheetJsons: list[WorksheetJson]):
+    def __init__(self, name: str, path: Optional[str], worksheetJsons: list[WorksheetJson]):
         self.name: str = name
-        self.path: str | None = path
+        self.path: Optional[str] = path
         self.worksheets: list[WorksheetJson] = worksheetJsons
 
     def __str__(self):

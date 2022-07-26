@@ -34,7 +34,7 @@ class EventApp(AppWrapper):
             reactorContainer.triggerReactorsFor(ed.event,ed)
         return EventApp(innerApp,onEvent)
 
-    def createDefaultNewWorkbookRs(self, name: str | None = None) -> Result[Workbook, ErrorReport]:
+    def createDefaultNewWorkbookRs(self, name: Optional[str] = None) -> Result[Workbook, ErrorReport]:
         rs = self.rootApp.createDefaultNewWorkbookRs(name)
         self.__emitCreateNeWbEvent(rs)
         return rs

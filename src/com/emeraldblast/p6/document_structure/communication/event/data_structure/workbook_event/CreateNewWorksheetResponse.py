@@ -1,3 +1,5 @@
+from typing import Optional
+
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.ToEventData import ToEventData
 
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto
@@ -13,7 +15,7 @@ class CreateNewWorksheetResponse(ToEventData, ToProto[CreateNewWorksheetResponse
             workbookKey: WorkbookKey,
             newWorksheetName: str,
             isError: bool = False,
-            errorReport: ErrorReport | None = None):
+            errorReport: Optional[ErrorReport] = None):
         self.workbookKey: WorkbookKey = workbookKey
         self.newWorksheetName = newWorksheetName
         self.isError = isError

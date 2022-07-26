@@ -80,6 +80,9 @@ class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
         return self._toArray(self.rangeAddress, self.__extractCellValue)
 
     def toFullSourceValueArray(self):
+        """
+        :return: 2d full array of source value
+        """
         return self._toArray(self.rangeAddress, self.__extractSourceValueOfCell)
 
     def toStrictValueArray(self):

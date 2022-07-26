@@ -22,7 +22,7 @@ class BaseWorksheet(Worksheet,ABC):
         rs = self.pasteRs(anchorCell, paster)
         rs.raiseIfErr()
 
-    # def pasteText(self, targetCell: CellAddress,paster:Paster|None):
+    # def pasteText(self, targetCell: CellAddress,paster:Paster):
     #     rs = self.pasteTextRs(targetCell,paster)
     #     rs.raiseIfErr()
 

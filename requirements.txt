@@ -6,3 +6,5 @@ jupyter_console
 dependency-injector
 pandas == 1.4.2
 pyperclip
+grpcio-tools==1.47.0
+grpcio==1.47.0

@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Optional
 
 from com.emeraldblast.p6.document_structure.file.P6FileMetaInfo import P6FileMetaInfo
 from com.emeraldblast.p6.document_structure.script.SimpleScriptEntry import SimpleScriptEntry
@@ -29,7 +30,7 @@ class P6FileContent(ToProto[P6FileProto]):
         return proto
 
     @staticmethod
-    def fromProtoBytes(data: bytes, filePath: Path | None = None):
+    def fromProtoBytes(data: bytes, filePath: Optional[Path] = None):
         proto = P6FileContentProto()
         proto.ParseFromString(data)
 

@@ -7,7 +7,7 @@ class SocketProviderImp(SocketProvider):
 
     def __init__(self, reqSocketUI: Socket | None = None, eventServerPort:int | None = None):
         self.__reqSocketUI: Socket = reqSocketUI
-        self._eventServerPort: int|None = eventServerPort
+        self._eventServerPort: int = eventServerPort
 
     def notificationSocket(self) -> Socket | None:
         return self.__reqSocketUI

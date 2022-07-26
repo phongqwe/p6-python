@@ -1,4 +1,4 @@
-from typing import Any, Callable
+from typing import Any, Callable, Optional
 
 from com.emeraldblast.p6.document_structure.app.GlobalScope import getGlobals
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
@@ -12,7 +12,7 @@ from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
-from com.emeraldblast.p6.proto.DocProtos_pb2 import CellProto
+from com.emeraldblast.p6.proto.DocProtos_pb2 import CellProto, CellValueProto
 
 
 class DataCell(Cell):
@@ -64,7 +64,7 @@ class DataCell(Cell):
                  value: Any = None,
                  formula: str = None,
                  script: str = None,
-                 worksheet: Worksheet | None = None):
+                 worksheet: Optional[Worksheet] = None):
         self.__value: Any = value
         self.__script: str = script
         self.__formula: str = formula
@@ -78,16 +78,16 @@ class DataCell(Cell):
                 return None
 
         self.__translatorGetter: Callable[[], FormulaTranslator] | None = translatorGetter
-        self.__ws: Worksheet | None = worksheet
+        self.__ws: Optional[Worksheet] = worksheet
 
     ### >> Cell << ###
 
     @property
-    def worksheet(self) -> Worksheet | None:
+    def worksheet(self) -> Optional[Worksheet]:
         return self.__ws
 
     @worksheet.setter
-    def worksheet(self, newWorksheet: Worksheet | None):
+    def worksheet(self, newWorksheet: Optional[Worksheet]):
         self.__ws = newWorksheet
 
     @property
@@ -121,19 +121,17 @@ class DataCell(Cell):
 
         if self.__formula:
             cellProto.formula = self.__formula
-            cellProto.isFormula = True
-            if self.__value:
-                # have to store value in the proto even if the cell is a formula cell because the UI need this for displaying
-                cellProto.value = self.strValue
         else:
-            cellProto.isFormula = False
             if self.__value:
-                cellProto.value = self.strValue
-                cellProto.isBoolLit = isinstance(self.__value, bool)
-                cellProto.isStrLit = isinstance(self.__value, str)
-                cellProto.isIntLit = isinstance(self.__value, int)
-                cellProto.isFloatLit = isinstance(self.__value, float)
-                cellProto.isError = isinstance(self.__value, Exception)
+                cellValueProto = CellValueProto()
+                if isinstance(self.__value, bool):
+                    cellValueProto.bool = self.__value
+                if isinstance(self.__value, str):
+                    cellValueProto.str = self.__value
+                if isinstance(self.__value, int) or isinstance(self.__value, float):
+                    cellValueProto.num = self.__value
+
+                cellProto.value.CopyFrom(cellValueProto)
 
         return cellProto
 
@@ -157,7 +155,7 @@ class DataCell(Cell):
             if self.__value is None:
                 return ""
             else:
-                if isinstance(self.__value,str):
+                if isinstance(self.__value, str):
                     if CellUtils.isNumericString(self.__value):
                         return self.__value[1:]
                     else:
@@ -269,4 +267,3 @@ class DataCell(Cell):
             self.__clearFormula()
             self.__value = anotherCell.bareValue
             return
-

@@ -1,3 +1,5 @@
+from typing import Optional
+
 from com.emeraldblast.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.ToP6Msg import ToP6Msg
@@ -9,9 +11,9 @@ from com.emeraldblast.p6.proto.CellProtos_pb2 import CellUpdateRequestProto
 
 
 class CellUpdateRequest(ToP6Msg, ToProto[CellUpdateRequestProto], CanCheckEmpty):
-    def __init__(self, workbookKey:WorkbookKey, worksheetName:str, cellAddress:CellAddress, value:str|None, formula:str|None):
-        self.formula:str|None = formula
-        self.value:str|None = value
+    def __init__(self, workbookKey:WorkbookKey, worksheetName:str, cellAddress:CellAddress, value:Optional[str], formula:Optional[str]):
+        self.formula:Optional[str] = formula
+        self.value:Optional[str] = value
         self.cellAddress = cellAddress
         self.worksheetName = worksheetName
         self.workbookKey = workbookKey

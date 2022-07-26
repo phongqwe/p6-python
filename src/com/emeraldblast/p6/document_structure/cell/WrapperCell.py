@@ -1,4 +1,5 @@
 from abc import ABC
+from typing import Optional
 
 from com.emeraldblast.p6.document_structure.cell.Cell import Cell
 from com.emeraldblast.p6.document_structure.cell.CellContent import CellContent
@@ -37,11 +38,11 @@ class WrapperCell(Cell, ABC):
         self.rootCell.content = newContent
 
     @property
-    def worksheet(self) -> Worksheet | None:
+    def worksheet(self) -> Optional[Worksheet]:
         return self.rootCell.worksheet
 
     @worksheet.setter
-    def worksheet(self, newWorksheet: Worksheet | None):
+    def worksheet(self, newWorksheet: Optional[Worksheet]):
         self.rootCell.worksheet = newWorksheet
 
     def toProtoObj(self) -> CellProto:
