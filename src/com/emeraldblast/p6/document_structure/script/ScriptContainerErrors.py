@@ -10,7 +10,7 @@ class ScriptContainerErrors:
 
         @staticmethod
         def report(scriptName: str) -> ErrorReport:
-            header = ScriptContainerErrors.ScriptAlreadyExist.header.updateDescription(
+            header = ScriptContainerErrors.ScriptAlreadyExist.header.setDescription(
                 f"script '{scriptName}' already exist")
             return ErrorReport(header = header)
 
@@ -19,6 +19,6 @@ class ScriptContainerErrors:
 
         @staticmethod
         def report(scriptNameList: list[str]) -> ErrorReport:
-            header = ScriptContainerErrors.MultipleScriptAlreadyExist.header.updateDescription(
+            header = ScriptContainerErrors.MultipleScriptAlreadyExist.header.setDescription(
                 f"script '{scriptNameList}' already exist")
             return ErrorReport(header = header)

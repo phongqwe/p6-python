@@ -23,7 +23,7 @@ class EventServerErrors:
         def report(event: P6Event):
             data = EventServerErrors.NoReactorError.Data(event)
             return ErrorReport(
-                header = EventServerErrors.NoReactorError.header.updateDescription(str(data)),
+                header = EventServerErrors.NoReactorError.header.setDescription(str(data)),
                 data = data
             )
 

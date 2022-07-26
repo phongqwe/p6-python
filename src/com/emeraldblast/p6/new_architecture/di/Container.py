@@ -24,11 +24,6 @@ class Summer:
 
 class Container(DocumentContainer):
 
-    insecureStubProvider = providers.Singleton(
-        InsecureStubProvider,
-        rpcInfo = None
-    )
-
     bf = providers.Singleton(
         BF,
         bn = 333

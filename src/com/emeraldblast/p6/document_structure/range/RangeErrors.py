@@ -27,7 +27,7 @@ class RangeErrors:
         def report(cellAddress:CellAddress, rangeAddress:RangeAddress):
             data = RangeErrors.CellNotInRangeReport.Data(cellAddress, rangeAddress)
             return ErrorReport(
-                RangeErrors.CellNotInRangeReport.header.updateDescription(f"{data.repStr()}"),
+                RangeErrors.CellNotInRangeReport.header.setDescription(f"{data.repStr()}"),
                 data = data
             )
 

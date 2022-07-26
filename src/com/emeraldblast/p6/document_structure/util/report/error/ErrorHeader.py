@@ -18,7 +18,7 @@ Description: {errorDescription}
         else:
             return False
 
-    def updateDescription(self,newDescription:str)->'ErrorHeader':
+    def setDescription(self, newDescription:str)-> 'ErrorHeader':
         return ErrorHeader(
             errorCode = self.errorCode,
             errorDescription = newDescription

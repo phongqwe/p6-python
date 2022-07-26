@@ -1,6 +1,8 @@
 from pathlib import Path
 from typing import Union, Optional, Tuple
+import google.protobuf.empty_pb2 as empty_pb2
 
+from google.protobuf import wrappers_pb2 as wrappers
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from com.emeraldblast.p6.document_structure.script import SimpleScriptEntry
@@ -16,23 +18,34 @@ from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
-from com.emeraldblast.p6.new_architecture.workbook.WorkBook import Workbook
+from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 from com.emeraldblast.p6.document_structure.workbook.WorkbookErrors import WorkbookErrors
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeyImp import WorkbookKeyImp
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetImp import WorksheetImp
+from com.emeraldblast.p6.new_architecture.rpc.RpcErrors import RpcErrors
+from com.emeraldblast.p6.new_architecture.rpc.RpcValues import RpcValues
+from com.emeraldblast.p6.new_architecture.rpc.StubProvider import StubProvider
+from com.emeraldblast.p6.proto.service.workbook.WorkbookService_pb2_grpc import WorkbookServiceStub
+
 
 
 class RpcWorkbook(Workbook):
 
     def __init__(
-        self,
-        name: str,
-        path: Path = None,
+            self,
+            name: str,
+            path: Optional[Path],
+            stubProvider: StubProvider,
     ):
         self.__key = WorkbookKeyImp(name, path)
+        self._stubProvider = stubProvider
+
+    @property
+    def _sv(self) -> Optional[WorkbookServiceStub]:
+        return self._stubProvider.wbService
 
     def removeScriptRs(self, name: str) -> Result[None, ErrorReport]:
         # TODO this is a place holder for future checking
@@ -40,7 +53,6 @@ class RpcWorkbook(Workbook):
 
     def addAllScriptsRs(self, scripts: list[SimpleScriptEntry]) -> Result[None, ErrorReport]:
         return Ok(None)
-
 
     def overwriteScriptRs(self, name: str, newScript: str) -> Result[None, ErrorReport]:
         return Ok(None)
@@ -70,7 +82,6 @@ class RpcWorkbook(Workbook):
         pass
 
     ### >> Workbook << ###
-
 
     @property
     def worksheets(self) -> list[Worksheet]:
@@ -105,6 +116,7 @@ class RpcWorkbook(Workbook):
     def getWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
         # TODO add rpc call
         pass
+
     def getWorksheetRs(self, nameOrIndex: Union[str, int]) -> Result[Worksheet, ErrorReport]:
         if isinstance(nameOrIndex, str):
             return self.getWorksheetByNameRs(nameOrIndex)
@@ -115,8 +127,11 @@ class RpcWorkbook(Workbook):
 
     @property
     def sheetCount(self) -> int:
-        # TODO add rpc call
-        pass
+        if self._sv is not None:
+            out:RpcValues.Int64Value = self._sv.sheetCount(request = RpcValues.Empty)
+            return out.value
+        else:
+            raise RpcErrors.RpcServerIsDown.report("Can't get sheet count because rpc server is down.")
 
     @property
     def path(self) -> Path:
@@ -154,6 +169,7 @@ class RpcWorkbook(Workbook):
     def updateSheetName(self, oldName: str, ws: Worksheet):
         # TODO add rpc call
         pass
+
     @property
     def rootWorkbook(self) -> 'Workbook':
         return self
