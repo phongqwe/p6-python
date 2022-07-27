@@ -7,6 +7,9 @@ from com.emeraldblast.p6.proto.service.workbook.WorkbookService_pb2_grpc import 
 
 
 class StubProvider(ABC):
+    """
+    A central point to access to grpc stubs
+    """
     def getChannel(self) -> Optional:
         raise NotImplementedError()
 

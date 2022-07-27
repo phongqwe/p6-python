@@ -28,11 +28,14 @@ from com.emeraldblast.p6.document_structure.worksheet.WorksheetImp import Worksh
 from com.emeraldblast.p6.new_architecture.rpc.RpcErrors import RpcErrors
 from com.emeraldblast.p6.new_architecture.rpc.RpcValues import RpcValues
 from com.emeraldblast.p6.new_architecture.rpc.StubProvider import StubProvider
+from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.SetWbName import SetWbNameRequest, \
+    SetWbNameResponse
+from com.emeraldblast.p6.proto.service.workbook.SetWbName_pb2 import SetWbNameRequestProto, SetWbNameResponseProto
 from com.emeraldblast.p6.proto.service.workbook.WorkbookService_pb2_grpc import WorkbookServiceStub
 
 
-
 class RpcWorkbook(Workbook):
+    _serverDownException = RpcErrors.RpcServerIsDown.report("Can't get sheet count because rpc server is down.").toException()
 
     def __init__(
             self,
@@ -41,6 +44,10 @@ class RpcWorkbook(Workbook):
             stubProvider: StubProvider,
     ):
         self.__key = WorkbookKeyImp(name, path)
+        self._stubProvider = stubProvider
+
+
+    def setStubProvider(self,stubProvider:StubProvider):
         self._stubProvider = stubProvider
 
     @property
@@ -128,10 +135,12 @@ class RpcWorkbook(Workbook):
     @property
     def sheetCount(self) -> int:
         if self._sv is not None:
-            out:RpcValues.Int64Value = self._sv.sheetCount(request = RpcValues.Empty)
+            out: RpcValues.Int64Value = self._sv.sheetCount(
+                request = self.workbookKey.toProtoObj()
+            )
             return out.value
         else:
-            raise RpcErrors.RpcServerIsDown.report("Can't get sheet count because rpc server is down.")
+            raise RpcWorkbook._serverDownException
 
     @property
     def path(self) -> Path:
@@ -147,8 +156,24 @@ class RpcWorkbook(Workbook):
 
     @name.setter
     def name(self, newName: str):
-        # TODO add rpc call
-        pass
+        if self._sv is not None:
+            if newName == self.name:
+                return
+            else:
+                outProto = self._sv.setWbName(
+                        request = SetWbNameRequest(
+                            wbKey = self.__key,
+                            newName = newName
+                        ).toProtoObj()
+                    )
+                out: SetWbNameResponse = SetWbNameResponse.fromProto(outProto)
+                err = out.errorReport
+                if err is not None:
+                    raise err.toException()
+                else:
+                    self.workbookKey = WorkbookKeys.fromNameAndPath(newName, self.workbookKey.filePath)
+        else:
+            raise RpcWorkbook._serverDownException
 
     def createNewWorksheetRs(self, newSheetName: Optional[str] = None) -> Result[Worksheet, ErrorReport]:
         # TODO add rpc call

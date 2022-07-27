@@ -16,26 +16,17 @@ from com.emeraldblast.p6.proto import CommonProtos_pb2 as com_dot_emeraldblast_d
 from com.emeraldblast.p6.proto import DocProtos_pb2 as com_dot_emeraldblast_dot_p6_dot_proto_dot_DocProtos__pb2
 from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
+from com.emeraldblast.p6.proto.service.workbook import SetWbName_pb2 as com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_SetWbName__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n@com/emeraldblast/p6/proto/service/workbook/WorkbookService.proto\x12*com.emeraldblast.p6.proto.service.workbook\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\x1a)com/emeraldblast/p6/proto/DocProtos.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1bgoogle/protobuf/empty.proto\"\x08\n\x06\x45mpty22r\n\x0fWorkbookService\x12_\n\nsheetCount\x12\x32.com.emeraldblast.p6.proto.service.workbook.Empty2\x1a\x1b.google.protobuf.Int64Value\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n@com/emeraldblast/p6/proto/service/workbook/WorkbookService.proto\x12*com.emeraldblast.p6.proto.service.workbook\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\x1a)com/emeraldblast/p6/proto/DocProtos.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a:com/emeraldblast/p6/proto/service/workbook/SetWbName.proto2\x82\x02\n\x0fWorkbookService\x12X\n\nsheetCount\x12+.com.emeraldblast.p6.proto.WorkbookKeyProto\x1a\x1b.google.protobuf.Int64Value\"\x00\x12\x94\x01\n\tsetWbName\x12\x41.com.emeraldblast.p6.proto.service.workbook.SetWbNameRequestProto\x1a\x42.com.emeraldblast.p6.proto.service.workbook.SetWbNameResponseProto\"\x00\x62\x06proto3')
 
 
-
-_EMPTY2 = DESCRIPTOR.message_types_by_name['Empty2']
-Empty2 = _reflection.GeneratedProtocolMessageType('Empty2', (_message.Message,), {
-  'DESCRIPTOR' : _EMPTY2,
-  '__module__' : 'com.emeraldblast.p6.proto.service.workbook.WorkbookService_pb2'
-  # @@protoc_insertion_point(class_scope:com.emeraldblast.p6.proto.service.workbook.Empty2)
-  })
-_sym_db.RegisterMessage(Empty2)
 
 _WORKBOOKSERVICE = DESCRIPTOR.services_by_name['WorkbookService']
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _EMPTY2._serialized_start=262
-  _EMPTY2._serialized_end=270
-  _WORKBOOKSERVICE._serialized_start=272
-  _WORKBOOKSERVICE._serialized_end=386
+  _WORKBOOKSERVICE._serialized_start=323
+  _WORKBOOKSERVICE._serialized_end=581
 # @@protoc_insertion_point(module_scope)
