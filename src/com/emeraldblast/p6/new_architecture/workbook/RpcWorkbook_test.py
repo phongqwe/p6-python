@@ -7,9 +7,10 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.S
     SingleSignalResponse
 
 from com.emeraldblast.p6.document_structure.util.for_test import TestUtils
+from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetImp import WorksheetImp
 
-from com.emeraldblast.p6.new_architecture.rpc.InsecureStubProvider import InsecureStubProvider
+from com.emeraldblast.p6.new_architecture.rpc.InsecureStubProvider import InsecureRpcServiceProvider
 from com.emeraldblast.p6.new_architecture.rpc.RpcInfo import RpcInfo
 from com.emeraldblast.p6.new_architecture.rpc.RpcValues import RpcValues
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetAllWorksheetsResponse import \
@@ -81,8 +82,33 @@ class RpcWorkbook_test(unittest.TestCase):
             worksheets = wsl,
             errorReport = None
         ).toProtoObj())
+        out: list[Worksheet] = self.wb.worksheets
         self.assertEqual(2, len(self.wb.worksheets))
-        # self.assertEqual(wsl, self.wb.worksheets)
+        self.assertEqual("Sheet1", out[0].name)
+        self.assertEqual("Sheet2", out[1].name)
+
+    def test_setActiveWorksheetRs(self):
+        wb = self.wb
+        self.mockWbService.setActiveWorksheetRs = MagicMock(
+            return_value = SingleSignalResponse(
+                errorReport = None
+            ).toProtoObj()
+        )
+
+        o1 = wb.setActiveWorksheetRs(123)
+        self.assertTrue(o1.isOk())
+        o2 = wb.setActiveWorksheetRs("qwe")
+        self.assertTrue(o2.isOk())
+
+        self.mockWbService.setActiveWorksheetRs = MagicMock(
+            return_value = SingleSignalResponse(
+                errorReport = TestUtils.TestErrorReport
+            ).toProtoObj()
+        )
+
+        o3 = wb.setActiveWorksheetRs("asd")
+        self.assertTrue(o3.isErr())
+        self.assertTrue(o3.err.isSameErr(TestUtils.TestErrorReport))
 
 
 if __name__ == '__main__':

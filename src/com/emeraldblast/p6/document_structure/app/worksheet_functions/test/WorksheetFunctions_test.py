@@ -1,7 +1,7 @@
 import unittest
 
 from com.emeraldblast.p6.document_structure.app.GlobalScope import setIPythonGlobals
-from com.emeraldblast.p6.document_structure.app.TopLevel import getRange, startApp, getApp, getActiveWorkbook
+from com.emeraldblast.p6.document_structure.app.TopLevel import getRange, startApp, getApp, getActiveWorkbookRs
 from com.emeraldblast.p6.document_structure.app.worksheet_functions.WorksheetFunctions import WorksheetFunctions
 
 
@@ -10,7 +10,7 @@ class WorksheetFunctions_test(unittest.TestCase):
         setIPythonGlobals(globals())
         startApp()
         getApp().createNewWorkbook()
-        getActiveWorkbook().createNewWorksheet("Sheet1")
+        getActiveWorkbookRs().createNewWorksheet("Sheet1")
         r = getRange("@A1:A2")
         r.cell("@A1").value=100
         o = WorksheetFunctions.SUM(getRange("@A1:A2"))

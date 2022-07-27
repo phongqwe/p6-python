@@ -38,7 +38,7 @@ class WbWsVisitor(PythonFormulaVisitor):
             rt = f'{self.__getWBCode}.{getSheet}.{rangeObj}'
         else:
             if len(sheetName) != 0:
-                getSheet = self.mapper.getWorksheet(sheetName)
+                getSheet = self.mapper.getWorksheetRs(sheetName)
             rt = f'{getSheet}.{rangeObj}'
         return rt
 

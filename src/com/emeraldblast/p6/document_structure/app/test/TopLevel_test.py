@@ -17,7 +17,7 @@ class UserFunctions_test(unittest.TestCase):
         startApp()
         restartApp()
         getApp().createNewWorkbook("Book1")
-        getActiveWorkbook().createNewWorksheet("Sheet1")
+        getActiveWorkbookRs().createNewWorksheet("Sheet1")
 
     def test_trigger_event_on_cell(self):
         app: App = getApp()
@@ -60,9 +60,9 @@ class UserFunctions_test(unittest.TestCase):
 
     def test_onGlobalScope(self):
         # startApp()
-        activeBook = getActiveWorkbook()
+        activeBook = getActiveWorkbookRs()
         activeBook.setActiveWorksheet("Sheet1")
-        sheet = getActiveSheet()
+        sheet = getActiveSheetRs()
         cellA1_1 = sheet.cell((1, 1))  # A1
         cellA1_1.script = "x=1;x+10"
         cellA1_1.runScript()

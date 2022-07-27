@@ -1,103 +1,63 @@
 from pathlib import Path
-from typing import Union, Optional, Tuple
-import google.protobuf.empty_pb2 as empty_pb2
+from typing import Union, Optional
+
+from com.emeraldblast.p6.proto.CommonProtos_pb2 import SingleSignalResponseProto
+
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.SingleSignalResponse import \
     SingleSignalResponse
-
-from google.protobuf import wrappers_pb2 as wrappers
-from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
-from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from com.emeraldblast.p6.document_structure.script import SimpleScriptEntry
-from com.emeraldblast.p6.document_structure.script.ScriptContainer import ScriptContainer
-from com.emeraldblast.p6.document_structure.script.ScriptContainer import ScriptContainer
-from com.emeraldblast.p6.document_structure.script.ScriptContainerImp import ScriptContainerImp
-from com.emeraldblast.p6.document_structure.script.ScriptContainerImp import ScriptContainerImp
 from com.emeraldblast.p6.document_structure.script.ScriptEntry import ScriptEntry
-from com.emeraldblast.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
 from com.emeraldblast.p6.document_structure.util.CommonError import CommonErrors
-from com.emeraldblast.p6.document_structure.util.Util import typeCheck
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.util.result.Err import Err
 from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
 from com.emeraldblast.p6.document_structure.util.result.Result import Result
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
-from com.emeraldblast.p6.document_structure.workbook.WorkbookErrors import WorkbookErrors
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeyImp import WorkbookKeyImp
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 from com.emeraldblast.p6.new_architecture.rpc.RpcErrors import RpcErrors
 from com.emeraldblast.p6.new_architecture.rpc.RpcValues import RpcValues
-from com.emeraldblast.p6.new_architecture.rpc.StubProvider import StubProvider
-from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetAllWorksheetsResponse import GetAllWorksheetsResponse
+from com.emeraldblast.p6.new_architecture.rpc.StubProvider import RpcServiceProvider
+from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetAllWorksheetsResponse import \
+    GetAllWorksheetsResponse
+from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.SetActiveWorksheetRequest import \
+    SetActiveWorksheetRequest
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.SetWbNameRequest import SetWbNameRequest
 from com.emeraldblast.p6.proto.service.workbook.WorkbookService_pb2_grpc import WorkbookServiceStub
 
 
 class RpcWorkbook(Workbook):
-    _serverDownException = RpcErrors.RpcServerIsDown.report("Can't get sheet count because rpc server is down.").toException()
+    _serverDownException = RpcErrors.RpcServerIsDown.report(
+        "Can't get sheet count because rpc server is down.").toException()
 
     def __init__(
             self,
             name: str,
             path: Optional[Path],
-            stubProvider: StubProvider,
+            stubProvider: RpcServiceProvider,
     ):
         self.__key = WorkbookKeyImp(name, path)
         self._stubProvider = stubProvider
 
-    def setStubProvider(self,stubProvider:StubProvider):
+    def setStubProvider(self, stubProvider: RpcServiceProvider):
         self._stubProvider = stubProvider
 
     @property
-    def _sv(self) -> Optional[WorkbookServiceStub]:
+    def _wbsv(self) -> Optional[WorkbookServiceStub]:
         return self._stubProvider.wbService
-
-    def removeScriptRs(self, name: str) -> Result[None, ErrorReport]:
-        # TODO this is a place holder for future checking
-        return Ok(None)
-
-    def addAllScriptsRs(self, scripts: list[SimpleScriptEntry]) -> Result[None, ErrorReport]:
-        return Ok(None)
-
-    def overwriteScriptRs(self, name: str, newScript: str) -> Result[None, ErrorReport]:
-        return Ok(None)
-
-    def overwriteScript(self, name: str, newScript: str):
-        rs = self.overwriteScriptRs(name, newScript)
-        rs.getOrRaise()
-
-    def addScriptRs(self, name: str, script: str) -> Result[None, ErrorReport]:
-        return Ok(None)
-
-    @property
-    def allAsScriptEntry(self) -> list[ScriptEntry]:
-        pass
-
-    def getScript(self, name: str) -> Optional[str]:
-        pass
-
-    def removeAllScript(self):
-        pass
-
-    def addAllScripts(self, scripts: list[SimpleScriptEntry]):
-        pass
-
-    @property
-    def allScripts(self) -> list[ScriptEntry]:
-        pass
 
     ### >> Workbook << ###
 
     @property
     def worksheets(self) -> list[Worksheet]:
-        if self._sv is not None:
-            outProto = self._sv.getAllWorksheets(self.workbookKey.toProtoObj())
-            out = GetAllWorksheetsResponse.fromProto(outProto,self)
+        if self._wbsv is not None:
+            outProto = self._wbsv.getAllWorksheets(self.workbookKey.toProtoObj())
+            out = GetAllWorksheetsResponse.fromProto(outProto, self)
             return out.worksheets
         else:
             raise RpcWorkbook._serverDownException
-
 
     @property
     def workbookKey(self) -> WorkbookKey:
@@ -107,9 +67,41 @@ class RpcWorkbook(Workbook):
     def workbookKey(self, newKey: WorkbookKey):
         self.__key = newKey
 
-    def setActiveWorksheetRs(self, indexOrName: Union[int, str]) -> Result[Worksheet, ErrorReport]:
-        # TODO add rpc call
-        pass
+    def setActiveWorksheetRs(self, indexOrName: Union[int, str]) -> Result[None, ErrorReport]:
+        if isinstance(indexOrName,int):
+            return self.setActiveWorksheetByIndexRs(indexOrName)
+        else:
+            return self.setActiveWorksheetByNameRs(indexOrName)
+
+    def setActiveWorksheetByNameRs(self, name: str) -> Result[None, ErrorReport]:
+        if self._wbsv is not None:
+            outProto: SingleSignalResponseProto = self._wbsv.setActiveWorksheetRs(
+                request = SetActiveWorksheetRequest(
+                    wbKey = self.workbookKey,
+                    wsName = name
+                ))
+            out = SingleSignalResponse.fromProto(outProto)
+            if out.isError():
+                return Err(out.errorReport)
+            else:
+                return Ok(None)
+        else:
+            raise RpcWorkbook._serverDownException
+
+    def setActiveWorksheetByIndexRs(self, index: int) -> Result[None, ErrorReport]:
+        if self._wbsv is not None:
+            outProto: SingleSignalResponseProto = self._wbsv.setActiveWorksheetRs(
+                request = SetActiveWorksheetRequest(
+                    wbKey = self.workbookKey,
+                    index = index,
+                ))
+            out = SingleSignalResponse.fromProto(outProto)
+            if out.isError():
+                return Err(out.errorReport)
+            else:
+                return Ok(None)
+        else:
+            raise RpcWorkbook._serverDownException
 
     @property
     def activeWorksheet(self) -> Optional[Worksheet]:
@@ -138,8 +130,8 @@ class RpcWorkbook(Workbook):
 
     @property
     def sheetCount(self) -> int:
-        if self._sv is not None:
-            out: RpcValues.Int64Value = self._sv.sheetCount(
+        if self._wbsv is not None:
+            out: RpcValues.Int64Value = self._wbsv.sheetCount(
                 request = self.workbookKey.toProtoObj()
             )
             return out.value
@@ -160,16 +152,16 @@ class RpcWorkbook(Workbook):
 
     @name.setter
     def name(self, newName: str):
-        if self._sv is not None:
+        if self._wbsv is not None:
             if newName == self.name:
                 return
             else:
-                outProto = self._sv.setWbName(
-                        request = SetWbNameRequest(
-                            wbKey = self.__key,
-                            newName = newName
-                        ).toProtoObj()
-                    )
+                outProto = self._wbsv.setWbName(
+                    request = SetWbNameRequest(
+                        wbKey = self.__key,
+                        newName = newName
+                    ).toProtoObj()
+                )
                 out: SingleSignalResponse = SingleSignalResponse.fromProto(outProto)
                 err = out.errorReport
                 if err is not None:

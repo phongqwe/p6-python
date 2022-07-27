@@ -12,6 +12,7 @@ from com.emeraldblast.p6.document_structure.range.address.RangeAddress import Ra
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
+from com.emeraldblast.p6.new_architecture.di.Container import Container
 
 """
 This module contains functions to be used by users to control the application.
@@ -42,14 +43,16 @@ def getApp() -> App:
     g = getGlobals()
     if appKey not in g.keys():
         app0 = AppImp()
+        app0 = AppImp()
         app = EventApp.create(
             app0,app0.eventNotifierContainer
         )
+        # app = Container.rpcApp()
         g[appKey] = app
     return g[appKey]
 
 
-def getActiveWorkbook() -> Optional[Workbook]:
+def getActiveWorkbookRs() -> Optional[Workbook]:
     return getApp().activeWorkbook
 
 
@@ -57,31 +60,31 @@ def setActiveWorkbook(indexOrName):
     getApp().setActiveWorkbook(indexOrName)
 
 
-def getActiveSheet() -> Optional[Worksheet]:
-    wb = getActiveWorkbook()
+def getActiveSheetRs() -> Optional[Worksheet]:
+    wb = getActiveWorkbookRs()
     if wb is not None:
-        return getActiveWorkbook().activeWorksheet
+        return getActiveWorkbookRs().activeWorksheet
     else:
         return None
 
 
 def setActiveSheet(indexOrName: Union[str, int]):
-    wb: Optional[Workbook] = getActiveWorkbook()
+    wb: Optional[Workbook] = getActiveWorkbookRs()
     if wb is None:
         raise AppErrors.WorkbookNotExist.report(indexOrName).toException()
 
     wb.setActiveWorksheet(indexOrName)
 
 
-def getWorksheet(nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
-    wb = getActiveWorkbook()
+def getWorksheetRs(nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
+    wb = getActiveWorkbookRs()
     if wb is None:
         return None
     return wb.getWorksheet(nameOrIndex)
 
 
 def getRange(rangeAddress: Union[str, RangeAddress, Tuple[CellAddress, CellAddress]]) -> Optional[Range]:
-    sheet = getActiveSheet()
+    sheet = getActiveSheetRs()
     if sheet is None:
         return None
     return sheet.range(rangeAddress)
@@ -89,7 +92,7 @@ def getRange(rangeAddress: Union[str, RangeAddress, Tuple[CellAddress, CellAddre
 
 def cell(address: Union[str, CellAddress, Tuple[int, int]]) -> Optional[Cell]:
     """get a cell from the current active sheet"""
-    sheet = getActiveSheet()
+    sheet = getActiveSheetRs()
     if sheet is None:
         return None
     return sheet.cell(address)
@@ -109,7 +112,7 @@ def listWorkbook():
 def listWorksheet(workBookNameOrIndexOrKey: Union[str, int, WorkbookKey, None] = None) -> str:
     """list Worksheets of the active workbook"""
     if workBookNameOrIndexOrKey is None:
-        wb = getActiveWorkbook()
+        wb = getActiveWorkbookRs()
     else:
         wb = getWorkbook(workBookNameOrIndexOrKey)
     if wb is not None:

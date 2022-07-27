@@ -14,11 +14,9 @@ _sym_db = _symbol_database.Default()
 
 from com.emeraldblast.p6.proto import CommonProtos_pb2 as com_dot_emeraldblast_dot_p6_dot_proto_dot_CommonProtos__pb2
 from com.emeraldblast.p6.proto import DocProtos_pb2 as com_dot_emeraldblast_dot_p6_dot_proto_dot_DocProtos__pb2
-from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
-from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nAcom/emeraldblast/p6/proto/service/workbook/GetAllWorksheets.proto\x12*com.emeraldblast.p6.proto.service.workbook\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\x1a)com/emeraldblast/p6/proto/DocProtos.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1bgoogle/protobuf/empty.proto\"\xb5\x01\n\x1dGetAllWorksheetsResponseProto\x12=\n\nworksheets\x18\x01 \x03(\x0b\x32).com.emeraldblast.p6.proto.WorksheetProto\x12\x45\n\x0b\x65rrorReport\x18\x02 \x01(\x0b\x32+.com.emeraldblast.p6.proto.ErrorReportProtoH\x00\x88\x01\x01\x42\x0e\n\x0c_errorReportb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nAcom/emeraldblast/p6/proto/service/workbook/GetAllWorksheets.proto\x12*com.emeraldblast.p6.proto.service.workbook\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\x1a)com/emeraldblast/p6/proto/DocProtos.proto\"\xb5\x01\n\x1dGetAllWorksheetsResponseProto\x12=\n\nworksheets\x18\x01 \x03(\x0b\x32).com.emeraldblast.p6.proto.WorksheetProto\x12\x45\n\x0b\x65rrorReport\x18\x02 \x01(\x0b\x32+.com.emeraldblast.p6.proto.ErrorReportProtoH\x00\x88\x01\x01\x42\x0e\n\x0c_errorReportb\x06proto3')
 
 
 
@@ -33,6 +31,6 @@ _sym_db.RegisterMessage(GetAllWorksheetsResponseProto)
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _GETALLWORKSHEETSRESPONSEPROTO._serialized_start=264
-  _GETALLWORKSHEETSRESPONSEPROTO._serialized_end=445
+  _GETALLWORKSHEETSRESPONSEPROTO._serialized_start=203
+  _GETALLWORKSHEETSRESPONSEPROTO._serialized_end=384
 # @@protoc_insertion_point(module_scope)

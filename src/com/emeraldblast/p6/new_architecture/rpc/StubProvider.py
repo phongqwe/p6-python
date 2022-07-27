@@ -6,7 +6,7 @@ from com.emeraldblast.p6.proto.service.CellService_pb2_grpc import CellServiceSt
 from com.emeraldblast.p6.proto.service.workbook.WorkbookService_pb2_grpc import WorkbookServiceStub
 
 
-class StubProvider(ABC):
+class RpcServiceProvider(ABC):
     """
     A central point to access to grpc stubs
     """

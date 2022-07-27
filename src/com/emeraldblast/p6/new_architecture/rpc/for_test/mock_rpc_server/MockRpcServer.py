@@ -3,16 +3,21 @@ from typing import Callable
 
 import grpc
 
-from com.emeraldblast.p6.new_architecture.rpc.InsecureStubProvider import InsecureStubProvider
+from com.emeraldblast.p6.new_architecture.di.RpcServiceContainer import RpcServiceContainer
+from com.emeraldblast.p6.new_architecture.rpc.InsecureStubProvider import InsecureRpcServiceProvider
 from com.emeraldblast.p6.new_architecture.rpc.RpcInfo import RpcInfo
+from com.emeraldblast.p6.proto.service.CellService_pb2_grpc import CellServiceStub
+from com.emeraldblast.p6.proto.service.workbook.WorkbookService_pb2_grpc import WorkbookServiceStub
 
 
 class MockRpcServer:
     port = 50052
     host = "localhost"
     rpInfo = RpcInfo(host = host, port = port)
-    stubProvider = InsecureStubProvider(
-        rpcInfo = rpInfo
+    stubProvider = InsecureRpcServiceProvider(
+        rpcInfo = rpInfo,
+        cellServiceProvider = RpcServiceContainer.cellService.provider,
+        wbServiceProvider = RpcServiceContainer.wbService.provider,
     )
 
     def __init__(self):

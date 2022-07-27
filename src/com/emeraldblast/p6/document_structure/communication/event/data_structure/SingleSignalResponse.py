@@ -13,6 +13,10 @@ from com.emeraldblast.p6.proto.CommonProtos_pb2 import SingleSignalResponseProto
 class SingleSignalResponse(ToProto[SingleSignalResponseProto]):
     errorReport: Optional[ErrorReport] = None
 
+
+    def isError(self)->bool:
+        return self.errorReport is not None
+
     @staticmethod
     def fromProtoBytes(data: bytes) -> 'SingleSignalResponse':
         proto = SingleSignalResponseProto()

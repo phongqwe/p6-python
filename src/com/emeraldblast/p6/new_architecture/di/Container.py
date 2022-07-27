@@ -3,8 +3,10 @@ import sys
 from dependency_injector import containers, providers
 from dependency_injector.wiring import inject
 
+from com.emeraldblast.p6.new_architecture.app.RpcApp import RpcApp
 from com.emeraldblast.p6.new_architecture.di.DocumentContainer import DocumentContainer
-from com.emeraldblast.p6.new_architecture.rpc.InsecureStubProvider import InsecureStubProvider
+from com.emeraldblast.p6.new_architecture.di.RpcServiceContainer import RpcServiceContainer
+from com.emeraldblast.p6.new_architecture.rpc.InsecureStubProvider import InsecureRpcServiceProvider
 from com.emeraldblast.p6.new_architecture.workbook.RpcWorkbook import RpcWorkbook
 
 
@@ -23,6 +25,10 @@ class Summer:
         return x1+x2+self._a + self._bf.b()
 
 class Container(DocumentContainer):
+    rpcApp = providers.Singleton(
+        RpcApp,
+        rpcServiceProvider = RpcServiceContainer.insecureRpcServiceProvider
+    )
 
     bf = providers.Singleton(
         BF,
@@ -38,13 +44,14 @@ class Container(DocumentContainer):
         Summer,
         bf=bf
     )
-    # providers.SingletonDelegate
 
 @inject
 def main(summer:Summer =Container.summer()):
-    s1 = Container.summer2(a=999,bf = BF(22229999))
-    s2 = Container.summer2(a=999)
-    print(s1.sum(123,321))
+    app = Container.rpcApp()
+    print(app)
+    # s1 = Container.summer2(a=999,bf = BF(22229999))
+    # s2 = Container.summer2(a=999)
+    # print(s1.sum(123,321))
 
 if __name__ == "__main__":
     container = Container()
