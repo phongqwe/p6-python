@@ -18,14 +18,24 @@ from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n@com/emeraldblast/p6/proto/service/workbook/WorkbookService.proto\x12*com.emeraldblast.p6.proto.service.workbook\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\x1a)com/emeraldblast/p6/proto/DocProtos.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1bgoogle/protobuf/empty.proto2V\n\x0fWorkbookService\x12\x43\n\nsheetCount\x12\x16.google.protobuf.Empty\x1a\x1b.google.protobuf.Int64Value\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n@com/emeraldblast/p6/proto/service/workbook/WorkbookService.proto\x12*com.emeraldblast.p6.proto.service.workbook\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\x1a)com/emeraldblast/p6/proto/DocProtos.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1bgoogle/protobuf/empty.proto\"\x08\n\x06\x45mpty22r\n\x0fWorkbookService\x12_\n\nsheetCount\x12\x32.com.emeraldblast.p6.proto.service.workbook.Empty2\x1a\x1b.google.protobuf.Int64Value\"\x00\x62\x06proto3')
 
 
+
+_EMPTY2 = DESCRIPTOR.message_types_by_name['Empty2']
+Empty2 = _reflection.GeneratedProtocolMessageType('Empty2', (_message.Message,), {
+  'DESCRIPTOR' : _EMPTY2,
+  '__module__' : 'com.emeraldblast.p6.proto.service.workbook.WorkbookService_pb2'
+  # @@protoc_insertion_point(class_scope:com.emeraldblast.p6.proto.service.workbook.Empty2)
+  })
+_sym_db.RegisterMessage(Empty2)
 
 _WORKBOOKSERVICE = DESCRIPTOR.services_by_name['WorkbookService']
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _WORKBOOKSERVICE._serialized_start=262
-  _WORKBOOKSERVICE._serialized_end=348
+  _EMPTY2._serialized_start=262
+  _EMPTY2._serialized_end=270
+  _WORKBOOKSERVICE._serialized_start=272
+  _WORKBOOKSERVICE._serialized_end=386
 # @@protoc_insertion_point(module_scope)

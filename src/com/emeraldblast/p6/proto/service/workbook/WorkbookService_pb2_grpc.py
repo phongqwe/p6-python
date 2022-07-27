@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
+from com.emeraldblast.p6.proto.service.workbook import WorkbookService_pb2 as com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_WorkbookService__pb2
 from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 
 
@@ -17,7 +17,7 @@ class WorkbookServiceStub(object):
         """
         self.sheetCount = channel.unary_unary(
                 '/com.emeraldblast.p6.proto.service.workbook.WorkbookService/sheetCount',
-                request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+                request_serializer=com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_WorkbookService__pb2.Empty2.SerializeToString,
                 response_deserializer=google_dot_protobuf_dot_wrappers__pb2.Int64Value.FromString,
                 )
 
@@ -36,7 +36,7 @@ def add_WorkbookServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'sheetCount': grpc.unary_unary_rpc_method_handler(
                     servicer.sheetCount,
-                    request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                    request_deserializer=com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_WorkbookService__pb2.Empty2.FromString,
                     response_serializer=google_dot_protobuf_dot_wrappers__pb2.Int64Value.SerializeToString,
             ),
     }
@@ -61,7 +61,7 @@ class WorkbookService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/com.emeraldblast.p6.proto.service.workbook.WorkbookService/sheetCount',
-            google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_WorkbookService__pb2.Empty2.SerializeToString,
             google_dot_protobuf_dot_wrappers__pb2.Int64Value.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

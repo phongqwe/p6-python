@@ -10,4 +10,4 @@ class RpcValues:
     Int64Value = wrappers.Int64Value
     @staticmethod
     def int64(i:int):
-        return wrappers.Int64Value(123)
+        return RpcValues.Int64Value(value=123)
