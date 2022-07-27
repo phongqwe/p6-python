@@ -17,14 +17,14 @@ class MockRpcServer:
 
     def __init__(self):
         self.server: grpc.Server = None
-        self.adder = []
+        self.adders = []
 
     def addServicer(self, adderServicerFunction: Callable[[grpc.Server], None]):
-        self.adder.append(adderServicerFunction)
+        self.adders.append(adderServicerFunction)
 
     def start(self):
         self.server = grpc.server(futures.ThreadPoolExecutor(max_workers = 10))
-        for adder in self.adder:
+        for adder in self.adders:
             adder(server = self.server)
         self.server.add_insecure_port(f"[::]:{MockRpcServer.port}")
         self.server.start()

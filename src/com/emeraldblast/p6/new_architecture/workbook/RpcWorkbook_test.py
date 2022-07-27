@@ -7,7 +7,6 @@ from com.emeraldblast.p6.new_architecture.rpc.InsecureStubProvider import Insecu
 from com.emeraldblast.p6.new_architecture.rpc.RpcInfo import RpcInfo
 from com.emeraldblast.p6.new_architecture.rpc.RpcValues import RpcValues
 from com.emeraldblast.p6.new_architecture.rpc.for_test.mock_rpc_server.MockRpcServer import MockRpcServer
-from com.emeraldblast.p6.new_architecture.rpc.for_test.mock_rpc_server.WorkbookServicer import WorkbookServicerImp
 from com.emeraldblast.p6.new_architecture.workbook.RpcWorkbook import RpcWorkbook
 from com.emeraldblast.p6.proto.service.workbook import WorkbookService_pb2_grpc
 from com.emeraldblast.p6.proto.service.workbook.WorkbookService_pb2 import Empty2
@@ -25,7 +24,7 @@ class RpcWorkbook_test(unittest.TestCase):
         self.mockServer = MockRpcServer()
         addWbServicer = partial(
             WorkbookService_pb2_grpc.add_WorkbookServiceServicer_to_server,
-            servicer = WorkbookServicerImp()
+            servicer = RpcWorkbook_test.WorkbookServicerImp()
         )
         self.mockServer.addServicer(addWbServicer)
         self.mockServer.start()
