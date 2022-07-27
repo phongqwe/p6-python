@@ -1,6 +1,8 @@
 from pathlib import Path
 from typing import Union, Optional, Tuple
 import google.protobuf.empty_pb2 as empty_pb2
+from com.emeraldblast.p6.document_structure.communication.event.data_structure.SingleSignalResponse import \
+    SingleSignalResponse
 
 from google.protobuf import wrappers_pb2 as wrappers
 from com.emeraldblast.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
@@ -24,13 +26,11 @@ from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import Work
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeyImp import WorkbookKeyImp
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
-from com.emeraldblast.p6.document_structure.worksheet.WorksheetImp import WorksheetImp
 from com.emeraldblast.p6.new_architecture.rpc.RpcErrors import RpcErrors
 from com.emeraldblast.p6.new_architecture.rpc.RpcValues import RpcValues
 from com.emeraldblast.p6.new_architecture.rpc.StubProvider import StubProvider
-from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.SetWbName import SetWbNameRequest, \
-    SetWbNameResponse
-from com.emeraldblast.p6.proto.service.workbook.SetWbName_pb2 import SetWbNameRequestProto, SetWbNameResponseProto
+from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetAllWorksheetsResponse import GetAllWorksheetsResponse
+from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.SetWbNameRequest import SetWbNameRequest
 from com.emeraldblast.p6.proto.service.workbook.WorkbookService_pb2_grpc import WorkbookServiceStub
 
 
@@ -45,7 +45,6 @@ class RpcWorkbook(Workbook):
     ):
         self.__key = WorkbookKeyImp(name, path)
         self._stubProvider = stubProvider
-
 
     def setStubProvider(self,stubProvider:StubProvider):
         self._stubProvider = stubProvider
@@ -92,8 +91,13 @@ class RpcWorkbook(Workbook):
 
     @property
     def worksheets(self) -> list[Worksheet]:
-        # TODO add rpc call
-        pass
+        if self._sv is not None:
+            outProto = self._sv.getAllWorksheets(self.workbookKey.toProtoObj())
+            out = GetAllWorksheetsResponse.fromProto(outProto,self)
+            return out.worksheets
+        else:
+            raise RpcWorkbook._serverDownException
+
 
     @property
     def workbookKey(self) -> WorkbookKey:
@@ -166,7 +170,7 @@ class RpcWorkbook(Workbook):
                             newName = newName
                         ).toProtoObj()
                     )
-                out: SetWbNameResponse = SetWbNameResponse.fromProto(outProto)
+                out: SingleSignalResponse = SingleSignalResponse.fromProto(outProto)
                 err = out.errorReport
                 if err is not None:
                     raise err.toException()

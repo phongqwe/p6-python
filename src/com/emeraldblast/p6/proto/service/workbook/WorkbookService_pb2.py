@@ -17,9 +17,10 @@ from com.emeraldblast.p6.proto import DocProtos_pb2 as com_dot_emeraldblast_dot_
 from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from com.emeraldblast.p6.proto.service.workbook import SetWbName_pb2 as com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_SetWbName__pb2
+from com.emeraldblast.p6.proto.service.workbook import GetAllWorksheets_pb2 as com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_GetAllWorksheets__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n@com/emeraldblast/p6/proto/service/workbook/WorkbookService.proto\x12*com.emeraldblast.p6.proto.service.workbook\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\x1a)com/emeraldblast/p6/proto/DocProtos.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a:com/emeraldblast/p6/proto/service/workbook/SetWbName.proto2\x82\x02\n\x0fWorkbookService\x12X\n\nsheetCount\x12+.com.emeraldblast.p6.proto.WorkbookKeyProto\x1a\x1b.google.protobuf.Int64Value\"\x00\x12\x94\x01\n\tsetWbName\x12\x41.com.emeraldblast.p6.proto.service.workbook.SetWbNameRequestProto\x1a\x42.com.emeraldblast.p6.proto.service.workbook.SetWbNameResponseProto\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n@com/emeraldblast/p6/proto/service/workbook/WorkbookService.proto\x12*com.emeraldblast.p6.proto.service.workbook\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\x1a)com/emeraldblast/p6/proto/DocProtos.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a:com/emeraldblast/p6/proto/service/workbook/SetWbName.proto\x1a\x41\x63om/emeraldblast/p6/proto/service/workbook/GetAllWorksheets.proto2\x83\x03\n\x0fWorkbookService\x12X\n\nsheetCount\x12+.com.emeraldblast.p6.proto.WorkbookKeyProto\x1a\x1b.google.protobuf.Int64Value\"\x00\x12\x86\x01\n\tsetWbName\x12\x41.com.emeraldblast.p6.proto.service.workbook.SetWbNameRequestProto\x1a\x34.com.emeraldblast.p6.proto.SingleSignalResponseProto\"\x00\x12\x8c\x01\n\x10getAllWorksheets\x12+.com.emeraldblast.p6.proto.WorkbookKeyProto\x1aI.com.emeraldblast.p6.proto.service.workbook.GetAllWorksheetsResponseProto\"\x00\x62\x06proto3')
 
 
 
@@ -27,6 +28,6 @@ _WORKBOOKSERVICE = DESCRIPTOR.services_by_name['WorkbookService']
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _WORKBOOKSERVICE._serialized_start=323
-  _WORKBOOKSERVICE._serialized_end=581
+  _WORKBOOKSERVICE._serialized_start=390
+  _WORKBOOKSERVICE._serialized_end=777
 # @@protoc_insertion_point(module_scope)

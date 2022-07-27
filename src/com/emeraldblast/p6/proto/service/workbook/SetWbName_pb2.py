@@ -18,12 +18,11 @@ from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n:com/emeraldblast/p6/proto/service/workbook/SetWbName.proto\x12*com.emeraldblast.p6.proto.service.workbook\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\x1a)com/emeraldblast/p6/proto/DocProtos.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1bgoogle/protobuf/empty.proto\"d\n\x15SetWbNameRequestProto\x12:\n\x05wbKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x0f\n\x07newName\x18\x02 \x01(\t\"o\n\x16SetWbNameResponseProto\x12\x45\n\x0b\x65rrorReport\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.ErrorReportProtoH\x00\x88\x01\x01\x42\x0e\n\x0c_errorReportb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n:com/emeraldblast/p6/proto/service/workbook/SetWbName.proto\x12*com.emeraldblast.p6.proto.service.workbook\x1a,com/emeraldblast/p6/proto/CommonProtos.proto\x1a)com/emeraldblast/p6/proto/DocProtos.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1bgoogle/protobuf/empty.proto\"d\n\x15SetWbNameRequestProto\x12:\n\x05wbKey\x18\x01 \x01(\x0b\x32+.com.emeraldblast.p6.proto.WorkbookKeyProto\x12\x0f\n\x07newName\x18\x02 \x01(\tb\x06proto3')
 
 
 
 _SETWBNAMEREQUESTPROTO = DESCRIPTOR.message_types_by_name['SetWbNameRequestProto']
-_SETWBNAMERESPONSEPROTO = DESCRIPTOR.message_types_by_name['SetWbNameResponseProto']
 SetWbNameRequestProto = _reflection.GeneratedProtocolMessageType('SetWbNameRequestProto', (_message.Message,), {
   'DESCRIPTOR' : _SETWBNAMEREQUESTPROTO,
   '__module__' : 'com.emeraldblast.p6.proto.service.workbook.SetWbName_pb2'
@@ -31,18 +30,9 @@ SetWbNameRequestProto = _reflection.GeneratedProtocolMessageType('SetWbNameReque
   })
 _sym_db.RegisterMessage(SetWbNameRequestProto)
 
-SetWbNameResponseProto = _reflection.GeneratedProtocolMessageType('SetWbNameResponseProto', (_message.Message,), {
-  'DESCRIPTOR' : _SETWBNAMERESPONSEPROTO,
-  '__module__' : 'com.emeraldblast.p6.proto.service.workbook.SetWbName_pb2'
-  # @@protoc_insertion_point(class_scope:com.emeraldblast.p6.proto.service.workbook.SetWbNameResponseProto)
-  })
-_sym_db.RegisterMessage(SetWbNameResponseProto)
-
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   _SETWBNAMEREQUESTPROTO._serialized_start=256
   _SETWBNAMEREQUESTPROTO._serialized_end=356
-  _SETWBNAMERESPONSEPROTO._serialized_start=358
-  _SETWBNAMERESPONSEPROTO._serialized_end=469
 # @@protoc_insertion_point(module_scope)

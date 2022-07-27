@@ -1,5 +1,7 @@
 import unittest
 
+from com.emeraldblast.p6.document_structure.util.for_test import TestUtils
+
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.common.ErrorIndicator import \
     ErrorIndicator
 
@@ -10,14 +12,12 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.S
 class SingleSignalResponse_test(unittest.TestCase):
     def test_ToProto_FromProto(self):
         o = SingleSignalResponse(
-            errIndicator = ErrorIndicator(
-                isError = False,
-            )
+            errorReport = TestUtils.TestErrorReport
         )
         proto = o.toProtoObj()
-        self.assertEqual(o.errIndicator.toProtoObj(), proto.errIndicator)
-        o2 = SingleSignalResponse.fromProto(proto)
-        self.assertEqual(o,o2)
+        self.assertEqual(o.errorReport.toProtoObj(), proto.errorReport)
+        o2:SingleSignalResponse = SingleSignalResponse.fromProto(proto)
+        self.assertTrue(o.errorReport.isSameErr(o2.errorReport))
     
         
 
