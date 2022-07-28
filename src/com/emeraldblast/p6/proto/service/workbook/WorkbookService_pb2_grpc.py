@@ -4,9 +4,9 @@ import grpc
 
 from com.emeraldblast.p6.proto import CommonProtos_pb2 as com_dot_emeraldblast_dot_p6_dot_proto_dot_CommonProtos__pb2
 from com.emeraldblast.p6.proto import DocProtos_pb2 as com_dot_emeraldblast_dot_p6_dot_proto_dot_DocProtos__pb2
-from com.emeraldblast.p6.proto.service.workbook import GetActiveWorksheetResponseProto_pb2 as com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_GetActiveWorksheetResponseProto__pb2
 from com.emeraldblast.p6.proto.service.workbook import GetAllWorksheets_pb2 as com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_GetAllWorksheets__pb2
-from com.emeraldblast.p6.proto.service.workbook import SetActiveWorksheetRequestProto_pb2 as com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_SetActiveWorksheetRequestProto__pb2
+from com.emeraldblast.p6.proto.service.workbook import GetWorksheetResponseProto_pb2 as com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_GetWorksheetResponseProto__pb2
+from com.emeraldblast.p6.proto.service.workbook import IdentifyWorksheetMsgProto_pb2 as com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_IdentifyWorksheetMsgProto__pb2
 from com.emeraldblast.p6.proto.service.workbook import SetWbName_pb2 as com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_SetWbName__pb2
 from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 
@@ -37,13 +37,18 @@ class WorkbookServiceStub(object):
                 )
         self.setActiveWorksheetRs = channel.unary_unary(
                 '/com.emeraldblast.p6.proto.service.workbook.WorkbookService/setActiveWorksheetRs',
-                request_serializer=com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_SetActiveWorksheetRequestProto__pb2.SetActiveWorksheetRequestProto.SerializeToString,
+                request_serializer=com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_IdentifyWorksheetMsgProto__pb2.IdentifyWorksheetMsgProto.SerializeToString,
                 response_deserializer=com_dot_emeraldblast_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
                 )
         self.getActiveWorksheet = channel.unary_unary(
                 '/com.emeraldblast.p6.proto.service.workbook.WorkbookService/getActiveWorksheet',
                 request_serializer=com_dot_emeraldblast_dot_p6_dot_proto_dot_DocProtos__pb2.WorkbookKeyProto.SerializeToString,
-                response_deserializer=com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_GetActiveWorksheetResponseProto__pb2.GetActiveWorksheetResponseProto.FromString,
+                response_deserializer=com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_GetWorksheetResponseProto__pb2.GetWorksheetResponseProto.FromString,
+                )
+        self.getWorksheet = channel.unary_unary(
+                '/com.emeraldblast.p6.proto.service.workbook.WorkbookService/getWorksheet',
+                request_serializer=com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_IdentifyWorksheetMsgProto__pb2.IdentifyWorksheetMsgProto.SerializeToString,
+                response_deserializer=com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_GetWorksheetResponseProto__pb2.GetWorksheetResponseProto.FromString,
                 )
 
 
@@ -80,6 +85,12 @@ class WorkbookServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def getWorksheet(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_WorkbookServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -100,13 +111,18 @@ def add_WorkbookServiceServicer_to_server(servicer, server):
             ),
             'setActiveWorksheetRs': grpc.unary_unary_rpc_method_handler(
                     servicer.setActiveWorksheetRs,
-                    request_deserializer=com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_SetActiveWorksheetRequestProto__pb2.SetActiveWorksheetRequestProto.FromString,
+                    request_deserializer=com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_IdentifyWorksheetMsgProto__pb2.IdentifyWorksheetMsgProto.FromString,
                     response_serializer=com_dot_emeraldblast_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.SerializeToString,
             ),
             'getActiveWorksheet': grpc.unary_unary_rpc_method_handler(
                     servicer.getActiveWorksheet,
                     request_deserializer=com_dot_emeraldblast_dot_p6_dot_proto_dot_DocProtos__pb2.WorkbookKeyProto.FromString,
-                    response_serializer=com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_GetActiveWorksheetResponseProto__pb2.GetActiveWorksheetResponseProto.SerializeToString,
+                    response_serializer=com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_GetWorksheetResponseProto__pb2.GetWorksheetResponseProto.SerializeToString,
+            ),
+            'getWorksheet': grpc.unary_unary_rpc_method_handler(
+                    servicer.getWorksheet,
+                    request_deserializer=com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_IdentifyWorksheetMsgProto__pb2.IdentifyWorksheetMsgProto.FromString,
+                    response_serializer=com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_GetWorksheetResponseProto__pb2.GetWorksheetResponseProto.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -181,7 +197,7 @@ class WorkbookService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/com.emeraldblast.p6.proto.service.workbook.WorkbookService/setActiveWorksheetRs',
-            com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_SetActiveWorksheetRequestProto__pb2.SetActiveWorksheetRequestProto.SerializeToString,
+            com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_IdentifyWorksheetMsgProto__pb2.IdentifyWorksheetMsgProto.SerializeToString,
             com_dot_emeraldblast_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
@@ -199,6 +215,23 @@ class WorkbookService(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/com.emeraldblast.p6.proto.service.workbook.WorkbookService/getActiveWorksheet',
             com_dot_emeraldblast_dot_p6_dot_proto_dot_DocProtos__pb2.WorkbookKeyProto.SerializeToString,
-            com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_GetActiveWorksheetResponseProto__pb2.GetActiveWorksheetResponseProto.FromString,
+            com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_GetWorksheetResponseProto__pb2.GetWorksheetResponseProto.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def getWorksheet(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/com.emeraldblast.p6.proto.service.workbook.WorkbookService/getWorksheet',
+            com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_IdentifyWorksheetMsgProto__pb2.IdentifyWorksheetMsgProto.SerializeToString,
+            com_dot_emeraldblast_dot_p6_dot_proto_dot_service_dot_workbook_dot_GetWorksheetResponseProto__pb2.GetWorksheetResponseProto.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

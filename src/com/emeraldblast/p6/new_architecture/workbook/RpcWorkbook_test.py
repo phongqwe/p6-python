@@ -17,6 +17,7 @@ from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetActiveW
     GetActiveWorksheetResponse
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetAllWorksheetsResponse import \
     GetAllWorksheetsResponse
+from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetWorksheetResponse import GetWorksheetResponse
 from com.emeraldblast.p6.new_architecture.rpc.for_test.mock_rpc_server.MockRpcServer import MockRpcServer
 from com.emeraldblast.p6.new_architecture.workbook.RpcWorkbook import RpcWorkbook
 from com.emeraldblast.p6.proto.service.workbook import WorkbookService_pb2_grpc
@@ -127,6 +128,71 @@ class RpcWorkbook_test(unittest.TestCase):
         o2 = wb.activeWorksheet
         self.assertIsNotNone(o2)
         self.assertEqual("w",o2.name)
+
+    def test_getWorksheet(self):
+        wb = self.wb
+        def failTest():
+            self.mockWbService.getWorksheet = MagicMock(
+                return_value = GetWorksheetResponse().toProtoObj()
+            )
+            o11 = wb.getWorksheetByNameRs("q")
+            self.assertTrue(o11.isErr())
+            
+            with self.assertRaises(Exception):
+                wb.getWorksheet("q")
+            with self.assertRaises(Exception):
+                wb.getWorksheetByName("q")
+            self.assertIsNone(wb.getWorksheetByNameOrNone("q"))
+
+            o12=wb.getWorksheetRs("q")
+            self.assertTrue(o12.isErr())
+            self.assertIsNone(wb.getWorksheetOrNone("q"))
+
+            o13 = wb.getWorksheetByIndexRs(123)
+            self.assertTrue(o13.isErr())
+
+            with self.assertRaises(Exception):
+                wb.getWorksheet(123)
+            with self.assertRaises(Exception):
+                wb.getWorksheetByIndex(123)
+            self.assertIsNone(wb.getWorksheetByIndexOrNone(123))
+
+            o14=wb.getWorksheetRs(123)
+            self.assertTrue(o14.isErr())
+
+        failTest()
+        def okTest():
+            ws2 = WorksheetImp("ws2",None)
+            self.mockWbService.getWorksheet = MagicMock(
+                return_value = GetWorksheetResponse(
+                    worksheet = ws2
+                ).toProtoObj()
+            )
+            o21 = self.wb.getWorksheetByNameRs("q")
+            self.assertTrue(o21.isOk())
+            self.assertTrue(o21.value.compareContent(ws2))
+
+            self.assertTrue(wb.getWorksheetByName("q").compareContent(ws2))
+            self.assertTrue(wb.getWorksheetByNameOrNone("q").compareContent(ws2))
+            self.assertTrue(wb.getWorksheetOrNone("q").compareContent(ws2))
+
+            o22 = wb.getWorksheetRs("q")
+            self.assertTrue(o22.value.compareContent(ws2))
+
+            o21 = self.wb.getWorksheetByIndexRs(123)
+            self.assertTrue(o21.isOk())
+            self.assertTrue(o21.value.compareContent(ws2))
+
+            self.assertTrue(wb.getWorksheetByIndex(123).compareContent(ws2))
+            self.assertTrue(wb.getWorksheetByIndexOrNone(123).compareContent(ws2))
+            self.assertTrue(wb.getWorksheetOrNone(123).compareContent(ws2))
+
+            o22 = wb.getWorksheetRs(123)
+            self.assertTrue(o22.value.compareContent(ws2))
+
+        okTest()
+
+
 
 
 if __name__ == '__main__':

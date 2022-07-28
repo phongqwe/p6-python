@@ -53,7 +53,7 @@ class BaseWorksheet(Worksheet,ABC):
         rs = self.pasteProtoRs(anchorCell, paster)
         rs.raiseIfErr()
 
-    def compareWith(self, ws2: Worksheet) -> bool:
+    def compareContent(self, ws2: Worksheet) -> bool:
         """compare all cell of this sheet with another. Very inefficient, use with care"""
         ws1 = self.rootWorksheet
         ws2 = ws2.rootWorksheet

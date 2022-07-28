@@ -22,7 +22,7 @@ TestErrorReport = ErrorReport(
 )
 
 def compareWs(ws1:Worksheet, ws2:Worksheet)->bool:
-    return ws1.compareWith(ws2)
+    return ws1.compareContent(ws2)
 
 
 def sampleWb(name):

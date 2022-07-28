@@ -1,13 +1,13 @@
 import unittest
 
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
-from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.SetActiveWorksheetRequest import \
-    SetActiveWorksheetRequest
+from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.IdentifyWorksheetMsg import \
+    IdentifyWorksheetMsg
 
 
-class SetActiveWorksheetRequest_test(unittest.TestCase):
+class IdentifyWorksheetMsgProto_test(unittest.TestCase):
     def test_toProto_fromProto(self):
-        o = SetActiveWorksheetRequest(
+        o = IdentifyWorksheetMsg(
             wbKey = WorkbookKeys.fromNameAndPath("qwe"),
             wsName = "Sheet1")
 
@@ -16,7 +16,7 @@ class SetActiveWorksheetRequest_test(unittest.TestCase):
         self.assertEqual(o.wsName,p.wsName)
         self.assertFalse(p.HasField("index"))
 
-        o2 = SetActiveWorksheetRequest(
+        o2 = IdentifyWorksheetMsg(
             wbKey = WorkbookKeys.fromNameAndPath("qwe22"),
             index=123
         )
@@ -25,7 +25,7 @@ class SetActiveWorksheetRequest_test(unittest.TestCase):
         self.assertEqual(o2.index, p2.index)
         self.assertFalse(p2.HasField("wsName"))
 
-        o22 = SetActiveWorksheetRequest.fromProto(p2)
+        o22 = IdentifyWorksheetMsg.fromProto(p2)
         self.assertEqual(o22,o2)
 
 

@@ -77,7 +77,7 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
             c2 = len(self.worksheets) == len(o.worksheets)
             c3 = True
             for i in range(len(self.worksheets)):
-                if not self.worksheets[i].compareWith(o.worksheets[i]):
+                if not self.worksheets[i].compareContent(o.worksheets[i]):
                     c3 = False
                     break
             return c1 and c2 and c3

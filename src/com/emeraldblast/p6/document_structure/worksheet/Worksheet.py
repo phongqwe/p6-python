@@ -96,8 +96,8 @@ class Worksheet(UserFriendlyCellContainer,
             paster: Paster | None = None):
         raise NotImplementedError()
 
-    def compareWith(self, ws2: Worksheet) -> bool:
-        """compare all cell of this sheet with another. Very inefficient, use with care"""
+    def compareContent(self, ws2: Worksheet) -> bool:
+        """Compare equality by comparing name and comparing all cell of this sheet with another. Very inefficient, use with care"""
         raise NotImplementedError()
 
     @property

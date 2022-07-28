@@ -68,3 +68,13 @@ class WorkbookErrors:
                 WorkbookErrors.WorksheetNotExistReport.header,
                 WorkbookErrors.WorksheetNotExistReport.Data(nameOrIndex)
             )
+        @staticmethod
+        def report(detail:str=None):
+            if detail:
+                return ErrorReport(
+                    header = WorkbookErrors.WorksheetNotExistReport.header.setDescription(detail),
+                )
+            else:
+                return ErrorReport(
+                    header = WorkbookErrors.WorksheetNotExistReport.header,
+                )
