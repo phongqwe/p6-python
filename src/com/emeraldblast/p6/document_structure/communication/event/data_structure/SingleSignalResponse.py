@@ -6,6 +6,9 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.c
 
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto, P
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
+from com.emeraldblast.p6.document_structure.util.result.Err import Err
+from com.emeraldblast.p6.document_structure.util.result.Ok import Ok
+from com.emeraldblast.p6.document_structure.util.result.Result import Result
 from com.emeraldblast.p6.proto.CommonProtos_pb2 import SingleSignalResponseProto
 
 
@@ -13,6 +16,11 @@ from com.emeraldblast.p6.proto.CommonProtos_pb2 import SingleSignalResponseProto
 class SingleSignalResponse(ToProto[SingleSignalResponseProto]):
     errorReport: Optional[ErrorReport] = None
 
+    def toRs(self)->Result[None,ErrorReport]:
+        if self.errorReport:
+            return Err(self.errorReport)
+        else:
+            return Ok(None)
 
     def isError(self)->bool:
         return self.errorReport is not None

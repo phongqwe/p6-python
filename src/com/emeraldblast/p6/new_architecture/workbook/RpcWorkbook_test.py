@@ -217,6 +217,37 @@ class RpcWorkbook_test(unittest.TestCase):
         with self.assertRaises(Exception):
             wb.createNewWorksheet("qwe")
 
+    def test_deleteWorksheet(self):
+        self.mockWbService.deleteWorksheet = MagicMock(
+            return_value = SingleSignalResponse().toProtoObj()
+        )
+
+        wb = self.wb
+        o = wb.deleteWorksheetByNameRs("qwe")
+        self.assertTrue(o.isOk())
+        o = wb.deleteWorksheetByIndexRs(123)
+        self.assertTrue(o.isOk())
+
+        self.mockWbService.deleteWorksheet = MagicMock(
+            return_value = SingleSignalResponse(
+                errorReport = TestUtils.TestErrorReport
+            ).toProtoObj()
+        )
+
+        o = wb.deleteWorksheetByNameRs("qwe")
+        self.assertTrue(o.isErr())
+        self.assertTrue(o.err.isSameErr(TestUtils.TestErrorReport))
+        o = wb.deleteWorksheetByIndexRs(123)
+        self.assertTrue(o.isErr())
+        self.assertTrue(o.err.isSameErr(TestUtils.TestErrorReport))
+
+
+        with self.assertRaises(Exception):
+            wb.deleteWorksheet(123)
+
+        with self.assertRaises(Exception):
+            wb.deleteWorksheet("qwe")
+
 
 
 

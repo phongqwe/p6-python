@@ -42,7 +42,7 @@ from com.emeraldblast.p6.proto.service.workbook.rpc.WorkbookService_pb2_grpc imp
 
 
 class RpcWorkbook(Workbook):
-    _serverDownReport = RpcErrors.RpcServerIsDown\
+    _serverDownReport = RpcErrors.RpcServerIsDown \
         .report("Can't get sheet count because rpc server is down.")
     _serverDownException = _serverDownReport.toException()
 
@@ -66,10 +66,11 @@ class RpcWorkbook(Workbook):
 
     @property
     def worksheets(self) -> list[Worksheet]:
-        def f()->list[Worksheet]:
+        def f() -> list[Worksheet]:
             outProto = self._wbsv.getAllWorksheets(self.workbookKey.toProtoObj())
             out = GetAllWorksheetsResponse.fromProto(outProto, self)
             return out.worksheets
+
         return self._onWbsvOk(f)
 
     @property
@@ -81,9 +82,9 @@ class RpcWorkbook(Workbook):
         self.__key = newKey
 
     def setActiveWorksheetRs(self, indexOrName: Union[int, str]) -> Result[None, ErrorReport]:
-        if isinstance(indexOrName,int):
+        if isinstance(indexOrName, int):
             return self.setActiveWorksheetByIndexRs(indexOrName)
-        elif isinstance(indexOrName,str):
+        elif isinstance(indexOrName, str):
             return self.setActiveWorksheetByNameRs(indexOrName)
         else:
             return Err(CommonErrors.WrongTypeReport("nameOrIndex", "str or int"))
@@ -95,7 +96,6 @@ class RpcWorkbook(Workbook):
         )
         return self.setActiveWsRpcRs(request)
 
-
     def setActiveWorksheetByIndexRs(self, index: int) -> Result[None, ErrorReport]:
         request = IdentifyWorksheetMsg(
             wbKey = self.workbookKey,
@@ -103,8 +103,8 @@ class RpcWorkbook(Workbook):
         )
         return self.setActiveWsRpcRs(request)
 
-    def setActiveWsRpcRs(self, request:IdentifyWorksheetMsg)->Result[None, ErrorReport]:
-        def f()->Result[None, ErrorReport]:
+    def setActiveWsRpcRs(self, request: IdentifyWorksheetMsg) -> Result[None, ErrorReport]:
+        def f() -> Result[None, ErrorReport]:
             outProto: SingleSignalResponseProto = self._wbsv.setActiveWorksheetRs(
                 request = request)
             out = SingleSignalResponse.fromProto(outProto)
@@ -112,11 +112,12 @@ class RpcWorkbook(Workbook):
                 return Err(out.errorReport)
             else:
                 return Ok(None)
+
         return self._onWbsvOkRs(f)
 
     @property
     def activeWorksheet(self) -> Optional[Worksheet]:
-        def f()->Optional[Worksheet]:
+        def f() -> Optional[Worksheet]:
             wbsv = self._wbsv
             outProto: GetWorksheetResponseProto = wbsv.getActiveWorksheet(self.workbookKey.toProtoObj())
             out = GetActiveWorksheetResponse.fromProto(outProto, self)
@@ -124,8 +125,8 @@ class RpcWorkbook(Workbook):
                 return out.worksheet
             else:
                 return None
-        return self._onWbsvOk(f)
 
+        return self._onWbsvOk(f)
 
     def isEmpty(self) -> bool:
         return self.sheetCount == 0
@@ -144,23 +145,24 @@ class RpcWorkbook(Workbook):
         else:
             raise RpcWorkbook._serverDownException
 
-    def _makeGetWsRpcRequestRs(self,request:IdentifyWorksheetMsg)->Result[Worksheet, ErrorReport]:
-        def repStr(index,name) -> str:
+    def _makeGetWsRpcRequestRs(self, request: IdentifyWorksheetMsg) -> Result[Worksheet, ErrorReport]:
+        def repStr(index, name) -> str:
             if name:
                 return f"Worksheet \"{name}\" does not exist"
             if index:
                 return f"Worksheet at index \"{index}\" does not exist"
             else:
                 raise CommonErrors.WrongTypeReport("nameOrIndex", "str or int").toException()
+
         def f():
-            outProto:GetWorksheetResponseProto = self._wbsv.getWorksheet(request=request.toProtoObj())
+            outProto: GetWorksheetResponseProto = self._wbsv.getWorksheet(request = request.toProtoObj())
             out = GetWorksheetResponse.fromProto(outProto)
             if out.worksheet:
                 return Ok(out.worksheet)
             else:
-                return Err(WorkbookErrors.WorksheetNotExistReport.report(repStr(request.index,request.wsName)))
-        return self._onWbsvOkRs(f)
+                return Err(WorkbookErrors.WorksheetNotExistReport.report(repStr(request.index, request.wsName)))
 
+        return self._onWbsvOkRs(f)
 
     def getWorksheetByNameRs(self, name: str) -> Result[Worksheet, ErrorReport]:
         req = IdentifyWorksheetMsg(
@@ -168,7 +170,6 @@ class RpcWorkbook(Workbook):
             wsName = name
         )
         return self._makeGetWsRpcRequestRs(req)
-
 
     def getWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
         req = IdentifyWorksheetMsg(
@@ -229,27 +230,42 @@ class RpcWorkbook(Workbook):
             raise RpcWorkbook._serverDownException
 
     def createNewWorksheetRs(self, newSheetName: Optional[str] = None) -> Result[Worksheet, ErrorReport]:
-        def f()->Result[Worksheet, ErrorReport]:
+        def f() -> Result[Worksheet, ErrorReport]:
             req = CreateNewWorksheetRequest(
                 wbKey = self.__key,
                 newWorksheetName = newSheetName
             ).toProtoObj()
-            outProto:WorksheetWithErrorReportMsgProto = self._wbsv.createNewWorksheet(request=req)
-            out = WorksheetWithErrorReportMsg.fromProto(outProto,self)
+            outProto: WorksheetWithErrorReportMsgProto = self._wbsv.createNewWorksheet(request = req)
+            out = WorksheetWithErrorReportMsg.fromProto(outProto, self)
             if out.isErr():
                 return Err(out.errorReport)
             else:
                 return Ok(out.worksheet)
+
         return self._onWbsvOkRs(f)
-        
 
-    def deleteWorksheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
-        # TODO add rpc call
-        pass
+    def _deleteWorksheetRsRpc(self, request: IdentifyWorksheetMsg) -> Result[None, ErrorReport]:
+        def f() -> Result[None, ErrorReport]:
+            req = request.toProtoObj()
+            outProto: SingleSignalResponseProto = self._wbsv.deleteWorksheet(request = req)
+            out = SingleSignalResponse.fromProto(outProto)
+            return out.toRs()
 
-    def deleteWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
-        # TODO add rpc call
-        pass
+        return self._onWbsvOkRs(f)
+
+    def deleteWorksheetByNameRs(self, sheetName: str) -> Result[None, ErrorReport]:
+        req = IdentifyWorksheetMsg(
+            wbKey = self.__key,
+            wsName = sheetName
+        )
+        return self._deleteWorksheetRsRpc(req)
+
+    def deleteWorksheetByIndexRs(self, index: int) -> Result[None, ErrorReport]:
+        req = IdentifyWorksheetMsg(
+            wbKey = self.__key,
+            index=index
+        )
+        return self._deleteWorksheetRsRpc(req)
 
     def addWorksheetRs(self, ws: Worksheet) -> Result[None, ErrorReport]:
         # TODO add rpc call
