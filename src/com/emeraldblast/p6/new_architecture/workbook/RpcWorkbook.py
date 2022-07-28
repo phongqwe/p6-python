@@ -74,27 +74,24 @@ class RpcWorkbook(Workbook):
             return self.setActiveWorksheetByNameRs(indexOrName)
 
     def setActiveWorksheetByNameRs(self, name: str) -> Result[None, ErrorReport]:
-        if self._wbsv is not None:
-            outProto: SingleSignalResponseProto = self._wbsv.setActiveWorksheetRs(
-                request = SetActiveWorksheetRequest(
-                    wbKey = self.workbookKey,
-                    wsName = name
-                ))
-            out = SingleSignalResponse.fromProto(outProto)
-            if out.isError():
-                return Err(out.errorReport)
-            else:
-                return Ok(None)
-        else:
-            raise RpcWorkbook._serverDownException
+        request = SetActiveWorksheetRequest(
+            wbKey = self.workbookKey,
+            wsName = name
+        )
+        return self.setActiveWsRpcRs(request)
+
 
     def setActiveWorksheetByIndexRs(self, index: int) -> Result[None, ErrorReport]:
+        request = SetActiveWorksheetRequest(
+            wbKey = self.workbookKey,
+            index = index,
+        )
+        return self.setActiveWsRpcRs(request)
+
+    def setActiveWsRpcRs(self,request:SetActiveWorksheetRequest)->Result[None, ErrorReport]:
         if self._wbsv is not None:
             outProto: SingleSignalResponseProto = self._wbsv.setActiveWorksheetRs(
-                request = SetActiveWorksheetRequest(
-                    wbKey = self.workbookKey,
-                    index = index,
-                ))
+                request = request)
             out = SingleSignalResponse.fromProto(outProto)
             if out.isError():
                 return Err(out.errorReport)
