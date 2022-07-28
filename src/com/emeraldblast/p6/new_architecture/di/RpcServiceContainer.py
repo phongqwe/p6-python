@@ -3,8 +3,8 @@ from abc import ABC
 from dependency_injector import containers, providers
 
 from com.emeraldblast.p6.new_architecture.rpc.InsecureStubProvider import InsecureRpcServiceProvider
-from com.emeraldblast.p6.proto.service.CellService_pb2_grpc import CellServiceStub
-from com.emeraldblast.p6.proto.service.workbook.WorkbookService_pb2_grpc import WorkbookServiceStub
+from com.emeraldblast.p6.proto.service.cell.rpc.CellService_pb2_grpc import CellServiceStub
+from com.emeraldblast.p6.proto.service.workbook.rpc.WorkbookService_pb2_grpc import WorkbookServiceStub
 
 
 class RpcServiceContainer(containers.DeclarativeContainer):

@@ -6,8 +6,6 @@ import grpc
 from com.emeraldblast.p6.new_architecture.di.RpcServiceContainer import RpcServiceContainer
 from com.emeraldblast.p6.new_architecture.rpc.InsecureStubProvider import InsecureRpcServiceProvider
 from com.emeraldblast.p6.new_architecture.rpc.RpcInfo import RpcInfo
-from com.emeraldblast.p6.proto.service.CellService_pb2_grpc import CellServiceStub
-from com.emeraldblast.p6.proto.service.workbook.WorkbookService_pb2_grpc import WorkbookServiceStub
 
 
 class MockRpcServer:

@@ -18,11 +18,12 @@ from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetActiveW
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetAllWorksheetsResponse import \
     GetAllWorksheetsResponse
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetWorksheetResponse import GetWorksheetResponse
+from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.WorksheetWithErrorReportMsg import \
+    WorksheetWithErrorReportMsg
 from com.emeraldblast.p6.new_architecture.rpc.for_test.mock_rpc_server.MockRpcServer import MockRpcServer
 from com.emeraldblast.p6.new_architecture.workbook.RpcWorkbook import RpcWorkbook
-from com.emeraldblast.p6.proto.service.workbook import WorkbookService_pb2_grpc
-from com.emeraldblast.p6.proto.service.workbook.WorkbookService_pb2_grpc import WorkbookServiceStub, \
-    WorkbookServiceServicer
+from com.emeraldblast.p6.proto.service.workbook.rpc import WorkbookService_pb2_grpc
+from com.emeraldblast.p6.proto.service.workbook.rpc.WorkbookService_pb2_grpc import WorkbookServiceServicer
 
 
 class RpcWorkbook_test(unittest.TestCase):
@@ -137,7 +138,7 @@ class RpcWorkbook_test(unittest.TestCase):
             )
             o11 = wb.getWorksheetByNameRs("q")
             self.assertTrue(o11.isErr())
-            
+
             with self.assertRaises(Exception):
                 wb.getWorksheet("q")
             with self.assertRaises(Exception):
@@ -191,6 +192,33 @@ class RpcWorkbook_test(unittest.TestCase):
             self.assertTrue(o22.value.compareContent(ws2))
 
         okTest()
+
+    def test_createNewWorksheet(self):
+        ws2 = WorksheetImp("ws2", None)
+        self.mockWbService.createNewWorksheet = MagicMock(
+            return_value = WorksheetWithErrorReportMsg(
+                worksheet = ws2
+            ).toProtoObj()
+        )
+        wb = self.wb
+        rs=wb.createNewWorksheetRs("qwe")
+        self.assertTrue(rs.isOk())
+        self.assertTrue(rs.value.compareContent(ws2))
+        self.assertTrue(wb.createNewWorksheet("qwe").compareContent(ws2))
+
+
+        self.mockWbService.createNewWorksheet = MagicMock(
+            return_value = WorksheetWithErrorReportMsg(
+                errorReport = TestUtils.TestErrorReport
+            ).toProtoObj()
+        )
+        rs = wb.createNewWorksheetRs("qwe")
+        self.assertTrue(rs.isErr())
+        with self.assertRaises(Exception):
+            wb.createNewWorksheet("qwe")
+
+
+
 
 
 

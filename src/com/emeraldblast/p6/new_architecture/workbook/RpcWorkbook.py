@@ -2,9 +2,13 @@ from pathlib import Path
 from typing import Union, Optional, Callable
 
 from com.emeraldblast.p6.document_structure.workbook.WorkbookErrors import WorkbookErrors
+from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.CreateNewWorksheetRequest import \
+    CreateNewWorksheetRequest
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetActiveWorksheetResponse import \
     GetActiveWorksheetResponse
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetWorksheetResponse import GetWorksheetResponse
+from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.WorksheetWithErrorReportMsg import \
+    WorksheetWithErrorReportMsg
 from com.emeraldblast.p6.proto.CommonProtos_pb2 import SingleSignalResponseProto
 
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.SingleSignalResponse import \
@@ -29,9 +33,12 @@ from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetAllWork
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.IdentifyWorksheetMsg import \
     IdentifyWorksheetMsg
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.SetWbNameRequest import SetWbNameRequest
+from com.emeraldblast.p6.proto.service.workbook.CreateNewWorksheetRequestProto_pb2 import CreateNewWorksheetRequestProto
 from com.emeraldblast.p6.proto.service.workbook.GetWorksheetResponseProto_pb2 import \
     GetWorksheetResponseProto
-from com.emeraldblast.p6.proto.service.workbook.WorkbookService_pb2_grpc import WorkbookServiceStub
+from com.emeraldblast.p6.proto.service.workbook.WorksheetWithErrorReportMsgProto_pb2 import \
+    WorksheetWithErrorReportMsgProto
+from com.emeraldblast.p6.proto.service.workbook.rpc.WorkbookService_pb2_grpc import WorkbookServiceStub
 
 
 class RpcWorkbook(Workbook):
@@ -222,8 +229,19 @@ class RpcWorkbook(Workbook):
             raise RpcWorkbook._serverDownException
 
     def createNewWorksheetRs(self, newSheetName: Optional[str] = None) -> Result[Worksheet, ErrorReport]:
-        # TODO add rpc call
-        pass
+        def f()->Result[Worksheet, ErrorReport]:
+            req = CreateNewWorksheetRequest(
+                wbKey = self.__key,
+                newWorksheetName = newSheetName
+            ).toProtoObj()
+            outProto:WorksheetWithErrorReportMsgProto = self._wbsv.createNewWorksheet(request=req)
+            out = WorksheetWithErrorReportMsg.fromProto(outProto,self)
+            if out.isErr():
+                return Err(out.errorReport)
+            else:
+                return Ok(out.worksheet)
+        return self._onWbsvOkRs(f)
+        
 
     def deleteWorksheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
         # TODO add rpc call
