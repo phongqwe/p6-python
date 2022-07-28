@@ -1,6 +1,8 @@
 from pathlib import Path
 from typing import Union, Optional
 
+from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetActiveWorksheetResponse import \
+    GetActiveWorksheetResponse
 from com.emeraldblast.p6.proto.CommonProtos_pb2 import SingleSignalResponseProto
 
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.SingleSignalResponse import \
@@ -25,6 +27,8 @@ from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetAllWork
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.SetActiveWorksheetRequest import \
     SetActiveWorksheetRequest
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.SetWbNameRequest import SetWbNameRequest
+from com.emeraldblast.p6.proto.service.workbook.GetActiveWorksheetResponseProto_pb2 import \
+    GetActiveWorksheetResponseProto
 from com.emeraldblast.p6.proto.service.workbook.WorkbookService_pb2_grpc import WorkbookServiceStub
 
 
@@ -102,8 +106,16 @@ class RpcWorkbook(Workbook):
 
     @property
     def activeWorksheet(self) -> Optional[Worksheet]:
-        # TODO add rpc call
-        pass
+        wbsv = self._wbsv
+        if wbsv is not None:
+            outProto:GetActiveWorksheetResponseProto = wbsv.getActiveWorksheet(self.workbookKey.toProtoObj())
+            out = GetActiveWorksheetResponse.fromProto(outProto,self)
+            if out.worksheet:
+                return out.worksheet
+            else:
+                return None
+        else:
+            raise RpcWorkbook._serverDownException
 
     def isEmpty(self) -> bool:
         # TODO add rpc call

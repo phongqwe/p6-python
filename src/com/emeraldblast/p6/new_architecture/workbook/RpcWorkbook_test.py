@@ -13,6 +13,8 @@ from com.emeraldblast.p6.document_structure.worksheet.WorksheetImp import Worksh
 from com.emeraldblast.p6.new_architecture.rpc.InsecureStubProvider import InsecureRpcServiceProvider
 from com.emeraldblast.p6.new_architecture.rpc.RpcInfo import RpcInfo
 from com.emeraldblast.p6.new_architecture.rpc.RpcValues import RpcValues
+from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetActiveWorksheetResponse import \
+    GetActiveWorksheetResponse
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetAllWorksheetsResponse import \
     GetAllWorksheetsResponse
 from com.emeraldblast.p6.new_architecture.rpc.for_test.mock_rpc_server.MockRpcServer import MockRpcServer
@@ -109,6 +111,22 @@ class RpcWorkbook_test(unittest.TestCase):
         o3 = wb.setActiveWorksheetRs("asd")
         self.assertTrue(o3.isErr())
         self.assertTrue(o3.err.isSameErr(TestUtils.TestErrorReport))
+    
+    def test_getActiveWorksheet(self):
+        self.mockWbService.getActiveWorksheet = MagicMock(
+            return_value = GetActiveWorksheetResponse().toProtoObj()
+        )
+        wb=self.wb
+        o = wb.activeWorksheet
+        self.assertIsNone(o)
+        self.mockWbService.getActiveWorksheet = MagicMock(
+            return_value = GetActiveWorksheetResponse(
+                worksheet = WorksheetImp("w",None)
+            ).toProtoObj()
+        )
+        o2 = wb.activeWorksheet
+        self.assertIsNotNone(o2)
+        self.assertEqual("w",o2.name)
 
 
 if __name__ == '__main__':
