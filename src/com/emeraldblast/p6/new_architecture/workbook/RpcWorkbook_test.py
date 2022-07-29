@@ -250,6 +250,25 @@ class RpcWorkbook_test(unittest.TestCase):
 
 
 
+    def test_addWorksheet(self):
+        self.mockWbService.addWorksheet = MagicMock(
+            return_value = SingleSignalResponse().toProtoObj()
+        )
+        ws = WorksheetImp("zxc",None)
+        wb= self.wb
+        rs = wb.addWorksheetRs(ws)
+        self.assertTrue(rs.isOk())
+        wb.addWorksheet(ws)
+
+        self.mockWbService.addWorksheet = MagicMock(
+            return_value = SingleSignalResponse(
+                errorReport = TestUtils.TestErrorReport
+            ).toProtoObj()
+        )
+        rs = wb.addWorksheetRs(ws)
+        self.assertTrue(rs.isErr())
+        with self.assertRaises(Exception):
+            wb.addWorksheet(ws)
 
 
 

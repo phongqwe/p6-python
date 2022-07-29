@@ -1,7 +1,9 @@
 from pathlib import Path
 from typing import Union, Optional, Callable
 
+from com.emeraldblast.p6.document_structure.util.result.Results import Results
 from com.emeraldblast.p6.document_structure.workbook.WorkbookErrors import WorkbookErrors
+from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.AddWorksheetRequest import AddWorksheetRequest
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.CreateNewWorksheetRequest import \
     CreateNewWorksheetRequest
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetActiveWorksheetResponse import \
@@ -105,7 +107,7 @@ class RpcWorkbook(Workbook):
 
     def setActiveWsRpcRs(self, request: IdentifyWorksheetMsg) -> Result[None, ErrorReport]:
         def f() -> Result[None, ErrorReport]:
-            outProto: SingleSignalResponseProto = self._wbsv.setActiveWorksheetRs(
+            outProto: SingleSignalResponseProto = self._wbsv.setActiveWorksheet(
                 request = request)
             out = SingleSignalResponse.fromProto(outProto)
             if out.isError():
@@ -268,12 +270,22 @@ class RpcWorkbook(Workbook):
         return self._deleteWorksheetRsRpc(req)
 
     def addWorksheetRs(self, ws: Worksheet) -> Result[None, ErrorReport]:
-        # TODO add rpc call
-        pass
+        def f()->Result[None, ErrorReport]:
+            req = AddWorksheetRequest(
+                wbKey = self.__key,
+                worksheet = ws
+            )
+            outProto:SingleSignalResponseProto = self._wbsv.addWorksheet(request=req.toProtoObj())
+            out = SingleSignalResponse.fromProto(outProto)
+            return out.toRs()
+        return self._onWbsvOkRs(f)
 
-    def updateSheetName(self, oldName: str, ws: Worksheet):
-        # TODO add rpc call
-        pass
+    def changeSheetName(self, oldName: str, ws: Worksheet):
+        rs = self.changeSheetNameRs(oldName,ws)
+        return Results.extractOrRaise(rs)
+
+    def changeSheetNameRs(self, oldName: str, ws: Worksheet)->Result[None, ErrorReport]:
+        raise NotImplementedError()
 
     @property
     def rootWorkbook(self) -> 'Workbook':

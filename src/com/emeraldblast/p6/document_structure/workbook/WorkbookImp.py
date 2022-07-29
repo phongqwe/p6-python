@@ -275,7 +275,7 @@ class WorkbookImp(Workbook):
     def toJsonDict(self) -> dict:
         return self.toJson().toJsonDict()
 
-    def updateSheetName(self, oldName: str, ws: Worksheet):
+    def changeSheetName(self, oldName: str, ws: Worksheet):
         if ws in self.worksheets:
             self._sheetDictByName.pop(oldName)
             self._sheetDictByName[ws.name] = ws

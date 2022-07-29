@@ -275,7 +275,10 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
         else:
             raise addRs.err.toException()
 
-    def updateSheetName(self, oldName: str, ws: Worksheet):
+    def changeSheetName(self, oldName: str, ws: Worksheet):
+        raise NotImplementedError()
+    
+    def changeSheetNameRs(self, oldName: str, ws: Worksheet)->Result[None, ErrorReport]:
         raise NotImplementedError()
 
     def addWorksheetRs(self, ws: Worksheet) -> Result[None, ErrorReport]:

@@ -50,8 +50,8 @@ class WorkbookWrapper(Workbook):
     def rootWorkbook(self) -> 'Workbook':
         return self._innerWorkbook.rootWorkbook
 
-    def updateSheetName(self, oldName: str, ws: Worksheet):
-        self.rootWorkbook.updateSheetName(oldName, ws)
+    def changeSheetName(self, oldName: str, ws: Worksheet):
+        self.rootWorkbook.changeSheetName(oldName, ws)
 
     def addWorksheetRs(self, ws: Worksheet) -> Result[None, ErrorReport]:
         return self.rootWorkbook.addWorksheetRs(ws)

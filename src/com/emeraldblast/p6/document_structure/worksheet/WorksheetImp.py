@@ -241,7 +241,7 @@ class WorksheetImp(BaseWorksheet):
             # update sheet dict
             # cache workbook in a var because removeWorksheet will nullify self.workbook
             wb = self.workbook
-            wb.updateSheetName(oldName, self)
+            wb.changeSheetName(oldName, self)
             return Ok(None)
         else:
             return Err(WorkbookErrors.WorksheetAlreadyExistReport(newSheetName))
