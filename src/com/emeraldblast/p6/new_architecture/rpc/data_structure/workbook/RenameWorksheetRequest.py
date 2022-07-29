@@ -1,0 +1,34 @@
+from dataclasses import dataclass
+
+from com.emeraldblast.p6.document_structure.util.ToProto import ToProto, P
+from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
+from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
+from com.emeraldblast.p6.proto.service.workbook.RenameWorksheetRequestProto_pb2 import RenameWorksheetRequestProto
+
+@dataclass
+class RenameWorksheetRequest(ToProto[RenameWorksheetRequestProto]):
+
+    wbKey: WorkbookKey
+    oldName: str
+    newName: str
+
+    def toProtoObj(self) -> RenameWorksheetRequestProto:
+        return RenameWorksheetRequestProto(
+            wbKey = self.wbKey.toProtoObj(),
+            oldName = self.oldName,
+            newName = self.newName,
+        )
+
+
+    @staticmethod
+    def fromProto(proto:RenameWorksheetRequestProto)->'RenameWorksheetRequest':
+        return RenameWorksheetRequest(
+            newName = proto.newName,
+            oldName = proto.oldName,
+            wbKey = WorkbookKeys.fromProto(proto.workbookKey)
+        )
+    @staticmethod
+    def fromProtoBytes(data:bytes)->'RenameWorksheetRequest':
+        protoRequest = RenameWorksheetRequestProto()
+        protoRequest.ParseFromString(data)
+        return RenameWorksheetRequest.fromProto(protoRequest)

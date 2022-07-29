@@ -95,7 +95,7 @@ class RpcWorkbook_test(unittest.TestCase):
 
     def test_setActiveWorksheetRs(self):
         wb = self.wb
-        self.mockWbService.setActiveWorksheetRs = MagicMock(
+        self.mockWbService.setActiveWorksheet = MagicMock(
             return_value = SingleSignalResponse(
                 errorReport = None
             ).toProtoObj()
@@ -106,7 +106,7 @@ class RpcWorkbook_test(unittest.TestCase):
         o2 = wb.setActiveWorksheetRs("qwe")
         self.assertTrue(o2.isOk())
 
-        self.mockWbService.setActiveWorksheetRs = MagicMock(
+        self.mockWbService.setActiveWorksheet = MagicMock(
             return_value = SingleSignalResponse(
                 errorReport = TestUtils.TestErrorReport
             ).toProtoObj()

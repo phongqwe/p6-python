@@ -9,6 +9,8 @@ from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.CreateNewW
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetActiveWorksheetResponse import \
     GetActiveWorksheetResponse
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetWorksheetResponse import GetWorksheetResponse
+from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.RenameWorksheetRequest import \
+    RenameWorksheetRequest
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.WorksheetWithErrorReportMsg import \
     WorksheetWithErrorReportMsg
 from com.emeraldblast.p6.proto.CommonProtos_pb2 import SingleSignalResponseProto
@@ -265,27 +267,37 @@ class RpcWorkbook(Workbook):
     def deleteWorksheetByIndexRs(self, index: int) -> Result[None, ErrorReport]:
         req = IdentifyWorksheetMsg(
             wbKey = self.__key,
-            index=index
+            index = index
         )
         return self._deleteWorksheetRsRpc(req)
 
     def addWorksheetRs(self, ws: Worksheet) -> Result[None, ErrorReport]:
-        def f()->Result[None, ErrorReport]:
+        def f() -> Result[None, ErrorReport]:
             req = AddWorksheetRequest(
                 wbKey = self.__key,
                 worksheet = ws
             )
-            outProto:SingleSignalResponseProto = self._wbsv.addWorksheet(request=req.toProtoObj())
+            outProto: SingleSignalResponseProto = self._wbsv.addWorksheet(request = req.toProtoObj())
+            out = SingleSignalResponse.fromProto(outProto)
+            return out.toRs()
+
+        return self._onWbsvOkRs(f)
+
+    def renameWorksheetName(self, oldName: str, newName: str):
+        rs = self.renameWorksheetNameRs(oldName, newName)
+        return Results.extractOrRaise(rs)
+
+    def renameWorksheetNameRs(self, oldName: str, newName: str) -> Result[None, ErrorReport]:
+        def f() -> Result[None, ErrorReport]:
+            req = RenameWorksheetRequest(
+                wbKey = self.__key,
+                oldName = oldName,
+                newName = newName
+            )
+            outProto: SingleSignalResponseProto = self._wbsv.renameWorksheet(request = req.toProtoObj())
             out = SingleSignalResponse.fromProto(outProto)
             return out.toRs()
         return self._onWbsvOkRs(f)
-
-    def changeSheetName(self, oldName: str, ws: Worksheet):
-        rs = self.changeSheetNameRs(oldName,ws)
-        return Results.extractOrRaise(rs)
-
-    def changeSheetNameRs(self, oldName: str, ws: Worksheet)->Result[None, ErrorReport]:
-        raise NotImplementedError()
 
     @property
     def rootWorkbook(self) -> 'Workbook':
