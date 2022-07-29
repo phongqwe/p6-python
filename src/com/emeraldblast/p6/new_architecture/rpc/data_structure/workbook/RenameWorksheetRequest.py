@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto, P
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
-from com.emeraldblast.p6.proto.service.workbook.RenameWorksheetRequestProto_pb2 import RenameWorksheetRequestProto
+from com.emeraldblast.p6.proto.rpc.workbook.RenameWorksheetRequestProto_pb2 import RenameWorksheetRequestProto
 
 @dataclass
 class RenameWorksheetRequest(ToProto[RenameWorksheetRequestProto]):

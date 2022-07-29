@@ -2,8 +2,8 @@ from abc import ABC
 from typing import Optional
 
 from com.emeraldblast.p6.new_architecture.rpc.RpcInfo import RpcInfo
-from com.emeraldblast.p6.proto.service.cell.rpc.CellService_pb2_grpc import CellServiceStub
-from com.emeraldblast.p6.proto.service.workbook.rpc.WorkbookService_pb2_grpc import WorkbookServiceStub
+from com.emeraldblast.p6.proto.rpc.cell.service.CellService_pb2_grpc import CellServiceStub
+from com.emeraldblast.p6.proto.rpc.workbook.service.WorkbookService_pb2_grpc import WorkbookServiceStub
 
 
 class RpcServiceProvider(ABC):

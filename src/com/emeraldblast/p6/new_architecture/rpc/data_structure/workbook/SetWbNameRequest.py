@@ -7,7 +7,7 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.c
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto, P
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
-from com.emeraldblast.p6.proto.service.workbook.SetWbNameRequestProto_pb2 import SetWbNameRequestProto
+from com.emeraldblast.p6.proto.rpc.workbook.SetWbNameRequestProto_pb2 import SetWbNameRequestProto
 
 
 @dataclass

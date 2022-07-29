@@ -37,12 +37,12 @@ from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetAllWork
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.IdentifyWorksheetMsg import \
     IdentifyWorksheetMsg
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.SetWbNameRequest import SetWbNameRequest
-from com.emeraldblast.p6.proto.service.workbook.CreateNewWorksheetRequestProto_pb2 import CreateNewWorksheetRequestProto
-from com.emeraldblast.p6.proto.service.workbook.GetWorksheetResponseProto_pb2 import \
+from com.emeraldblast.p6.proto.rpc.workbook.CreateNewWorksheetRequestProto_pb2 import CreateNewWorksheetRequestProto
+from com.emeraldblast.p6.proto.rpc.workbook.GetWorksheetResponseProto_pb2 import \
     GetWorksheetResponseProto
-from com.emeraldblast.p6.proto.service.workbook.WorksheetWithErrorReportMsgProto_pb2 import \
+from com.emeraldblast.p6.proto.rpc.workbook.WorksheetWithErrorReportMsgProto_pb2 import \
     WorksheetWithErrorReportMsgProto
-from com.emeraldblast.p6.proto.service.workbook.rpc.WorkbookService_pb2_grpc import WorkbookServiceStub
+from com.emeraldblast.p6.proto.rpc.workbook.service.WorkbookService_pb2_grpc import WorkbookServiceStub
 
 
 class RpcWorkbook(Workbook):

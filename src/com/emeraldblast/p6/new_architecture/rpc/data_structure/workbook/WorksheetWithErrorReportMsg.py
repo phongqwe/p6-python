@@ -6,7 +6,7 @@ from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import
 from com.emeraldblast.p6.document_structure.workbook.WorkBook import Workbook
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 from com.emeraldblast.p6.document_structure.worksheet.Worksheets import Worksheets
-from com.emeraldblast.p6.proto.service.workbook.WorksheetWithErrorReportMsgProto_pb2 import \
+from com.emeraldblast.p6.proto.rpc.workbook.WorksheetWithErrorReportMsgProto_pb2 import \
     WorksheetWithErrorReportMsgProto
 
 
