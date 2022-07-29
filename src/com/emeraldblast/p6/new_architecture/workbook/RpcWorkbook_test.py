@@ -13,6 +13,7 @@ from com.emeraldblast.p6.document_structure.worksheet.WorksheetImp import Worksh
 from com.emeraldblast.p6.new_architecture.rpc.InsecureStubProvider import InsecureRpcServiceProvider
 from com.emeraldblast.p6.new_architecture.rpc.RpcInfo import RpcInfo
 from com.emeraldblast.p6.new_architecture.rpc.RpcValues import RpcValues
+from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.AddWorksheetRequest import AddWorksheetRequest
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetActiveWorksheetResponse import \
     GetActiveWorksheetResponse
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetAllWorksheetsResponse import \
@@ -22,6 +23,7 @@ from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.WorksheetW
     WorksheetWithErrorReportMsg
 from com.emeraldblast.p6.new_architecture.rpc.for_test.mock_rpc_server.MockRpcServer import MockRpcServer
 from com.emeraldblast.p6.new_architecture.workbook.RpcWorkbook import RpcWorkbook
+from com.emeraldblast.p6.proto.service.workbook.AddWorksheetRequestProto_pb2 import AddWorksheetRequestProto
 from com.emeraldblast.p6.proto.service.workbook.rpc import WorkbookService_pb2_grpc
 from com.emeraldblast.p6.proto.service.workbook.rpc.WorkbookService_pb2_grpc import WorkbookServiceServicer
 
@@ -257,6 +259,14 @@ class RpcWorkbook_test(unittest.TestCase):
         ws = WorksheetImp("zxc",None)
         wb= self.wb
         rs = wb.addWorksheetRs(ws)
+
+        self.mockWbService.addWorksheet.assert_called_with(
+            request=AddWorksheetRequest(
+                wbKey = wb.workbookKey,
+                worksheet = ws
+            ).toProtoObj()
+        )
+
         self.assertTrue(rs.isOk())
         wb.addWorksheet(ws)
 
