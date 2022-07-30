@@ -27,7 +27,7 @@ class Summer:
 class Container(DocumentContainer):
     rpcApp = providers.Singleton(
         RpcApp,
-        rpcServiceProvider = RpcServiceContainer.insecureRpcServiceProvider
+        rpcStubProvider = RpcServiceContainer.insecureRpcServiceProvider
     )
 
     bf = providers.Singleton(

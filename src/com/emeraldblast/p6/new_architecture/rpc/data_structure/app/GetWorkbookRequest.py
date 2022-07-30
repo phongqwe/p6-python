@@ -20,7 +20,7 @@ class GetWorkbookRequest(ToProto[GetWorkbookRequestProto]):
             wbk = self.wbKey.toProtoObj()
         if self.wbName:
             name = self.wbName
-        if self.wbIndex:
+        if self.wbIndex is not None:
             index = self.wbIndex
         return GetWorkbookRequestProto(
             wbKey = wbk,

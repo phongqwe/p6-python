@@ -38,6 +38,7 @@ class InsecureRpcStubProvider(RpcStubProvider):
     def setRpcInfo(self, rpcInfo: Optional[RpcInfo]):
         if rpcInfo is not None:
             self._rpcInfo = rpcInfo
+            self.__createObj()
         else:
             self.__clearObjs()
 

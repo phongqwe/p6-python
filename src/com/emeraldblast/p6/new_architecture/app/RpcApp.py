@@ -25,13 +25,16 @@ class RpcApp(BaseApp):
             rpcStubProvider: RpcStubProvider
     ):
         self.rpcSP = rpcStubProvider
-        self._appSv = self.rpcSP.appService
+
+    @property
+    def appSv(self):
+        return self.rpcSP.appService
 
     def _onAppSvOk(self, f):
-        return RpcUtils.onServiceOk(self._appSv, f)
+        return RpcUtils.onServiceOk(self.appSv, f)
 
     def _onAppSvOkRs(self, f):
-        return RpcUtils.onServiceOkRs(self._appSv, f)
+        return RpcUtils.onServiceOkRs(self.appSv, f)
 
     def getWorkbookRs(self, key: Union[str, int, WorkbookKey]) -> Result[Workbook, ErrorReport]:
         def f() -> Result[Workbook, ErrorReport]:
@@ -49,7 +52,7 @@ class RpcApp(BaseApp):
                 wbName = name,
                 wbIndex = index,
             )
-            outProto = self._appSv.getWorkbook(request = req.toProtoObj())
+            outProto = self.appSv.getWorkbook(request = req.toProtoObj())
             out = WorkbookKeyWithErrorResponse.fromProto(outProto)
             if out.isOk():
                 wbKey = out.wbKey

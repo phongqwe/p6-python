@@ -27,10 +27,9 @@ from py4j.java_gateway import JavaGateway, CallbackServerParameters
 from py4j.java_gateway import JavaGateway
 from py4j.java_collections import SetConverter, MapConverter, ListConverter
 
+
+from com.emeraldblast.p6.new_architecture.rpc.StubProvider import RpcStubProvider
 from com.emeraldblast.p6.proto.DocProtos_pb2 import CellIdProto
-from com.emeraldblast.p6.proto.service import CellService_pb2
-from com.emeraldblast.p6.proto.service.CellService_pb2_grpc import CellServiceStub
-from com.emeraldblast.p6.proto.service.GetCell_pb2 import GetCellRequest
 
 
 @dataclass
@@ -57,8 +56,36 @@ class MyJavaClass(object):
         implements = ["com.emeraldblast.p6.ui.example.MyAny"]
         # implements = ["kotlin.Any"]
 
-
+from com.emeraldblast.p6.document_structure.app.TopLevel import *
+from com.emeraldblast.p6.document_structure.app.GlobalScope import *
 class Bench(unittest.TestCase):
+
+    def test_configRpc(self):
+        import json
+        from com.emeraldblast.p6.document_structure.app.worksheet_functions.WorksheetFunctions import WorksheetFunctions
+        from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
+        from com.emeraldblast.p6.document_structure.range.address.RangeAddresses import RangeAddresses
+        import zmq
+        from com.emeraldblast.p6.document_structure.cell.address.CellAddresses import CellAddresses
+
+        from com.emeraldblast.p6.new_architecture.rpc.RpcInfo import RpcInfo
+
+        setIPythonGlobals(globals())
+        startApp()
+        app:App = getApp()
+        rpcSP:RpcStubProvider = app.rpcSP
+        port = 50052
+        rpcInfo = RpcInfo(
+            host="localhost",
+            port=port
+        )
+        rpcSP.setRpcInfo(
+            rpcInfo
+        )
+        wb0:Workbook=app.getWorkbook(0)
+        print(f"QWE123: {wb0.sheetCount}")
+
+
 
     def test_rpc(self):
         channel = grpc.insecure_channel('localhost:43271')
