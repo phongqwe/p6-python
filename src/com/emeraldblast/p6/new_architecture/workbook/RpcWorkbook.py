@@ -3,6 +3,7 @@ from typing import Union, Optional, Callable
 
 from com.emeraldblast.p6.document_structure.util.result.Results import Results
 from com.emeraldblast.p6.document_structure.workbook.WorkbookErrors import WorkbookErrors
+from com.emeraldblast.p6.new_architecture.common.RpcUtils import RpcUtils
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.AddWorksheetRequest import AddWorksheetRequest
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.CreateNewWorksheetRequest import \
     CreateNewWorksheetRequest
@@ -31,7 +32,7 @@ from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import Wor
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 from com.emeraldblast.p6.new_architecture.rpc.RpcErrors import RpcErrors
 from com.emeraldblast.p6.new_architecture.rpc.RpcValues import RpcValues
-from com.emeraldblast.p6.new_architecture.rpc.StubProvider import RpcServiceProvider
+from com.emeraldblast.p6.new_architecture.rpc.StubProvider import RpcStubProvider
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetAllWorksheetsResponse import \
     GetAllWorksheetsResponse
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.IdentifyWorksheetMsg import \
@@ -54,12 +55,18 @@ class RpcWorkbook(Workbook):
             self,
             name: str,
             path: Optional[Path],
-            stubProvider: RpcServiceProvider,
+            stubProvider: RpcStubProvider,
     ):
         self.__key = WorkbookKeyImp(name, path)
         self._stubProvider = stubProvider
 
-    def setStubProvider(self, stubProvider: RpcServiceProvider):
+    def __eq__(self, o: object) -> bool:
+        if isinstance(o,Workbook):
+            return self.workbookKey == o.workbookKey
+        else:
+            return False
+
+    def setStubProvider(self, stubProvider: RpcStubProvider):
         self._stubProvider = stubProvider
 
     @property
@@ -136,18 +143,10 @@ class RpcWorkbook(Workbook):
         return self.sheetCount == 0
 
     def _onWbsvOkRs(self, f):
-        wbsv = self._wbsv
-        if wbsv is not None:
-            return f()
-        else:
-            return RpcWorkbook._serverDownReport
+        return RpcUtils.onServiceOkRs(self._wbsv,f)
 
     def _onWbsvOk(self, f):
-        wbsv = self._wbsv
-        if wbsv is not None:
-            return f()
-        else:
-            raise RpcWorkbook._serverDownException
+        return RpcUtils.onServiceOk(self._wbsv,f)
 
     def _makeGetWsRpcRequestRs(self, request: IdentifyWorksheetMsg) -> Result[Worksheet, ErrorReport]:
         def repStr(index, name) -> str:

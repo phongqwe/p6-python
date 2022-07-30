@@ -16,13 +16,16 @@ from com.emeraldblast.p6.proto.CommonProtos_pb2 import SingleSignalResponseProto
 class SingleSignalResponse(ToProto[SingleSignalResponseProto]):
     errorReport: Optional[ErrorReport] = None
 
-    def toRs(self)->Result[None,ErrorReport]:
+    def toRs(self) -> Result[None, ErrorReport]:
         if self.errorReport:
             return Err(self.errorReport)
         else:
             return Ok(None)
 
-    def isError(self)->bool:
+    def isOk(self) -> bool:
+        return self.errorReport is None
+
+    def isError(self) -> bool:
         return self.errorReport is not None
 
     @staticmethod

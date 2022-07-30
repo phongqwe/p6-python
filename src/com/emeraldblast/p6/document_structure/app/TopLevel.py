@@ -22,7 +22,14 @@ appKey = "__P6AppInstance"
 
 def startApp():
     """create the app singleton"""
-    getApp()
+    g = getGlobals()
+    if appKey not in g.keys():
+        # app0 = AppImp()
+        # app = EventApp.create(
+        #     app0,app0.eventNotifierContainer
+        # )
+        app = Container.rpcApp()
+        g[appKey] = app
 
 
 def stopApp():
@@ -40,15 +47,8 @@ def restartApp():
 
 def getApp() -> App:
     """get the singleton App instance"""
+    startApp()
     g = getGlobals()
-    if appKey not in g.keys():
-        app0 = AppImp()
-        app0 = AppImp()
-        app = EventApp.create(
-            app0,app0.eventNotifierContainer
-        )
-        # app = Container.rpcApp()
-        g[appKey] = app
     return g[appKey]
 
 

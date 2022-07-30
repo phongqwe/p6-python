@@ -10,8 +10,6 @@ from com.emeraldblast.p6.document_structure.util.for_test import TestUtils
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetImp import WorksheetImp
 
-from com.emeraldblast.p6.new_architecture.rpc.InsecureStubProvider import InsecureRpcServiceProvider
-from com.emeraldblast.p6.new_architecture.rpc.RpcInfo import RpcInfo
 from com.emeraldblast.p6.new_architecture.rpc.RpcValues import RpcValues
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.AddWorksheetRequest import AddWorksheetRequest
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetActiveWorksheetResponse import \

@@ -6,7 +6,7 @@ from dependency_injector.wiring import inject
 from com.emeraldblast.p6.new_architecture.app.RpcApp import RpcApp
 from com.emeraldblast.p6.new_architecture.di.DocumentContainer import DocumentContainer
 from com.emeraldblast.p6.new_architecture.di.RpcServiceContainer import RpcServiceContainer
-from com.emeraldblast.p6.new_architecture.rpc.InsecureStubProvider import InsecureRpcServiceProvider
+from com.emeraldblast.p6.new_architecture.rpc.InsecureStubProvider import InsecureRpcStubProvider
 from com.emeraldblast.p6.new_architecture.workbook.RpcWorkbook import RpcWorkbook
 
 

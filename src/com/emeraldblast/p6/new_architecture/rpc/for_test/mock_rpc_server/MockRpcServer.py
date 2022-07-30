@@ -4,7 +4,7 @@ from typing import Callable
 import grpc
 
 from com.emeraldblast.p6.new_architecture.di.RpcServiceContainer import RpcServiceContainer
-from com.emeraldblast.p6.new_architecture.rpc.InsecureStubProvider import InsecureRpcServiceProvider
+from com.emeraldblast.p6.new_architecture.rpc.InsecureStubProvider import InsecureRpcStubProvider
 from com.emeraldblast.p6.new_architecture.rpc.RpcInfo import RpcInfo
 
 
@@ -12,10 +12,11 @@ class MockRpcServer:
     port = 50052
     host = "localhost"
     rpInfo = RpcInfo(host = host, port = port)
-    stubProvider = InsecureRpcServiceProvider(
+    stubProvider = InsecureRpcStubProvider(
         rpcInfo = rpInfo,
         cellServiceProvider = RpcServiceContainer.cellService.provider,
         wbServiceProvider = RpcServiceContainer.wbService.provider,
+        appServiceProvider = RpcServiceContainer.appService.provider
     )
 
     def __init__(self):
