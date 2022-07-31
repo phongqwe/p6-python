@@ -14,15 +14,15 @@ class IdentifyWorksheetMsgProto_test(unittest.TestCase):
         p = o.toProtoObj()
         self.assertEqual(o.wbKey.toProtoObj(),p.wbKey)
         self.assertEqual(o.wsName,p.wsName)
-        self.assertFalse(p.HasField("index"))
+        self.assertFalse(p.HasField("wsIndex"))
 
         o2 = IdentifyWorksheetMsg(
             wbKey = WorkbookKeys.fromNameAndPath("qwe22"),
-            index=123
+            wsIndex=123
         )
         p2 = o2.toProtoObj()
         self.assertEqual(o2.wbKey.toProtoObj(), p2.wbKey)
-        self.assertEqual(o2.index, p2.index)
+        self.assertEqual(o2.wsIndex, p2.wsIndex)
         self.assertFalse(p2.HasField("wsName"))
 
         o22 = IdentifyWorksheetMsg.fromProto(p2)

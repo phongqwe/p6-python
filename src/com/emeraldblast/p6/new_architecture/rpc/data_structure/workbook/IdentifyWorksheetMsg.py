@@ -11,13 +11,13 @@ from com.emeraldblast.p6.proto.rpc.workbook.WorkbooKServiceProtos_pb2 import Ide
 class IdentifyWorksheetMsg(ToProto[IdentifyWorksheetMsgProto]):
     wbKey: WorkbookKey
     wsName: Optional[str] = None
-    index:Optional[int] = None
+    wsIndex:Optional[int] = None
 
     def toProtoObj(self) -> IdentifyWorksheetMsgProto:
         rt = IdentifyWorksheetMsgProto(
             wbKey = self.wbKey.toProtoObj(),
             wsName = self.wsName,
-            index = self.index,
+            wsIndex = self.wsIndex,
         )
         return rt
 
@@ -33,10 +33,10 @@ class IdentifyWorksheetMsg(ToProto[IdentifyWorksheetMsgProto]):
         if proto.HasField("wsName"):
             wsName = proto.wsName
         index = None
-        if proto.HasField("index"):
-            index = proto.index
+        if proto.HasField("wsIndex"):
+            index = proto.wsIndex
         return IdentifyWorksheetMsg(
             wbKey = WorkbookKeys.fromProto(proto.wbKey),
             wsName = wsName,
-            index = index
+            wsIndex = index
         )

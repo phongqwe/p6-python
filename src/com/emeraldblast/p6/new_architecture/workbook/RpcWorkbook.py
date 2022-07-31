@@ -107,7 +107,7 @@ class RpcWorkbook(Workbook):
     def setActiveWorksheetByIndexRs(self, index: int) -> Result[None, ErrorReport]:
         request = IdentifyWorksheetMsg(
             wbKey = self.workbookKey,
-            index = index,
+            wsIndex = index,
         )
         return self.setActiveWsRpcRs(request)
 
@@ -174,7 +174,7 @@ class RpcWorkbook(Workbook):
     def getWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
         req = IdentifyWorksheetMsg(
             wbKey = self.workbookKey,
-            index = index
+            wsIndex = index
         )
         return self._makeGetWsRpcRequestRs(req)
 
@@ -263,7 +263,7 @@ class RpcWorkbook(Workbook):
     def deleteWorksheetByIndexRs(self, index: int) -> Result[None, ErrorReport]:
         req = IdentifyWorksheetMsg(
             wbKey = self.__key,
-            index = index
+            wsIndex = index
         )
         return self._deleteWorksheetRsRpc(req)
 
