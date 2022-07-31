@@ -12,12 +12,12 @@ from com.emeraldblast.p6.proto.rpc.workbook.WorkbooKServiceProtos_pb2 import Wor
 @dataclass
 class WorksheetWithErrorReportMsg(ToProto[WorksheetWithErrorReportMsgProto]):
 
-    worksheet:Optional[Worksheet] = None
+    wsName:Optional[str] = None
     errorReport:Optional[ErrorReport] = None
 
     def isLegal(self):
-        c1 = self.worksheet is None and self.errorReport is not None
-        c2 = self.worksheet is not None and self.errorReport is None
+        c1 = self.wsName is None and self.errorReport is not None
+        c2 = self.wsName is not None and self.errorReport is None
         return c1 or c2
 
     def isErr(self)->bool:
@@ -25,24 +25,24 @@ class WorksheetWithErrorReportMsg(ToProto[WorksheetWithErrorReportMsgProto]):
     
     def toProtoObj(self) -> WorksheetWithErrorReportMsgProto:
         ws = None
-        if self.worksheet:
-            ws = self.worksheet.toProtoObj()
+        if self.wsName:
+            ws = self.wsName
         er = None
         if self.errorReport:
             er = self.errorReport.toProtoObj()
         return WorksheetWithErrorReportMsgProto(
-            worksheet = ws,
+            wsName = ws,
             errorReport = er,
         )
     @staticmethod
-    def fromProto(proto:WorksheetWithErrorReportMsgProto,wb:Workbook):
+    def fromProto(proto:WorksheetWithErrorReportMsgProto):
         ws = None
-        if proto.HasField("worksheet"):
-            ws = Worksheets.fromProto(proto.worksheet,wb)
+        if proto.HasField("wsName"):
+            ws = proto.wsName
         er = None
         if proto.HasField("errorReport"):
             er = ErrorReport.fromProto(proto.errorReport)
         return WorksheetWithErrorReportMsg(
-            worksheet = ws,
+            wsName = ws,
             errorReport = er
         )

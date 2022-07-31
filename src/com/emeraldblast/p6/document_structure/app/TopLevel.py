@@ -31,6 +31,13 @@ def startApp():
         # app = Container.rpcApp()
         g[appKey] = app
 
+def startRpcApp():
+    """create the app singleton"""
+    g = getGlobals()
+    if appKey not in g.keys():
+        app = Container.rpcApp()
+        g[appKey] = app
+
 
 def stopApp():
     """ stop the app, clear everything """
@@ -48,6 +55,12 @@ def restartApp():
 def getApp() -> App:
     """get the singleton App instance"""
     startApp()
+    g = getGlobals()
+    return g[appKey]
+
+def getRpcApp() -> App:
+    """get the singleton App instance"""
+    startRpcApp()
     g = getGlobals()
     return g[appKey]
 

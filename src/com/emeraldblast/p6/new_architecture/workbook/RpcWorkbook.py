@@ -3,6 +3,7 @@ from typing import Union, Optional, Callable
 
 from com.emeraldblast.p6.document_structure.util.result.Results import Results
 from com.emeraldblast.p6.document_structure.workbook.WorkbookErrors import WorkbookErrors
+from com.emeraldblast.p6.document_structure.worksheet.WorksheetImp import WorksheetImp
 from com.emeraldblast.p6.new_architecture.common.RpcUtils import RpcUtils
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.AddWorksheetRequest import AddWorksheetRequest
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.CreateNewWorksheetRequest import \
@@ -14,6 +15,7 @@ from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.RenameWork
     RenameWorksheetRequest
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.WorksheetWithErrorReportMsg import \
     WorksheetWithErrorReportMsg
+from com.emeraldblast.p6.new_architecture.worksheet.RpcWorksheet import RpcWorksheet
 from com.emeraldblast.p6.proto.CommonProtos_pb2 import SingleSignalResponseProto
 
 from com.emeraldblast.p6.document_structure.communication.event.data_structure.SingleSignalResponse import \
@@ -236,11 +238,12 @@ class RpcWorkbook(Workbook):
                 newWorksheetName = newSheetName
             ).toProtoObj()
             outProto: WorksheetWithErrorReportMsgProto = self._wbsv.createNewWorksheet(request = req)
-            out = WorksheetWithErrorReportMsg.fromProto(outProto, self)
+            out = WorksheetWithErrorReportMsg.fromProto(outProto)
             if out.isErr():
                 return Err(out.errorReport)
             else:
-                return Ok(out.worksheet)
+                ws = RpcWorksheet(out.wsName,self)
+                return Ok(ws)
 
         return self._onWbsvOkRs(f)
 
@@ -267,7 +270,7 @@ class RpcWorkbook(Workbook):
         )
         return self._deleteWorksheetRsRpc(req)
 
-    def addWorksheetRs(self, ws: Worksheet) -> Result[None, ErrorReport]:
+    def addWorksheetRs(self, ws: Worksheet) -> Result[Worksheet, ErrorReport]:
         def f() -> Result[None, ErrorReport]:
             req = AddWorksheetRequest(
                 wbKey = self.__key,
@@ -275,7 +278,11 @@ class RpcWorkbook(Workbook):
             )
             outProto: SingleSignalResponseProto = self._wbsv.addWorksheet(request = req.toProtoObj())
             out = SingleSignalResponse.fromProto(outProto)
-            return out.toRs()
+            if out.isOk():
+                ws.workbook = self
+                return Ok(ws)
+            else:
+                return out.toRs()
 
         return self._onWbsvOkRs(f)
 

@@ -71,8 +71,7 @@ class Bench(unittest.TestCase):
         from com.emeraldblast.p6.new_architecture.rpc.RpcInfo import RpcInfo
 
         setIPythonGlobals(globals())
-        startApp()
-        app:App = getApp()
+        app:App = getRpcApp()
         rpcSP:RpcStubProvider = app.rpcSP
         port = 50052
         rpcInfo = RpcInfo(
@@ -83,22 +82,15 @@ class Bench(unittest.TestCase):
             rpcInfo
         )
         wb0:Workbook=app.getWorkbook(0)
-        print(f"QWE123: {wb0.sheetCount}")
+
+        rs=wb0.addWorksheetRs(ws = WorksheetImp("qweSheet",None))
+        # print(rs.name)
+
+        # wb0.deleteWorksheet("Sheet2")
+        # print(f"QWE123: {wb0.sheetCount}")
+        # print(rs)
 
 
-
-    def test_rpc(self):
-        channel = grpc.insecure_channel('localhost:43271')
-        stub = CellServiceStub(channel)
-        request = GetCellRequest(
-            cellId = CellIdProto(
-                wbKey = WorkbookKeys.fromNameAndPath("Book1").toProtoObj(),
-                wsName="Sheet1",
-                cellAddress = CellAddresses.fromColRow(2,2).toProtoObj()
-            )
-        )
-        out = stub.getCellValue(request)
-        print(out)
 
     def test_py4j(self):
         gateway = JavaGateway(

@@ -10,19 +10,19 @@ from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.WorksheetW
 class WorksheetWithErrorReportMsg_test(unittest.TestCase):
     def test_from_toProto(self):
         o1=WorksheetWithErrorReportMsg(
-            worksheet = WorksheetImp("ws1",None),
+            wsName = "ws1",
             errorReport = None
         )
         p1 = o1.toProtoObj()
         self.assertFalse(p1.HasField("errorReport"))
-        self.assertEqual(o1.worksheet.toProtoObj(),p1.worksheet)
+        self.assertEqual(o1.wsName, p1.wsName)
 
         o1 = WorksheetWithErrorReportMsg(
-            worksheet = None,
+            wsName = None,
             errorReport = TestUtils.TestErrorReport
         )
         p1 = o1.toProtoObj()
-        self.assertFalse(p1.HasField("worksheet"))
+        self.assertFalse(p1.HasField("wsName"))
         self.assertEqual(TestUtils.TestErrorReport.toProtoObj(), p1.errorReport)
 
 if __name__ == '__main__':

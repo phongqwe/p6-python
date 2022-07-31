@@ -196,7 +196,7 @@ class RpcWorkbook_test(unittest.TestCase):
         ws2 = WorksheetImp("ws2", None)
         self.mockWbService.createNewWorksheet = MagicMock(
             return_value = WorksheetWithErrorReportMsg(
-                worksheet = ws2
+                wsName = ws2.name
             ).toProtoObj()
         )
         wb = self.wb
