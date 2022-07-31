@@ -6,7 +6,7 @@ from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import Work
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 from com.emeraldblast.p6.document_structure.worksheet.Worksheets import Worksheets
-from com.emeraldblast.p6.proto.rpc.workbook.AddWorksheetRequestProto_pb2 import AddWorksheetRequestProto
+from com.emeraldblast.p6.proto.rpc.workbook.WorkbooKServiceProtos_pb2 import AddWorksheetRequestProto
 
 
 @dataclass

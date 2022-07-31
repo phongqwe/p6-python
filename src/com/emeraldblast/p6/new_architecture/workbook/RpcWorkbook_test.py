@@ -21,7 +21,6 @@ from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.WorksheetW
     WorksheetWithErrorReportMsg
 from com.emeraldblast.p6.new_architecture.rpc.for_test.mock_rpc_server.MockRpcServer import MockRpcServer
 from com.emeraldblast.p6.new_architecture.workbook.RpcWorkbook import RpcWorkbook
-from com.emeraldblast.p6.proto.rpc.workbook.AddWorksheetRequestProto_pb2 import AddWorksheetRequestProto
 from com.emeraldblast.p6.proto.rpc.workbook.service import WorkbookService_pb2_grpc
 from com.emeraldblast.p6.proto.rpc.workbook.service.WorkbookService_pb2_grpc import WorkbookServiceServicer
 

@@ -3,7 +3,7 @@ from typing import Optional
 
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto, P
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
-from com.emeraldblast.p6.proto.rpc.app.GetWorkbookRequestProto_pb2 import GetWorkbookRequestProto
+from com.emeraldblast.p6.proto.rpc.app.AppServiceProtos_pb2 import GetWorkbookRequestProto
 
 
 @dataclass

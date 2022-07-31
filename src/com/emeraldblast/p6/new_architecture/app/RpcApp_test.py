@@ -3,14 +3,12 @@ from unittest.mock import MagicMock
 
 from com.emeraldblast.p6.document_structure.util.for_test import TestUtils
 
-from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeyImp import WorkbookKeyImp
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.emeraldblast.p6.new_architecture.app.RpcApp import RpcApp
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.app.GetWorkbookRequest import GetWorkbookRequest
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.app.WorkbookKeyWithErrorResponse import \
     WorkbookKeyWithErrorResponse
 from com.emeraldblast.p6.new_architecture.workbook.RpcWorkbook import RpcWorkbook
-from com.emeraldblast.p6.proto.rpc.app.GetWorkbookRequestProto_pb2 import GetWorkbookRequestProto
 
 
 class RpcApp_test(unittest.TestCase):

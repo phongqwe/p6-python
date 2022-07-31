@@ -5,7 +5,8 @@ from com.emeraldblast.p6.document_structure.util.ToProto import ToProto, P
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
-from com.emeraldblast.p6.proto.rpc.app.WorkbookKeyWithErrorResponseProto_pb2 import WorkbookKeyWithErrorResponseProto
+from com.emeraldblast.p6.proto.rpc.app.AppServiceProtos_pb2 import WorkbookKeyWithErrorResponseProto
+
 
 @dataclass
 class WorkbookKeyWithErrorResponse(ToProto[WorkbookKeyWithErrorResponseProto]):

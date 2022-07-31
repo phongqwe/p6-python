@@ -24,11 +24,11 @@ def startApp():
     """create the app singleton"""
     g = getGlobals()
     if appKey not in g.keys():
-        # app0 = AppImp()
-        # app = EventApp.create(
-        #     app0,app0.eventNotifierContainer
-        # )
-        app = Container.rpcApp()
+        app0 = AppImp()
+        app = EventApp.create(
+            app0,app0.eventNotifierContainer
+        )
+        # app = Container.rpcApp()
         g[appKey] = app
 
 

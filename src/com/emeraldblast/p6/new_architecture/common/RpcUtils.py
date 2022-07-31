@@ -1,4 +1,5 @@
 from com.emeraldblast.p6.document_structure.util.CommonError import CommonErrors
+from com.emeraldblast.p6.document_structure.util.result.Err import Err
 from com.emeraldblast.p6.new_architecture.rpc.RpcErrors import RpcErrors
 
 
@@ -13,7 +14,7 @@ class RpcUtils:
             try:
                 return f()
             except Exception as e:
-                return CommonErrors.ExceptionErrorReport.report(e)
+                return Err(CommonErrors.ExceptionErrorReport.report(e))
         else:
             return RpcUtils._serverDownReport
 

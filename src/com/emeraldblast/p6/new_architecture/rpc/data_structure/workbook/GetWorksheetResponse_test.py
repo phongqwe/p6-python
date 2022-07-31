@@ -2,7 +2,7 @@ import unittest
 
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetImp import WorksheetImp
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetWorksheetResponse import GetWorksheetResponse
-from com.emeraldblast.p6.proto.rpc.workbook.GetWorksheetResponseProto_pb2 import GetWorksheetResponseProto
+from com.emeraldblast.p6.proto.rpc.workbook.WorkbooKServiceProtos_pb2 import GetWorksheetResponseProto
 
 
 class GetWorksheetResponse_test(unittest.TestCase):
