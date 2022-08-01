@@ -7,15 +7,15 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.c
 from com.emeraldblast.p6.document_structure.util.ToProto import ToProto, P
 from com.emeraldblast.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
-from com.emeraldblast.p6.proto.rpc.workbook.WorkbooKServiceProtos_pb2 import SetWbNameRequestProto
+from com.emeraldblast.p6.proto.rpc.workbook.WorkbooKServiceProtos_pb2 import SetWbKeyRequestProto
 
 
 @dataclass
-class SetWbNameRequest(ToProto[SetWbNameRequestProto]):
+class SetWbNameRequest(ToProto[SetWbKeyRequestProto]):
     wbKey:WorkbookKey
-    newName:str
-    def toProtoObj(self) -> SetWbNameRequestProto:
-        return SetWbNameRequestProto(
+    newWbKey:WorkbookKey
+    def toProtoObj(self) -> SetWbKeyRequestProto:
+        return SetWbKeyRequestProto(
             wbKey = self.wbKey.toProtoObj(),
-            newName = self.newName
+            newWbKey = self.newWbKey.toProtoObj()
         )

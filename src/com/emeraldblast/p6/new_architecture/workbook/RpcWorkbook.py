@@ -210,16 +210,16 @@ class RpcWorkbook(Workbook):
     def name(self) -> str:
         return self.workbookKey.fileName
 
-    @name.setter
-    def name(self, newName: str):
+    @workbookKey.setter
+    def workbookKey(self, newKey: WorkbookKey):
         if self._wbsv is not None:
-            if newName == self.name:
+            if newKey == self.__key:
                 return
             else:
-                outProto = self._wbsv.setWbName(
+                outProto = self._wbsv.setWbKey(
                     request = SetWbNameRequest(
                         wbKey = self.__key,
-                        newName = newName
+                        newWbKey = newKey
                     ).toProtoObj()
                 )
                 out: SingleSignalResponse = SingleSignalResponse.fromProto(outProto)
@@ -227,7 +227,7 @@ class RpcWorkbook(Workbook):
                 if err is not None:
                     raise err.toException()
                 else:
-                    self.workbookKey = WorkbookKeys.fromNameAndPath(newName, self.workbookKey.filePath)
+                    self.__key = newKey
         else:
             raise RpcWorkbook._serverDownException
 

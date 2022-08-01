@@ -7,6 +7,7 @@ from com.emeraldblast.p6.document_structure.communication.event.data_structure.S
     SingleSignalResponse
 
 from com.emeraldblast.p6.document_structure.util.for_test import TestUtils
+from com.emeraldblast.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.emeraldblast.p6.document_structure.worksheet.Worksheet import Worksheet
 from com.emeraldblast.p6.document_structure.worksheet.WorksheetImp import WorksheetImp
 
@@ -63,17 +64,18 @@ class RpcWorkbook_test(unittest.TestCase):
         wb = self.wb
         self.assertEqual(123, wb.sheetCount)
 
-    def test_set_name_ok(self):
-        self.mockWbService.setWbName = MagicMock(return_value = SingleSignalResponse().toProtoObj())
-        self.wb.name = "newName"
+    def test_set_wbKey_ok(self):
+        self.mockWbService.setWbKey = MagicMock(
+            return_value = SingleSignalResponse().toProtoObj())
+        self.wb.workbookKey = WorkbookKeys.fromNameAndPath("newName")
         self.assertEqual("newName", self.wb.name)
 
-    def test_set_name_fail(self):
-        self.mockWbService.setWbName = MagicMock(return_value = SingleSignalResponse(
+    def test_set_wbKey_fail(self):
+        self.mockWbService.setWbKey = MagicMock(return_value = SingleSignalResponse(
             errorReport = TestUtils.TestErrorReport
         ).toProtoObj())
         with self.assertRaises(Exception):
-            self.wb.name = "newName"
+            self.wb.workbookKey = WorkbookKeys.fromNameAndPath("newName")
         self.assertEqual("qwe", self.wb.name)
 
     def test_worksheets(self):
