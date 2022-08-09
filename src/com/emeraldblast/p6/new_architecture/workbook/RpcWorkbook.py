@@ -116,7 +116,7 @@ class RpcWorkbook(Workbook):
     def setActiveWsRpcRs(self, request: IdentifyWorksheetMsg) -> Result[None, ErrorReport]:
         def f() -> Result[None, ErrorReport]:
             outProto: SingleSignalResponseProto = self._wbsv.setActiveWorksheet(
-                request = request)
+                request = request.toProtoObj())
             out = SingleSignalResponse.fromProto(outProto)
             if out.isError():
                 return Err(out.errorReport)

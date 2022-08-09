@@ -29,6 +29,7 @@ from py4j.java_collections import SetConverter, MapConverter, ListConverter
 
 
 from com.emeraldblast.p6.new_architecture.rpc.StubProvider import RpcStubProvider
+from com.emeraldblast.p6.new_architecture.workbook.RpcWorkbook import RpcWorkbook
 from com.emeraldblast.p6.proto.DocProtos_pb2 import CellIdProto
 
 
@@ -81,9 +82,14 @@ class Bench(unittest.TestCase):
         rpcSP.setRpcInfo(
             rpcInfo
         )
-        wb0:Workbook=app.getWorkbook(0)
+        wb0:RpcWorkbook=app.getWorkbook(0)
+        wb0.setActiveWorksheet("Sheet1")
+        # wsList = wb0.worksheets
+        # for ws in wsList:
+        #     print(ws.name)
+        # rs=wb0.addWorksheetRs(ws = WorksheetImp("qweSheet",None))
+        # wb0.workbookKey = WorkbookKeys.fromNameAndPath("newKey")
 
-        rs=wb0.addWorksheetRs(ws = WorksheetImp("qweSheet",None))
         # print(rs.name)
 
         # wb0.deleteWorksheet("Sheet2")

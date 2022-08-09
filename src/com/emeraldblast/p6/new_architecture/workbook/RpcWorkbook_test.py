@@ -18,6 +18,7 @@ from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetActiveW
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetAllWorksheetsResponse import \
     GetAllWorksheetsResponse
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.GetWorksheetResponse import GetWorksheetResponse
+from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.IdentifyWorksheetMsg import IdentifyWorksheetMsg
 from com.emeraldblast.p6.new_architecture.rpc.data_structure.workbook.WorksheetWithErrorReportMsg import \
     WorksheetWithErrorReportMsg
 from com.emeraldblast.p6.new_architecture.rpc.for_test.mock_rpc_server.MockRpcServer import MockRpcServer
@@ -102,8 +103,20 @@ class RpcWorkbook_test(unittest.TestCase):
 
         o1 = wb.setActiveWorksheetRs(123)
         self.assertTrue(o1.isOk())
+        self.mockWbService.setActiveWorksheet.assert_called_with(
+            request=IdentifyWorksheetMsg(
+                wbKey=wb.workbookKey,
+                wsIndex = 123
+            ).toProtoObj()
+        )
         o2 = wb.setActiveWorksheetRs("qwe")
         self.assertTrue(o2.isOk())
+        self.mockWbService.setActiveWorksheet.assert_called_with(
+            request = IdentifyWorksheetMsg(
+                wbKey = wb.workbookKey,
+                wsName = "qwe"
+            ).toProtoObj()
+        )
 
         self.mockWbService.setActiveWorksheet = MagicMock(
             return_value = SingleSignalResponse(
