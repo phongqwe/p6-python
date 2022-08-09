@@ -250,7 +250,8 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
     def deleteWorksheet(self, nameOrIndex: Union[str, int]) -> Worksheet:
         """ remove sheet by either index or name. If the target sheet does not exist, simply return"""
         removeRs = self.deleteWorksheetRs(nameOrIndex)
-        return Results.extractOrRaise(removeRs)
+        # return Results.extractOrRaise(removeRs)
+        return self
 
     def deleteWorksheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
         """ remove sheet by name. If the target sheet does not exist, simply return"""

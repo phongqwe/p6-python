@@ -37,12 +37,12 @@ class RpcWorkbook_test(unittest.TestCase):
 
     def setUp(self) -> None:
         super().setUp()
-        self.mockServer = MockRpcServer()
-        addWbServicer = partial(
-            WorkbookService_pb2_grpc.add_WorkbookServiceServicer_to_server,
-            servicer = RpcWorkbook_test.WorkbookServicerImp()
-        )
-        self.mockServer.addServicer(addWbServicer)
+        # self.mockServer = MockRpcServer()
+        # addWbServicer = partial(
+        #     WorkbookService_pb2_grpc.add_WorkbookServiceServicer_to_server,
+        #     servicer = RpcWorkbook_test.WorkbookServicerImp()
+        # )
+        # self.mockServer.addServicer(addWbServicer)
         # self.mockServer.start()
         mockSP = MagicMock()
         mockWbService = MagicMock()
@@ -95,15 +95,16 @@ class RpcWorkbook_test(unittest.TestCase):
 
     def test_setActiveWorksheetRs(self):
         wb = self.wb
-        self.mockWbService.setActiveWorksheet = MagicMock(
+        rpcCall = MagicMock(
             return_value = SingleSignalResponse(
                 errorReport = None
             ).toProtoObj()
         )
+        self.mockWbService.setActiveWorksheet =rpcCall
 
         o1 = wb.setActiveWorksheetRs(123)
         self.assertTrue(o1.isOk())
-        self.mockWbService.setActiveWorksheet.assert_called_with(
+        rpcCall.assert_called_with(
             request=IdentifyWorksheetMsg(
                 wbKey=wb.workbookKey,
                 wsIndex = 123
@@ -111,13 +112,14 @@ class RpcWorkbook_test(unittest.TestCase):
         )
         o2 = wb.setActiveWorksheetRs("qwe")
         self.assertTrue(o2.isOk())
-        self.mockWbService.setActiveWorksheet.assert_called_with(
+        rpcCall.assert_called_with(
             request = IdentifyWorksheetMsg(
                 wbKey = wb.workbookKey,
                 wsName = "qwe"
             ).toProtoObj()
         )
 
+        # ====== error case ====== #
         self.mockWbService.setActiveWorksheet = MagicMock(
             return_value = SingleSignalResponse(
                 errorReport = TestUtils.TestErrorReport

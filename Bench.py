@@ -83,7 +83,9 @@ class Bench(unittest.TestCase):
             rpcInfo
         )
         wb0:RpcWorkbook=app.getWorkbook(0)
-        wb0.setActiveWorksheet("Sheet1")
+        print(wb0.deleteWorksheetRs(123).err)
+
+
         # wsList = wb0.worksheets
         # for ws in wsList:
         #     print(ws.name)
