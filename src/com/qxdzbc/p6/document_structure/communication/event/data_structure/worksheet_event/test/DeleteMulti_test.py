@@ -18,11 +18,11 @@ class DeleteMultiRequest_test(unittest.TestCase):
         protoObj = DeleteMultiRequestProto()
         r0 = DeleteMultiRequest(
             rangeList = [
-                RangeAddresses.from2Cells(CellAddresses.fromLabel("@A1"), CellAddresses.fromLabel("@B2"))
+                RangeAddresses.from2Cells(CellAddresses.fromLabel("A1"), CellAddresses.fromLabel("B2"))
             ],
             cellList = [
-                CellAddresses.fromLabel("@K2"),
-                CellAddresses.fromLabel("@L23")
+                CellAddresses.fromLabel("K2"),
+                CellAddresses.fromLabel("L23")
             ],
             worksheetName = "S1",
             workbookKey = WorkbookKeys.fromNameAndPath("book1", None)

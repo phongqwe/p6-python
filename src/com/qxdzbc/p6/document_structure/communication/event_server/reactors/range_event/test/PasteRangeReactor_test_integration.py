@@ -51,7 +51,7 @@ class PasteRangeReactor_test_integration(unittest.TestCase):
         self.ws.cell((1,1)).value=11
         self.ws.cell((1,2)).value =12
         self.ws.cell((1,3)).formula="=SUM(A1:A2)"
-        Copiers.protoCopier.copyRangeToClipboard(self.ws.range("@A1:A3"))
+        Copiers.protoCopier.copyRangeToClipboard(self.ws.range("A1:A3"))
 
         self.reactor.react(request.toProtoBytes())
 

@@ -182,22 +182,12 @@ class DataCellTest(unittest.TestCase):
     def test_setFormula1(self):
         c1 = self.s.cell((1, 1))
         c1.value = 123
-        c1.script = "x=1;y=x*2+3;y"
-        c1.formula = "=SCRIPT(x=1;y=x-200;y)"
-        self.assertEqual("x=1;y=x-200;y", c1.script)
-        self.assertEqual(-199, c1.value)
         print(c1.value)
 
     def test_setFormula2(self):
         c1 = self.s.cell((1,1))
         c1.value=123
-        c1.script="x=1;y=x*2+3;y"
         c1.formula = "=SUM(A1:B3)"
-        self.assertEqual(
-            """WorksheetFunctions.SUM(getWorkbook(WorkbookKeys.fromNameAndPath("wb",None)).getWorksheet("s1").range(\"@A1:B3\"))""",
-            c1.script)
-        c1.script = "x=99;y=x-200;y"
-        self.assertEqual("=SCRIPT(x=99;y=x-200;y)", c1.formula)
 
     def test_value(self):
         c1 = DataCell(

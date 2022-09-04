@@ -11,7 +11,7 @@ class PythonMapper:
         return PythonMapper.__instance
 
     def formatRangeAddress(self, rangeAddress: str) -> str:
-        return "\"@{ra}\"".format(ra = rangeAddress)
+        return "\"{ra}\"".format(ra = rangeAddress)
 
     def getWorksheet(self, sheetName: str) -> str:
         return "getWorksheet(\"{sn}\")".format(sn = sheetName)

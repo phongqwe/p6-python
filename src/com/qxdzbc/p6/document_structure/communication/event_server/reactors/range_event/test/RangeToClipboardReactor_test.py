@@ -33,7 +33,7 @@ class RangeToClipboardReactor_test(unittest.TestCase):
         rangeId = RangeId(
             workbookKey = self.wb.workbookKey,
             worksheetName = "Sheet1",
-            rangeAddress = RangeAddresses.fromLabel("@C1:K5")
+            rangeAddress = RangeAddresses.fromLabel("C1:K5")
         )
         request = RangeOperationRequestProto(
             rangeId = rangeId.toProtoObj(),
@@ -61,7 +61,7 @@ class RangeToClipboardReactor_test(unittest.TestCase):
         rangeId = RangeId(
             workbookKey = self.wb.workbookKey,
             worksheetName = "Sheet1",
-            rangeAddress = RangeAddresses.fromLabel("@C1:K5")
+            rangeAddress = RangeAddresses.fromLabel("C1:K5")
         )
 
         reactor = RangeToClipboardReactor(rangeGetter = rangeGetter)

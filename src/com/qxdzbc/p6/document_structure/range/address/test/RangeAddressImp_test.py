@@ -9,18 +9,18 @@ from com.qxdzbc.p6.proto.DocProtos_pb2 import RangeAddressProto
 class RangeAddressImp_test(unittest.TestCase):
 
     def test_shiftTopLeftTo(self):
-        topLeft = CellAddresses.fromLabel("@B7")
-        botRight = CellAddresses.fromLabel("@J10")
+        topLeft = CellAddresses.fromLabel("B7")
+        botRight = CellAddresses.fromLabel("J10")
         r = RangeAddressImp(
             topLeft = topLeft,
             botRight = botRight,
         )
 
-        r2 = r.moveByTopLeftTo(CellAddresses.fromLabel("@A1"))
-        self.assertEqual(RangeAddresses.fromLabel("@A1:I4"),r2)
+        r2 = r.moveByTopLeftTo(CellAddresses.fromLabel("A1"))
+        self.assertEqual(RangeAddresses.fromLabel("A1:I4"),r2)
 
-        r3 = r2.moveByTopLeftTo(CellAddresses.fromLabel("@C9"))
-        self.assertEqual(RangeAddresses.fromLabel("@C9:K12"), r3)
+        r3 = r2.moveByTopLeftTo(CellAddresses.fromLabel("C9"))
+        self.assertEqual(RangeAddresses.fromLabel("C9:K12"), r3)
 
 
     def test_toProto(self):
@@ -51,12 +51,12 @@ class RangeAddressImp_test(unittest.TestCase):
 
         # B4:F13
         r3 = RangeAddressImp(
-            topLeft = CellAddresses.fromLabel("@B4"),
-            botRight = CellAddresses.fromLabel("@F13"),
+            topLeft = CellAddresses.fromLabel("B4"),
+            botRight = CellAddresses.fromLabel("F13"),
         )
         # D9:H17
-        r4 = RangeAddresses.fromLabel("@D9:H17")
+        r4 = RangeAddresses.fromLabel("D9:H17")
 
-        self.assertEqual(RangeAddresses.fromLabel("@D9:F13"), r3.intersect(r4))
-        self.assertEqual(RangeAddresses.fromLabel("@E4:F5"), r3.intersect(RangeAddresses.fromLabel("@E3:G5")))
-        self.assertEqual(None, r3.intersect(RangeAddresses.fromLabel("@I4:J10")))
+        self.assertEqual(RangeAddresses.fromLabel("D9:F13"), r3.intersect(r4))
+        self.assertEqual(RangeAddresses.fromLabel("E4:F5"), r3.intersect(RangeAddresses.fromLabel("E3:G5")))
+        self.assertEqual(None, r3.intersect(RangeAddresses.fromLabel("I4:J10")))

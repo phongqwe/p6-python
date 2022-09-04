@@ -177,11 +177,11 @@ class WorkbookImp_test(unittest.TestCase):
         # when a workbook change its path, translators of its children obj (sheets, cells) must be regenerated.
         w1 = WorkbookImp("w1", path = Path("p1"))
         s1 = w1.createNewWorksheet("s1")
-        c1 = s1.cell("@A1")
+        c1 = s1.cell("A1")
         f = """=SUM(B3:B5)"""
         c1.formula = f
 
-        outputTemplate = """WorksheetFunctions.SUM(getWorkbook(WorkbookKeys.fromNameAndPath("{bookName}","{bookPath}")).getWorksheet("{sheetName}").range("@B3:B5"))"""
+        outputTemplate = """WorksheetFunctions.SUM(getWorkbook(WorkbookKeys.fromNameAndPath("{bookName}","{bookPath}")).getWorksheet("{sheetName}").range("B3:B5"))"""
         self.assertEqual(
             outputTemplate.format(bookName = "w1", bookPath = "p1", sheetName = "s1"),
             c1.script)

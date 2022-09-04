@@ -17,13 +17,13 @@ class DataFramePaster_test(unittest.TestCase):
     def setUp(self) -> None:
         super().setUp()
         wb = sampleWb("Wb")
-        rng = wb.getWorksheet(0).range("@J5:L8")
+        rng = wb.getWorksheet(0).range("J5:L8")
 
-        rng.cell("@J5").value = 11
-        rng.cell("@K5").value = "abc"
-        rng.cell("@L5").value = "c"
-        rng.cell("@K6").formula = "=SUM(Z1:M3)"
-        rng.cell("@L6").value = "'123"
+        rng.cell("J5").value = 11
+        rng.cell("K5").value = "abc"
+        rng.cell("L5").value = "c"
+        rng.cell("K6").formula = "=SUM(Z1:M3)"
+        rng.cell("L6").value = "'123"
         self.wb = wb
         self.rng = rng
 
@@ -38,7 +38,7 @@ class DataFramePaster_test(unittest.TestCase):
         self.assertTrue(rs.isOk())
 
         rangeCopy = rs.value
-        self.assertEqual(RangeAddresses.fromLabel("@A1:C4"),rangeCopy.rangeId.rangeAddress)
+        self.assertEqual(RangeAddresses.fromLabel("A1:C4"),rangeCopy.rangeId.rangeAddress)
         self.assertEqual(5,len(rangeCopy.cells))
         self.assertEqual(11, rangeCopy.cells[0].bareValue)
         self.assertEqual("abc", rangeCopy.cells[1].bareValue)

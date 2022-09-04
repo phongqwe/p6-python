@@ -151,7 +151,7 @@ class Integration_integration_test(unittest.TestCase):
         app = self.testEnv.app
         w1 = app.createNewWorkbook("w1")
         s1 = w1.createNewWorksheet("s1")
-        c1 = s1.cell("@A1")
+        c1 = s1.cell("A1")
         c1.value = 1
 
     def test_updateCellInInvalidWB(self):
@@ -203,7 +203,7 @@ class Integration_integration_test(unittest.TestCase):
                     rangeId = RangeId(
                         workbookKey = WorkbookKeys.fromNameAndPath("Book1"),
                         worksheetName = "Sheet1",
-                        rangeAddress = RangeAddresses.fromLabel("@C1:K5")
+                        rangeAddress = RangeAddresses.fromLabel("C1:K5")
                     ).toProtoObj(),
                     windowId = "123"
                 ).SerializeToString()
@@ -220,7 +220,7 @@ class Integration_integration_test(unittest.TestCase):
             print(data)
 
         self.testEnv.notifListener.addReactorCB(P6Events.Range.RangeToClipBoard.event, cb)
-        self.b1.getWorksheet("Sheet1").range("@A1:B3").copyValueDataFrame()
+        self.b1.getWorksheet("Sheet1").range("A1:B3").copyValueDataFrame()
 
     def test_updateCell_afterSaving(self):
         self.s1.cell((1, 1)).value = 123
@@ -249,9 +249,9 @@ class Integration_integration_test(unittest.TestCase):
         print(proto)
 
     def test_pasteRange_ensure_not_trigger_notifier(self):
-        self.s1.range("@C3:D4").copyToClipboardAsProto()
+        self.s1.range("C3:D4").copyToClipboardAsProto()
         request = PasteRangeRequest(
-            anchorCell = CellAddresses.fromLabel("@H12"),
+            anchorCell = CellAddresses.fromLabel("H12"),
             wsWb = WsWb(
                 workbookKey = self.b1.workbookKey,
                 worksheetName = self.s2.name

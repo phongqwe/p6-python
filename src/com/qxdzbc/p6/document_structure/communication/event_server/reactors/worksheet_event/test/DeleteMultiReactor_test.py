@@ -23,20 +23,20 @@ class DeleteMultiReactor_test(unittest.TestCase):
         self.wb = WorkbookImp("book1")
         self.s1 = self.wb.createNewWorksheet("Sheet1")
         self.s2 = self.wb.createNewWorksheet("Sheet2")
-        self.s1.cell("@A1").value = 1
-        self.s1.cell("@B2").value ="b2"
-        self.s1.cell("@B1").value ="b1"
-        self.s1.cell("@C3").value = "c3"
-        self.s1.cell("@D3").value = "d3"
-        self.s1.cell("@K3").value = "k3"
-        self.s1.cell("@X3").value = "x3"
+        self.s1.cell("A1").value = 1
+        self.s1.cell("B2").value ="b2"
+        self.s1.cell("B1").value ="b1"
+        self.s1.cell("C3").value = "c3"
+        self.s1.cell("D3").value = "d3"
+        self.s1.cell("K3").value = "k3"
+        self.s1.cell("X3").value = "x3"
 
         requestProto = DeleteMultiRequestProto()
         requestProto.worksheetName = "Sheet1"
         requestProto.workbookKey.CopyFrom(self.wb.workbookKey.toProtoObj())
-        requestProto.range.extend(map(lambda r: r.toProtoObj(), [RangeAddresses.fromLabel("@A1:B2")]))
+        requestProto.range.extend(map(lambda r: r.toProtoObj(), [RangeAddresses.fromLabel("A1:B2")]))
         requestProto.cell.extend(
-            map(lambda c: c.toProtoObj(), list(map(lambda l: CellAddresses.fromLabel(l), ["@C3", "@K3"]))))
+            map(lambda c: c.toProtoObj(), list(map(lambda l: CellAddresses.fromLabel(l), ["C3", "K3"]))))
         self.stdRequest = requestProto
 
         def getWbOk(wbKey):
@@ -50,9 +50,9 @@ class DeleteMultiReactor_test(unittest.TestCase):
     def test_react_standardCase(self):
         o = self.reactor.react(self.stdRequest.SerializeToString())
         self.__test_okCase(o)
-        for cl in ["@D3","@X3"]:
+        for cl in ["D3","X3"]:
             self.assertTrue(self.s1.hasCellAt(CellAddresses.fromLabel(cl)))
-        for cl in ["@C3","@K3","@A1","@B1","@B2"]:
+        for cl in ["C3","K3","A1","B1","B2"]:
             self.assertFalse(self.s1.hasCellAt(CellAddresses.fromLabel(cl)))
 
     def test_react_differentSheet(self):
@@ -60,7 +60,7 @@ class DeleteMultiReactor_test(unittest.TestCase):
         r.worksheetName=self.s2.name
         o = self.reactor.react(r.SerializeToString())
         self.__test_okCase(o)
-        for cl in ["@C3", "@K3", "@A1", "@B1", "@B2","@D3","@X3"]:
+        for cl in ["C3", "K3", "A1", "B1", "B2","D3","X3"]:
             self.assertTrue(self.s1.hasCellAt(CellAddresses.fromLabel(cl)))
 
     def test_react_invalidSheet(self):

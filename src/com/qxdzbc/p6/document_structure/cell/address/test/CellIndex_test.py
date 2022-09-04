@@ -36,4 +36,4 @@ class CellIndexTest(unittest.TestCase):
 
     def test_label(self):
         lb = CellIndex(2, 323).label
-        self.assertEqual("@B323", lb)
+        self.assertEqual("B323", lb)

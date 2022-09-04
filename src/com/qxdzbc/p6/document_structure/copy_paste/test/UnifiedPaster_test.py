@@ -23,7 +23,7 @@ class UnifiedPaster_test(unittest.TestCase):
     def setUp(self) -> None:
         super().setUp()
         wb = sampleWb("Wb")
-        rng = wb.getWorksheet(0).range("@A1:B5")
+        rng = wb.getWorksheet(0).range("A1:B5")
         self.rng = rng
         self.protoPaster = MagicMock()
         self.textPaster = MagicMock()

@@ -48,9 +48,9 @@ class RangeAddresses:
     def fromLabel(label: str) -> RangeAddress:
         isNormalRange = RangeAddresses.checkRangeAddressFormat(label)
         if isNormalRange.isOk():
-            bareLabel = label[1:]  # remove @
+            bareLabel = label
             cellLabels = bareLabel.split(":")
-            cellAddresses = list(map(lambda cLabel: CellAddresses.fromLabel("@" + cLabel), cellLabels))
+            cellAddresses = list(map(lambda cLabel: CellAddresses.fromLabel("" + cLabel), cellLabels))
             firstCell = cellAddresses[0]
             lastCell = cellAddresses[1]
 
@@ -66,7 +66,7 @@ class RangeAddresses:
         else:
             isWholeRange = RangeAddresses.checkWholeAddressFormat(label)
             if isWholeRange.isOk():
-                bareLabel = label[1:]
+                bareLabel = label
                 parts = bareLabel.split(":")
                 firstPart = parts[0]
                 secondPart = parts[1]
@@ -96,8 +96,8 @@ class RangeAddresses:
             else:
                 raise ValueError("input label \"{lb}\" is neither a normal range nor a whole range".format(lb=label))
 
-    __rangeAddressPattern = re.compile("@[a-zA-Z]+[1-9][0-9]*:[a-zA-Z]+[1-9][0-9]*")
-    __wholeRangeAddressPattern = re.compile("@([a-zA-Z]+|[1-9][0-9]*):([a-zA-Z]+|[1-9][0-9]*)")
+    __rangeAddressPattern = re.compile("[a-zA-Z]+[1-9][0-9]*:[a-zA-Z]+[1-9][0-9]*")
+    __wholeRangeAddressPattern = re.compile("([a-zA-Z]+|[1-9][0-9]*):([a-zA-Z]+|[1-9][0-9]*)")
     __singleWholeColAddressPattern = re.compile("[a-zA-Z]+")
     __singleWholeRowAddressPattern = re.compile("[1-9][0-9]*")
 
@@ -111,7 +111,7 @@ class RangeAddresses:
     @staticmethod
     def checkRangeAddressFormat(label: str) -> Result[None,ErrorReport]:
         """
-        :param label: must be like "@[a-zA-Z][1-9][0-9]*:[a-zA-Z][1-9][0-9]*" eg: "@A1:B10"
+        :param label: must be like "[a-zA-Z][1-9][0-9]*:[a-zA-Z][1-9][0-9]*" eg: "A1:B10"
         :return: Ok if address is legal, Err with an exception otherwise
         """
         return RangeAddresses.__checkAddressFormatAgainstPattern(label,RangeAddresses.__rangeAddressPattern)
@@ -119,19 +119,16 @@ class RangeAddresses:
     @staticmethod
     def __checkAddressFormatAgainstPattern(label: str, pattern) -> Result[None,ErrorReport]:
         """
-        :param label: must be like "@[a-zA-Z][1-9][0-9]*:[a-zA-Z][1-9][0-9]*" eg: "@A1:B10"
+        :param label: must be like "[a-zA-Z][1-9][0-9]*:[a-zA-Z][1-9][0-9]*" eg: "A1:B10"
         :return: Ok if address is legal, Err with an exception otherwise
         """
         if not isinstance(label, str):
             return Err(ValueError("range label must be a string."))
         else:
-            if label.startswith("@"):
-                matchResult = pattern.fullmatch(label)
-                if matchResult is not None:
-                    return Ok(None)
-                else:
-                    return Err(
-                        ValueError("Range label \"{cdr}\" does not match the required pattern: {pt}"
-                                   .format(cdr=label, pt=str(pattern.pattern))))
+            matchResult = pattern.fullmatch(label)
+            if matchResult is not None:
+                return Ok(None)
             else:
-                return Err(ValueError("Range label must start with \"@\""))
+                return Err(
+                    ValueError("Range label \"{cdr}\" does not match the required pattern: {pt}"
+                               .format(cdr=label, pt=str(pattern.pattern))))

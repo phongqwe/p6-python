@@ -54,8 +54,8 @@ class WorksheetImp_test(unittest.TestCase):
                 )
             ]
         )))
-        self.s1.pasteTextRs(CellAddresses.fromLabel("@B9"),paster)
-        self.assertEqual("abc",self.s1.cell("@B9").bareValue)
+        self.s1.pasteTextRs(CellAddresses.fromLabel("B9"),paster)
+        self.assertEqual("abc",self.s1.cell("B9").bareValue)
         paster.pasteRange = MagicMock(return_value = Ok(RangeCopy(
             rangeId = None,
             cells = [
@@ -65,28 +65,28 @@ class WorksheetImp_test(unittest.TestCase):
                 )
             ]
         )))
-        self.s1.pasteTextRs(CellAddresses.fromLabel("@B9"), paster)
-        self.assertEqual("=SUM(A1:A9)", self.s1.cell("@B9").bareFormula)
+        self.s1.pasteTextRs(CellAddresses.fromLabel("B9"), paster)
+        self.assertEqual("=SUM(A1:A9)", self.s1.cell("B9").bareFormula)
 
     def test_pasteProtoFromClipboardRs_ok(self):
         paster = MagicMock()
         rangeCopy = RangeCopy(
             rangeId = RangeId(
-                rangeAddress = RangeAddresses.fromLabel("@D4:G10"),
+                rangeAddress = RangeAddresses.fromLabel("D4:G10"),
                 workbookKey = WorkbookKeys.fromNameAndPath(""),
                 worksheetName = "s123"
             ),
             cells = [
                 DataCell(
-                    address = CellAddresses.fromLabel("@D6"),
+                    address = CellAddresses.fromLabel("D6"),
                     value = 11
                 ),
                 DataCell(
-                    address = CellAddresses.fromLabel("@E8"),
+                    address = CellAddresses.fromLabel("E8"),
                     value = 23,
                 ),
                 DataCell(
-                    address = CellAddresses.fromLabel("@G7"),
+                    address = CellAddresses.fromLabel("G7"),
                     value = None,
                     formula = "=SUM(D5:E8)"
                 )
@@ -95,20 +95,20 @@ class WorksheetImp_test(unittest.TestCase):
         s = WorksheetImp("ASD", MagicMock())
         paster.pasteRange = MagicMock(return_value = Ok(rangeCopy))
         rs=s.pasteProtoRs(
-            cell = CellAddresses.fromLabel("@M13"),
+            cell = CellAddresses.fromLabel("M13"),
             paster = paster
         )
         self.assertTrue(rs.isOk())
-        self.assertEqual(11, s.cell("@M15").value)
-        self.assertEqual(23, s.cell("@N17").value)
-        self.assertEqual("=SUM(D5:E8)", s.cell("@P16").formula)
+        self.assertEqual(11, s.cell("M15").value)
+        self.assertEqual(23, s.cell("N17").value)
+        self.assertEqual("=SUM(D5:E8)", s.cell("P16").formula)
 
     def test_pasteProtoFromClipboardRs_err(self):
         paster = MagicMock()
         s = WorksheetImp("ASD", MagicMock())
         paster.pasteRange = MagicMock(return_value = Err(TestErrorReport))
         rs = s.pasteProtoRs(
-            cell = CellAddresses.fromLabel("@M13"),
+            cell = CellAddresses.fromLabel("M13"),
             paster = paster
         )
         self.assertTrue(rs.isErr())
@@ -117,7 +117,7 @@ class WorksheetImp_test(unittest.TestCase):
         pyperclip.copy(str(content))
         s = WorksheetImp("ASD", MagicMock())
         rs = s.pasteProtoRs(
-            cell = CellAddresses.fromLabel("@M13"),
+            cell = CellAddresses.fromLabel("M13"),
             paster = Pasters.protoPaster
         )
         self.assertTrue(rs.isErr())
@@ -201,17 +201,17 @@ class WorksheetImp_test(unittest.TestCase):
         )
 
     def test_deleteRange(self):
-        self.s1.cell("@A1").value = "a1"
-        self.s1.cell("@A2").value = "a2"
-        self.s1.cell("@A3").value = "a3"
-        self.s1.cell("@B2").value = "b2"
-        r1 = RangeAddresses.from2Cells(CellAddresses.fromLabel("@A1"), CellAddresses.fromLabel("@B2"))
+        self.s1.cell("A1").value = "a1"
+        self.s1.cell("A2").value = "a2"
+        self.s1.cell("A3").value = "a3"
+        self.s1.cell("B2").value = "b2"
+        r1 = RangeAddresses.from2Cells(CellAddresses.fromLabel("A1"), CellAddresses.fromLabel("B2"))
         rs = self.s1.deleteRangeRs(r1)
         self.assertTrue(rs.isOk())
-        self.assertFalse(self.s1.hasCellAt(CellAddresses.fromLabel("@A1")))
-        self.assertFalse(self.s1.hasCellAt(CellAddresses.fromLabel("@A2")))
-        self.assertFalse(self.s1.hasCellAt(CellAddresses.fromLabel("@B2")))
-        self.assertTrue(self.s1.hasCellAt(CellAddresses.fromLabel("@A3")))
+        self.assertFalse(self.s1.hasCellAt(CellAddresses.fromLabel("A1")))
+        self.assertFalse(self.s1.hasCellAt(CellAddresses.fromLabel("A2")))
+        self.assertFalse(self.s1.hasCellAt(CellAddresses.fromLabel("B2")))
+        self.assertTrue(self.s1.hasCellAt(CellAddresses.fromLabel("A3")))
 
     def test_rename(self):
         s1, s2, s3, w = self.makeTestObj2()
@@ -260,12 +260,12 @@ class WorksheetImp_test(unittest.TestCase):
 
     def test_toProtoObj(self):
         s = WorksheetImp(name = "oldName", workbook = MagicMock())
-        s.cell("@A1").value = 123
-        s.cell("@B3").value = 333
+        s.cell("A1").value = 123
+        s.cell("B3").value = 333
         o = s.toProtoObj()
         self.assertEqual("oldName", o.name)
-        self.assertEqual(s.cell("@A1").toProtoObj(), o.cell[0])
-        self.assertEqual(s.cell("@B3").toProtoObj(), o.cell[1])
+        self.assertEqual(s.cell("A1").toProtoObj(), o.cell[0])
+        self.assertEqual(s.cell("B3").toProtoObj(), o.cell[1])
         print(s)
 
     @staticmethod
@@ -283,10 +283,10 @@ class WorksheetImp_test(unittest.TestCase):
         s = WorksheetImp(name = "s", workbook = MagicMock())
         expect = DataCell(CellIndex(1, 2))
 
-        c1 = s.cell("@A2")
+        c1 = s.cell("A2")
         self.assertEqual(expect, c1)
 
-        c2 = s.cell("@a2")
+        c2 = s.cell("a2")
         self.assertEqual(expect, c2)
 
         c3 = s.cell((1, 2))
@@ -298,7 +298,7 @@ class WorksheetImp_test(unittest.TestCase):
         ad2 = CellIndex(20, 20)  # T20
         expect = RangeImp(ad1, ad2, s)
 
-        r1 = s.range("@A1:T20")
+        r1 = s.range("A1:T20")
         self.assertEqual(expect, r1)
 
         r2 = s.range(RangeAddressImp(ad1, ad2))

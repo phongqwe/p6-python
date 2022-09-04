@@ -12,7 +12,7 @@ class CellUpdateRequest_test(unittest.TestCase):
         proto = CellUpdateRequestProto(
             workbookKey = WorkbookKeys.fromNameAndPath("b1","/home/abc/Documents/gits/project2/p6/b1.txt").toProtoObj(),
             worksheetName = "Sheet1",
-            cellAddress = CellAddresses.fromLabel("@B4").toProtoObj(),
+            cellAddress = CellAddresses.fromLabel("B4").toProtoObj(),
             value=b'123',
             formula=None
         )

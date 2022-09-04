@@ -208,7 +208,7 @@ class AppImp_test(unittest.TestCase):
             EventReactors.makeBasicReactor(reactor))
         wb = app.createNewWorkbook("bookz1")
         wb.createNewWorksheet("sheetz1")
-        cell = app.activeWorkbook.activeWorksheet.cell("@B32")
+        cell = app.activeWorkbook.activeWorksheet.cell("B32")
         cell.value = 444
         self.assertEqual(123, self.ze)
 

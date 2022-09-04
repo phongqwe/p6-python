@@ -18,14 +18,14 @@ class Worksheets_test(unittest.TestCase):
         wsProto.name = "Sheet1"
 
         a1 = CellProto()
-        a1.address.CopyFrom(CellAddresses.fromLabel("@A1").toProtoObj())
+        a1.address.CopyFrom(CellAddresses.fromLabel("A1").toProtoObj())
         a1.value.CopyFrom(CellValueProto(
             num=123
         ))
 
         x12Proto = CellProto()
 
-        x12Proto.address.CopyFrom(CellAddresses.fromLabel("@X12").toProtoObj())
+        x12Proto.address.CopyFrom(CellAddresses.fromLabel("X12").toProtoObj())
         x12Proto.value.CopyFrom(CellValueProto(
             str="a string"
         ))
@@ -37,11 +37,11 @@ class Worksheets_test(unittest.TestCase):
 
         ws: Worksheet = Worksheets.fromProto(wsProto, MagicMock())
         self.assertEqual(wsProto.name, ws.name)
-        self.assertTrue(ws.hasCellAt(CellAddresses.fromLabel("@A1")))
-        self.assertTrue(ws.hasCellAt(CellAddresses.fromLabel("@X12")))
+        self.assertTrue(ws.hasCellAt(CellAddresses.fromLabel("A1")))
+        self.assertTrue(ws.hasCellAt(CellAddresses.fromLabel("X12")))
         self.assertEqual(2, len(ws.cells))
-        self.assertEqual(ws, ws.cell("@A1").worksheet)
-        self.assertEqual(ws, ws.cell("@X12").worksheet)
+        self.assertEqual(ws, ws.cell("A1").worksheet)
+        self.assertEqual(ws, ws.cell("X12").worksheet)
 
 
     @staticmethod

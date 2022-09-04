@@ -32,7 +32,7 @@ class TextPaster(BasePaster):
         return Ok(RangeCopy(
             rangeId = RangeId(
                 # dummy range address
-                rangeAddress =RangeAddresses.fromLabel("@A1:A1"),
+                rangeAddress =RangeAddresses.fromLabel("A1:A1"),
                 workbookKey = None,
                 worksheetName = None,
             ),

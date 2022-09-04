@@ -24,9 +24,9 @@ class EventWorksheet_test_integration(unittest.TestCase):
             event = P6EventTableImp.P6Events.Range.PasteRange.event,
             reactorCB = cb
         )
-        self.s1.range("@J12:F22").copyToClipboardAsProto()
-        self.s1.pasteProtoRs(CellAddresses.fromLabel("@V10"))
-        self.s1.pasteProto(CellAddresses.fromLabel("@X10"))
+        self.s1.range("J12:F22").copyToClipboardAsProto()
+        self.s1.pasteProtoRs(CellAddresses.fromLabel("V10"))
+        self.s1.pasteProto(CellAddresses.fromLabel("X10"))
         self.assertEqual(2, cb.call_count)
 
 

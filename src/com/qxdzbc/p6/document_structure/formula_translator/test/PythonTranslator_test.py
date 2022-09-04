@@ -15,7 +15,7 @@ class PythonFormulaTranslator_test(unittest.TestCase):
             "\"a\"",
             "123",
             "---",
-            "@#$123",
+            "#$123",
             "=23!",
             """=f1(f2(1,2^7*9,"A1"),f3(f4(1+f9(),f5("az"+f9())))""",
             "f(sheet1!A123)",

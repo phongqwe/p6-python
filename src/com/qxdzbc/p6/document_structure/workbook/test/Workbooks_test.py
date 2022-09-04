@@ -17,12 +17,12 @@ class Workbooks_test(unittest.TestCase):
             name = "Sheet1",
             cell = [
                 CellProto(
-                    address = CellAddresses.fromLabel("@C23").toProtoObj(),
+                    address = CellAddresses.fromLabel("C23").toProtoObj(),
                     value = CellValueProto(str="123qwe"),
                     formula = "formula z",
                 ),
                 CellProto(
-                    address = CellAddresses.fromLabel("@N5").toProtoObj(),
+                    address = CellAddresses.fromLabel("N5").toProtoObj(),
                     value = CellValueProto(num=555),
                 )
             ]
@@ -42,8 +42,8 @@ class Workbooks_test(unittest.TestCase):
         self.assertEqual(1, len(wb.worksheets))
 
         ws = wb.getWorksheet(0)
-        ws.cell("@B2").formula="""=SCRIPT(1+2+3)"""
-        self.assertEqual(6, ws.cell("@B2").value)
+        ws.cell("B2").formula="""=SCRIPT(1+2+3)"""
+        self.assertEqual(6, ws.cell("B2").value)
 
         for scriptProto in proto.scripts:
             name = scriptProto.name

@@ -19,7 +19,7 @@ class CellMultiUpdateRequest_test(unittest.TestCase):
         contentProto.literal = "literal_abc"
         entryProto = CellUpdateEntryProto()
         entryProto.content.CopyFrom(contentProto)
-        addr = CellAddresses.fromLabel("@Q12")
+        addr = CellAddresses.fromLabel("Q12")
         entryProto.cellAddress.CopyFrom(addr.toProtoObj())
 
         proto.cellUpdate.extend([entryProto])

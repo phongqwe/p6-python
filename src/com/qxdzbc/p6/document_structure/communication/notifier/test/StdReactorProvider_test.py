@@ -71,7 +71,7 @@ class StdReactorProvider_test(unittest.TestCase):
 
         wb = EventWorkbook(WorkbookImp("bookz1"), onCellEvent = onCellEvent)
         wb.createNewWorksheet("sheetz1")
-        cell = wb.activeWorksheet.cell("@B32")
+        cell = wb.activeWorksheet.cell("B32")
         cell.value = 123
         socket.send(b"close")
         socket.close()
@@ -89,7 +89,7 @@ class StdReactorProvider_test(unittest.TestCase):
 
             wb = EventWorkbook(WorkbookImp("bookz1"), onCellEvent = onCellEvent, onWorkbookEvent = MagicMock())
             wb.createNewWorksheet("sheetz1")
-            cell = wb.activeWorksheet.cell("@B32")
+            cell = wb.activeWorksheet.cell("B32")
             cell.value = 123
 
     def test_integration_test_default_reactor_fail(self):
@@ -101,7 +101,7 @@ class StdReactorProvider_test(unittest.TestCase):
 
         wb = EventWorkbook(WorkbookImp("bookz1"), onCellEvent = onCellEvent)
         wb.createNewWorksheet("sheetz1")
-        cell = wb.activeWorksheet.cell("@B32")
+        cell = wb.activeWorksheet.cell("B32")
         # with self.assertRaises(Exception):
         #     cell.value = 123
 

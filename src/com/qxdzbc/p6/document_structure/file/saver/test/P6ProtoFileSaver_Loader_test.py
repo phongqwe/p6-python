@@ -25,12 +25,12 @@ class P6ProtoFileSaver_test(unittest.TestCase):
             name = "Sheet1",
             cell = [
                 CellProto(
-                    address = CellAddresses.fromLabel("@C23").toProtoObj(),
+                    address = CellAddresses.fromLabel("C23").toProtoObj(),
                     value = CellValueProto(str="123qwe"),
                     formula = "formula z",
                 ),
                 CellProto(
-                    address = CellAddresses.fromLabel("@N5").toProtoObj(),
+                    address = CellAddresses.fromLabel("N5").toProtoObj(),
                     value = CellValueProto(num=555),
                 )
             ]
@@ -64,15 +64,15 @@ class P6ProtoFileSaver_test(unittest.TestCase):
         self.assertEqual(1, loadedWb.sheetCount)
         ws = loadedWb.getWorksheet(0)
         self.assertEqual("Sheet1",ws.name)
-        self.assertTrue(ws.hasCellAt(CellAddresses.fromLabel("@C23")))
-        self.assertTrue(ws.hasCellAt(CellAddresses.fromLabel("@N5")))
+        self.assertTrue(ws.hasCellAt(CellAddresses.fromLabel("C23")))
+        self.assertTrue(ws.hasCellAt(CellAddresses.fromLabel("N5")))
         self.assertEqual(2,ws.size)
 
-        ws.cell("@A1").value = 123
-        self.assertEqual(123,ws.cell("@A1").value)
+        ws.cell("A1").value = 123
+        self.assertEqual(123,ws.cell("A1").value)
 
-        ws.cell("@B33").formula="""=SCRIPT(1+2+3)"""
-        self.assertEqual(6, ws.cell("@B33").value)
+        ws.cell("B33").formula="""=SCRIPT(1+2+3)"""
+        self.assertEqual(6, ws.cell("B33").value)
 
         self.assertEqual(workbook.allScripts,loadedWb.allScripts)
 

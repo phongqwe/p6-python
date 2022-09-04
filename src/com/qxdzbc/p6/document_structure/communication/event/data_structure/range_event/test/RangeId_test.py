@@ -8,7 +8,7 @@ from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookK
 class RangeId_test(unittest.TestCase):
     def test_toProto(self):
         o = RangeId(
-            rangeAddress = RangeAddresses.fromLabel("@A1:B3"),
+            rangeAddress = RangeAddresses.fromLabel("A1:B3"),
             workbookKey = WorkbookKeys.fromNameAndPath(""),
             worksheetName = "abc"
         )
@@ -19,7 +19,7 @@ class RangeId_test(unittest.TestCase):
 
     def test_fromProto(self):
         o = RangeId(
-            rangeAddress = RangeAddresses.fromLabel("@A1:B3"),
+            rangeAddress = RangeAddresses.fromLabel("A1:B3"),
             workbookKey = WorkbookKeys.fromNameAndPath(""),
             worksheetName = "abc"
         )

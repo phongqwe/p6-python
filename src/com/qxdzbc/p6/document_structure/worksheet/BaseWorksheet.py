@@ -1,6 +1,8 @@
 import json
 from abc import ABC
+from typing import Union, Tuple, Optional
 
+from com.qxdzbc.p6.document_structure.cell.Cell import Cell
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.document_structure.util.result.Result import Result
 
@@ -100,4 +102,67 @@ class BaseWorksheet(Worksheet,ABC):
         rs = self.renameRs(newName)
         if rs.isErr():
             raise rs.err.toException()
+
+    def cell(self, address: Union[str, CellAddress, Tuple[int, int]]) -> Cell:
+        pass
+
+    def range(self, rangeAddress: Union[str, RangeAddress, Tuple[CellAddress, CellAddress]]) -> Range:
+        pass
+
+    def deleteCell(self, address: CellAddress | Tuple[int, int] | str):
+        return super().deleteCell(address)
+
+    def deleteCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
+        pass
+
+    def getOrMakeCell(self, address: CellAddress) -> Cell:
+        pass
+
+    def deleteRangeRs(self, rangeAddress: RangeAddress) -> Result[None, ErrorReport]:
+        pass
+
+    def deleteRange(self, rangeAddress: RangeAddress):
+        return super().deleteRange(rangeAddress)
+
+    def hasCellAt(self, address: CellAddress) -> bool:
+        pass
+
+    def hasCellAtIndex(self, col: int, row: int) -> bool:
+        pass
+
+    def getCell(self, address: CellAddress) -> Optional[Cell]:
+        pass
+
+    def containsAddress(self, address: CellAddress) -> bool:
+        pass
+
+    def containsAddressIndex(self, col: int, row: int) -> bool:
+        pass
+
+    @property
+    def cells(self) -> list[Cell]:
+        pass
+
+    @property
+    def rangeAddress(self) -> RangeAddress:
+        pass
+
+    def isSameRangeAddress(self, other: "CellContainer"):
+        return super().isSameRangeAddress(other)
+
+    def reRun(self, refreshScript: bool = False):
+        super().reRun(refreshScript)
+
+    def isEmpty(self) -> bool:
+        return super().isEmpty()
+
+    def isNotEmpty(self) -> bool:
+        return super().isNotEmpty()
+
+    def addCell(self, cell: Cell):
+        pass
+
+
+
+
 

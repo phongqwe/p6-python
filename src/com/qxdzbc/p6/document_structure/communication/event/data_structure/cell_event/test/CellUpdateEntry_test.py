@@ -18,7 +18,7 @@ class CellUpdateEntry_test(unittest.TestCase):
         self.contentProto = contentProto
         self.proto = CellUpdateEntryProto()
         self.proto.content.CopyFrom(contentProto)
-        self.addr= CellAddresses.fromLabel("@Q12")
+        self.addr= CellAddresses.fromLabel("Q12")
         self.proto.cellAddress.CopyFrom(self.addr.toProtoObj())
 
 

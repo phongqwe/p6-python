@@ -13,7 +13,7 @@ from com.qxdzbc.p6.proto.DocProtos_pb2 import CellAddressProto
 
 
 class CellAddresses:
-    __labelPattern = re.compile("@[A-Za-z]+[1-9][0-9]*")
+    __labelPattern = re.compile("[A-Za-z]+[1-9][0-9]*")
 
     @staticmethod
     def fromProto(proto: CellAddressProto):
@@ -35,12 +35,12 @@ class CellAddresses:
     @staticmethod
     def fromLabel(address: str) -> CellAddress:
         """
-        :param address: can be in form "@<cell_address>" such as "@A1"
+        :param address: can be in form "<cell_address>" such as "A1"
         :return:
         """
         checkResult = CellAddresses.__checkCellAddressFormat(address)
         if checkResult.isOk():
-            bareAddress = address[1:]
+            bareAddress = address
             col = ""
             row = ""
             for c in bareAddress:
@@ -73,21 +73,18 @@ class CellAddresses:
     def __checkCellAddressFormat(address: str) -> Result[None, ErrorReport]:
         """
         check address format
-        :param address: must be like "@[A-Za-z]+[1-9][0-9]*" eg: "@A1", "@ABC123"
+        :param address: must be like "[A-Za-z]+[1-9][0-9]*" eg: "A1", "ABC123"
         :return: Ok if address is legal, Err with an exception otherwise
         """
         if not isinstance(address, str):
             return Err(ValueError("cell address must be a string."))
         else:
-            if address.startswith("@"):
-                matchResult = CellAddresses.__labelPattern.fullmatch(address)
-                if matchResult is not None:
-                    return Ok(None)
-                else:
-                    return Err(
-                        ValueError(
-                            "Cell address \"{cdr}\" does not match the required pattern: {pt}"
-                                .format(cdr = address,
-                                        pt = str(CellAddresses.__labelPattern.pattern))))
+            matchResult = CellAddresses.__labelPattern.fullmatch(address)
+            if matchResult is not None:
+                return Ok(None)
             else:
-                return Err(ValueError("Cell address must start with \"@\""))
+                return Err(
+                    ValueError(
+                        "Cell address \"{cdr}\" does not match the required pattern: {pt}"
+                            .format(cdr = address,
+                                    pt = str(CellAddresses.__labelPattern.pattern))))

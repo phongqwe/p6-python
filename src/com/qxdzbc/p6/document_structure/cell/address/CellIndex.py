@@ -29,7 +29,7 @@ class CellIndex(CellAddress):
 
     @property
     def label(self) -> str:
-        return "@" + self.rawLabel
+        return "" + self.rawLabel
 
     @property
     def rawLabel(self) -> str:

@@ -10,7 +10,7 @@ from com.qxdzbc.p6.proto.DocProtos_pb2 import CellProto, CellValueProto
 class Cells_test(unittest.TestCase):
 
     def test_FromProto2(self):
-        address = CellAddresses.fromLabel("@C23")
+        address = CellAddresses.fromLabel("C23")
 
         proto = CellProto(
             address = address.toProtoObj(),
@@ -24,7 +24,7 @@ class Cells_test(unittest.TestCase):
         # self.assertEqual(proto.value, cell.bareValue)
 
     def test_FromProto(self):
-        address = CellAddresses.fromLabel("@C23")
+        address = CellAddresses.fromLabel("C23")
 
         proto = CellProto()
         proto.address.CopyFrom(address.toProtoObj())

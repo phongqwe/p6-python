@@ -13,9 +13,9 @@ class RangeAddress(ToProto[RangeAddressProto],ABC):
     """
     This interface represents a range address.
     Label format:
-    first cell - last cell: "@A1:B3"
-    whole column: "@A:D"
-    whole row: "@22:33"
+    first cell - last cell: "A1:B3"
+    whole column: "A:D"
+    whole row: "22:33"
     """
 
     def intersect(self, otherRangeAddress: 'RangeAddress') -> Optional['RangeAddress'] :
@@ -28,21 +28,21 @@ class RangeAddress(ToProto[RangeAddressProto],ABC):
         if firstCellOnFirstRow and lastCellOnLastRow:
             firstColLabel = AlphabetBaseNumberSystem.fromDecimal(self.topLeft.colIndex)
             lastColLabel = AlphabetBaseNumberSystem.fromDecimal(self.botRight.colIndex)
-            return "@{firstCol}:{lastCol}".format(
+            return "{firstCol}:{lastCol}".format(
                 firstCol=firstColLabel, lastCol=lastColLabel
             )
 
         firstCellOnFirstCol = self.topLeft.colIndex == 1
         lastCellOnLastCol = self.botRight.colIndex == R.WorksheetConsts.colLimit
         if firstCellOnFirstCol and lastCellOnLastCol:
-            return "@{firstRow}:{lastRow}".format(
+            return "{firstRow}:{lastRow}".format(
                 firstRow=str(self.topLeft.rowIndex),
                 lastRow=str(self.botRight.rowIndex)
             )
 
         firstCellLabel = self.topLeft.rawLabel
         lastCellLabel = self.botRight.rawLabel
-        return "@{fa}:{la}".format(
+        return "{fa}:{la}".format(
             fa=firstCellLabel,
             la=lastCellLabel
         )

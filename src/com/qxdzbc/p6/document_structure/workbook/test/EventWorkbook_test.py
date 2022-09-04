@@ -310,28 +310,28 @@ class EventWorkbook_test(unittest.TestCase):
 
         eventWb = EventWorkbook(w, onCellEvent = cellCallback)
         s1 = eventWb.createNewWorksheet("s1")
-        c1 = s1.cell("@A1")
+        c1 = s1.cell("A1")
         c1.value = 123
         self.assertEqual(1, self.a)
 
         for ws in eventWb.worksheets:
-            cell = ws.cell("@B1")
+            cell = ws.cell("B1")
             cell.value = 456
 
         self.assertEqual(2, self.a)
 
-        c2 = eventWb.activeWorksheet.cell("@Z1")
+        c2 = eventWb.activeWorksheet.cell("Z1")
         c2.value = "abc"
         self.assertEqual(3, self.a)
 
-        c3 = eventWb.getWorksheetByIndex(0).cell("@K1")
+        c3 = eventWb.getWorksheetByIndex(0).cell("K1")
         c3.value = "qwe"
         self.assertEqual(4, self.a)
 
-        c4 = eventWb.getWorksheetByName("s1").cell("@h1")
+        c4 = eventWb.getWorksheetByName("s1").cell("h1")
         c4.value = "mmm"
         self.assertEqual(5, self.a)
 
-        c4 = eventWb.getWorksheet(0).cell("@h1")
+        c4 = eventWb.getWorksheet(0).cell("h1")
         c4.value = "mmm"
         self.assertEqual(6, self.a)

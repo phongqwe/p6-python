@@ -16,7 +16,7 @@ class ProtoCopier_ProtoPaster_test(unittest.TestCase):
     def setUp(self) -> None:
         super(ProtoCopier_ProtoPaster_test, self).setUp()
         wb = sampleWb("Wb")
-        rng = wb.getWorksheet(0).range("@A1:B5")
+        rng = wb.getWorksheet(0).range("A1:B5")
         self.rng = rng
 
     def test_copy_paste(self):

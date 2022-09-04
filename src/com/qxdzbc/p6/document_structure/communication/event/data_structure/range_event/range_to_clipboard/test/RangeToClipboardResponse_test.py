@@ -18,7 +18,7 @@ class RangeToClipboardResponse_test(unittest.TestCase):
         o = RangeToClipboardResponse(
             errorIndicator = ErrorIndicator.noError(),
             rangeId = RangeId(
-                rangeAddress = RangeAddresses.fromLabel("@A1:B3"),
+                rangeAddress = RangeAddresses.fromLabel("A1:B3"),
                 workbookKey = WorkbookKeys.fromNameAndPath(""),
                 worksheetName = "abc"
             ),
@@ -33,7 +33,7 @@ class RangeToClipboardResponse_test(unittest.TestCase):
         o = RangeToClipboardResponse(
             errorIndicator = ErrorIndicator.noError(),
             rangeId = RangeId(
-                rangeAddress = RangeAddresses.fromLabel("@A1:B3"),
+                rangeAddress = RangeAddresses.fromLabel("A1:B3"),
                 workbookKey = WorkbookKeys.fromNameAndPath(""),
                 worksheetName = "abc"
             ),
@@ -49,7 +49,7 @@ class RangeToClipboardResponse_test(unittest.TestCase):
         o = RangeToClipboardResponse(
             errorIndicator = ErrorIndicator.noError(),
             rangeId = RangeId(
-                rangeAddress = RangeAddresses.fromLabel("@A1:B3"),
+                rangeAddress = RangeAddresses.fromLabel("A1:B3"),
                 workbookKey = WorkbookKeys.fromNameAndPath(""),
                 worksheetName = "abc"
             ),
@@ -64,7 +64,7 @@ class RangeToClipboardResponse_test(unittest.TestCase):
         proto = RangeToClipboardResponseProto(
             errorIndicator = ErrorIndicator.noError().toProtoObj(),
             rangeId = RangeId(
-                rangeAddress = RangeAddresses.fromLabel("@A1:B3"),
+                rangeAddress = RangeAddresses.fromLabel("A1:B3"),
                 workbookKey = WorkbookKeys.fromNameAndPath(""),
                 worksheetName = "abc"
             ).toProtoObj(),

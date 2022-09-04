@@ -12,14 +12,14 @@ class RangeCopy_test(unittest.TestCase):
     def test_toProto(self):
         o = RangeCopy(
             rangeId = RangeId(
-                rangeAddress = RangeAddresses.fromLabel("@B2:H10"),
+                rangeAddress = RangeAddresses.fromLabel("B2:H10"),
                 workbookKey = WorkbookKeys.fromNameAndPath("B"),
                 worksheetName = "S1"
             ),
             cells = [
-                DataCell(CellAddresses.fromLabel("@B3")),
-                DataCell(CellAddresses.fromLabel("@D4")),
-                DataCell(CellAddresses.fromLabel("@E4")),
+                DataCell(CellAddresses.fromLabel("B3")),
+                DataCell(CellAddresses.fromLabel("D4")),
+                DataCell(CellAddresses.fromLabel("E4")),
             ]
         )
         proto = o.toProtoObj()
@@ -31,14 +31,14 @@ class RangeCopy_test(unittest.TestCase):
     def test_fromProto(self):
         o = RangeCopy(
             rangeId = RangeId(
-                rangeAddress = RangeAddresses.fromLabel("@B2:H10"),
+                rangeAddress = RangeAddresses.fromLabel("B2:H10"),
                 workbookKey = WorkbookKeys.fromNameAndPath("B"),
                 worksheetName = "S1"
             ),
             cells = [
-                DataCell(CellAddresses.fromLabel("@B3")),
-                DataCell(CellAddresses.fromLabel("@D4")),
-                DataCell(CellAddresses.fromLabel("@E4")),
+                DataCell(CellAddresses.fromLabel("B3")),
+                DataCell(CellAddresses.fromLabel("D4")),
+                DataCell(CellAddresses.fromLabel("E4")),
             ]
         )
         proto = o.toProtoObj()

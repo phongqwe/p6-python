@@ -22,7 +22,7 @@ class EventRangeTest(unittest.TestCase):
         wb: Workbook = sampleWb("QWE")
 
         ws = wb.getWorksheet("Sheet1")
-        r = ws.range("@J2:K3")
+        r = ws.range("J2:K3")
 
         def onRangeEvent(eventData: EventData):
             self.assertEqual(P6Events.Range.RangeToClipBoard.event, eventData.event)
@@ -45,7 +45,7 @@ class EventRangeTest(unittest.TestCase):
         wb: Workbook = sampleWb("QWE")
 
         ws = wb.getWorksheet("Sheet1")
-        r = ws.range("@J2:K3")
+        r = ws.range("J2:K3")
 
         def onRangeEvent(eventData: EventData):
             self.assertEqual(P6Events.Range.RangeToClipBoard.event, eventData.event)
@@ -95,19 +95,19 @@ class EventRangeTest(unittest.TestCase):
         # self.assertEqual(oldA, self.a)
 
         # getCell
-        c1 = er.getCell(CellAddresses.fromLabel("@B2"))
+        c1 = er.getCell(CellAddresses.fromLabel("B2"))
         oldA = self.a
         c1.value = 123
         self.assertEqual(oldA + 1, self.a)
 
         # getOrMakeCell
-        c2 = er.getOrMakeCell(CellAddresses.fromLabel("@A3"))
+        c2 = er.getOrMakeCell(CellAddresses.fromLabel("A3"))
         oldA = self.a
         c2.value = 123
         self.assertEqual(oldA + 1, self.a)
 
         # cell
-        c3 = er.cell("@A5")
+        c3 = er.cell("A5")
         oldA = self.a
         c3.value = 123
         self.assertEqual(oldA + 1, self.a)

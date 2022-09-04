@@ -13,7 +13,7 @@ class RangeToClipboardRequest_test(unittest.TestCase):
     def setUp(self) -> None:
         super().setUp()
         self.rangeId = RangeId(
-            rangeAddress = RangeAddresses.fromLabel("@A1:B3"),
+            rangeAddress = RangeAddresses.fromLabel("A1:B3"),
             workbookKey = WorkbookKeys.fromNameAndPath("zz"),
             worksheetName = "abc"
         )
