@@ -22,17 +22,17 @@ class WorksheetWrapper(BaseWorksheet):
     # def pasteTextRs(self, targetCell: CellAddress, paster: Paster | None) -> Result[None, ErrorReport]:
 
     def pasteRs(self,
-                anchorCell: CellAddress,
+                cell: CellAddress,
                 paster: Paster | None = None) -> Result[None, ErrorReport]:
-        return self.rootWorksheet.pasteRs(anchorCell, paster)
+        return self.rootWorksheet.pasteRs(cell, paster)
 
     def pasteDataFrameRs(self, anchorCell: CellAddress, paster: Paster | None=None) -> Result[None, ErrorReport]:
         return self.rootWorksheet.pasteDataFrameRs(anchorCell,paster)
 
     def pasteProtoRs(
-            self, anchorCell:
+            self, cell:
             CellAddress, paster: Paster | None = None) -> Result[None, ErrorReport]:
-        return self.rootWorksheet.pasteProtoRs(anchorCell, paster)
+        return self.rootWorksheet.pasteProtoRs(cell, paster)
 
     @property
     def colDict(self) -> dict[int, list[Cell]]:

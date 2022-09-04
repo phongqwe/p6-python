@@ -1,7 +1,7 @@
 import unittest
 
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.WorksheetId import WorksheetId
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.WorksheetId import WorksheetId
 
 
 class IdentifyWorksheetMsgProto_test(unittest.TestCase):

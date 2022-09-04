@@ -18,13 +18,9 @@ from com.qxdzbc.p6.document_structure.worksheet.Worksheet import Worksheet
 class BaseWorksheet(Worksheet,ABC):
 
 
-    def paste(self, anchorCell: CellAddress, paster: Paster | None = None):
-        rs = self.pasteRs(anchorCell, paster)
+    def paste(self, cell: CellAddress, paster: Paster | None = None):
+        rs = self.pasteRs(cell, paster)
         rs.raiseIfErr()
-
-    # def pasteText(self, targetCell: CellAddress,paster:Paster):
-    #     rs = self.pasteTextRs(targetCell,paster)
-    #     rs.raiseIfErr()
 
     @property
     def usedRangeAddress(self) -> RangeAddress | None:
@@ -45,12 +41,12 @@ class BaseWorksheet(Worksheet,ABC):
         else:
             return None
 
-    def pasteDataFrame(self, anchorCell: CellAddress):
-        rs = self.pasteDataFrameRs(anchorCell)
+    def pasteDataFrame(self, anchorCell: CellAddress,paster: Paster | None=None):
+        rs = self.pasteDataFrameRs(anchorCell,paster)
         Results.extractOrRaise(rs)
 
-    def pasteProto(self, anchorCell: CellAddress, paster: Paster | None = None):
-        rs = self.pasteProtoRs(anchorCell, paster)
+    def pasteProto(self, cell: CellAddress, paster: Paster | None = None):
+        rs = self.pasteProtoRs(cell, paster)
         rs.raiseIfErr()
 
     def compareContent(self, ws2: Worksheet) -> bool:

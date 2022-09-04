@@ -18,11 +18,21 @@ from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n>com/qxdzbc/p6/proto/rpc/worksheet/WorksheetServiceProtos.proto\x12!com.qxdzbc.p6.proto.rpc.worksheet\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\x1a#com/qxdzbc/p6/proto/DocProtos.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1bgoogle/protobuf/empty.proto')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n>com/qxdzbc/p6/proto/rpc/worksheet/WorksheetServiceProtos.proto\x12!com.qxdzbc.p6.proto.rpc.worksheet\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\x1a#com/qxdzbc/p6/proto/DocProtos.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1bgoogle/protobuf/empty.proto\"\'\n\x16\x43\x65llCountResponseProto\x12\r\n\x05\x63ount\x18\x01 \x01(\x03\x62\x06proto3')
 
 
+
+_CELLCOUNTRESPONSEPROTO = DESCRIPTOR.message_types_by_name['CellCountResponseProto']
+CellCountResponseProto = _reflection.GeneratedProtocolMessageType('CellCountResponseProto', (_message.Message,), {
+  'DESCRIPTOR' : _CELLCOUNTRESPONSEPROTO,
+  '__module__' : 'com.qxdzbc.p6.proto.rpc.worksheet.WorksheetServiceProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.rpc.worksheet.CellCountResponseProto)
+  })
+_sym_db.RegisterMessage(CellCountResponseProto)
 
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
+  _CELLCOUNTRESPONSEPROTO._serialized_start=239
+  _CELLCOUNTRESPONSEPROTO._serialized_end=278
 # @@protoc_insertion_point(module_scope)

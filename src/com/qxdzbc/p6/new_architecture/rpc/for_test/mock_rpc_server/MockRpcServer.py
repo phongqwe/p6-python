@@ -16,7 +16,8 @@ class MockRpcServer:
         rpcInfo = rpInfo,
         cellServiceProvider = RpcServiceContainer.cellService.provider,
         wbServiceProvider = RpcServiceContainer.wbService.provider,
-        appServiceProvider = RpcServiceContainer.appService.provider
+        appServiceProvider = RpcServiceContainer.appService.provider,
+        wsServiceProvider = RpcServiceContainer.wsService.provider
     )
 
     def __init__(self):

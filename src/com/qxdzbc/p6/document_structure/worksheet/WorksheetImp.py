@@ -116,11 +116,11 @@ class WorksheetImp(BaseWorksheet):
             self._minRow = None
             self._maxRow = None
 
-    def pasteRs(self, anchorCell: CellAddress, paster: Paster | None = None) -> Result[None, ErrorReport]:
+    def pasteRs(self, cell: CellAddress, paster: Paster | None = None) -> Result[None, ErrorReport]:
         if paster is None:
             paster = Pasters.unifiedPaster
-        pasteRs: Result[RangeCopy, ErrorReport] = paster.pasteRange(anchorCell)
-        return self._pasteRangeCopy(anchorCell, pasteRs)
+        pasteRs: Result[RangeCopy, ErrorReport] = paster.pasteRange(cell)
+        return self._pasteRangeCopy(cell, pasteRs)
 
     def pasteDataFrameRs(self, anchorCell: CellAddress, paster: Paster | None = None) -> Result[None, ErrorReport]:
         """
@@ -132,13 +132,13 @@ class WorksheetImp(BaseWorksheet):
         pasteRs: Result[RangeCopy, ErrorReport] = paster.pasteRange(anchorCell)
         return self._pasteRangeCopy(anchorCell, pasteRs)
 
-    def pasteProtoRs(self, anchorCell: CellAddress, paster: Paster | None = None) -> Result[
+    def pasteProtoRs(self, cell: CellAddress, paster: Paster | None = None) -> Result[
         None, ErrorReport]:
         """paste a proto byte array from clipboard into this worksheet"""
         if paster is None:
             paster = Pasters.protoPaster
-        pasteRs: Result[RangeCopy, ErrorReport] = paster.pasteRange(anchorCell)
-        return self._pasteRangeCopy(anchorCell, pasteRs)
+        pasteRs: Result[RangeCopy, ErrorReport] = paster.pasteRange(cell)
+        return self._pasteRangeCopy(cell, pasteRs)
 
     def _pasteRangeCopy(self, anchorCell: CellAddress, pasteRs: Result[RangeCopy, ErrorReport]) -> Result[
         None, ErrorReport]:

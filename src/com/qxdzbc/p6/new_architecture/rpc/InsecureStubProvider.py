@@ -7,6 +7,7 @@ from com.qxdzbc.p6.new_architecture.rpc.StubProvider import RpcStubProvider
 from com.qxdzbc.p6.proto.rpc.app.service.AppService_pb2_grpc import AppServiceStub
 from com.qxdzbc.p6.proto.rpc.cell.service.CellService_pb2_grpc import CellServiceStub
 from com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService_pb2_grpc import WorkbookServiceStub
+from com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService_pb2_grpc import WorksheetServiceStub
 
 
 class InsecureRpcStubProvider(RpcStubProvider):
@@ -16,8 +17,10 @@ class InsecureRpcStubProvider(RpcStubProvider):
             cellServiceProvider: Callable[[grpc.Channel], CellServiceStub],
             wbServiceProvider: Callable[[grpc.Channel], WorkbookServiceStub],
             appServiceProvider: Callable[[grpc.Channel], AppServiceStub],
+            wsServiceProvider:Callable[[grpc.Channel], WorksheetServiceStub],
             rpcInfo: Optional[RpcInfo] = None,
     ):
+        self.wsServiceProvider = wsServiceProvider
         self.wbServiceProvider = wbServiceProvider
         self.cellServiceProvider = cellServiceProvider
         self._appServiceProvider = appServiceProvider
@@ -26,7 +29,15 @@ class InsecureRpcStubProvider(RpcStubProvider):
         self._channel = None
         self._wbService = None
         self._appService = None
+        self._wsService = None
         self.__createObj()
+
+    @property
+    def wsService(self) -> Optional[WorksheetServiceStub]:
+        if self._rpcInfo:
+            return self._wsService
+        else:
+            return None
 
     @property
     def wbService(self) -> Optional[WorkbookServiceStub]:
@@ -53,6 +64,7 @@ class InsecureRpcStubProvider(RpcStubProvider):
             self._cellService = self.cellServiceProvider(self._channel)
             self._wbService = self.wbServiceProvider(self._channel)
             self._appService = self._appServiceProvider(self._channel)
+            self._wsService = self.wsServiceProvider(self._channel)
 
     def __clearObjs(self):
         self._cellService = None

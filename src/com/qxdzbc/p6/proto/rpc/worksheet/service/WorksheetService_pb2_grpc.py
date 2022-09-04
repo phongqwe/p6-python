@@ -4,6 +4,8 @@ import grpc
 
 from com.qxdzbc.p6.proto import CommonProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2
 from com.qxdzbc.p6.proto import DocProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2
+from com.qxdzbc.p6.proto import WorksheetProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2
+from com.qxdzbc.p6.proto.rpc.worksheet import WorksheetServiceProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_worksheet_dot_WorksheetServiceProtos__pb2
 
 
 class WorksheetServiceStub(object):
@@ -20,12 +22,34 @@ class WorksheetServiceStub(object):
                 request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellIdProto.SerializeToString,
                 response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
                 )
+        self.getCellCount = channel.unary_unary(
+                '/com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService/getCellCount',
+                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdProto.SerializeToString,
+                response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_worksheet_dot_WorksheetServiceProtos__pb2.CellCountResponseProto.FromString,
+                )
+        self.getUsedRangeAddress = channel.unary_unary(
+                '/com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService/getUsedRangeAddress',
+                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdProto.SerializeToString,
+                response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.RangeAddressProto.FromString,
+                )
 
 
 class WorksheetServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def getCell(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def getCellCount(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def getUsedRangeAddress(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -38,6 +62,16 @@ def add_WorksheetServiceServicer_to_server(servicer, server):
                     servicer.getCell,
                     request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellIdProto.FromString,
                     response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.SerializeToString,
+            ),
+            'getCellCount': grpc.unary_unary_rpc_method_handler(
+                    servicer.getCellCount,
+                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdProto.FromString,
+                    response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_worksheet_dot_WorksheetServiceProtos__pb2.CellCountResponseProto.SerializeToString,
+            ),
+            'getUsedRangeAddress': grpc.unary_unary_rpc_method_handler(
+                    servicer.getUsedRangeAddress,
+                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdProto.FromString,
+                    response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.RangeAddressProto.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -63,5 +97,39 @@ class WorksheetService(object):
         return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService/getCell',
             com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellIdProto.SerializeToString,
             com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def getCellCount(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService/getCellCount',
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdProto.SerializeToString,
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_worksheet_dot_WorksheetServiceProtos__pb2.CellCountResponseProto.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def getUsedRangeAddress(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService/getUsedRangeAddress',
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdProto.SerializeToString,
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.RangeAddressProto.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

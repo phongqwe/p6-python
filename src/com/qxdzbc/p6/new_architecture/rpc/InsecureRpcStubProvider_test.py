@@ -13,6 +13,7 @@ class InsecureRpcStubProvider_test(unittest.TestCase):
             cellServiceProvider = mockProvider,
             wbServiceProvider = mockProvider,
             appServiceProvider = mockProvider,
+            wsServiceProvider = mockProvider,
         )
 
         for e in [p.appService, p.wbService, p.cellService]:

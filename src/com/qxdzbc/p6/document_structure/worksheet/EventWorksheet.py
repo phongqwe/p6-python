@@ -144,14 +144,14 @@ class EventWorksheet(WorksheetWrapper):
 
     def pasteProtoRs(
             self,
-            anchorCell: CellAddress,
+            cell: CellAddress,
             paster: Paster | None = None) -> Result[None, ErrorReport]:
-        rs = self.rootWorksheet.pasteProtoRs(anchorCell, paster)
+        rs = self.rootWorksheet.pasteProtoRs(cell, paster)
         self.__emitPasteEvent(rs)
         return rs
 
-    def pasteRs(self, anchorCell: CellAddress, paster: Paster | None = None) -> Result[None, ErrorReport]:
-        rs = self.rootWorksheet.pasteRs(anchorCell, paster)
+    def pasteRs(self, cell: CellAddress, paster: Paster | None = None) -> Result[None, ErrorReport]:
+        rs = self.rootWorksheet.pasteRs(cell, paster)
         self.__emitPasteEvent(rs)
         return rs
 

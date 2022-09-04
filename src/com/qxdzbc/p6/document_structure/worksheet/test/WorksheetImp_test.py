@@ -95,7 +95,7 @@ class WorksheetImp_test(unittest.TestCase):
         s = WorksheetImp("ASD", MagicMock())
         paster.pasteRange = MagicMock(return_value = Ok(rangeCopy))
         rs=s.pasteProtoRs(
-            anchorCell = CellAddresses.fromLabel("@M13"),
+            cell = CellAddresses.fromLabel("@M13"),
             paster = paster
         )
         self.assertTrue(rs.isOk())
@@ -108,7 +108,7 @@ class WorksheetImp_test(unittest.TestCase):
         s = WorksheetImp("ASD", MagicMock())
         paster.pasteRange = MagicMock(return_value = Err(TestErrorReport))
         rs = s.pasteProtoRs(
-            anchorCell = CellAddresses.fromLabel("@M13"),
+            cell = CellAddresses.fromLabel("@M13"),
             paster = paster
         )
         self.assertTrue(rs.isErr())
@@ -117,7 +117,7 @@ class WorksheetImp_test(unittest.TestCase):
         pyperclip.copy(str(content))
         s = WorksheetImp("ASD", MagicMock())
         rs = s.pasteProtoRs(
-            anchorCell = CellAddresses.fromLabel("@M13"),
+            cell = CellAddresses.fromLabel("@M13"),
             paster = Pasters.protoPaster
         )
         self.assertTrue(rs.isErr())

@@ -65,35 +65,30 @@ class Worksheet(UserFriendlyCellContainer,
     def usedRange(self) -> Range | None:
         raise NotImplementedError()
 
-    # def pasteTextRs(self, targetCell: CellAddress, paster: Paster | None) -> Result[None, ErrorReport]:
-    #     raise NotImplementedError()
-    #
-    # def pasteText(self, targetCell: CellAddress, paster: Paster | None):
-    #     raise NotImplementedError()
-
     def pasteDataFrame(self, anchorCell: CellAddress, paster: Paster | None=None):
         raise NotImplementedError()
 
     def pasteDataFrameRs(self, anchorCell: CellAddress, paster: Paster | None=None) -> Result[None, ErrorReport]:
         raise NotImplementedError()
 
-    def pasteProto(self, anchorCell: CellAddress, paster: Paster | None = None):
+    def pasteProto(self, cell: CellAddress, paster: Paster | None = None):
         raise NotImplementedError()
 
     def pasteProtoRs(
             self,
-            anchorCell: CellAddress,
+            cell: CellAddress,
             paster: Paster | None = None) -> Result[None, ErrorReport]:
         raise NotImplementedError()
 
     def pasteRs(self,
-            anchorCell: CellAddress,
-            paster: Paster | None = None) -> Result[None, ErrorReport]:
+                cell: CellAddress,
+                paster: Paster | None = None) -> Result[None, ErrorReport]:
+        """paste what inside the system clipboard into the sheet, starting at a cell"""
         raise NotImplementedError()
 
     def paste(self,
-            anchorCell: CellAddress,
-            paster: Paster | None = None):
+              cell: CellAddress,
+              paster: Paster | None = None):
         raise NotImplementedError()
 
     def compareContent(self, ws2: Worksheet) -> bool:
@@ -141,6 +136,7 @@ class Worksheet(UserFriendlyCellContainer,
         raise NotImplementedError()
 
     def internalRename(self, newName: str):
+        # todo delete this
         raise NotImplementedError()
 
     def renameRs(self, newName: str) -> Result[None, ErrorReport]:

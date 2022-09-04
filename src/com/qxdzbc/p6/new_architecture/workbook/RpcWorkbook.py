@@ -1,9 +1,8 @@
 from pathlib import Path
-from typing import Union, Optional, Callable
+from typing import Union, Optional
 
 from com.qxdzbc.p6.document_structure.util.result.Results import Results
 from com.qxdzbc.p6.document_structure.workbook.WorkbookErrors import WorkbookErrors
-from com.qxdzbc.p6.document_structure.worksheet.WorksheetImp import WorksheetImp
 from com.qxdzbc.p6.new_architecture.common.RpcUtils import RpcUtils
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.AddWorksheetRequest import AddWorksheetRequest
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.CreateNewWorksheetRequest import \
@@ -20,8 +19,6 @@ from com.qxdzbc.p6.proto.CommonProtos_pb2 import SingleSignalResponseProto
 
 from com.qxdzbc.p6.document_structure.communication.event.data_structure.SingleSignalResponse import \
     SingleSignalResponse
-from com.qxdzbc.p6.document_structure.script import SimpleScriptEntry
-from com.qxdzbc.p6.document_structure.script.ScriptEntry import ScriptEntry
 from com.qxdzbc.p6.document_structure.util.CommonError import CommonErrors
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.document_structure.util.result.Err import Err
@@ -37,7 +34,7 @@ from com.qxdzbc.p6.new_architecture.rpc.RpcValues import RpcValues
 from com.qxdzbc.p6.new_architecture.rpc.StubProvider import RpcStubProvider
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.GetAllWorksheetsResponse import \
     GetAllWorksheetsResponse
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.WorksheetId import \
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.WorksheetId import \
     WorksheetId
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.SetWbNameRequest import SetWbNameRequest
 from com.qxdzbc.p6.proto.rpc.workbook.WorkbooKServiceProtos_pb2 import GetWorksheetResponseProto, \
@@ -162,7 +159,7 @@ class RpcWorkbook(Workbook):
             if out.worksheet:
                 return Ok(out.worksheet)
             else:
-                return Err(WorkbookErrors.WorksheetNotExistReport.report(repStr(request.index, request.wsName)))
+                return Err(WorkbookErrors.WorksheetNotExistReport.report(repStr(request.wsIndex, request.wsName)))
 
         return self._onWbsvOkRs(f)
 
@@ -242,7 +239,11 @@ class RpcWorkbook(Workbook):
             if out.isErr():
                 return Err(out.errorReport)
             else:
-                ws = RpcWorksheet(out.wsName,self)
+                ws = RpcWorksheet(
+                    name=out.wsName,
+                    wbKey = self.__key,
+                    stubProvider =self._stubProvider
+                )
                 return Ok(ws)
 
         return self._onWbsvOkRs(f)
