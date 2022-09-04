@@ -1,4 +1,4 @@
-from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
+from com.qxdzbc.p6.document_structure.communication.event.P6Events import P6Events
 import inspect
 
 def main():
