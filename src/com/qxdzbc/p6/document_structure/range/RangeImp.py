@@ -238,7 +238,7 @@ class RangeImp(Range):
 
     def deleteCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
         """only perform deletion if the target cell is within this range, return err otherwise"""
-        address = CellAddresses.parseAddress(address)
+        address = CellAddresses.parse(address)
         if self.containsAddress(address):
             rs = self.__worksheet.deleteCellRs(address)
             self._updateExtremeColRow()

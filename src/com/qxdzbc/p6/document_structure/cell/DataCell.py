@@ -12,6 +12,7 @@ from com.qxdzbc.p6.document_structure.formula_translator.FormulaTranslator impor
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.document_structure.util.result.Result import Result
 from com.qxdzbc.p6.document_structure.worksheet.Worksheet import Worksheet
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellValue import CellValue
 from com.qxdzbc.p6.proto.DocProtos_pb2 import CellProto, CellValueProto
 
 
@@ -20,6 +21,19 @@ class DataCell(Cell):
     A Cell that holds some data.
     """
     scriptTemplate = "=SCRIPT()"
+
+    @property
+    def cellValue(self) -> CellValue:
+        cellValue = CellValue()
+        cell = self
+        if isinstance(cell.bareValue, bool):
+            cellValue.bool = cell.bareValue
+        if isinstance(cell.bareValue, str):
+            cellValue.str = cell.bareValue
+        if isinstance(cell.bareValue, int) or isinstance(cell.bareValue, float):
+            cellValue.num = cell.bareValue
+        return cellValue
+
 
     @property
     def sourceValue(self) -> str:

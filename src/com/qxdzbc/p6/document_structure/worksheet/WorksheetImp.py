@@ -352,7 +352,7 @@ class WorksheetImp(BaseWorksheet):
             raise Exception(f"worksheet \'{self.name}\' can't contain cell at \'{cell.address.__str__()}\'")
 
     def deleteCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
-        address: CellAddress = CellAddresses.parseAddress(address)
+        address: CellAddress = CellAddresses.parse(address)
         if self.containsAddress(address):
             key = address.toTuple()
             if key in self._cellDict.keys():

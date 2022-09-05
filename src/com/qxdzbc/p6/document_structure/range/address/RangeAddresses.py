@@ -1,4 +1,5 @@
 import re
+from typing import Union, Tuple
 
 from com.qxdzbc.p6.document_structure.app.R import R
 from com.qxdzbc.p6.document_structure.cell.address.CellAddress import CellAddress
@@ -132,3 +133,15 @@ class RangeAddresses:
                 return Err(
                     ValueError("Range label \"{cdr}\" does not match the required pattern: {pt}"
                                .format(cdr=label, pt=str(pattern.pattern))))
+
+    @staticmethod
+    def parse(rangeAddress: Union[str, RangeAddress, Tuple[CellAddress, CellAddress]])->RangeAddress:
+        parsedAddress = rangeAddress
+        if isinstance(rangeAddress, str):
+            parsedAddress = RangeAddresses.fromLabel(rangeAddress)
+
+        if isinstance(rangeAddress, Tuple):
+            ad1 = rangeAddress[0]
+            ad2 = rangeAddress[1]
+            parsedAddress = RangeAddressImp(ad1, ad2)
+        return parsedAddress

@@ -14,6 +14,7 @@ from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
 from com.qxdzbc.p6.document_structure.util.report.ReportJsonStrMaker import ReportJsonStrMaker
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.document_structure.util.result.Result import Result
+from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.document_structure.worksheet.UserFriendlyWorksheet import UserFriendlyWorksheet
 from com.qxdzbc.p6.document_structure.worksheet.WorksheetJson import WorksheetJson
 from com.qxdzbc.p6.proto.DocProtos_pb2 import WorksheetProto
@@ -29,18 +30,11 @@ class Worksheet(UserFriendlyCellContainer,
                 UserFriendlyWorksheet,
                 MutableCellContainer,
                 ReportJsonStrMaker,
-                ToJson,
                 ToProto[WorksheetProto],
                 ABC):
-
     @property
-    def colDict(self) -> dict[int, list[Cell]]:
+    def wbKey(self)->WorkbookKey:
         raise NotImplementedError()
-
-    @property
-    def rowDict(self) -> dict[int, list[Cell]]:
-        raise NotImplementedError()
-
     @property
     def maxUsedCol(self) -> int | None:
         raise NotImplementedError()
@@ -65,30 +59,17 @@ class Worksheet(UserFriendlyCellContainer,
     def usedRange(self) -> Range | None:
         raise NotImplementedError()
 
-    def pasteDataFrame(self, anchorCell: CellAddress, paster: Paster | None=None):
+    def pasteDataFrame(self, anchorCell: CellAddress, dataFrame):
         raise NotImplementedError()
 
-    def pasteDataFrameRs(self, anchorCell: CellAddress, paster: Paster | None=None) -> Result[None, ErrorReport]:
+    def pasteDataFrameRs(self, anchorCell: CellAddress, dataFrame) -> Result[None, ErrorReport]:
         raise NotImplementedError()
 
-    def pasteProto(self, cell: CellAddress, paster: Paster | None = None):
-        raise NotImplementedError()
-
-    def pasteProtoRs(
-            self,
-            cell: CellAddress,
-            paster: Paster | None = None) -> Result[None, ErrorReport]:
-        raise NotImplementedError()
-
-    def pasteRs(self,
-                cell: CellAddress,
-                paster: Paster | None = None) -> Result[None, ErrorReport]:
+    def pasteRs(self,cell: CellAddress) -> Result[None, ErrorReport]:
         """paste what inside the system clipboard into the sheet, starting at a cell"""
         raise NotImplementedError()
 
-    def paste(self,
-              cell: CellAddress,
-              paster: Paster | None = None):
+    def paste(self,cell: CellAddress):
         raise NotImplementedError()
 
     def compareContent(self, ws2: Worksheet) -> bool:
@@ -107,14 +88,6 @@ class Worksheet(UserFriendlyCellContainer,
     def toProtoObj(self) -> WorksheetProto:
         raise NotImplementedError()
 
-    @property
-    def workbook(self) -> Optional[Workbook]:
-        raise NotImplementedError()
-
-    @workbook.setter
-    def workbook(self, newWorkbook: Optional[Workbook]):
-        raise NotImplementedError()
-
     def removeFromWorkbook(self):
         raise NotImplementedError()
 
@@ -122,21 +95,10 @@ class Worksheet(UserFriendlyCellContainer,
     def name(self) -> str:
         raise NotImplementedError()
 
-    @property
-    def translator(self) -> FormulaTranslator:
-        raise NotImplementedError()
-
-    def toJson(self) -> WorksheetJson:
-        raise NotImplementedError()
-
     def reportJsonStr(self) -> str:
         raise NotImplementedError()
 
     def rename(self, newName: str):
-        raise NotImplementedError()
-
-    def internalRename(self, newName: str):
-        # todo delete this
         raise NotImplementedError()
 
     def renameRs(self, newName: str) -> Result[None, ErrorReport]:

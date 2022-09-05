@@ -24,7 +24,7 @@ class CellAddresses:
         return CellIndex(json.col, json.row)
 
     @staticmethod
-    def parseAddress(address: CellAddress | Tuple[int, int] | str) -> CellAddress:
+    def parse(address: CellAddress | Tuple[int, int] | str) -> CellAddress:
         if isinstance(address, CellAddress):
             return address
         if isinstance(address, Tuple):

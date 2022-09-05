@@ -3,6 +3,7 @@ from __future__ import annotations
 from abc import ABC
 from typing import TYPE_CHECKING, Optional
 
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellValue import CellValue
 from com.qxdzbc.p6.proto.DocProtos_pb2 import CellProto
 
 from com.qxdzbc.p6.document_structure.cell.CellContent import CellContent
@@ -20,6 +21,10 @@ class Cell(ToJson, ToProto[CellProto], ABC):
     """
     Cell interface
     """
+
+    @property
+    def cellValue(self)->CellValue:
+        raise NotImplementedError()
 
     def __eq__(self, other):
         if isinstance(other, Cell):

@@ -18,11 +18,13 @@ from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n>com/qxdzbc/p6/proto/rpc/worksheet/WorksheetServiceProtos.proto\x12!com.qxdzbc.p6.proto.rpc.worksheet\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\x1a#com/qxdzbc/p6/proto/DocProtos.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1bgoogle/protobuf/empty.proto\"\'\n\x16\x43\x65llCountResponseProto\x12\r\n\x05\x63ount\x18\x01 \x01(\x03\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n>com/qxdzbc/p6/proto/rpc/worksheet/WorksheetServiceProtos.proto\x12!com.qxdzbc.p6.proto.rpc.worksheet\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\x1a#com/qxdzbc/p6/proto/DocProtos.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1bgoogle/protobuf/empty.proto\"\'\n\x16\x43\x65llCountResponseProto\x12\r\n\x05\x63ount\x18\x01 \x01(\x03\"Y\n\x17GetAllCellResponseProto\x12>\n\x0f\x63\x65llAddressList\x18\x01 \x03(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\"3\n CheckContainAddressResponseProto\x12\x0f\n\x07\x63ontain\x18\x01 \x01(\x08\x62\x06proto3')
 
 
 
 _CELLCOUNTRESPONSEPROTO = DESCRIPTOR.message_types_by_name['CellCountResponseProto']
+_GETALLCELLRESPONSEPROTO = DESCRIPTOR.message_types_by_name['GetAllCellResponseProto']
+_CHECKCONTAINADDRESSRESPONSEPROTO = DESCRIPTOR.message_types_by_name['CheckContainAddressResponseProto']
 CellCountResponseProto = _reflection.GeneratedProtocolMessageType('CellCountResponseProto', (_message.Message,), {
   'DESCRIPTOR' : _CELLCOUNTRESPONSEPROTO,
   '__module__' : 'com.qxdzbc.p6.proto.rpc.worksheet.WorksheetServiceProtos_pb2'
@@ -30,9 +32,27 @@ CellCountResponseProto = _reflection.GeneratedProtocolMessageType('CellCountResp
   })
 _sym_db.RegisterMessage(CellCountResponseProto)
 
+GetAllCellResponseProto = _reflection.GeneratedProtocolMessageType('GetAllCellResponseProto', (_message.Message,), {
+  'DESCRIPTOR' : _GETALLCELLRESPONSEPROTO,
+  '__module__' : 'com.qxdzbc.p6.proto.rpc.worksheet.WorksheetServiceProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.rpc.worksheet.GetAllCellResponseProto)
+  })
+_sym_db.RegisterMessage(GetAllCellResponseProto)
+
+CheckContainAddressResponseProto = _reflection.GeneratedProtocolMessageType('CheckContainAddressResponseProto', (_message.Message,), {
+  'DESCRIPTOR' : _CHECKCONTAINADDRESSRESPONSEPROTO,
+  '__module__' : 'com.qxdzbc.p6.proto.rpc.worksheet.WorksheetServiceProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.rpc.worksheet.CheckContainAddressResponseProto)
+  })
+_sym_db.RegisterMessage(CheckContainAddressResponseProto)
+
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   _CELLCOUNTRESPONSEPROTO._serialized_start=239
   _CELLCOUNTRESPONSEPROTO._serialized_end=278
+  _GETALLCELLRESPONSEPROTO._serialized_start=280
+  _GETALLCELLRESPONSEPROTO._serialized_end=369
+  _CHECKCONTAINADDRESSRESPONSEPROTO._serialized_start=371
+  _CHECKCONTAINADDRESSRESPONSEPROTO._serialized_end=422
 # @@protoc_insertion_point(module_scope)

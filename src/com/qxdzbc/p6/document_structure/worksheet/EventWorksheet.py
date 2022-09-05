@@ -111,7 +111,7 @@ class EventWorksheet(WorksheetWrapper):
         return rs
 
     def deleteCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
-        address = CellAddresses.parseAddress(address)
+        address = CellAddresses.parse(address)
         delRs = self.rootWorksheet.deleteCellRs(address)
         delResponse = DeleteCellResponse(
             workbookKey = self.workbook.workbookKey,

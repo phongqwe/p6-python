@@ -22,6 +22,11 @@ class WorksheetServiceStub(object):
                 request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellIdProto.SerializeToString,
                 response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
                 )
+        self.getAllCell = channel.unary_unary(
+                '/com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService/getAllCell',
+                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdProto.SerializeToString,
+                response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_worksheet_dot_WorksheetServiceProtos__pb2.GetAllCellResponseProto.FromString,
+                )
         self.getCellCount = channel.unary_unary(
                 '/com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService/getCellCount',
                 request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdProto.SerializeToString,
@@ -32,12 +37,43 @@ class WorksheetServiceStub(object):
                 request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdProto.SerializeToString,
                 response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.RangeAddressProto.FromString,
                 )
+        self.paste = channel.unary_unary(
+                '/com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService/paste',
+                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellAddressProto.SerializeToString,
+                response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
+                )
+        self.addCell = channel.unary_unary(
+                '/com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService/addCell',
+                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.Cell2Proto.SerializeToString,
+                response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
+                )
+        self.deleteCell = channel.unary_unary(
+                '/com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService/deleteCell',
+                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellIdProto.SerializeToString,
+                response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
+                )
+        self.deleteRange = channel.unary_unary(
+                '/com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService/deleteRange',
+                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.RangeIdProto.SerializeToString,
+                response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
+                )
+        self.containAddress = channel.unary_unary(
+                '/com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService/containAddress',
+                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellAddressProto.SerializeToString,
+                response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_worksheet_dot_WorksheetServiceProtos__pb2.CheckContainAddressResponseProto.FromString,
+                )
 
 
 class WorksheetServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def getCell(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def getAllCell(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -55,6 +91,36 @@ class WorksheetServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def paste(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def addCell(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def deleteCell(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def deleteRange(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def containAddress(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_WorksheetServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -62,6 +128,11 @@ def add_WorksheetServiceServicer_to_server(servicer, server):
                     servicer.getCell,
                     request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellIdProto.FromString,
                     response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.SerializeToString,
+            ),
+            'getAllCell': grpc.unary_unary_rpc_method_handler(
+                    servicer.getAllCell,
+                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdProto.FromString,
+                    response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_worksheet_dot_WorksheetServiceProtos__pb2.GetAllCellResponseProto.SerializeToString,
             ),
             'getCellCount': grpc.unary_unary_rpc_method_handler(
                     servicer.getCellCount,
@@ -72,6 +143,31 @@ def add_WorksheetServiceServicer_to_server(servicer, server):
                     servicer.getUsedRangeAddress,
                     request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdProto.FromString,
                     response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.RangeAddressProto.SerializeToString,
+            ),
+            'paste': grpc.unary_unary_rpc_method_handler(
+                    servicer.paste,
+                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellAddressProto.FromString,
+                    response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.SerializeToString,
+            ),
+            'addCell': grpc.unary_unary_rpc_method_handler(
+                    servicer.addCell,
+                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.Cell2Proto.FromString,
+                    response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.SerializeToString,
+            ),
+            'deleteCell': grpc.unary_unary_rpc_method_handler(
+                    servicer.deleteCell,
+                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellIdProto.FromString,
+                    response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.SerializeToString,
+            ),
+            'deleteRange': grpc.unary_unary_rpc_method_handler(
+                    servicer.deleteRange,
+                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.RangeIdProto.FromString,
+                    response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.SerializeToString,
+            ),
+            'containAddress': grpc.unary_unary_rpc_method_handler(
+                    servicer.containAddress,
+                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellAddressProto.FromString,
+                    response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_worksheet_dot_WorksheetServiceProtos__pb2.CheckContainAddressResponseProto.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -97,6 +193,23 @@ class WorksheetService(object):
         return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService/getCell',
             com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellIdProto.SerializeToString,
             com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def getAllCell(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService/getAllCell',
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdProto.SerializeToString,
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_worksheet_dot_WorksheetServiceProtos__pb2.GetAllCellResponseProto.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -131,5 +244,90 @@ class WorksheetService(object):
         return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService/getUsedRangeAddress',
             com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdProto.SerializeToString,
             com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.RangeAddressProto.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def paste(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService/paste',
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellAddressProto.SerializeToString,
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def addCell(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService/addCell',
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.Cell2Proto.SerializeToString,
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def deleteCell(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService/deleteCell',
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellIdProto.SerializeToString,
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def deleteRange(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService/deleteRange',
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.RangeIdProto.SerializeToString,
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def containAddress(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService/containAddress',
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellAddressProto.SerializeToString,
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_worksheet_dot_WorksheetServiceProtos__pb2.CheckContainAddressResponseProto.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
