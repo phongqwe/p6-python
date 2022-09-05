@@ -24,17 +24,17 @@ class BaseWorksheet(Worksheet,ABC):
         rs = self.pasteRs(cell)
         rs.raiseIfErr()
 
-    @property
-    def usedRangeAddress(self) -> RangeAddress | None:
-        if self.minUsedCol and self.maxUsedCol and self.minUsedRow and self.maxUsedRow:
-            return RangeAddresses.fromColRow(
-                minCol = self.minUsedCol,
-                maxCol = self.maxUsedCol,
-                minRow = self.minUsedRow,
-                maxRow = self.maxUsedRow,
-            )
-        else:
-            return None
+    # @property
+    # def usedRangeAddress(self) -> RangeAddress | None:
+    #     if self.minUsedCol and self.maxUsedCol and self.minUsedRow and self.maxUsedRow:
+    #         return RangeAddresses.fromColRow(
+    #             minCol = self.minUsedCol,
+    #             maxCol = self.maxUsedCol,
+    #             minRow = self.minUsedRow,
+    #             maxRow = self.maxUsedRow,
+    #         )
+    #     else:
+    #         return None
 
     @property
     def usedRange(self) -> Range | None:
@@ -110,7 +110,7 @@ class BaseWorksheet(Worksheet,ABC):
     #     pass
 
     def deleteCell(self, address: CellAddress | Tuple[int, int] | str):
-        return super().deleteCell(address)
+        return self.deleteCellRs(address)
 
     # def deleteCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
     #     pass

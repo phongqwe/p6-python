@@ -155,7 +155,7 @@ class RpcWorkbook(Workbook):
 
         def f():
             outProto: GetWorksheetResponseProto = self._wbsv.getWorksheet(request = request.toProtoObj())
-            out = GetWorksheetResponse.fromProto(outProto)
+            out = GetWorksheetResponse.fromProto2(outProto,self.__key,self._stubProvider)
             if out.worksheet:
                 return Ok(out.worksheet)
             else:

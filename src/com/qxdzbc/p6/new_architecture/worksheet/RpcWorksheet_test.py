@@ -7,13 +7,13 @@ from com.qxdzbc.p6.document_structure.communication.event.data_structure.SingleS
     SingleSignalResponse
 from com.qxdzbc.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 from com.qxdzbc.p6.document_structure.util.for_test import TestUtils
-from com.qxdzbc.p6.document_structure.util.result.Ok import Ok
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.Cell2Pr import Cell2Pr
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellId import CellId
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellValue import CellValue
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.worksheet.CellCountResponse import CellCountResponse
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.worksheet.GetAllCellResponse import GetAllCellResponse
+from com.qxdzbc.p6.new_architecture.worksheet.msg.CellCountResponse import CellCountResponse
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.BoolMsg import  BoolMsg
+from com.qxdzbc.p6.new_architecture.worksheet.msg.GetAllCellResponse import GetAllCellResponse
 from com.qxdzbc.p6.new_architecture.worksheet.RpcWorksheet import RpcWorksheet
 
 
@@ -30,6 +30,15 @@ class RpcWorksheet_test(unittest.TestCase):
             wbKey = WorkbookKeys.fromNameAndPath("wb1"),
             stubProvider = self.mockSP
         )
+
+    def test_containAddress(self):
+        self.mockWsService.containAddress = MagicMock(return_value=BoolMsg(True).toProtoObj())
+        o = self.ws.containsAddress(CellAddresses.fromLabel("DS2"))
+        self.assertTrue(o)
+
+        self.mockWsService.containAddress = MagicMock(return_value = BoolMsg(False).toProtoObj())
+        o = self.ws.containsAddress(CellAddresses.fromLabel("DS2"))
+        self.assertFalse(o)
 
     def test_addCell(self):
         cell = DataCell(

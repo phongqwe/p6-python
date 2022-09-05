@@ -19,14 +19,15 @@ from com.qxdzbc.p6.new_architecture.rpc.StubProvider import RpcStubProvider
 from com.qxdzbc.p6.new_architecture.rpc.cell.RpcCell import RpcCell
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.Cell2Pr import Cell2Pr
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellId import CellId
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellValue import CellValue
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.WorksheetId import WorksheetId
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.RenameWorksheetRequest import RenameWorksheetRequest
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.worksheet.CellCountResponse import CellCountResponse
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.worksheet.CheckContainAddressResponse import \
-    CheckContainAddressResponse
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.worksheet.GetAllCellResponse import GetAllCellResponse
+from com.qxdzbc.p6.new_architecture.worksheet.msg.CellCountResponse import CellCountResponse
+from com.qxdzbc.p6.new_architecture.worksheet.msg.CheckContainAddressRequest import CheckContainAddressRequest
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.BoolMsg import \
+     BoolMsg
+from com.qxdzbc.p6.new_architecture.worksheet.msg.GetAllCellResponse import GetAllCellResponse
 from com.qxdzbc.p6.new_architecture.rpc.range.RpcRange import RpcRange
+from com.qxdzbc.p6.new_architecture.worksheet.msg.GetUsedRangeResponse import GetUsedRangeResponse
 from com.qxdzbc.p6.proto.CommonProtos_pb2 import SingleSignalResponseProto
 from com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService_pb2_grpc import WorkbookServiceStub
 from com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService_pb2_grpc import WorksheetServiceStub
@@ -107,9 +108,13 @@ class RpcWorksheet(BaseWorksheet):
 
     def containsAddress(self, address: CellAddress) -> bool:
         def f():
-            oProto = self._wssv.containAddress(request=address.toProtoObj())
-            o = CheckContainAddressResponse.fromProto(oProto)
-            return o.contain
+            req = CheckContainAddressRequest(
+                wsId = self._id,
+                cellAddress = address
+            )
+            oProto = self._wssv.containAddress(request=req.toProtoObj())
+            o = BoolMsg.fromProto(oProto)
+            return o.v
         return self._onWsSvOk(f)
 
     def containsAddressIndex(self, col: int, row: int) -> bool:
@@ -171,10 +176,10 @@ class RpcWorksheet(BaseWorksheet):
     def usedRangeAddress(self) -> RangeAddress | None:
         def f() -> RangeAddress:
             request = self._id
-            out = self._wssv.getUsedRangeAddress(request = request.toProtoObj())
-            r = RangeAddresses.fromProto(out)
+            outProto = self._wssv.getUsedRangeAddress(request = request.toProtoObj())
+            out = GetUsedRangeResponse.fromProto(outProto)
+            r = out.rangeAddress
             return r
-
         return self._onWsSvOk(f)
 
     @property
@@ -216,11 +221,10 @@ class RpcWorksheet(BaseWorksheet):
 
     def pasteRs(self, cell: CellAddress) -> Result[None, ErrorReport]:
         def f() -> Result[None, ErrorReport]:
-            request = cell.toProtoObj()
+            request = CellId(cell,self._wbk,self._name)
             oProto = self._wssv.paste(request = request)
             o = SingleSignalResponse.fromProto(oProto)
             return o.toRs()
-
         return self._onWsSvOk(f)
 
     def pasteDataFrameRs(self, anchorCell: CellAddress, dataFrame) -> Result[None, ErrorReport]:

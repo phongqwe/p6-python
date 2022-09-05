@@ -35,11 +35,11 @@ class WorksheetServiceStub(object):
         self.getUsedRangeAddress = channel.unary_unary(
                 '/com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService/getUsedRangeAddress',
                 request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdProto.SerializeToString,
-                response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.RangeAddressProto.FromString,
+                response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_worksheet_dot_WorksheetServiceProtos__pb2.GetUsedRangeResponseProto.FromString,
                 )
         self.paste = channel.unary_unary(
                 '/com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService/paste',
-                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellAddressProto.SerializeToString,
+                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellIdProto.SerializeToString,
                 response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
                 )
         self.addCell = channel.unary_unary(
@@ -59,8 +59,8 @@ class WorksheetServiceStub(object):
                 )
         self.containAddress = channel.unary_unary(
                 '/com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService/containAddress',
-                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellAddressProto.SerializeToString,
-                response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_worksheet_dot_WorksheetServiceProtos__pb2.CheckContainAddressResponseProto.FromString,
+                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_worksheet_dot_WorksheetServiceProtos__pb2.CheckContainAddressRequestProto.SerializeToString,
+                response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.BoolMsgProto.FromString,
                 )
 
 
@@ -142,11 +142,11 @@ def add_WorksheetServiceServicer_to_server(servicer, server):
             'getUsedRangeAddress': grpc.unary_unary_rpc_method_handler(
                     servicer.getUsedRangeAddress,
                     request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdProto.FromString,
-                    response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.RangeAddressProto.SerializeToString,
+                    response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_worksheet_dot_WorksheetServiceProtos__pb2.GetUsedRangeResponseProto.SerializeToString,
             ),
             'paste': grpc.unary_unary_rpc_method_handler(
                     servicer.paste,
-                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellAddressProto.FromString,
+                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellIdProto.FromString,
                     response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.SerializeToString,
             ),
             'addCell': grpc.unary_unary_rpc_method_handler(
@@ -166,8 +166,8 @@ def add_WorksheetServiceServicer_to_server(servicer, server):
             ),
             'containAddress': grpc.unary_unary_rpc_method_handler(
                     servicer.containAddress,
-                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellAddressProto.FromString,
-                    response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_worksheet_dot_WorksheetServiceProtos__pb2.CheckContainAddressResponseProto.SerializeToString,
+                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_worksheet_dot_WorksheetServiceProtos__pb2.CheckContainAddressRequestProto.FromString,
+                    response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.BoolMsgProto.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -243,7 +243,7 @@ class WorksheetService(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService/getUsedRangeAddress',
             com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdProto.SerializeToString,
-            com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.RangeAddressProto.FromString,
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_worksheet_dot_WorksheetServiceProtos__pb2.GetUsedRangeResponseProto.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -259,7 +259,7 @@ class WorksheetService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService/paste',
-            com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellAddressProto.SerializeToString,
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellIdProto.SerializeToString,
             com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
@@ -327,7 +327,7 @@ class WorksheetService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService/containAddress',
-            com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellAddressProto.SerializeToString,
-            com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_worksheet_dot_WorksheetServiceProtos__pb2.CheckContainAddressResponseProto.FromString,
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_worksheet_dot_WorksheetServiceProtos__pb2.CheckContainAddressRequestProto.SerializeToString,
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.BoolMsgProto.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
