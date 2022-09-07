@@ -50,7 +50,7 @@ class RpcWorksheet(BaseWorksheet):
 
     def cell(self, address: Union[str, CellAddress, Tuple[int, int]]) -> Cell:
         a = CellAddresses.parse(address)
-        return RpcCell(a,self._wbk,self._name)
+        return RpcCell(a,self._wbk,self._name,self._stubProvider)
 
     def range(self, rangeAddress: Union[str, RangeAddress, Tuple[CellAddress, CellAddress]]) -> Range:
         a = RangeAddresses.parse(rangeAddress)

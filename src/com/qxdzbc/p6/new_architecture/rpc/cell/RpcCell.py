@@ -11,6 +11,7 @@ from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKey import WorkbookKe
 from com.qxdzbc.p6.new_architecture.common.RpcUtils import RpcUtils
 from com.qxdzbc.p6.new_architecture.rpc.StubProvider import RpcStubProvider
 from com.qxdzbc.p6.new_architecture.rpc.cell.msg.CopyCellRequest import CopyCellRequest
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellId import CellId
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellValue import CellValue
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.StrMsg import StrMsg
 from com.qxdzbc.p6.proto.rpc.cell.service.CellService_pb2_grpc import CellServiceStub
@@ -56,6 +57,11 @@ class RpcCell(Cell):
 
         return self._onCellSvOk(f)
 
+    @formula.setter
+    def formula(self, newFormula):
+        """ set new formula, script will also be updated """
+        raise NotImplementedError()
+
     @property
     def bareValue(self):
         cv: CellValue = self.cellValue
@@ -65,21 +71,18 @@ class RpcCell(Cell):
     def value(self):
         return self.bareValue
 
+    @value.setter
+    def value(self, newValue):
+        """ set the value of this cell """
+        raise NotImplementedError()
+
     def isEmpty(self):
         return self.cellValue.isEmpty()
 
-    def reRunRs(self) -> Result[None, ErrorReport]:
-        def f():
-            oProto = self._cellSv.reRun(request = self.id.toProtoObj())
-            o = SingleSignalResponse.fromProto(oProto)
-            return o.toRs()
-
-        return self._onCellSvOkRs(f)
-
-    def copyFromRs(self, anotherCell: "Cell") -> Result[None, ErrorReport]:
+    def copyFromRs(self, anotherCell: CellId) -> Result[None, ErrorReport]:
         def f():
             request = CopyCellRequest(
-                fromCell = anotherCell.id,
+                fromCell = anotherCell,
                 toCell = self.id
             )
             oProto = self._cellSv.copyFrom(request = request.toProtoObj())
@@ -100,6 +103,10 @@ class RpcCell(Cell):
             return o
 
         return self._onCellSvOk(f)
+
+    @content.setter
+    def content(self, newContent: CellContent):
+        raise NotImplementedError()
 
     @property
     def address(self) -> CellAddress:

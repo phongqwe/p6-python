@@ -28,6 +28,7 @@ from py4j.java_collections import SetConverter, MapConverter, ListConverter
 
 
 from com.qxdzbc.p6.new_architecture.rpc.StubProvider import RpcStubProvider
+from com.qxdzbc.p6.new_architecture.rpc.cell.RpcCell import RpcCell
 from com.qxdzbc.p6.new_architecture.workbook.RpcWorkbook import RpcWorkbook
 from com.qxdzbc.p6.new_architecture.worksheet.RpcWorksheet import RpcWorksheet
 from com.qxdzbc.p6.proto.DocProtos_pb2 import CellIdProto
@@ -65,7 +66,7 @@ class Bench(unittest.TestCase):
         )
         wb0:RpcWorkbook=app.getWorkbook(0)
         ws1:RpcWorksheet = wb0.getWorksheet(0)
-        ws1.deleteCell(CellAddresses.fromLabel("B2"))
-        # print(ws1.size)
-        for c in ws1.cells:
-            print(c.address.label)
+
+        # cell = ws1.cell("A1")
+        # cell.copyFrom(ws1.cell("B2").id)
+        print(ws1.cell("B2").value)

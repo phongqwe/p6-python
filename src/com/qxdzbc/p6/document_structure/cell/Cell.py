@@ -129,19 +129,11 @@ class Cell(CanCheckEmpty,ABC):
     def isEmpty(self):
         raise NotImplementedError()
 
-    def reRun(self):
-        """re-run this cell"""
-        Results.extractOrRaise(self.reRunRs())
-
-    def reRunRs(self)->Result[None,ErrorReport]:
-        """re-run this cell"""
-        raise NotImplementedError()
-
-    def copyFromRs(self, anotherCell: "Cell")->Result[None,ErrorReport]:
+    def copyFromRs(self, anotherCell: CellId)->Result[None,ErrorReport]:
         """copy everything (data, format, etc.) from another cell to this cell"""
         raise NotImplementedError()
 
-    def copyFrom(self, anotherCell: "Cell"):
+    def copyFrom(self, anotherCell: CellId):
         """copy everything (data, format, etc.) from another cell to this cell"""
         Results.extractOrRaise(self.copyFromRs(anotherCell))
 

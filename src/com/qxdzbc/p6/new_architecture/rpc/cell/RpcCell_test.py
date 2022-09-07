@@ -9,6 +9,7 @@ from com.qxdzbc.p6.document_structure.util.for_test import TestUtils
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.qxdzbc.p6.new_architecture.rpc.cell.RpcCell import RpcCell
 from com.qxdzbc.p6.new_architecture.rpc.cell.msg.CopyCellRequest import CopyCellRequest
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellId import CellId
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellValue import CellValue
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.StrMsg import StrMsg
 
@@ -59,28 +60,15 @@ class RpcCell_test(unittest.TestCase):
         self.mockCellService.getCellContent.assert_called_with(request = self.cell.id.toProtoObj())
         self.assertEqual(v, o)
 
-    def test_reRunRs_reRun(self):
-        v = SingleSignalResponse()
-        self.mockCellService.reRun = MagicMock(return_value = v.toProtoObj())
-        o = self.cell.reRunRs()
-        self.assertTrue(o.isOk())
-
-        v = SingleSignalResponse(errorReport = TestUtils.TestErrorReport)
-        self.mockCellService.reRun = MagicMock(return_value = v.toProtoObj())
-        o = self.cell.reRunRs()
-        self.assertTrue(o.isErr())
-
-        with self.assertRaises(Exception):
-            self.cell.reRun()
     def test_copyFrom(self):
-        anotherCell = RpcCell(CellAddresses.fromLabel("Q2"),WorkbookKeys.fromNameAndPath("wb2"),"ws33",self.mockSP)
+        anotherCell = CellId(CellAddresses.fromLabel("Q2"),WorkbookKeys.fromNameAndPath("wb2"),"ws33",)
         v = SingleSignalResponse()
         self.mockCellService.copyFrom = MagicMock(return_value = v.toProtoObj())
         o = self.cell.copyFromRs(anotherCell)
         self.assertTrue(o.isOk())
         self.mockCellService.copyFrom.assert_called_with(
             request=CopyCellRequest(
-                fromCell = anotherCell.id,
+                fromCell = anotherCell,
                 toCell = self.cell.id
             ).toProtoObj()
         )
