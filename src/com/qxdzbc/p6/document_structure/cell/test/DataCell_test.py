@@ -1,12 +1,13 @@
 import unittest
 
 from com.qxdzbc.p6.document_structure.app.errors.AppErrors import AppErrors
-from com.qxdzbc.p6.document_structure.cell.CellContentImp import CellContentImp
+from com.qxdzbc.p6.document_structure.cell.CellContent import CellContent
 from com.qxdzbc.p6.document_structure.cell.DataCell import DataCell
 from com.qxdzbc.p6.document_structure.cell.EventCell import EventCell
 from com.qxdzbc.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.qxdzbc.p6.document_structure.cell.address.CellIndex import CellIndex
 from com.qxdzbc.p6.document_structure.workbook.WorkbookImp import WorkbookImp
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellValue import CellValue
 from com.qxdzbc.p6.proto.DocProtos_pb2 import CellProto
 
 
@@ -45,12 +46,11 @@ class DataCellTest(unittest.TestCase):
         self.assertEqual(c1.value, ct1.value)
 
     def test_content_setter(self):
-        ct1 = CellContentImp( None, "formula", "script")
+        ct1 = CellContent("formula",CellValue.empty())
         c1 = DataCell(CellIndex(1,2),"z","q","x")
         c1.content = ct1
         self.assertEqual(ct1.value, c1.bareValue)
         self.assertEqual(ct1.formula, c1.bareFormula)
-        self.assertEqual(ct1.script, c1.bareScript)
 
 
     def test_toProtoObj1(self):

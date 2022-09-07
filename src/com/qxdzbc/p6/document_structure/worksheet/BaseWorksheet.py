@@ -19,22 +19,9 @@ from com.qxdzbc.p6.document_structure.worksheet.Worksheet import Worksheet
 
 class BaseWorksheet(Worksheet,ABC):
 
-
     def paste(self, cell: CellAddress):
         rs = self.pasteRs(cell)
         rs.raiseIfErr()
-
-    # @property
-    # def usedRangeAddress(self) -> RangeAddress | None:
-    #     if self.minUsedCol and self.maxUsedCol and self.minUsedRow and self.maxUsedRow:
-    #         return RangeAddresses.fromColRow(
-    #             minCol = self.minUsedCol,
-    #             maxCol = self.maxUsedCol,
-    #             minRow = self.minUsedRow,
-    #             maxRow = self.maxUsedRow,
-    #         )
-    #     else:
-    #         return None
 
     @property
     def usedRange(self) -> Range | None:
@@ -46,10 +33,6 @@ class BaseWorksheet(Worksheet,ABC):
     def pasteDataFrame(self, anchorCell: CellAddress,dataFrame):
         rs = self.pasteDataFrameRs(anchorCell,dataFrame)
         Results.extractOrRaise(rs)
-
-    def pasteProto(self, cell: CellAddress, paster: Paster | None = None):
-        rs = self.pasteProtoRs(cell, paster)
-        rs.raiseIfErr()
 
     def compareContent(self, ws2: Worksheet) -> bool:
         """compare all cell of this sheet with another. Very inefficient, use with care"""
@@ -89,9 +72,6 @@ class BaseWorksheet(Worksheet,ABC):
         rt.cell.extend(cells)
         return rt
 
-    def removeFromWorkbook(self):
-        self.workbook = None
-
 
     def reportJsonStr(self) -> str:
         return json.dumps({
@@ -103,41 +83,12 @@ class BaseWorksheet(Worksheet,ABC):
         if rs.isErr():
             raise rs.err.toException()
 
-    # def cell(self, address: Union[str, CellAddress, Tuple[int, int]]) -> Cell:
-    #     pass
-    #
-    # def range(self, rangeAddress: Union[str, RangeAddress, Tuple[CellAddress, CellAddress]]) -> Range:
-    #     pass
-
     def deleteCell(self, address: CellAddress | Tuple[int, int] | str):
         return self.deleteCellRs(address)
-
-    # def deleteCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
-    #     pass
-
-    # def getOrMakeCell(self, address: CellAddress) -> Cell:
-    #     pass
-    #
-    # def deleteRangeRs(self, rangeAddress: RangeAddress) -> Result[None, ErrorReport]:
-    #     pass
 
     def deleteRange(self, rangeAddress: RangeAddress):
         return super().deleteRange(rangeAddress)
 
-    # def hasCellAt(self, address: CellAddress) -> bool:
-    #     pass
-    #
-    # def hasCellAtIndex(self, col: int, row: int) -> bool:
-    #     pass
-    #
-    # def getCell(self, address: CellAddress) -> Optional[Cell]:
-    #     pass
-    #
-    # def containsAddress(self, address: CellAddress) -> bool:
-    #     pass
-    #
-    # def containsAddressIndex(self, col: int, row: int) -> bool:
-    #     pass
 
     def isSameRangeAddress(self, other: "CellContainer"):
         return super().isSameRangeAddress(other)
@@ -150,11 +101,3 @@ class BaseWorksheet(Worksheet,ABC):
 
     def isNotEmpty(self) -> bool:
         return super().isNotEmpty()
-
-    # def addCell(self, cell: Cell):
-    #     pass
-
-
-
-
-

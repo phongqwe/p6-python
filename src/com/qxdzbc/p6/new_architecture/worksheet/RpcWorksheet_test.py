@@ -15,6 +15,7 @@ from com.qxdzbc.p6.new_architecture.worksheet.msg.CellCountResponse import CellC
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.BoolMsg import  BoolMsg
 from com.qxdzbc.p6.new_architecture.worksheet.msg.GetAllCellResponse import GetAllCellResponse
 from com.qxdzbc.p6.new_architecture.worksheet.RpcWorksheet import RpcWorksheet
+from com.qxdzbc.p6.new_architecture.worksheet.msg.GetUsedRangeResponse import GetUsedRangeResponse
 
 
 class RpcWorksheet_test(unittest.TestCase):
@@ -74,7 +75,7 @@ class RpcWorksheet_test(unittest.TestCase):
 
     def test_usedRange(self):
         r = RangeAddresses.fromLabel("A1:B9")
-        self.mockWsService.getUsedRangeAddress = MagicMock(return_value = r.toProtoObj())
+        self.mockWsService.getUsedRangeAddress = MagicMock(return_value = GetUsedRangeResponse(rangeAddress = r).toProtoObj())
         usedRangeAddress = self.ws.usedRangeAddress
         self.assertEqual(r, usedRangeAddress)
         self.assertEqual(usedRangeAddress.firstRowIndex, self.ws.minUsedRow)

@@ -3,6 +3,12 @@ from __future__ import annotations
 from abc import ABC
 from typing import TYPE_CHECKING, Optional
 
+from com.qxdzbc.p6.document_structure.util.CanCheckEmpty import CanCheckEmpty
+from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
+from com.qxdzbc.p6.document_structure.util.result.Result import Result
+from com.qxdzbc.p6.document_structure.util.result.Results import Results
+from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellId import CellId
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellValue import CellValue
 from com.qxdzbc.p6.proto.DocProtos_pb2 import CellProto
 
@@ -17,11 +23,14 @@ if TYPE_CHECKING:
     from com.qxdzbc.p6.document_structure.worksheet.Worksheet import Worksheet
     from com.qxdzbc.p6.document_structure.workbook.WorkBook import Workbook
 
-class Cell(ToJson, ToProto[CellProto], ABC):
+class Cell(CanCheckEmpty,ABC):
     """
     Cell interface
     """
 
+    @property
+    def id(self) -> CellId:
+        return CellId(self.address, self.wbKey, self.wsName)
     @property
     def cellValue(self)->CellValue:
         raise NotImplementedError()
@@ -29,38 +38,22 @@ class Cell(ToJson, ToProto[CellProto], ABC):
     def __eq__(self, other):
         if isinstance(other, Cell):
             sameValue = self.value == other.value
-            sameScript = self.script == other.script or (not (self.script and other.script))
             sameAddress = self.address == other.address
-            return sameValue and sameScript and sameAddress
+            return sameValue and sameAddress
         else:
             return False
-
-    @property
-    def sourceValue(self)->str:
-        """:return the source of the value of this cell. That is either formula (if this is a formulaic cell) or value if this is a value cell"""
-        raise NotImplementedError()
 
     @property
     def displayValue(self)->str:
         raise NotImplementedError()
 
     @property
-    def worksheet(self) -> Optional[Worksheet]:
+    def wsName(self) -> Optional[str]:
         raise NotImplementedError()
-
-    @worksheet.setter
-    def worksheet(self, newWorksheet: Optional[Worksheet]):
-        raise NotImplementedError()
-
-    def removeFromWorksheet(self):
-        self.worksheet = None
 
     @property
-    def workbook(self)->Optional[Workbook]:
-        if self.worksheet is not None:
-            return self.worksheet.workbook
-        else:
-            return None
+    def wbKey(self)->Optional[WorkbookKey]:
+        raise NotImplementedError()
 
     @property
     def formula(self) -> str:
@@ -99,20 +92,6 @@ class Cell(ToJson, ToProto[CellProto], ABC):
                 return str(v)
 
     @property
-    def bareScript(self)->str:
-        """
-        :return: the bare script, may not be consistent with the result of running the formula of this cell.
-        """
-        raise NotImplementedError()
-
-    @property
-    def bareFormula(self)->str:
-        """
-        :return: the bare formula, may not be consistent with the result of running the script of this cell.
-        """
-        raise NotImplementedError()
-
-    @property
     def bareValue(self):
         """
         :return: the bare value, may not be consistent with the result of running the script of this cell.
@@ -127,18 +106,6 @@ class Cell(ToJson, ToProto[CellProto], ABC):
     @value.setter
     def value(self, newValue):
         """ set the value of this cell """
-        raise NotImplementedError()
-
-    @property
-    def script(self) -> str:
-        """ return the script hold by this cell. Script is always Python. The script is guranteed to be always updated"""
-        raise NotImplementedError()
-
-    @script.setter
-    def script(self, newScript: str):
-        """ set the script hold by this cell. Script is always Python.
-            @deprecated: don't use
-        """
         raise NotImplementedError()
 
     @property
@@ -159,46 +126,24 @@ class Cell(ToJson, ToProto[CellProto], ABC):
         else:
             return self.value == anotherCellOrValue
 
-    def runScript(self, globalScope = None, localScope = None):
-        """run the script """
-        raise NotImplementedError()
-
-    def setScriptAndRun(self, newScript, globalScope = None, localScope = None):
-        """set new script for this cell and execute it immediately"""
-        raise NotImplementedError()
-
-    def hasScript(self) -> bool:
-        """:return True if this cell contains any script"""
-        raise NotImplementedError()
-
-    def toJson(self) -> CellJson:
-        raise NotImplementedError()
-
-    def clearScriptResult(self):
-        """delete script result if this Cell houses any script"""
-        raise NotImplementedError()
-
     def isEmpty(self):
-        if self.hasScript():
-            return True
-        else:
-            return self.value is not None
+        raise NotImplementedError()
 
-    def reRun(self, globalScope = None, localScope = None, refreshScript:bool =False):
-        if refreshScript:
-            self.refreshScript()
-        self.clearScriptResult()
-        self.runScript(globalScope, localScope)
+    def reRun(self):
+        """re-run this cell"""
+        Results.extractOrRaise(self.reRunRs())
 
-    def refreshScript(self):
-        z = self.script
+    def reRunRs(self)->Result[None,ErrorReport]:
+        """re-run this cell"""
+        raise NotImplementedError()
 
-    def copyFrom(self, anotherCell: "Cell"):
+    def copyFromRs(self, anotherCell: "Cell")->Result[None,ErrorReport]:
         """copy everything (data, format, etc.) from another cell to this cell"""
         raise NotImplementedError()
 
-    def toJsonDict(self) -> dict:
-        return self.toJson().toJsonDict()
+    def copyFrom(self, anotherCell: "Cell"):
+        """copy everything (data, format, etc.) from another cell to this cell"""
+        Results.extractOrRaise(self.copyFromRs(anotherCell))
 
     @property
     def rootCell(self)->'Cell':

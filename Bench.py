@@ -17,7 +17,6 @@ from com.qxdzbc.p6.document_structure.communication.event.data_structure.range_e
 from pandas import DataFrame, read_clipboard
 import pyperclip
 
-from com.qxdzbc.p6.document_structure.cell.CellContentImp import CellContentImp
 from com.qxdzbc.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.qxdzbc.p6.document_structure.range.RangeImp import RangeImp
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys

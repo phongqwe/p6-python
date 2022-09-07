@@ -3,7 +3,6 @@ from typing import Any, Callable, Optional
 from com.qxdzbc.p6.document_structure.app.GlobalScope import getGlobals
 from com.qxdzbc.p6.document_structure.cell.Cell import Cell
 from com.qxdzbc.p6.document_structure.cell.CellContent import CellContent
-from com.qxdzbc.p6.document_structure.cell.CellContentImp import CellContentImp
 from com.qxdzbc.p6.document_structure.cell.CellJson import CellJson
 from com.qxdzbc.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.qxdzbc.p6.document_structure.cell.util.CellUtils import convertExceptionToStr, CellUtils
@@ -29,9 +28,9 @@ class DataCell(Cell):
         if isinstance(cell.bareValue, bool):
             cellValue.bool = cell.bareValue
         if isinstance(cell.bareValue, str):
-            cellValue.str = cell.bareValue
+            cellValue.vStr = cell.bareValue
         if isinstance(cell.bareValue, int) or isinstance(cell.bareValue, float):
-            cellValue.num = cell.bareValue
+            cellValue.vNum = cell.bareValue
         return cellValue
 
 
@@ -51,17 +50,15 @@ class DataCell(Cell):
         v = self.value
         if self.formula or self.script:
             v = None
-        return CellContentImp(
+        return CellContent(
             value = v,
             formula = self.formula,
-            script = self.script
         )
 
     @content.setter
     def content(self, newContent: CellContent):
         self.__value = newContent.value
         self.__formula = newContent.formula
-        self.__script = newContent.script
 
     textualType = [int, float, str, bool]
 
@@ -141,9 +138,9 @@ class DataCell(Cell):
                 if isinstance(self.__value, bool):
                     cellValueProto.bool = self.__value
                 if isinstance(self.__value, str):
-                    cellValueProto.str = self.__value
+                    cellValueProto.vStr = self.__value
                 if isinstance(self.__value, int) or isinstance(self.__value, float):
-                    cellValueProto.num = self.__value
+                    cellValueProto.vNum = self.__value
 
                 cellProto.value.CopyFrom(cellValueProto)
 

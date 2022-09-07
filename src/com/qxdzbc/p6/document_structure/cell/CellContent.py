@@ -1,25 +1,30 @@
 from abc import ABC
+from dataclasses import dataclass
 from typing import Any, Optional
 
+from com.qxdzbc.p6.document_structure.util import Util
+from com.qxdzbc.p6.document_structure.util.ToProto import ToProto, P
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellValue import CellValue
+from com.qxdzbc.p6.proto.CellProtos_pb2 import CellContentProto
 
-class CellContent(ABC):
-    @property
-    def value(self) -> Any | None:
-        raise NotImplementedError()
 
-    @property
-    def formula(self) -> Optional[str]:
-        raise NotImplementedError()
+@dataclass
+class CellContent(ToProto[CellContentProto]):
 
-    @property
-    def script(self) -> Optional[str]:
-        raise NotImplementedError()
+    formula: Optional[str]
+    value: CellValue
 
-    def __eq__(self, other):
-        if isinstance(other,CellContent):
-            c1 = self.script == other.script
-            c2 = self.value == other.value
-            c3 = self.formula == other.formula
-            return c1 and c2 and c3
-        else:
-            return False
+    @staticmethod
+    def fromProto(proto:CellContentProto)->'CellContent':
+        return CellContent(
+            formula = proto.formula,
+            value = CellValue.fromProto(proto.cellValue)
+        )
+
+    def toProtoObj(self) -> CellContentProto:
+        cv = self.value.toProtoObj()
+        return CellContentProto(
+            cellValue = cv,
+            formula = self.formula,
+        )
+

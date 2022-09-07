@@ -4,6 +4,7 @@ from typing import List, Optional, Any
 def typeCheck(target, targetName: str, expectedType):
     """
     check if a target variable belong to a type
+    :param targetName: name of target variable
     :param target : target variable
     :param expectedType : type to check against
     :raise ValueError if target is not an instance of expectedType

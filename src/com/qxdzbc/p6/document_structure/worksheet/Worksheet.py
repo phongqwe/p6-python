@@ -88,9 +88,6 @@ class Worksheet(UserFriendlyCellContainer,
     def toProtoObj(self) -> WorksheetProto:
         raise NotImplementedError()
 
-    def removeFromWorkbook(self):
-        raise NotImplementedError()
-
     @property
     def name(self) -> str:
         raise NotImplementedError()
