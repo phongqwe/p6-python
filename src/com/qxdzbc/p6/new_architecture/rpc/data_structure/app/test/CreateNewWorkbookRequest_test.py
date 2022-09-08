@@ -2,6 +2,7 @@ import unittest
 
 from com.qxdzbc.p6.new_architecture.data_structure.app_event import \
     CreateNewWorkbookRequest
+
 from com.qxdzbc.p6.proto.AppEventProtos_pb2 import CreateNewWorkbookRequestProto
 
 

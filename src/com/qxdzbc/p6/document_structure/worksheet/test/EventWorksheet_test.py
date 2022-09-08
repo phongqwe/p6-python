@@ -2,15 +2,16 @@ import unittest
 from unittest.mock import MagicMock
 
 from com.qxdzbc.p6.document_structure.cell.DataCell import DataCell
-from com.qxdzbc.p6.document_structure.cell.address.CellAddresses import CellAddresses
-from com.qxdzbc.p6.document_structure.cell.address.CellIndex import CellIndex
-from com.qxdzbc.p6.new_architecture.data_structure import \
-    DeleteCellResponse
-from com.qxdzbc.p6.new_architecture.communication import EventData
 from com.qxdzbc.p6.document_structure.formula_translator.FormulaTranslators import FormulaTranslators
 from com.qxdzbc.p6.document_structure.workbook.WorkbookImp import WorkbookImp
 from com.qxdzbc.p6.document_structure.worksheet.EventWorksheet import EventWorksheet
 from com.qxdzbc.p6.document_structure.worksheet.WorksheetImp import WorksheetImp
+from com.qxdzbc.p6.new_architecture.data_structure import \
+    DeleteCellResponse
+
+from com.qxdzbc.p6.document_structure.cell.address.CellAddresses import CellAddresses
+from com.qxdzbc.p6.document_structure.cell.address.CellIndex import CellIndex
+from com.qxdzbc.p6.new_architecture.communication import EventData
 
 
 class EventWorksheet_test(unittest.TestCase):

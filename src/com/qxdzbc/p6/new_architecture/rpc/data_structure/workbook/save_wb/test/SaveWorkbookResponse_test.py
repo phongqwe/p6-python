@@ -1,11 +1,11 @@
 import unittest
 from pathlib import Path
 
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.save_wb.SaveWorkbookResponse import \
-    SaveWorkbookResponse
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.document_structure.workbook.WorkbookErrors import WorkbookErrors
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.save_wb.SaveWorkbookResponse import \
+    SaveWorkbookResponse
 
 
 class SaveWorkbookResponse_test(unittest.TestCase):

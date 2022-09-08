@@ -3,28 +3,21 @@ from abc import ABC
 from pathlib import Path
 from typing import Optional, Union
 
-from com.qxdzbc.p6.document_structure.script import SimpleScriptEntry
 from com.qxdzbc.p6.document_structure.script.ScriptContainer import ScriptContainer
-from com.qxdzbc.p6.document_structure.script.ScriptContainer import ScriptContainer
-from com.qxdzbc.p6.document_structure.script.ScriptEntry import ScriptEntry
-from com.qxdzbc.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
-from com.qxdzbc.p6.document_structure.util import Util
-
-from com.qxdzbc.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from com.qxdzbc.p6.document_structure.util.CanCheckEmpty import CanCheckEmpty
 from com.qxdzbc.p6.document_structure.util.ToJson import ToJson
 from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.document_structure.util.result.Result import Result
 from com.qxdzbc.p6.document_structure.util.result.Results import Results
-from com.qxdzbc.p6.document_structure.workbook.WorkbookJson import WorkbookJson
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.document_structure.worksheet.Worksheet import Worksheet
+from com.qxdzbc.p6.document_structure.script.ScriptEntry import ScriptEntry
+from com.qxdzbc.p6.document_structure.script.SimpleScriptEntry import SimpleScriptEntry
 from com.qxdzbc.p6.proto.DocProtos_pb2 import WorkbookProto
 
 
 class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
-
 
     def addScript(self, name: str, script: str):
         rs = self.addScriptRs(name, script)
@@ -111,9 +104,6 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
             scriptProtos.append(script.toProtoObj())
         rt.scripts.extend(scriptProtos)
         return rt
-
-    def getTranslator(self, sheetName: str) -> FormulaTranslator:
-        raise NotImplementedError()
 
     def haveSheet(self, sheetName: str) -> bool:
         return self.getWorksheetOrNone(sheetName) is not None
@@ -283,15 +273,6 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
 
     def addWorksheetRs(self, ws: Worksheet) -> Result[None, ErrorReport]:
         raise NotImplementedError()
-
-    def toJson(self) -> WorkbookJson:
-        jsons = []
-        for sheet in self.worksheets:
-            jsons.append(sheet.toJson())
-        pathJson = None
-        if self.workbookKey.filePath is not None:
-            pathJson = str(self.workbookKey.filePath)
-        return WorkbookJson(self.name, pathJson, jsons)
 
     def summary(self) -> str:
         """return a summary of this workbook"""

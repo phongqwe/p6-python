@@ -1,9 +1,7 @@
-from abc import ABC
 from dataclasses import dataclass
-from typing import Any, Optional
+from typing import Optional
 
-from com.qxdzbc.p6.document_structure.util import Util
-from com.qxdzbc.p6.document_structure.util.ToProto import ToProto, P
+from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellValue import CellValue
 from com.qxdzbc.p6.proto.CellProtos_pb2 import CellContentProto
 

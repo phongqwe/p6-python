@@ -1,11 +1,12 @@
 import unittest
 from unittest.mock import MagicMock
 
-from com.qxdzbc.p6.document_structure.cell.Cell import Cell
 from com.qxdzbc.p6.document_structure.cell.DataCell import DataCell
 from com.qxdzbc.p6.document_structure.cell.WriteBackCell import WriteBackCell
-from com.qxdzbc.p6.document_structure.cell.address.CellIndex import CellIndex
 from com.qxdzbc.p6.document_structure.workbook.WorkbookImp import WorkbookImp
+
+from com.qxdzbc.p6.document_structure.cell.Cell import Cell
+from com.qxdzbc.p6.document_structure.cell.address.CellIndex import CellIndex
 
 
 class WriteBackCellTest(unittest.TestCase):

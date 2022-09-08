@@ -1,9 +1,10 @@
 from abc import ABC
 from typing import Optional
 
+from com.qxdzbc.p6.document_structure.cell.CellJson import CellJson
+
 from com.qxdzbc.p6.document_structure.cell.Cell import Cell
 from com.qxdzbc.p6.document_structure.cell.CellContent import CellContent
-from com.qxdzbc.p6.document_structure.cell.CellJson import CellJson
 from com.qxdzbc.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.qxdzbc.p6.document_structure.worksheet.Worksheet import Worksheet
 from com.qxdzbc.p6.proto.DocProtos_pb2 import CellProto

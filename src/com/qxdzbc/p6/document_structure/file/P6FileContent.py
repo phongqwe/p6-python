@@ -3,7 +3,6 @@ from pathlib import Path
 from typing import Optional
 
 from com.qxdzbc.p6.document_structure.file.P6FileMetaInfo import P6FileMetaInfo
-from com.qxdzbc.p6.document_structure.script.SimpleScriptEntry import SimpleScriptEntry
 from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
 from com.qxdzbc.p6.document_structure.workbook.WorkBook import Workbook
 from com.qxdzbc.p6.document_structure.workbook.Workbooks import Workbooks

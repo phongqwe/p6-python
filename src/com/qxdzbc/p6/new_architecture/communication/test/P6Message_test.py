@@ -1,8 +1,8 @@
 import unittest
 
 from com.qxdzbc.p6.new_architecture.communication import P6Events
-from com.qxdzbc.p6.new_architecture.communication.msg.P6Message import P6Message
 from com.qxdzbc.p6.new_architecture.communication.msg import P6MessageHeader
+from com.qxdzbc.p6.new_architecture.communication.msg.P6Message import P6Message
 from com.qxdzbc.p6.proto.P6MsgProtos_pb2 import P6MessageProto
 
 

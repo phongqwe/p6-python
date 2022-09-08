@@ -1,8 +1,8 @@
 import unittest
 
+from com.qxdzbc.p6.document_structure.util.CommonError import CommonErrors
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.common.ErrorIndicator import \
     ErrorIndicator
-from com.qxdzbc.p6.document_structure.util.CommonError import CommonErrors
 from com.qxdzbc.p6.proto.CommonProtos_pb2 import ErrorIndicatorProto
 
 

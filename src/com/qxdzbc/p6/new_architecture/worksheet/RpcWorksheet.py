@@ -3,9 +3,6 @@ from typing import Optional, Union, Tuple
 from com.qxdzbc.p6.document_structure.cell.Cell import Cell
 from com.qxdzbc.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.qxdzbc.p6.document_structure.cell.address.CellAddresses import CellAddresses
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.SingleSignalResponse import \
-    SingleSignalResponse
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.range_event import RangeId
 from com.qxdzbc.p6.document_structure.range.Range import Range
 from com.qxdzbc.p6.document_structure.range.address.RangeAddress import RangeAddress
 from com.qxdzbc.p6.document_structure.range.address.RangeAddresses import RangeAddresses
@@ -17,16 +14,19 @@ from com.qxdzbc.p6.document_structure.worksheet.Worksheet import Worksheet
 from com.qxdzbc.p6.new_architecture.common.RpcUtils import RpcUtils
 from com.qxdzbc.p6.new_architecture.rpc.StubProvider import RpcStubProvider
 from com.qxdzbc.p6.new_architecture.rpc.cell.RpcCell import RpcCell
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.BoolMsg import \
+    BoolMsg
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.Cell2Pr import Cell2Pr
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellId import CellId
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.SingleSignalResponse import \
+    SingleSignalResponse
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.WorksheetId import WorksheetId
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.range import RangeId
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.RenameWorksheetRequest import RenameWorksheetRequest
+from com.qxdzbc.p6.new_architecture.rpc.range.RpcRange import RpcRange
 from com.qxdzbc.p6.new_architecture.worksheet.msg.CellCountResponse import CellCountResponse
 from com.qxdzbc.p6.new_architecture.worksheet.msg.CheckContainAddressRequest import CheckContainAddressRequest
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.BoolMsg import \
-     BoolMsg
 from com.qxdzbc.p6.new_architecture.worksheet.msg.GetAllCellResponse import GetAllCellResponse
-from com.qxdzbc.p6.new_architecture.rpc.range.RpcRange import RpcRange
 from com.qxdzbc.p6.new_architecture.worksheet.msg.GetUsedRangeResponse import GetUsedRangeResponse
 from com.qxdzbc.p6.proto.CommonProtos_pb2 import SingleSignalResponseProto
 from com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService_pb2_grpc import WorkbookServiceStub
@@ -159,7 +159,7 @@ class RpcWorksheet(BaseWorksheet):
             o = GetAllCellResponse.fromProto(oProto)
             rt = []
             for c in o.cellAddressList:
-                rt.append(RpcCell(c, self._wbk, self._name))
+                rt.append(RpcCell(c, self._wbk, self._name,self._stubProvider))
             return rt
 
         return self._onWsSvOk(f)

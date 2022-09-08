@@ -2,8 +2,8 @@ import uuid
 from enum import Enum
 from typing import Any
 
-from com.qxdzbc.p6.new_architecture.communication.msg.P6MessageHeader import P6MessageHeader
 from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
+from com.qxdzbc.p6.new_architecture.communication.msg.P6MessageHeader import P6MessageHeader
 from com.qxdzbc.p6.proto.P6MsgProtos_pb2 import P6ResponseProto
 
 

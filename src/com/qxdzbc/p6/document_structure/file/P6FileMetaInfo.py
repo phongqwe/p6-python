@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
 from com.qxdzbc.p6.proto.P6FileProtos_pb2 import P6FileMetaInfoProto
 
+
 @dataclass
 class P6FileMetaInfo(ToProto[P6FileMetaInfoProto]):
     date:float

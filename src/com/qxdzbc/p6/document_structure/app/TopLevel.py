@@ -1,8 +1,6 @@
 from typing import Optional, Union, Tuple
 
 from com.qxdzbc.p6.document_structure.app import App
-from com.qxdzbc.p6.document_structure.app.AppImp import AppImp
-from com.qxdzbc.p6.document_structure.app.EventApp import EventApp
 from com.qxdzbc.p6.document_structure.app.GlobalScope import getGlobals
 from com.qxdzbc.p6.document_structure.app.errors.AppErrors import AppErrors
 from com.qxdzbc.p6.document_structure.cell.Cell import Cell

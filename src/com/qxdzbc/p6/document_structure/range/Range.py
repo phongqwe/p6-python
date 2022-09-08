@@ -1,24 +1,23 @@
 from abc import ABC
 from typing import Any, Callable, TYPE_CHECKING, Optional
 
+
 from com.qxdzbc.p6.document_structure.cell.Cell import Cell
 from com.qxdzbc.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.qxdzbc.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.qxdzbc.p6.document_structure.cell_container.MutableCellContainer import MutableCellContainer
-from com.qxdzbc.p6.document_structure.cell_container.UserFriendlyCellContainer import UserFriendlyCellContainer
-
 from com.qxdzbc.p6.document_structure.range.address.RangeAddress import RangeAddress
 from com.qxdzbc.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.document_structure.util.result.Result import Result
+from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 
 if TYPE_CHECKING:
     from com.qxdzbc.p6.document_structure.worksheet.Worksheet import Worksheet
-    from com.qxdzbc.p6.document_structure.copy_paste.copier.Copier import Copier
 
 
 
-class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
+class Range( MutableCellContainer, ABC):
     """ a sub container derived from a bigger cell container """
     @property
     def maxUsedCol(self) -> int | None:
@@ -108,7 +107,7 @@ class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
             return []
 
     def toRangeCopy(self):
-        from com.qxdzbc.p6.new_architecture.rpc.data_structure.range_event import \
+        from com.qxdzbc.p6.new_architecture.rpc.data_structure.range.RangeCopy import \
             RangeCopy
         copyObj = RangeCopy(
             rangeId = self.id,
@@ -116,46 +115,25 @@ class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
         )
         return copyObj
 
-    def copyValueDataFrame(self, copier: Optional['Copier'] = None):
+    def copySourceValueDataFrame(self):
         """convert this range into a full data array and copy that data frame into the clipboard"""
-        if copier is None:
-            from com.qxdzbc.p6.document_structure.copy_paste.copier.Copiers import Copiers
-            copier = Copiers.fullValueDataFrameCopier
-        copier.copyRangeToClipboard(self)
+        raise NotImplementedError()
 
-    def copyStrictValueDataFrame(self, copier: Optional['Copier'] = None):
-        if copier is None:
-            from com.qxdzbc.p6.document_structure.copy_paste.copier.Copiers import Copiers
-            copier = Copiers.strictValueDataFrameCopier
-        copier.copyRangeToClipboard(self)
-
-    def copySourceValueDataFrame(self, copier: Optional['Copier'] = None):
-        """convert this range into a full data array and copy that data frame into the clipboard"""
-        if copier is None:
-            from com.qxdzbc.p6.document_structure.copy_paste.copier.Copiers import Copiers
-            copier = Copiers.fullSourceDataFrameCopier
-        copier.copyRangeToClipboard(self)
-
-    def copyStrictSourceValueDataFrame(self,copier: Optional['Copier'] = None):
-        if copier is None:
-            from com.qxdzbc.p6.document_structure.copy_paste.copier.Copiers import Copiers
-            copier = Copiers.strictSourceDataFrameCopier
-        copier.copyRangeToClipboard(self)
+    def copyStrictSourceValueDataFrame(self):
+        raise NotImplementedError()
 
     def copyToClipboardAsProto(self) -> Result[None, ErrorReport]:
         """ convert this to RangeCopyProto proto bytes, then copy it to clipboard"""
-        from com.qxdzbc.p6.document_structure.copy_paste.copier.Copiers import Copiers
-        copier = Copiers.protoCopier
-        return copier.copyRangeToClipboard(self)
+        raise NotImplementedError()
 
     @property
     def id(self):
-        from com.qxdzbc.p6.new_architecture.rpc.data_structure.range_event import \
+        from com.qxdzbc.p6.new_architecture.rpc.data_structure.range.RangeId import \
             RangeId
         return RangeId(
             rangeAddress = self.rangeAddress,
-            workbookKey = self.worksheet.workbook.workbookKey,
-            worksheetName = self.worksheet.name
+            workbookKey = self.wbKey,
+            worksheetName = self.wsName
         )
 
     @property
@@ -183,7 +161,11 @@ class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
         raise NotImplementedError()
 
     @property
-    def worksheet(self) -> 'Worksheet':
+    def wsName(self)->str:
+        raise NotImplementedError()
+
+    @property
+    def wbKey(self)->WorkbookKey:
         raise NotImplementedError()
 
     def containsAddress(self, address: CellAddress) -> bool:
@@ -197,8 +179,9 @@ class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
     def __eq__(self, o: object) -> bool:
         if isinstance(o, Range):
             sameRangeAddress = self.isSameRangeAddress(o)
-            sameSourceContainer = self.worksheet == o.worksheet
-            return sameSourceContainer and sameRangeAddress
+            sameWs = self.wsName == o.wsName
+            sameWbk = self.wbKey == o.wbKey
+            return sameWs and sameRangeAddress and sameWbk
         else:
             return False
 

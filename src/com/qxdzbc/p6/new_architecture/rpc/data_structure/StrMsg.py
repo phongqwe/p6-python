@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 
-from com.qxdzbc.p6.document_structure.util.ToProto import ToProto, P
+from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
 from com.qxdzbc.p6.proto.CommonProtos_pb2 import StrMsgProto
+
 
 @dataclass
 class StrMsg(ToProto[StrMsgProto]):

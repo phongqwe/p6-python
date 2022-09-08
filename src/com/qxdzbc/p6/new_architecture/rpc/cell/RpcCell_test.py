@@ -3,14 +3,14 @@ from unittest.mock import MagicMock
 
 from com.qxdzbc.p6.document_structure.cell.CellContent import CellContent
 from com.qxdzbc.p6.document_structure.cell.address.CellAddresses import CellAddresses
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.SingleSignalResponse import \
-    SingleSignalResponse
 from com.qxdzbc.p6.document_structure.util.for_test import TestUtils
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.qxdzbc.p6.new_architecture.rpc.cell.RpcCell import RpcCell
 from com.qxdzbc.p6.new_architecture.rpc.cell.msg.CopyCellRequest import CopyCellRequest
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellId import CellId
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellValue import CellValue
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.SingleSignalResponse import \
+    SingleSignalResponse
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.StrMsg import StrMsg
 
 

@@ -4,9 +4,8 @@ from typing import Union, Optional
 from com.qxdzbc.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from com.qxdzbc.p6.document_structure.script import SimpleScriptEntry
 from com.qxdzbc.p6.document_structure.script.ScriptContainer import ScriptContainer
-from com.qxdzbc.p6.document_structure.script.ScriptContainer import ScriptContainer
 from com.qxdzbc.p6.document_structure.script.ScriptEntry import ScriptEntry
-from com.qxdzbc.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
+
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.document_structure.util.result.Result import Result
 from com.qxdzbc.p6.document_structure.workbook.WorkBook import Workbook

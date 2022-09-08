@@ -1,8 +1,8 @@
 from abc import ABC
 
+from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
 from com.qxdzbc.p6.new_architecture.communication.P6Messages import P6Messages
 from com.qxdzbc.p6.new_architecture.communication.response.P6Response import P6Response
-from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
 
 
 class ToP6Response(ToProto, ABC):

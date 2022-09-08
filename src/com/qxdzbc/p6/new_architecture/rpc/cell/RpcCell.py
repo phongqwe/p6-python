@@ -3,16 +3,17 @@ from typing import Optional
 from com.qxdzbc.p6.document_structure.cell.Cell import Cell
 from com.qxdzbc.p6.document_structure.cell.CellContent import CellContent
 from com.qxdzbc.p6.document_structure.cell.address.CellAddress import CellAddress
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.SingleSignalResponse import \
-    SingleSignalResponse
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.document_structure.util.result.Result import Result
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.new_architecture.common.RpcUtils import RpcUtils
+from com.qxdzbc.p6.new_architecture.di.RpcServiceContainer import RpcServiceContainer
 from com.qxdzbc.p6.new_architecture.rpc.StubProvider import RpcStubProvider
 from com.qxdzbc.p6.new_architecture.rpc.cell.msg.CopyCellRequest import CopyCellRequest
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellId import CellId
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellValue import CellValue
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.SingleSignalResponse import \
+    SingleSignalResponse
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.StrMsg import StrMsg
 from com.qxdzbc.p6.proto.rpc.cell.service.CellService_pb2_grpc import CellServiceStub
 
@@ -24,12 +25,26 @@ class RpcCell(Cell):
             cellAddress: CellAddress,
             wbKey: WorkbookKey,
             wsName: str,
-            stubProvider: RpcStubProvider,
+            stubProvider: RpcStubProvider = RpcServiceContainer.insecureRpcServiceProvider(),
     ):
         self._address = cellAddress
         self._wbk = wbKey
         self._wsName = wsName
         self._sp = stubProvider
+
+    def copyFromCellRs(self, anotherCell: Cell) -> Result[None, ErrorReport]:
+        return self.copyFrom(anotherCell.id)
+
+    @staticmethod
+    def fromCell(
+            cell:Cell,
+            stubProvider:RpcStubProvider = RpcServiceContainer.insecureRpcServiceProvider()):
+        return RpcCell(
+            cellAddress = cell.address,
+            wbKey = cell.wbKey,
+            wsName = cell.wsName,
+            stubProvider = stubProvider
+        )
 
     @property
     def displayValue(self) -> str:

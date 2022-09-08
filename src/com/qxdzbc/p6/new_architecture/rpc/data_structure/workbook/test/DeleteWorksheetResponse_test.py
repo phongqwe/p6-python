@@ -1,24 +1,11 @@
 import unittest
 
-from com.qxdzbc.p6.new_architecture.communication import P6EventTableImp
-from com.qxdzbc.p6.new_architecture.data_structure.workbook_event import \
-    DeleteWorksheetResponse
 from com.qxdzbc.p6.document_structure.workbook.WorkbookErrors import WorkbookErrors
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.DeleteWorksheetResponse import DeleteWorksheetResponse
 
 
 class DeleteWorksheetResponse_test(unittest.TestCase):
-
-    def test_toEventData(self):
-        o = DeleteWorksheetResponse(
-            workbookKey = WorkbookKeys.fromNameAndPath("WB",None),
-            targetWorksheetList = "Sheet1",
-            isError = False,
-            errorReport = WorkbookErrors.WorksheetAlreadyExistReport("Name")
-        )
-        edt = o.toEventData()
-        self.assertEqual(P6EventTableImp.P6EventTableImp.i().getEventForClazz(DeleteWorksheetResponse),edt.event)
-        self.assertEqual(o,edt.data)
 
     def test_toProto(self):
         """ obj is converted correctly to a proto obj"""

@@ -1,9 +1,10 @@
 from dataclasses import dataclass
 
-from com.qxdzbc.p6.document_structure.util.ToProto import ToProto, P
+from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellId import CellId
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellValue import CellValue
 from com.qxdzbc.p6.proto.DocProtos_pb2 import Cell2Proto
+
 
 @dataclass
 class Cell2Pr(ToProto[Cell2Proto]):

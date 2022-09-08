@@ -3,6 +3,9 @@ from __future__ import annotations
 from abc import ABC
 from typing import TYPE_CHECKING, Optional
 
+from com.qxdzbc.p6.document_structure.cell.CellContent import CellContent
+from com.qxdzbc.p6.document_structure.cell.address.CellAddress import CellAddress
+from com.qxdzbc.p6.document_structure.cell.util.CellUtils import CellUtils
 from com.qxdzbc.p6.document_structure.util.CanCheckEmpty import CanCheckEmpty
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.document_structure.util.result.Result import Result
@@ -10,18 +13,10 @@ from com.qxdzbc.p6.document_structure.util.result.Results import Results
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellId import CellId
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellValue import CellValue
-from com.qxdzbc.p6.proto.DocProtos_pb2 import CellProto
-
-from com.qxdzbc.p6.document_structure.cell.CellContent import CellContent
-from com.qxdzbc.p6.document_structure.cell.CellJson import CellJson
-from com.qxdzbc.p6.document_structure.cell.address.CellAddress import CellAddress
-from com.qxdzbc.p6.document_structure.cell.util.CellUtils import CellUtils
-from com.qxdzbc.p6.document_structure.util.ToJson import ToJson
-from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
 
 if TYPE_CHECKING:
-    from com.qxdzbc.p6.document_structure.worksheet.Worksheet import Worksheet
-    from com.qxdzbc.p6.document_structure.workbook.WorkBook import Workbook
+    pass
+
 
 class Cell(CanCheckEmpty,ABC):
     """
@@ -136,6 +131,14 @@ class Cell(CanCheckEmpty,ABC):
     def copyFrom(self, anotherCell: CellId):
         """copy everything (data, format, etc.) from another cell to this cell"""
         Results.extractOrRaise(self.copyFromRs(anotherCell))
+
+    def copyFromCellRs(self, anotherCell: Cell)->Result[None,ErrorReport]:
+        """copy everything (data, format, etc.) from another cell to this cell"""
+        raise NotImplementedError()
+
+    def copyFromCell(self, anotherCell: Cell):
+        """copy everything (data, format, etc.) from another cell to this cell"""
+        Results.extractOrRaise(self.copyFromCellRs(anotherCell))
 
     @property
     def rootCell(self)->'Cell':

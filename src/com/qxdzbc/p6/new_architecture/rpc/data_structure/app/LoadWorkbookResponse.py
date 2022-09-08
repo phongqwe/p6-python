@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from typing import Optional
 
-
 from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.document_structure.workbook.WorkBook import Workbook

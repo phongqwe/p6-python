@@ -1,8 +1,9 @@
 import copy
 from typing import Optional, Union, Tuple
 
-from com.qxdzbc.p6.document_structure.cell.Cell import Cell
 from com.qxdzbc.p6.document_structure.cell.WriteBackCell import WriteBackCell
+
+from com.qxdzbc.p6.document_structure.cell.Cell import Cell
 from com.qxdzbc.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.qxdzbc.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.qxdzbc.p6.document_structure.range.Range import Range

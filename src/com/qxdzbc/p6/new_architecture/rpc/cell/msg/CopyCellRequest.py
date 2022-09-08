@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from com.qxdzbc.p6.document_structure.util.ToProto import ToProto, P
+from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellId import CellId
 from com.qxdzbc.p6.proto.rpc.cell.CellServiceProtos_pb2 import CopyCellRequestProto
 

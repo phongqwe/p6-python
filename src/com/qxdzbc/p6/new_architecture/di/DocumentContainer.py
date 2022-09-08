@@ -1,4 +1,4 @@
-from dependency_injector import containers, providers
+from dependency_injector import providers
 
 from com.qxdzbc.p6.new_architecture.di.RpcServiceContainer import RpcServiceContainer
 from com.qxdzbc.p6.new_architecture.workbook.RpcWorkbook import RpcWorkbook

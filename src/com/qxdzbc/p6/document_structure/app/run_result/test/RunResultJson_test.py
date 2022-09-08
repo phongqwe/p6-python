@@ -1,7 +1,8 @@
 import unittest
 
-from com.qxdzbc.p6.document_structure.app.run_result.RunResultJson import RunResultJson
 from com.qxdzbc.p6.document_structure.cell.CellJson import CellJson
+
+from com.qxdzbc.p6.document_structure.app.run_result.RunResultJson import RunResultJson
 from com.qxdzbc.p6.document_structure.cell.address.CellAddressJson import CellAddressJson
 
 

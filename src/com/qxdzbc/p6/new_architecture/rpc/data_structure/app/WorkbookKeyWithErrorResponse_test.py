@@ -1,9 +1,7 @@
 import unittest
 
 from com.qxdzbc.p6.document_structure.util.for_test import TestUtils
-
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeyImp import WorkbookKeyImp
-from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.WorkbookKeyWithErrorResponse import \
     WorkbookKeyWithErrorResponse
 

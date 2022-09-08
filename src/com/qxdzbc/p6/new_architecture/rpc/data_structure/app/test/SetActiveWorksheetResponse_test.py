@@ -1,12 +1,13 @@
 import unittest
 from pathlib import Path
 
-from com.qxdzbc.p6.new_architecture.communication import P6EventTableImp
 from com.qxdzbc.p6.new_architecture.data_structure.app_event import \
     SetActiveWorksheetResponse
+
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorHeader import ErrorHeader
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
+from com.qxdzbc.p6.new_architecture.communication import P6EventTableImp
 from com.qxdzbc.p6.proto.AppEventProtos_pb2 import SetActiveWorksheetResponseProto
 
 

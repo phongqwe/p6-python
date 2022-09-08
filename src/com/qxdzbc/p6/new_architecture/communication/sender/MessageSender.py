@@ -1,15 +1,15 @@
 import zmq
 from zmq import Socket
 
-from com.qxdzbc.p6.new_architecture.communication.SocketProvider import SocketProvider
-from com.qxdzbc.p6.new_architecture.communication.msg.P6Message import P6Message
-from com.qxdzbc.p6.new_architecture.communication.response import P6Response
-from com.qxdzbc.p6.new_architecture.communication.sender.MessageSenderErrors import MessageSenderErrors
 from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.document_structure.util.result.Err import Err
 from com.qxdzbc.p6.document_structure.util.result.Ok import Ok
 from com.qxdzbc.p6.document_structure.util.result.Result import Result
+from com.qxdzbc.p6.new_architecture.communication.SocketProvider import SocketProvider
+from com.qxdzbc.p6.new_architecture.communication.msg.P6Message import P6Message
+from com.qxdzbc.p6.new_architecture.communication.response import P6Response
+from com.qxdzbc.p6.new_architecture.communication.sender.MessageSenderErrors import MessageSenderErrors
 
 
 class MessageSender:

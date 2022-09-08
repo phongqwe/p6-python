@@ -1,25 +1,24 @@
 import unittest
 from unittest.mock import MagicMock
 
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.SingleSignalResponse import \
-    SingleSignalResponse
 
 from com.qxdzbc.p6.document_structure.util.for_test import TestUtils
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.qxdzbc.p6.document_structure.worksheet.Worksheet import Worksheet
-from com.qxdzbc.p6.document_structure.worksheet.WorksheetImp import WorksheetImp
-
 from com.qxdzbc.p6.new_architecture.rpc.RpcValues import RpcValues
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.SingleSignalResponse import \
+    SingleSignalResponse
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.WorksheetId import WorksheetId
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.AddWorksheetRequest import AddWorksheetRequest
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.GetActiveWorksheetResponse import \
     GetActiveWorksheetResponse
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.GetAllWorksheetsResponse import \
     GetAllWorksheetsResponse
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.GetWorksheetResponse import GetWorksheetResponse
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.WorksheetId import WorksheetId
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.WorksheetWithErrorReportMsg import \
     WorksheetWithErrorReportMsg
 from com.qxdzbc.p6.new_architecture.workbook.RpcWorkbook import RpcWorkbook
+from com.qxdzbc.p6.new_architecture.worksheet.RpcWorksheet import RpcWorksheet
 from com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService_pb2_grpc import WorkbookServiceServicer
 
 
@@ -33,13 +32,6 @@ class RpcWorkbook_test(unittest.TestCase):
 
     def setUp(self) -> None:
         super().setUp()
-        # self.mockServer = MockRpcServer()
-        # addWbServicer = partial(
-        #     WorkbookService_pb2_grpc.add_WorkbookServiceServicer_to_server,
-        #     servicer = RpcWorkbook_test.WorkbookServicerImp()
-        # )
-        # self.mockServer.addServicer(addWbServicer)
-        # self.mockServer.start()
         mockSP = MagicMock()
         mockWbService = MagicMock()
         mockSP.wbService = mockWbService
@@ -77,8 +69,8 @@ class RpcWorkbook_test(unittest.TestCase):
 
     def test_worksheets(self):
         wsl = [
-            WorksheetImp("Sheet1", self.wb),
-            WorksheetImp("Sheet2", self.wb),
+            RpcWorksheet("Sheet1", self.wb.workbookKey,self.mockSP),
+            RpcWorksheet("Sheet2", self.wb.workbookKey,self.mockSP),
         ]
         self.mockWbService.getAllWorksheets = MagicMock(return_value = GetAllWorksheetsResponse(
             worksheets = wsl,
@@ -135,7 +127,7 @@ class RpcWorkbook_test(unittest.TestCase):
         self.assertIsNone(o)
         self.mockWbService.getActiveWorksheet = MagicMock(
             return_value = GetActiveWorksheetResponse(
-                worksheet = WorksheetImp("w",None)
+                worksheet = RpcWorksheet("w",self.wb.workbookKey,self.mockSP)
             ).toProtoObj()
         )
         o2 = wb.activeWorksheet
@@ -175,7 +167,7 @@ class RpcWorkbook_test(unittest.TestCase):
 
         failTest()
         def okTest():
-            ws2 = WorksheetImp("ws2",None)
+            ws2 = RpcWorksheet("ws2", self.wb.workbookKey, self.mockSP)
             self.mockWbService.getWorksheet = MagicMock(
                 return_value = GetWorksheetResponse(
                     worksheet = ws2
@@ -206,7 +198,7 @@ class RpcWorkbook_test(unittest.TestCase):
         okTest()
 
     def test_createNewWorksheet(self):
-        ws2 = WorksheetImp("ws2", None)
+        ws2 = RpcWorksheet("ws2", self.wb.workbookKey, self.mockSP)
         self.mockWbService.createNewWorksheet = MagicMock(
             return_value = WorksheetWithErrorReportMsg(
                 wsName = ws2.name
@@ -217,7 +209,6 @@ class RpcWorkbook_test(unittest.TestCase):
         self.assertTrue(rs.isOk())
         self.assertTrue(rs.value.compareContent(ws2))
         self.assertTrue(wb.createNewWorksheet("qwe").compareContent(ws2))
-
 
         self.mockWbService.createNewWorksheet = MagicMock(
             return_value = WorksheetWithErrorReportMsg(
@@ -266,7 +257,7 @@ class RpcWorkbook_test(unittest.TestCase):
         self.mockWbService.addWorksheet = MagicMock(
             return_value = SingleSignalResponse().toProtoObj()
         )
-        ws = WorksheetImp("zxc",None)
+        ws = RpcWorksheet("qwe", self.wb.workbookKey, self.mockSP)
         wb= self.wb
         rs = wb.addWorksheetRs(ws)
 

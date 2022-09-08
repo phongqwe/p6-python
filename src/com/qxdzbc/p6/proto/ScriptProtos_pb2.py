@@ -16,7 +16,7 @@ from com.qxdzbc.p6.proto import CommonProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_pr
 from com.qxdzbc.p6.proto import DocProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n&com/qxdzbc/p6/proto/ScriptProtos.proto\x12\x13\x63om.qxdzbc.p6.proto\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\x1a#com/qxdzbc/p6/proto/DocProtos.proto\"t\n\x13ScriptEntryKeyProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12?\n\x0bworkbookKey\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProtoH\x00\x88\x01\x01\x42\x0e\n\x0c_workbookKey\"Y\n\x10ScriptEntryProto\x12\x35\n\x03key\x18\x01 \x01(\x0b\x32(.com.qxdzbc.p6.proto.ScriptEntryKeyProto\x12\x0e\n\x06script\x18\x02 \x01(\t\"d\n\x18ScriptChangeRequestProto\x12\x11\n\tnewScript\x18\x02 \x01(\t\x12\x35\n\x03key\x18\x01 \x01(\x0b\x32(.com.qxdzbc.p6.proto.ScriptEntryKeyProto\"S\n\x15NewScriptRequestProto\x12:\n\x0bscriptEntry\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.ScriptEntryProto\"\x9c\x01\n\x1aNewScriptNotificationProto\x12<\n\rscriptEntries\x18\x01 \x03(\x0b\x32%.com.qxdzbc.p6.proto.ScriptEntryProto\x12@\n\x0e\x65rrorIndicator\x18\x02 \x01(\x0b\x32(.com.qxdzbc.p6.proto.ErrorIndicatorProtob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n&com/qxdzbc/p6/proto/ScriptProtos.proto\x12\x13\x63om.qxdzbc.p6.proto\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\x1a#com/qxdzbc/p6/proto/DocProtos.proto\"_\n\x13ScriptEntryKeyProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12:\n\x0bworkbookKey\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\"Y\n\x10ScriptEntryProto\x12\x35\n\x03key\x18\x01 \x01(\x0b\x32(.com.qxdzbc.p6.proto.ScriptEntryKeyProto\x12\x0e\n\x06script\x18\x02 \x01(\t\"d\n\x18ScriptChangeRequestProto\x12\x11\n\tnewScript\x18\x02 \x01(\t\x12\x35\n\x03key\x18\x01 \x01(\x0b\x32(.com.qxdzbc.p6.proto.ScriptEntryKeyProto\"S\n\x15NewScriptRequestProto\x12:\n\x0bscriptEntry\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.ScriptEntryProto\"\x9c\x01\n\x1aNewScriptNotificationProto\x12<\n\rscriptEntries\x18\x01 \x03(\x0b\x32%.com.qxdzbc.p6.proto.ScriptEntryProto\x12@\n\x0e\x65rrorIndicator\x18\x02 \x01(\x0b\x32(.com.qxdzbc.p6.proto.ErrorIndicatorProtob\x06proto3')
 
 
 
@@ -64,13 +64,13 @@ if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   _SCRIPTENTRYKEYPROTO._serialized_start=140
-  _SCRIPTENTRYKEYPROTO._serialized_end=256
-  _SCRIPTENTRYPROTO._serialized_start=258
-  _SCRIPTENTRYPROTO._serialized_end=347
-  _SCRIPTCHANGEREQUESTPROTO._serialized_start=349
-  _SCRIPTCHANGEREQUESTPROTO._serialized_end=449
-  _NEWSCRIPTREQUESTPROTO._serialized_start=451
-  _NEWSCRIPTREQUESTPROTO._serialized_end=534
-  _NEWSCRIPTNOTIFICATIONPROTO._serialized_start=537
-  _NEWSCRIPTNOTIFICATIONPROTO._serialized_end=693
+  _SCRIPTENTRYKEYPROTO._serialized_end=235
+  _SCRIPTENTRYPROTO._serialized_start=237
+  _SCRIPTENTRYPROTO._serialized_end=326
+  _SCRIPTCHANGEREQUESTPROTO._serialized_start=328
+  _SCRIPTCHANGEREQUESTPROTO._serialized_end=428
+  _NEWSCRIPTREQUESTPROTO._serialized_start=430
+  _NEWSCRIPTREQUESTPROTO._serialized_end=513
+  _NEWSCRIPTNOTIFICATIONPROTO._serialized_start=516
+  _NEWSCRIPTNOTIFICATIONPROTO._serialized_end=672
 # @@protoc_insertion_point(module_scope)

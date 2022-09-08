@@ -1,7 +1,7 @@
 import unittest
 
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.WsWb import WsWb
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.WsWb import WsWb
 
 
 class WsWb_test(unittest.TestCase):

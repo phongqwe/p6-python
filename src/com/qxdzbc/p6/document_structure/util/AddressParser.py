@@ -2,9 +2,7 @@ from typing import Union, Tuple
 
 from com.qxdzbc.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.qxdzbc.p6.document_structure.cell.address.CellAddresses import CellAddresses
-from com.qxdzbc.p6.document_structure.cell.address.CellIndex import CellIndex
 from com.qxdzbc.p6.document_structure.range.address.RangeAddress import RangeAddress
-from com.qxdzbc.p6.document_structure.range.address.RangeAddressImp import RangeAddressImp
 from com.qxdzbc.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 
 

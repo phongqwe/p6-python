@@ -2,20 +2,20 @@ import unittest
 
 from com.qxdzbc.p6.document_structure.app.TopLevel import *
 from com.qxdzbc.p6.document_structure.cell.address.CellAddresses import CellAddresses
-from com.qxdzbc.p6.new_architecture.communication import P6EventTableImp
-from com.qxdzbc.p6.new_architecture.communication import P6Events
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.cell_event import \
-    CellUpdateRequest
-# these 2 imports must be keep for the formula script to be able to run
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.range_event import RangeId
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.save_wb.SaveWorkbookRequest import \
-    SaveWorkbookRequest
-from com.qxdzbc.p6.new_architecture.communication.P6Messages import P6Messages
-from com.qxdzbc.p6.new_architecture.communication.response import P6Response
-from com.qxdzbc.p6.new_architecture.communication import EventReactors
 from com.qxdzbc.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 from com.qxdzbc.p6.document_structure.util.for_test.emu.TestEnvImp import TestEnvImp
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
+from com.qxdzbc.p6.new_architecture.communication import EventReactors
+from com.qxdzbc.p6.new_architecture.communication import P6EventTableImp
+from com.qxdzbc.p6.new_architecture.communication import P6Events
+from com.qxdzbc.p6.new_architecture.communication.P6Messages import P6Messages
+from com.qxdzbc.p6.new_architecture.communication.response import P6Response
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.cell import \
+    CellUpdateRequest
+# these 2 imports must be keep for the formula script to be able to run
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.range import RangeId
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.save_wb.SaveWorkbookRequest import \
+    SaveWorkbookRequest
 from com.qxdzbc.p6.proto.AppEventProtos_pb2 import CreateNewWorkbookResponseProto, CloseWorkbookResponseProto
 from com.qxdzbc.p6.proto.P6MsgProtos_pb2 import P6MessageProto, P6MessageHeaderProto
 from com.qxdzbc.p6.proto.RangeProtos_pb2 import RangeToClipboardResponseProto, RangeOperationRequestProto

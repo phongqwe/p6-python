@@ -1,8 +1,9 @@
 import unittest
 
 from com.qxdzbc.p6.document_structure.cell.DataCell import DataCell
-from com.qxdzbc.p6.document_structure.cell.address.CellIndex import CellIndex
 from com.qxdzbc.p6.document_structure.worksheet.WorksheetJson import WorksheetJson
+
+from com.qxdzbc.p6.document_structure.cell.address.CellIndex import CellIndex
 
 
 class WorksheetJsonTest(unittest.TestCase):

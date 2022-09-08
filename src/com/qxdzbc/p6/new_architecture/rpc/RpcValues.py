@@ -1,5 +1,3 @@
-from typing import Union
-
 import google.protobuf.empty_pb2 as empty_pb2
 from google.protobuf import wrappers_pb2 as wrappers
 

@@ -2,8 +2,9 @@ from dataclasses import dataclass
 from typing import Optional, Union
 
 from com.qxdzbc.p6.document_structure.util.CanCheckEmpty import CanCheckEmpty
-from com.qxdzbc.p6.document_structure.util.ToProto import ToProto, P
+from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
 from com.qxdzbc.p6.proto.DocProtos_pb2 import CellValueProto
+
 
 @dataclass
 class CellValue(CanCheckEmpty,ToProto[CellValueProto]):

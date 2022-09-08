@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from com.qxdzbc.p6.document_structure.util.ToProto import ToProto, P
+from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.qxdzbc.p6.proto.rpc.workbook.WorkbooKServiceProtos_pb2 import RenameWorksheetRequestProto

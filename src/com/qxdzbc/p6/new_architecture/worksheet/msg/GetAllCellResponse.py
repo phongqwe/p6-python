@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from com.qxdzbc.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.qxdzbc.p6.document_structure.cell.address.CellAddresses import CellAddresses
-from com.qxdzbc.p6.document_structure.util.ToProto import ToProto, P
+from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
 from com.qxdzbc.p6.proto.rpc.worksheet.WorksheetServiceProtos_pb2 import GetAllCellResponseProto
 
 

@@ -3,7 +3,7 @@ from typing import Optional
 
 from com.qxdzbc.p6.document_structure.range.address.RangeAddress import RangeAddress
 from com.qxdzbc.p6.document_structure.range.address.RangeAddresses import RangeAddresses
-from com.qxdzbc.p6.document_structure.util.ToProto import ToProto, P
+from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
 from com.qxdzbc.p6.proto.rpc.worksheet.WorksheetServiceProtos_pb2 import GetUsedRangeResponseProto
 
 

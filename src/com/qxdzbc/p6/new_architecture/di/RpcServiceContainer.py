@@ -1,5 +1,3 @@
-from abc import ABC
-
 from dependency_injector import containers, providers
 
 from com.qxdzbc.p6.new_architecture.rpc.InsecureStubProvider import InsecureRpcStubProvider

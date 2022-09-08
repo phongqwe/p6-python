@@ -1,8 +1,6 @@
 import unittest
 
 from com.qxdzbc.p6.document_structure.util.for_test import TestUtils
-
-from com.qxdzbc.p6.document_structure.worksheet.WorksheetImp import WorksheetImp
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.WorksheetWithErrorReportMsg import \
     WorksheetWithErrorReportMsg
 

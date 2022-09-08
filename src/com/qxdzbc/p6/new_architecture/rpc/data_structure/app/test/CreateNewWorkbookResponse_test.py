@@ -1,10 +1,11 @@
 import unittest
 
-from com.qxdzbc.p6.document_structure.app.errors.AppErrors import AppErrors
-from com.qxdzbc.p6.new_architecture.communication import P6EventTableImp
+from com.qxdzbc.p6.document_structure.workbook.WorkbookImp import WorkbookImp
 from com.qxdzbc.p6.new_architecture.data_structure.app_event import \
     CreateNewWorkbookResponse
-from com.qxdzbc.p6.document_structure.workbook.WorkbookImp import WorkbookImp
+
+from com.qxdzbc.p6.document_structure.app.errors.AppErrors import AppErrors
+from com.qxdzbc.p6.new_architecture.communication import P6EventTableImp
 
 
 class CreateNewWorkbookResponse_test(unittest.TestCase):
