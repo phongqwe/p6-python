@@ -3,21 +3,18 @@ from pathlib import Path
 from typing import Optional, Union, Any
 
 from com.qxdzbc.p6.document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
-from com.qxdzbc.p6.document_structure.communication.SocketProvider import SocketProvider
-from com.qxdzbc.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
-from com.qxdzbc.p6.document_structure.communication.event_server.EventServer import EventServer
-from com.qxdzbc.p6.document_structure.communication.reactor import EventReactorContainer
+from com.qxdzbc.p6.new_architecture.communication import SocketProvider
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.range_event import RangeId
+from com.qxdzbc.p6.new_architecture.communication import EventServer
+from com.qxdzbc.p6.new_architecture.communication import EventReactorContainer
 from com.qxdzbc.p6.document_structure.file.loader.P6FileLoader import P6FileLoader
 from com.qxdzbc.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
 from com.qxdzbc.p6.document_structure.range.Range import Range
 from com.qxdzbc.p6.document_structure.script.ScriptContainer import ScriptContainer
-from com.qxdzbc.p6.document_structure.script.ScriptContainer import ScriptContainer
 from com.qxdzbc.p6.document_structure.script.ScriptEntry import ScriptEntry
-from com.qxdzbc.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
 from com.qxdzbc.p6.document_structure.script.SimpleScriptEntry import SimpleScriptEntry
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.document_structure.util.result.Result import Result
-from com.qxdzbc.p6.document_structure.workbook.EventWorkbook import EventWorkbook
 from com.qxdzbc.p6.document_structure.workbook.WorkBook import Workbook
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.document_structure.worksheet.Worksheet import Worksheet

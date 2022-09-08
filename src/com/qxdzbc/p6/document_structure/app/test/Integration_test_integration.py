@@ -1,39 +1,25 @@
 import unittest
-from unittest.mock import MagicMock
-
-from com.qxdzbc.p6.document_structure.communication.event.data_structure.script_event.new_script.NewScriptResponse import \
-    NewScriptResponse
-
-from com.qxdzbc.p6.document_structure.script.ScriptEntry import ScriptEntry
-
-from com.qxdzbc.p6.document_structure.communication.event.data_structure.WsWb import WsWb
-from com.qxdzbc.p6.document_structure.communication.event.data_structure.range_event.paste_range.PasteRangeRequest import \
-    PasteRangeRequest
 
 from com.qxdzbc.p6.document_structure.app.TopLevel import *
 from com.qxdzbc.p6.document_structure.cell.address.CellAddresses import CellAddresses
-from com.qxdzbc.p6.document_structure.communication.event import P6EventTableImp
-from com.qxdzbc.p6.document_structure.communication.event.P6Events import P6Events
-from com.qxdzbc.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateRequest import \
+from com.qxdzbc.p6.new_architecture.communication import P6EventTableImp
+from com.qxdzbc.p6.new_architecture.communication import P6Events
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.cell_event import \
     CellUpdateRequest
 # these 2 imports must be keep for the formula script to be able to run
-from com.qxdzbc.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
-from com.qxdzbc.p6.document_structure.communication.event.data_structure.script_event.new_script.NewScriptRequest import \
-    NewScriptRequest
-from com.qxdzbc.p6.document_structure.communication.event.data_structure.workbook_event.save_wb.SaveWorkbookRequest import \
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.range_event import RangeId
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.save_wb.SaveWorkbookRequest import \
     SaveWorkbookRequest
-from com.qxdzbc.p6.document_structure.communication.event_server.P6Messages import P6Messages
-from com.qxdzbc.p6.document_structure.communication.event_server.response.P6Response import P6Response
-from com.qxdzbc.p6.document_structure.communication.reactor.EventReactors import EventReactors
+from com.qxdzbc.p6.new_architecture.communication.P6Messages import P6Messages
+from com.qxdzbc.p6.new_architecture.communication.response import P6Response
+from com.qxdzbc.p6.new_architecture.communication import EventReactors
 from com.qxdzbc.p6.document_structure.range.address.RangeAddresses import RangeAddresses
-from com.qxdzbc.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
 from com.qxdzbc.p6.document_structure.util.for_test.emu.TestEnvImp import TestEnvImp
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.qxdzbc.p6.proto.AppEventProtos_pb2 import CreateNewWorkbookResponseProto, CloseWorkbookResponseProto
 from com.qxdzbc.p6.proto.P6MsgProtos_pb2 import P6MessageProto, P6MessageHeaderProto
 from com.qxdzbc.p6.proto.RangeProtos_pb2 import RangeToClipboardResponseProto, RangeOperationRequestProto
-from com.qxdzbc.p6.proto.WorkbookProtos_pb2 import CreateNewWorksheetResponseProto, SaveWorkbookRequestProto, \
-    WorkbookUpdateCommonResponseProto
+from com.qxdzbc.p6.proto.WorkbookProtos_pb2 import CreateNewWorksheetResponseProto, WorkbookUpdateCommonResponseProto
 from com.qxdzbc.p6.proto.WorksheetProtos_pb2 import RenameWorksheetResponseProto
 
 
@@ -53,53 +39,6 @@ class Integration_integration_test(unittest.TestCase):
     def tearDown(self) -> None:
         self.testEnv.stopAll()
 
-    def test_addScript_notif_on_wb_is_sent(self):
-
-        reactorCB = MagicMock()
-        self.testEnv.notifListener.addReactorCB(
-            event = P6Events.Script.NewScript.event,
-            reactorCB = reactorCB
-        )
-        self.b1.addScriptRs("s1", "abc")
-        self.b1.addScript("s2", "abc")
-        self.assertEqual(2,reactorCB.call_count)
-
-
-
-    def test_no_reactor_for_new_script_request(self):
-        """new script request from UI returns no reactor error"""
-        req = NewScriptRequest(
-            scriptEntry = ScriptEntry(
-                key = ScriptEntryKey("Script1"),
-                script = ""
-            )
-        )
-
-        p6Res = self.testEnv.sendRequestToEventServer(req.toP6Msg())
-        self.assertEqual(P6Response.Status.OK,p6Res.status)
-
-        data = p6Res.data
-        NewScriptResponse.fromProtoBytes(data)
-
-
-    def test_bug3(self):
-        """
-        send save wb request to event-server
-        """
-        wb = self.testEnv.app.getWorkbook("Book1")
-        saveReq = P6MessageProto(
-            header = P6MessageHeaderProto(
-                msgId = "1",
-                eventType = P6Events.App.SaveWorkbook.event.toProtoObj()
-            ),
-            data = SaveWorkbookRequestProto(
-                workbookKey = wb.workbookKey.toProtoObj(),
-                path = "/home/abc/MyTemp/b1.txt"
-            ).SerializeToString()
-        )
-
-        rec = self.testEnv.sendRequestToEventServer(saveReq.SerializeToString())
-        print(rec.toProtoObj())
 
     def test_scenario_changeUpdateCell(self):
         """
@@ -215,13 +154,6 @@ class Integration_integration_test(unittest.TestCase):
         # print(proto)
         print(proto.errorIndicator)
 
-    def test_rangeToClipboard_notifier(self):
-        def cb(data: bytes):
-            print(data)
-
-        self.testEnv.notifListener.addReactorCB(P6Events.Range.RangeToClipBoard.event, cb)
-        self.b1.getWorksheet("Sheet1").range("A1:B3").copyValueDataFrame()
-
     def test_updateCell_afterSaving(self):
         self.s1.cell((1, 1)).value = 123
         self.s1.cell((1, 2)).value = 123
@@ -247,23 +179,3 @@ class Integration_integration_test(unittest.TestCase):
         proto = WorkbookUpdateCommonResponseProto()
         proto.ParseFromString(p6Res.data)
         print(proto)
-
-    def test_pasteRange_ensure_not_trigger_notifier(self):
-        self.s1.range("C3:D4").copyToClipboardAsProto()
-        request = PasteRangeRequest(
-            anchorCell = CellAddresses.fromLabel("H12"),
-            wsWb = WsWb(
-                workbookKey = self.b1.workbookKey,
-                worksheetName = self.s2.name
-            ),
-            windowId = "abc"
-        )
-        cb = MagicMock()
-        self.testEnv.notifListener.addReactorCB(
-            event = P6Events.Range.PasteRange.event,
-            reactorCB = cb
-        )
-        p6Res = self.testEnv.sendRequestToEventServer(
-            p6Msg = request.toP6Msg()
-        )
-        cb.assert_not_called()

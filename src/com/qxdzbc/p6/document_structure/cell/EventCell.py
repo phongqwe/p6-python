@@ -1,11 +1,11 @@
 from typing import Callable
 
-from com.qxdzbc.p6.document_structure.communication.event.data_structure.cell_event.CellUpdateResponse import \
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.cell_event.CellUpdateResponse import \
     CellUpdateResponse
 
 from com.qxdzbc.p6.document_structure.cell.Cell import Cell
 from com.qxdzbc.p6.document_structure.cell.WrapperCell import WrapperCell
-from com.qxdzbc.p6.document_structure.communication.notifier.eventData.EventData import EventData
+from com.qxdzbc.p6.new_architecture.communication import EventData
 
 
 class EventCell(WrapperCell):

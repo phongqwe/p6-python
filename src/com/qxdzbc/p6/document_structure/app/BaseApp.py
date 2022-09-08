@@ -4,7 +4,7 @@ from typing import Optional, Union, Any
 
 from com.qxdzbc.p6.document_structure.app.App import App
 from com.qxdzbc.p6.document_structure.app.errors.AppErrors import AppErrors
-from com.qxdzbc.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.range_event import RangeId
 from com.qxdzbc.p6.document_structure.file.loader.P6FileLoader import P6FileLoader
 from com.qxdzbc.p6.document_structure.file.loader.P6FileLoaderErrors import P6FileLoaderErrors
 from com.qxdzbc.p6.document_structure.file.saver.P6FileSaver import P6FileSaver

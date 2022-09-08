@@ -1,37 +1,27 @@
 from __future__ import annotations
 
 from abc import ABC
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Union, Tuple
 
 from com.qxdzbc.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.qxdzbc.p6.document_structure.cell_container.MutableCellContainer import MutableCellContainer
-from com.qxdzbc.p6.document_structure.cell_container.UserFriendlyCellContainer import UserFriendlyCellContainer
-
-from com.qxdzbc.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from com.qxdzbc.p6.document_structure.range.address.RangeAddress import RangeAddress
-from com.qxdzbc.p6.document_structure.util.ToJson import ToJson
 from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
-from com.qxdzbc.p6.document_structure.util.report.ReportJsonStrMaker import ReportJsonStrMaker
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.document_structure.util.result.Result import Result
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
-from com.qxdzbc.p6.document_structure.worksheet.UserFriendlyWorksheet import UserFriendlyWorksheet
-from com.qxdzbc.p6.document_structure.worksheet.WorksheetJson import WorksheetJson
 from com.qxdzbc.p6.proto.DocProtos_pb2 import WorksheetProto
 
 if TYPE_CHECKING:
-    from com.qxdzbc.p6.document_structure.workbook.WorkBook import Workbook
     from com.qxdzbc.p6.document_structure.range.Range import Range
-    from com.qxdzbc.p6.document_structure.cell.Cell import Cell
-    from com.qxdzbc.p6.document_structure.copy_paste.paster.Paster import Paster
 
 
-class Worksheet(UserFriendlyCellContainer,
-                UserFriendlyWorksheet,
-                MutableCellContainer,
-                ReportJsonStrMaker,
+class Worksheet(MutableCellContainer,
                 ToProto[WorksheetProto],
                 ABC):
+    def range(self, rangeAddress: Union[str, RangeAddress, Tuple[CellAddress, CellAddress]]) -> Range:
+        raise NotImplementedError()
+
     @property
     def wbKey(self)->WorkbookKey:
         raise NotImplementedError()
@@ -90,9 +80,6 @@ class Worksheet(UserFriendlyCellContainer,
 
     @property
     def name(self) -> str:
-        raise NotImplementedError()
-
-    def reportJsonStr(self) -> str:
         raise NotImplementedError()
 
     def rename(self, newName: str):

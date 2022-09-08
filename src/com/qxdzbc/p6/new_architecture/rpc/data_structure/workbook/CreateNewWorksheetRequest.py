@@ -1,21 +1,24 @@
-import unittest
-from dataclasses import dataclass
-from typing import Optional
-
-from com.qxdzbc.p6.document_structure.util.ToProto import ToProto, P
+from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
-from com.qxdzbc.p6.proto.rpc.workbook.WorkbooKServiceProtos_pb2 import CreateNewWorksheetRequestProto
+from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
+from com.qxdzbc.p6.proto.WorkbookProtos_pb2 import CreateNewWorksheetRequestProto
 
 
-@dataclass
 class CreateNewWorksheetRequest(ToProto[CreateNewWorksheetRequestProto]):
-    wbKey:WorkbookKey
-    newWorksheetName:Optional[str] = None
 
-    def toProtoObj(self) -> CreateNewWorksheetRequestProto:
-        return CreateNewWorksheetRequestProto(
-            wbKey = self.wbKey.toProtoObj(),
-            newWorksheetName = self.newWorksheetName
+    def __init__(self, workbookKey: WorkbookKey, newWorkSheetName: str):
+        self.workbookKey = workbookKey
+        self.newWorksheetName = newWorkSheetName
+
+    @staticmethod
+    def fromProto(proto: CreateNewWorksheetRequestProto):
+        return CreateNewWorksheetRequest(
+            workbookKey = WorkbookKeys.fromProto(proto.workbookKey),
+            newWorkSheetName = proto.newWorksheetName
         )
 
-
+    def toProtoObj(self) -> CreateNewWorksheetRequestProto:
+        rt = CreateNewWorksheetRequestProto()
+        rt.newWorksheetName = self.newWorksheetName
+        rt.workbookKey.CopyFrom(self.workbookKey.toProtoObj())
+        return rt

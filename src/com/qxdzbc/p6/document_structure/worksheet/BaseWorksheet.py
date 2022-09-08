@@ -3,13 +3,13 @@ from abc import ABC
 from typing import Union, Tuple, Optional
 
 from com.qxdzbc.p6.document_structure.cell.Cell import Cell
+from com.qxdzbc.p6.document_structure.cell_container.CellContainer import CellContainer
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.document_structure.util.result.Result import Result
 
 from com.qxdzbc.p6.proto.DocProtos_pb2 import WorksheetProto
 
 from com.qxdzbc.p6.document_structure.cell.address.CellAddress import CellAddress
-from com.qxdzbc.p6.document_structure.copy_paste.paster.Paster import Paster
 from com.qxdzbc.p6.document_structure.range.Range import Range
 from com.qxdzbc.p6.document_structure.range.address.RangeAddress import RangeAddress
 from com.qxdzbc.p6.document_structure.range.address.RangeAddresses import RangeAddresses
@@ -63,20 +63,15 @@ class BaseWorksheet(Worksheet,ABC):
         return self.size
 
 
-    def toProtoObj(self) -> WorksheetProto:
-        rt = WorksheetProto()
-        rt.name = self.name
-        cells = []
-        for cell in self.cells:
-            cells.append(cell.toProtoObj())
-        rt.cell.extend(cells)
-        return rt
+    # def toProtoObj(self) -> WorksheetProto:
+    #     rt = WorksheetProto()
+    #     rt.name = self.name
+    #     cells = []
+    #     for cell in self.cells:
+    #         cells.append(cell.toProtoObj())
+    #     rt.cell.extend(cells)
+    #     return rt
 
-
-    def reportJsonStr(self) -> str:
-        return json.dumps({
-            "name": self.name
-        })
 
     def rename(self, newName: str):
         rs = self.renameRs(newName)
@@ -85,19 +80,3 @@ class BaseWorksheet(Worksheet,ABC):
 
     def deleteCell(self, address: CellAddress | Tuple[int, int] | str):
         return self.deleteCellRs(address)
-
-    def deleteRange(self, rangeAddress: RangeAddress):
-        return super().deleteRange(rangeAddress)
-
-
-    def isSameRangeAddress(self, other: "CellContainer"):
-        return super().isSameRangeAddress(other)
-
-    def reRun(self, refreshScript: bool = False):
-        super().reRun(refreshScript)
-
-    def isEmpty(self) -> bool:
-        return super().isEmpty()
-
-    def isNotEmpty(self) -> bool:
-        return super().isNotEmpty()

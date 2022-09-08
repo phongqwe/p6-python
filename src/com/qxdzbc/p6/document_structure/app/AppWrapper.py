@@ -3,9 +3,9 @@ from typing import Optional, Union
 from com.qxdzbc.p6.document_structure.app.App import App
 from com.qxdzbc.p6.document_structure.app.BaseApp import BaseApp
 from com.qxdzbc.p6.document_structure.app.workbook_container.WorkbookContainer import WorkbookContainer
-from com.qxdzbc.p6.document_structure.communication.SocketProvider import SocketProvider
-from com.qxdzbc.p6.document_structure.communication.event_server.EventServer import EventServer
-from com.qxdzbc.p6.document_structure.communication.reactor import EventReactorContainer
+from com.qxdzbc.p6.new_architecture.communication import SocketProvider
+from com.qxdzbc.p6.new_architecture.communication import EventServer
+from com.qxdzbc.p6.new_architecture.communication import EventReactorContainer
 from com.qxdzbc.p6.document_structure.file.loader.P6FileLoader import P6FileLoader
 from com.qxdzbc.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
 from com.qxdzbc.p6.document_structure.script.ScriptContainer import ScriptContainer

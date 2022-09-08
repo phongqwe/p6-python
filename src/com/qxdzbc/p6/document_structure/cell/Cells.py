@@ -9,7 +9,7 @@ from com.qxdzbc.p6.document_structure.cell.address.CellAddress import CellAddres
 from com.qxdzbc.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.qxdzbc.p6.document_structure.cell.address.CellIndex import CellIndex
 from com.qxdzbc.p6.document_structure.cell_container.MutableCellContainer import MutableCellContainer
-from com.qxdzbc.p6.document_structure.communication.event.P6Event import P6Event
+from com.qxdzbc.p6.new_architecture.communication import P6Event
 from com.qxdzbc.p6.proto.DocProtos_pb2 import CellProto
 
 

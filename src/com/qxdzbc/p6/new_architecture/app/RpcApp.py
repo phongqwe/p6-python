@@ -1,8 +1,5 @@
 from typing import Union
 
-from com.qxdzbc.p6.document_structure.communication.event.data_structure.SingleSignalResponse import \
-    SingleSignalResponse
-
 from com.qxdzbc.p6.document_structure.app.BaseApp import BaseApp
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.document_structure.util.result.Err import Err

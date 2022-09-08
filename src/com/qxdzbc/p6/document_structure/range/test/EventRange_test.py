@@ -3,13 +3,13 @@ from unittest.mock import MagicMock
 
 from com.qxdzbc.p6.document_structure.cell.address.CellAddresses import CellAddresses
 from com.qxdzbc.p6.document_structure.cell.address.CellIndex import CellIndex
-from com.qxdzbc.p6.document_structure.communication.event.P6Events import P6Events
-from com.qxdzbc.p6.document_structure.communication.event.data_structure.common.ErrorIndicator import \
+from com.qxdzbc.p6.new_architecture.communication import P6Events
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.common.ErrorIndicator import \
     ErrorIndicator
-from com.qxdzbc.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
-from com.qxdzbc.p6.document_structure.communication.event.data_structure.range_event.range_to_clipboard.RangeToClipboardResponse import \
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.range_event import RangeId
+from com.qxdzbc.p6.new_architecture.data_structure import \
     RangeToClipboardResponse
-from com.qxdzbc.p6.document_structure.communication.notifier.eventData.EventData import EventData
+from com.qxdzbc.p6.new_architecture.communication import EventData
 from com.qxdzbc.p6.document_structure.range.EventRange import EventRange
 from com.qxdzbc.p6.document_structure.range.RangeImp import RangeImp
 from com.qxdzbc.p6.document_structure.util.for_test.TestUtils import sampleWb

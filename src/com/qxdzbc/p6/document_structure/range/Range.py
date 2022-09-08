@@ -108,7 +108,7 @@ class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
             return []
 
     def toRangeCopy(self):
-        from com.qxdzbc.p6.document_structure.communication.event.data_structure.range_event.RangeCopy import \
+        from com.qxdzbc.p6.new_architecture.rpc.data_structure.range_event import \
             RangeCopy
         copyObj = RangeCopy(
             rangeId = self.id,
@@ -150,7 +150,7 @@ class Range(UserFriendlyCellContainer, MutableCellContainer, ABC):
 
     @property
     def id(self):
-        from com.qxdzbc.p6.document_structure.communication.event.data_structure.range_event.RangeId import \
+        from com.qxdzbc.p6.new_architecture.rpc.data_structure.range_event import \
             RangeId
         return RangeId(
             rangeAddress = self.rangeAddress,

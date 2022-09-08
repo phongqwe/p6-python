@@ -3,7 +3,7 @@ from unittest.mock import MagicMock
 
 from com.qxdzbc.p6.document_structure.cell.DataCell import DataCell
 from com.qxdzbc.p6.document_structure.cell.address.CellAddresses import CellAddresses
-from com.qxdzbc.p6.document_structure.communication.event.data_structure.SingleSignalResponse import \
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.SingleSignalResponse import \
     SingleSignalResponse
 from com.qxdzbc.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 from com.qxdzbc.p6.document_structure.util.for_test import TestUtils

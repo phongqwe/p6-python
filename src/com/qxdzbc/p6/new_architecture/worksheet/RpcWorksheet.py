@@ -3,9 +3,9 @@ from typing import Optional, Union, Tuple
 from com.qxdzbc.p6.document_structure.cell.Cell import Cell
 from com.qxdzbc.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.qxdzbc.p6.document_structure.cell.address.CellAddresses import CellAddresses
-from com.qxdzbc.p6.document_structure.communication.event.data_structure.SingleSignalResponse import \
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.SingleSignalResponse import \
     SingleSignalResponse
-from com.qxdzbc.p6.document_structure.communication.event.data_structure.range_event.RangeId import RangeId
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.range_event import RangeId
 from com.qxdzbc.p6.document_structure.range.Range import Range
 from com.qxdzbc.p6.document_structure.range.address.RangeAddress import RangeAddress
 from com.qxdzbc.p6.document_structure.range.address.RangeAddresses import RangeAddresses

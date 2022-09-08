@@ -3,7 +3,7 @@ from typing import Optional
 from com.qxdzbc.p6.document_structure.cell.Cell import Cell
 from com.qxdzbc.p6.document_structure.cell.CellContent import CellContent
 from com.qxdzbc.p6.document_structure.cell.address.CellAddress import CellAddress
-from com.qxdzbc.p6.document_structure.communication.event.data_structure.SingleSignalResponse import \
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.SingleSignalResponse import \
     SingleSignalResponse
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.document_structure.util.result.Result import Result

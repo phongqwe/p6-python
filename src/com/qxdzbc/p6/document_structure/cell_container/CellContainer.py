@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import Optional
+from typing import Optional, Union, Tuple
 
 from com.qxdzbc.p6.document_structure.cell.Cell import Cell
 from com.qxdzbc.p6.document_structure.cell.address.CellAddress import CellAddress
@@ -9,6 +9,8 @@ from com.qxdzbc.p6.document_structure.util.WithSize import WithSize
 
 class CellContainer(WithSize,ABC):
     """ an immutable cell container. A container support accessing Cells using CellAddress """
+    def cell(self, address: Union[str, CellAddress, Tuple[int, int]]) -> Cell:
+        raise NotImplementedError()
 
     def hasCellAt(self, address: CellAddress) -> bool:
         """

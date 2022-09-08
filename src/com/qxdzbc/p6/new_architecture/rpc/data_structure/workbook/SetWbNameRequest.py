@@ -1,11 +1,6 @@
 from dataclasses import dataclass
-from typing import Optional
 
-from com.qxdzbc.p6.document_structure.communication.event.data_structure.common.ErrorIndicator import \
-    ErrorIndicator
-
-from com.qxdzbc.p6.document_structure.util.ToProto import ToProto, P
-from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
+from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.proto.rpc.workbook.WorkbooKServiceProtos_pb2 import SetWbKeyRequestProto
 

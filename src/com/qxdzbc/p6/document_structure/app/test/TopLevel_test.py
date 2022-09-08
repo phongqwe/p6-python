@@ -2,8 +2,8 @@ import unittest
 
 from com.qxdzbc.p6.document_structure.app.GlobalScope import setIPythonGlobals
 from com.qxdzbc.p6.document_structure.app.TopLevel import *
-from com.qxdzbc.p6.document_structure.communication.event.P6Events import P6Events
-from com.qxdzbc.p6.document_structure.communication.reactor.EventReactors import EventReactors
+from com.qxdzbc.p6.new_architecture.communication import P6Events
+from com.qxdzbc.p6.new_architecture.communication import EventReactors
 
 
 class UserFunctions_test(unittest.TestCase):

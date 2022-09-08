@@ -1,8 +1,8 @@
 import unittest
-from unittest.mock import MagicMock, call
+from unittest.mock import MagicMock
 
 from com.qxdzbc.p6.document_structure.cell.address.CellAddresses import CellAddresses
-from com.qxdzbc.p6.document_structure.communication.event import P6EventTableImp
+from com.qxdzbc.p6.new_architecture.communication import P6EventTableImp
 from com.qxdzbc.p6.document_structure.util.for_test.emu.TestEnvImp import TestEnvImp
 from com.qxdzbc.p6.document_structure.worksheet.Worksheet import Worksheet
 

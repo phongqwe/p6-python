@@ -37,11 +37,6 @@ class CellServiceStub(object):
                 request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellIdProto.SerializeToString,
                 response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CellProtos__pb2.CellContentProto.FromString,
                 )
-        self.reRun = channel.unary_unary(
-                '/com.qxdzbc.p6.proto.rpc.cell.service.CellService/reRun',
-                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellValueProto.SerializeToString,
-                response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
-                )
         self.copyFrom = channel.unary_unary(
                 '/com.qxdzbc.p6.proto.rpc.cell.service.CellService/copyFrom',
                 request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_cell_dot_CellServiceProtos__pb2.CopyCellRequestProto.SerializeToString,
@@ -76,12 +71,6 @@ class CellServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def reRun(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
     def copyFrom(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -110,11 +99,6 @@ def add_CellServiceServicer_to_server(servicer, server):
                     servicer.getCellContent,
                     request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellIdProto.FromString,
                     response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CellProtos__pb2.CellContentProto.SerializeToString,
-            ),
-            'reRun': grpc.unary_unary_rpc_method_handler(
-                    servicer.reRun,
-                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellValueProto.FromString,
-                    response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.SerializeToString,
             ),
             'copyFrom': grpc.unary_unary_rpc_method_handler(
                     servicer.copyFrom,
@@ -196,23 +180,6 @@ class CellService(object):
         return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.cell.service.CellService/getCellContent',
             com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellIdProto.SerializeToString,
             com_dot_qxdzbc_dot_p6_dot_proto_dot_CellProtos__pb2.CellContentProto.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def reRun(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.cell.service.CellService/reRun',
-            com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellValueProto.SerializeToString,
-            com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

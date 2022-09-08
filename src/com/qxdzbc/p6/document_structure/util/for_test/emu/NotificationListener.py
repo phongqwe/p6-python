@@ -3,13 +3,13 @@ from typing import Callable
 
 import zmq
 
-from com.qxdzbc.p6.document_structure.communication.event.P6Event import P6Event
-from com.qxdzbc.p6.document_structure.communication.event.P6Events import P6Events
-from com.qxdzbc.p6.document_structure.communication.event_server.response.P6Response import P6Response
-from com.qxdzbc.p6.document_structure.communication.reactor.EventReactor import EventReactor
-from com.qxdzbc.p6.document_structure.communication.reactor.EventReactorContainer import EventReactorContainer
-from com.qxdzbc.p6.document_structure.communication.reactor.EventReactors import EventReactors
-from com.qxdzbc.p6.document_structure.communication.reactor.MutableEventReactorContainer import \
+from com.qxdzbc.p6.new_architecture.communication import P6Event
+from com.qxdzbc.p6.new_architecture.communication import P6Events
+from com.qxdzbc.p6.new_architecture.communication.response import P6Response
+from com.qxdzbc.p6.new_architecture.communication import EventReactor
+from com.qxdzbc.p6.new_architecture.communication import EventReactorContainer
+from com.qxdzbc.p6.new_architecture.communication import EventReactors
+from com.qxdzbc.p6.new_architecture.communication import \
     MutableEventReactorContainer
 from com.qxdzbc.p6.document_structure.util.for_test.TestUtils import findNewSocketPort
 

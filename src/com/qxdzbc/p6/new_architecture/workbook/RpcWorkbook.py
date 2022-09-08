@@ -17,7 +17,7 @@ from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.WorksheetWithErr
 from com.qxdzbc.p6.new_architecture.worksheet.RpcWorksheet import RpcWorksheet
 from com.qxdzbc.p6.proto.CommonProtos_pb2 import SingleSignalResponseProto
 
-from com.qxdzbc.p6.document_structure.communication.event.data_structure.SingleSignalResponse import \
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.SingleSignalResponse import \
     SingleSignalResponse
 from com.qxdzbc.p6.document_structure.util.CommonError import CommonErrors
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
