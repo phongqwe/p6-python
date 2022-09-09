@@ -16,7 +16,7 @@ from com.qxdzbc.p6.proto import CommonProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_pr
 from com.qxdzbc.p6.proto import DocProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n(com/qxdzbc/p6/proto/WorkbookProtos.proto\x12\x13\x63om.qxdzbc.p6.proto\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\x1a#com/qxdzbc/p6/proto/DocProtos.proto\"v\n\x1e\x43reateNewWorksheetRequestProto\x12:\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x18\n\x10newWorksheetName\x18\x02 \x01(\t\"\xc4\x01\n\x1f\x43reateNewWorksheetResponseProto\x12:\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x18\n\x10newWorksheetName\x18\x02 \x01(\t\x12\x0f\n\x07isError\x18\x03 \x01(\x08\x12:\n\x0b\x65rrorReport\x18\x04 \x01(\x0b\x32%.com.qxdzbc.p6.proto.ErrorReportProto\"r\n\x1b\x44\x65leteWorksheetRequestProto\x12:\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x17\n\x0ftargetWorksheet\x18\x02 \x01(\t\"\xc0\x01\n\x1c\x44\x65leteWorksheetResponseProto\x12:\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x17\n\x0ftargetWorksheet\x18\x02 \x01(\t\x12\x0f\n\x07isError\x18\x03 \x01(\x08\x12:\n\x0b\x65rrorReport\x18\x04 \x01(\x0b\x32%.com.qxdzbc.p6.proto.ErrorReportProto\"\xc8\x02\n!WorkbookUpdateCommonResponseProto\x12\x0f\n\x07isError\x18\x01 \x01(\x08\x12?\n\x0b\x65rrorReport\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.ErrorReportProtoH\x00\x88\x01\x01\x12?\n\x0bworkbookKey\x18\x03 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProtoH\x01\x88\x01\x01\x12<\n\x0bnewWorkbook\x18\x04 \x01(\x0b\x32\".com.qxdzbc.p6.proto.WorkbookProtoH\x02\x88\x01\x01\x12\x15\n\x08windowId\x18\x05 \x01(\tH\x03\x88\x01\x01\x42\x0e\n\x0c_errorReportB\x0e\n\x0c_workbookKeyB\x0e\n\x0c_newWorkbookB\x0b\n\t_windowId\"d\n\x18SaveWorkbookRequestProto\x12:\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x0c\n\x04path\x18\x02 \x01(\t\"\xb2\x01\n\x19SaveWorkbookResponseProto\x12\x0f\n\x07isError\x18\x01 \x01(\x08\x12:\n\x0b\x65rrorReport\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.ErrorReportProto\x12:\n\x0bworkbookKey\x18\x03 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x0c\n\x04path\x18\x04 \x01(\tb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n(com/qxdzbc/p6/proto/WorkbookProtos.proto\x12\x13\x63om.qxdzbc.p6.proto\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\x1a#com/qxdzbc/p6/proto/DocProtos.proto\"\x90\x01\n\x1e\x43reateNewWorksheetRequestProto\x12:\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x1d\n\x10newWorksheetName\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\x13\n\x11_newWorksheetName\"\xc4\x01\n\x1f\x43reateNewWorksheetResponseProto\x12:\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x18\n\x10newWorksheetName\x18\x02 \x01(\t\x12\x0f\n\x07isError\x18\x03 \x01(\x08\x12:\n\x0b\x65rrorReport\x18\x04 \x01(\x0b\x32%.com.qxdzbc.p6.proto.ErrorReportProto\"r\n\x1b\x44\x65leteWorksheetRequestProto\x12:\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x17\n\x0ftargetWorksheet\x18\x02 \x01(\t\"\xc0\x01\n\x1c\x44\x65leteWorksheetResponseProto\x12:\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x17\n\x0ftargetWorksheet\x18\x02 \x01(\t\x12\x0f\n\x07isError\x18\x03 \x01(\x08\x12:\n\x0b\x65rrorReport\x18\x04 \x01(\x0b\x32%.com.qxdzbc.p6.proto.ErrorReportProto\"\xc8\x02\n!WorkbookUpdateCommonResponseProto\x12\x0f\n\x07isError\x18\x01 \x01(\x08\x12?\n\x0b\x65rrorReport\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.ErrorReportProtoH\x00\x88\x01\x01\x12?\n\x0bworkbookKey\x18\x03 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProtoH\x01\x88\x01\x01\x12<\n\x0bnewWorkbook\x18\x04 \x01(\x0b\x32\".com.qxdzbc.p6.proto.WorkbookProtoH\x02\x88\x01\x01\x12\x15\n\x08windowId\x18\x05 \x01(\tH\x03\x88\x01\x01\x42\x0e\n\x0c_errorReportB\x0e\n\x0c_workbookKeyB\x0e\n\x0c_newWorkbookB\x0b\n\t_windowId\"d\n\x18SaveWorkbookRequestProto\x12:\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x0c\n\x04path\x18\x02 \x01(\t\"\xb2\x01\n\x19SaveWorkbookResponseProto\x12\x0f\n\x07isError\x18\x01 \x01(\x08\x12:\n\x0b\x65rrorReport\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.ErrorReportProto\x12:\n\x0bworkbookKey\x18\x03 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x0c\n\x04path\x18\x04 \x01(\tb\x06proto3')
 
 
 
@@ -79,18 +79,18 @@ _sym_db.RegisterMessage(SaveWorkbookResponseProto)
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _CREATENEWWORKSHEETREQUESTPROTO._serialized_start=142
-  _CREATENEWWORKSHEETREQUESTPROTO._serialized_end=260
-  _CREATENEWWORKSHEETRESPONSEPROTO._serialized_start=263
-  _CREATENEWWORKSHEETRESPONSEPROTO._serialized_end=459
-  _DELETEWORKSHEETREQUESTPROTO._serialized_start=461
-  _DELETEWORKSHEETREQUESTPROTO._serialized_end=575
-  _DELETEWORKSHEETRESPONSEPROTO._serialized_start=578
-  _DELETEWORKSHEETRESPONSEPROTO._serialized_end=770
-  _WORKBOOKUPDATECOMMONRESPONSEPROTO._serialized_start=773
-  _WORKBOOKUPDATECOMMONRESPONSEPROTO._serialized_end=1101
-  _SAVEWORKBOOKREQUESTPROTO._serialized_start=1103
-  _SAVEWORKBOOKREQUESTPROTO._serialized_end=1203
-  _SAVEWORKBOOKRESPONSEPROTO._serialized_start=1206
-  _SAVEWORKBOOKRESPONSEPROTO._serialized_end=1384
+  _CREATENEWWORKSHEETREQUESTPROTO._serialized_start=143
+  _CREATENEWWORKSHEETREQUESTPROTO._serialized_end=287
+  _CREATENEWWORKSHEETRESPONSEPROTO._serialized_start=290
+  _CREATENEWWORKSHEETRESPONSEPROTO._serialized_end=486
+  _DELETEWORKSHEETREQUESTPROTO._serialized_start=488
+  _DELETEWORKSHEETREQUESTPROTO._serialized_end=602
+  _DELETEWORKSHEETRESPONSEPROTO._serialized_start=605
+  _DELETEWORKSHEETRESPONSEPROTO._serialized_end=797
+  _WORKBOOKUPDATECOMMONRESPONSEPROTO._serialized_start=800
+  _WORKBOOKUPDATECOMMONRESPONSEPROTO._serialized_end=1128
+  _SAVEWORKBOOKREQUESTPROTO._serialized_start=1130
+  _SAVEWORKBOOKREQUESTPROTO._serialized_end=1230
+  _SAVEWORKBOOKRESPONSEPROTO._serialized_start=1233
+  _SAVEWORKBOOKRESPONSEPROTO._serialized_end=1411
 # @@protoc_insertion_point(module_scope)

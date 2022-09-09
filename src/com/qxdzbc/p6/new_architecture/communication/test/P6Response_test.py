@@ -1,8 +1,8 @@
 import unittest
 
-from com.qxdzbc.p6.new_architecture.communication import P6Events
-from com.qxdzbc.p6.new_architecture.communication.msg import P6MessageHeader
-from com.qxdzbc.p6.new_architecture.communication.response import P6Response
+from com.qxdzbc.p6.new_architecture.communication.msg.P6MessageHeader import P6MessageHeader
+from com.qxdzbc.p6.new_architecture.communication.msg.P6Event import P6Event
+from com.qxdzbc.p6.new_architecture.communication.response.P6Response import P6Response
 
 
 class P6Response_test(unittest.TestCase):
@@ -10,7 +10,7 @@ class P6Response_test(unittest.TestCase):
     def setUp(self) -> None:
         super().setUp()
         self.r = P6Response(
-            header = P6MessageHeader("id", P6Events.Cell.Update.event),
+            header = P6MessageHeader("id", P6Event("e1","event 1")),
             data = b"data 123",
             status = P6Response.Status.OK
         )

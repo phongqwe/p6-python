@@ -2,8 +2,6 @@ import unittest
 
 from com.qxdzbc.p6.document_structure.app.GlobalScope import setIPythonGlobals
 from com.qxdzbc.p6.document_structure.app.TopLevel import *
-from com.qxdzbc.p6.new_architecture.communication import EventReactors
-from com.qxdzbc.p6.new_architecture.communication import P6Events
 
 
 class UserFunctions_test(unittest.TestCase):
@@ -18,20 +16,6 @@ class UserFunctions_test(unittest.TestCase):
         restartApp()
         getApp().createNewWorkbook("Book1")
         getActiveWorkbookRs().createNewWorksheet("Sheet1")
-
-    def test_trigger_event_on_cell(self):
-        app: App = getApp()
-        self.a = 0
-
-        def onCellChange(dt):
-            self.a += 1
-
-        app.eventNotifierContainer.addReactor(
-            P6Events.Cell.Update.event,
-            EventReactors.makeBasicReactor(onCellChange))
-        c1 = cell("A1")
-        c1.value = 123
-        self.assertEqual(1, self.a)
 
     def test_B(self):
         cell("A1").value = 123.0

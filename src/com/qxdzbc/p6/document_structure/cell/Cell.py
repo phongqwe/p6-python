@@ -7,18 +7,20 @@ from com.qxdzbc.p6.document_structure.cell.CellContent import CellContent
 from com.qxdzbc.p6.document_structure.cell.address.CellAddress import CellAddress
 from com.qxdzbc.p6.document_structure.cell.util.CellUtils import CellUtils
 from com.qxdzbc.p6.document_structure.util.CanCheckEmpty import CanCheckEmpty
+from com.qxdzbc.p6.document_structure.util.ToProto import ToProto, P
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.document_structure.util.result.Result import Result
 from com.qxdzbc.p6.document_structure.util.result.Results import Results
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellId import CellId
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellValue import CellValue
+from com.qxdzbc.p6.proto.DocProtos_pb2 import CellProto
 
 if TYPE_CHECKING:
     pass
 
 
-class Cell(CanCheckEmpty,ABC):
+class Cell(CanCheckEmpty,ToProto[CellProto],ABC):
     """
     Cell interface
     """
@@ -152,3 +154,15 @@ class Cell(CanCheckEmpty,ABC):
     @content.setter
     def content(self,newContent:CellContent):
         raise NotImplementedError()
+
+    def toProtoObj(self) -> CellProto:
+        v = None
+        if self.cellValue:
+            v = self.cellValue.toProtoObj()
+        f = self.formula
+        return CellProto(
+            value = v,
+            formula = f,
+            address = self.address.toProtoObj()
+        )
+

@@ -1,6 +1,7 @@
 import uuid
 
 from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
+from com.qxdzbc.p6.new_architecture.communication.msg.P6Event import P6Event
 from com.qxdzbc.p6.new_architecture.communication.msg.P6Message import P6Message
 from com.qxdzbc.p6.new_architecture.communication.msg.P6MessageHeader import P6MessageHeader
 from com.qxdzbc.p6.new_architecture.communication.response.P6Response import P6Response

@@ -2,8 +2,6 @@ from abc import ABC
 from pathlib import Path
 from typing import Optional, Union, Any
 
-from com.qxdzbc.p6.document_structure.file.loader.P6FileLoader import P6FileLoader
-from com.qxdzbc.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
 from com.qxdzbc.p6.document_structure.script.ScriptContainer import ScriptContainer
 from com.qxdzbc.p6.document_structure.script.ScriptEntry import ScriptEntry
 from com.qxdzbc.p6.document_structure.script.SimpleScriptEntry import SimpleScriptEntry
@@ -15,10 +13,8 @@ from com.qxdzbc.p6.document_structure.util.result.Result import Result
 from com.qxdzbc.p6.document_structure.workbook.WorkBook import Workbook
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.document_structure.worksheet.Worksheet import Worksheet
-from com.qxdzbc.p6.new_architecture.communication import EventReactorContainer
-from com.qxdzbc.p6.new_architecture.communication import EventServer
-from com.qxdzbc.p6.new_architecture.communication import SocketProvider
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.range import RangeId
+from com.qxdzbc.p6.new_architecture.communication.SocketProvider import SocketProvider
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.range.RangeId import RangeId
 
 
 class App(ABC):
@@ -70,14 +66,6 @@ class App(ABC):
 
     @property
     def wbContainer(self) -> WorkbookContainer:
-        raise NotImplementedError()
-
-    @property
-    def fileSaver(self) -> P6FileSaver:
-        raise NotImplementedError()
-
-    @property
-    def fileLoader(self) -> P6FileLoader:
         raise NotImplementedError()
 
     @property
@@ -251,21 +239,9 @@ class App(ABC):
         raise NotImplementedError()
 
     @property
-    def socketProvider(self) -> SocketProvider | None:
+    def socketProvider(self) -> Optional[SocketProvider]:
         raise NotImplementedError()
 
     @socketProvider.setter
-    def socketProvider(self, socketProvider: SocketProvider | None):
-        raise NotImplementedError()
-
-    @property
-    def eventNotifierContainer(self) -> EventReactorContainer:
-        raise NotImplementedError()
-
-    @property
-    def eventServer(self) -> EventServer:
-        raise NotImplementedError()
-
-    def _makeEventWb(self, workbook: Workbook | Optional[Workbook]) -> Optional[EventWorkbook]:
-        """wrap a workbook inside an EventWorkbook, give it event callbacks"""
+    def socketProvider(self, socketProvider: Optional[SocketProvider] ):
         raise NotImplementedError()

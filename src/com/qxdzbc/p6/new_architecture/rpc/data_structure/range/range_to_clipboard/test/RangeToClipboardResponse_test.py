@@ -1,33 +1,16 @@
 import unittest
 
-from com.qxdzbc.p6.new_architecture.data_structure import \
-    RangeToClipboardResponse
-
 from com.qxdzbc.p6.document_structure.range.address.RangeAddresses import RangeAddresses
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
-from com.qxdzbc.p6.new_architecture.communication import P6EventTableImp
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.common.ErrorIndicator import \
     ErrorIndicator
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.range.RangeId import RangeId
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.range.range_to_clipboard.RangeToClipboardResponse import \
+    RangeToClipboardResponse
 from com.qxdzbc.p6.proto.RangeProtos_pb2 import RangeToClipboardResponseProto
 
 
 class RangeToClipboardResponse_test(unittest.TestCase):
-
-    def test_toEventData(self):
-        o = RangeToClipboardResponse(
-            errorIndicator = ErrorIndicator.noError(),
-            rangeId = RangeId(
-                rangeAddress = RangeAddresses.fromLabel("A1:B3"),
-                workbookKey = WorkbookKeys.fromNameAndPath(""),
-                worksheetName = "abc"
-            ),
-            windowId = "asd"
-        )
-
-        edt = o.toEventData()
-        self.assertEqual(P6EventTableImp.i().getEventForClazz(RangeToClipboardResponse),edt.event)
-        self.assertEqual(o, edt.data)
 
     def test_toProto(self):
         o = RangeToClipboardResponse(

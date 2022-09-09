@@ -15,10 +15,10 @@ class GetAllWorksheetsResponse(ToProto[GetAllWorksheetsResponseProto]):
     errorReport: Optional[ErrorReport] = None
 
     @staticmethod
-    def fromProto(proto: GetAllWorksheetsResponseProto, wb: Workbook):
+    def fromProto(proto: GetAllWorksheetsResponseProto):
         l = []
         for wsProto in proto.worksheets:
-            l.append(Worksheets.fromProto(wsProto, wb))
+            l.append(Worksheets.fromProto(wsProto))
         err = None
         if proto.HasField("errorReport"):
             err = ErrorReport.fromProto(proto.errorReport)

@@ -6,8 +6,9 @@ import zmq
 from com.qxdzbc.p6.document_structure.cell.DataCell import DataCell
 from com.qxdzbc.p6.document_structure.cell.address.CellIndex import CellIndex
 from com.qxdzbc.p6.document_structure.util.for_test.TestUtils import findNewSocketPort
-from com.qxdzbc.p6.new_architecture.communication import P6Events
-from com.qxdzbc.p6.new_architecture.communication.msg import P6MessageHeader
+from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
+from com.qxdzbc.p6.new_architecture.communication.msg.P6MessageHeader import P6MessageHeader
+from com.qxdzbc.p6.new_architecture.communication.msg.P6Events import P6Events
 from com.qxdzbc.p6.new_architecture.communication.msg.P6Message import P6Message
 from com.qxdzbc.p6.new_architecture.communication.sender.MessageSender import MessageSender
 from com.qxdzbc.p6.proto.DocProtos_pb2 import CellProto
@@ -45,9 +46,10 @@ class MessageSenderREQTest(unittest.TestCase):
         header = P6MessageHeader("id1", P6Events.Cell.Update.event),
         data = DataCell(
             value = "cell value",
-            script = "cell script",
             formula = "=1234",
-            address = CellIndex(1, 34)
+            address = CellIndex(1, 34),
+            wsName = "ws1",
+            wbKey = WorkbookKeys.fromNameAndPath("wb")
         )
     )
 

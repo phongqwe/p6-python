@@ -7,6 +7,6 @@ from com.qxdzbc.p6.proto.DocProtos_pb2 import WorksheetProto
 
 class Worksheets:
     @staticmethod
-    def fromProto(wsProto:WorksheetProto,stubProvider:RpcStubProvider):
-        ws = RpcWorksheet(name = wsProto.name,wbKey = WorkbookKeys.fromProto(wsProto.wbKey),stubProvider = stubProvider)
+    def fromProto(wsProto:WorksheetProto):
+        ws = RpcWorksheet(name = wsProto.name,wbKey = WorkbookKeys.fromProto(wsProto.wbKey))
         return ws

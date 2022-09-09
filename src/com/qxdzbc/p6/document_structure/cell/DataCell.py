@@ -23,12 +23,10 @@ class DataCell(Cell):
                  wbKey: WorkbookKey,
                  value: Any = None,
                  formula: str = None,
-                 script: str = None,
                  ):
         self._wsName = wsName
         self._wbKey = wbKey
         self.__value: Any = value
-        self.__script: str = script
         self.__formula: str = formula
         self.__scriptAlreadyRun: bool = False
         self.__addr: CellAddress = address
@@ -111,7 +109,7 @@ class DataCell(Cell):
                 if isinstance(self.__value, str):
                     cellValueProto.vStr = self.__value
                 if isinstance(self.__value, int) or isinstance(self.__value, float):
-                    cellValueProto.vNum = self.__value
+                    cellValueProto.num = self.__value
 
                 cellProto.value.CopyFrom(cellValueProto)
 

@@ -15,13 +15,13 @@ class Cells_test(unittest.TestCase):
 
         proto = Cell2Proto(
             id = CellId(
-                cellAddress = address.toProtoObj(),
+                cellAddress = address,
                 wbKey = WorkbookKeys.fromNameAndPath("wb1"),
                 wsName = "S1"
-            ),
+            ).toProtoObj(),
             value = CellValueProto(str="123qwe"),
             formula = "formula z",
         )
 
-        cell = Cells.fromProto(proto,MagicMock())
-        self.assertEqual(proto.id,cell.id)
+        cell = Cells.fromProto2(proto)
+        self.assertEqual(proto.id,cell.id.toProtoObj())

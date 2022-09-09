@@ -2,12 +2,8 @@ from abc import ABC
 from pathlib import Path
 from typing import Optional, Union, Any
 
-from com.qxdzbc.p6.document_structure.file.loader.P6FileLoader import P6FileLoader
-from com.qxdzbc.p6.document_structure.file.loader.P6FileLoaderErrors import P6FileLoaderErrors
-from com.qxdzbc.p6.document_structure.file.saver.P6FileSaver import P6FileSaver
 from com.qxdzbc.p6.document_structure.script.ScriptEntry import ScriptEntry
 from com.qxdzbc.p6.document_structure.script.SimpleScriptEntry import SimpleScriptEntry
-from com.qxdzbc.p6.document_structure.workbook.EventWorkbook import EventWorkbook
 
 from com.qxdzbc.p6.document_structure.app.App import App
 from com.qxdzbc.p6.document_structure.app.errors.AppErrors import AppErrors
@@ -158,28 +154,28 @@ class BaseApp(App, ABC):
         saveRs: Result[Any, ErrorReport] = self.saveWorkbookAtPathRs(nameOrIndexOrKey, filePath)
         Results.extractOrRaise(saveRs)
 
-    def saveWorkbookAtPathRs(self,
-                             nameOrIndexOrKey: Union[int, str, WorkbookKey],
-                             filePath: str | Path) -> Result[Workbook , ErrorReport]:
-        saver: P6FileSaver = self.fileSaver
-        path = Path(filePath)
-        getWbRs: Result[Workbook, ErrorReport] = self.getBareWorkbookRs(nameOrIndexOrKey)
-        if getWbRs.isOk():
-            wb: Workbook = getWbRs.value
-            oldKey = wb.workbookKey
-            saveResult = saver.saveRs(wb, path)
-            if saveResult.isOk():
-                newKey = WorkbookKeyImp(str(path.name), path)
-                if newKey != wb.workbookKey:
-                    self.wbContainer.removeWorkbook(oldKey)
-                    wb.workbookKey = newKey
-                    self.wbContainer.addWorkbook(wb.rootWorkbook)
-                    wb.refreshScript()
-                return Ok(wb)
-            else:
-                return Err(saveResult.err)
-        else:
-            return getWbRs
+    # def saveWorkbookAtPathRs(self,
+    #                          nameOrIndexOrKey: Union[int, str, WorkbookKey],
+    #                          filePath: str | Path) -> Result[Workbook , ErrorReport]:
+        # saver: P6FileSaver = self.fileSaver
+        # path = Path(filePath)
+        # getWbRs: Result[Workbook, ErrorReport] = self.getBareWorkbookRs(nameOrIndexOrKey)
+        # if getWbRs.isOk():
+        #     wb: Workbook = getWbRs.value
+        #     oldKey = wb.workbookKey
+        #     saveResult = saver.saveRs(wb, path)
+        #     if saveResult.isOk():
+        #         newKey = WorkbookKeyImp(str(path.name), path)
+        #         if newKey != wb.workbookKey:
+        #             self.wbContainer.removeWorkbook(oldKey)
+        #             wb.workbookKey = newKey
+        #             self.wbContainer.addWorkbook(wb.rootWorkbook)
+        #             wb.refreshScript()
+        #         return Ok(wb)
+        #     else:
+        #         return Err(saveResult.err)
+        # else:
+        #     return getWbRs
 
     def saveWorkbook(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]):
         saveRs = self.saveWorkbookRs(nameOrIndexOrKey)
@@ -199,31 +195,31 @@ class BaseApp(App, ABC):
         loadRs: Result[Workbook, ErrorReport] = self.loadWorkbookRs(path)
         return Results.extractOrRaise(loadRs)
 
-    def loadWorkbookRs(self, filePath: Union[str, Path]) -> Result[Workbook, ErrorReport]:
-        loader: P6FileLoader = self.fileLoader
-        path = Path(filePath)
-        wbKey = WorkbookKeyImp(str(path.name), path)
-        wbRs = self.getWorkbookRs(wbKey)
-        alreadyHasThisWorkbook = wbRs.isOk()
-        if not alreadyHasThisWorkbook:
-            loadResult: Result[Workbook, ErrorReport] = loader.loadRs(filePath)
-            if loadResult.isOk():
-                newWb: Workbook = loadResult.value
-                eventNewWb = self._makeEventWb(newWb)
-                self.wbContainer.addWorkbook(newWb)
-                # the file may have been move, therefore has different workbook key,
-                # must refresh script because the old script contains code for the old workbook key
-                newWb.refreshScript()
-                return Ok(eventNewWb)
-            else:
-                return loadResult
-        else:
-            return Err(
-                ErrorReport(
-                    header = P6FileLoaderErrors.AlreadyLoad.header,
-                    data = P6FileLoaderErrors.AlreadyLoad.Data(path, None)
-                )
-            )
+    # def loadWorkbookRs(self, filePath: Union[str, Path]) -> Result[Workbook, ErrorReport]:
+    #     loader: P6FileLoader = self.fileLoader
+    #     path = Path(filePath)
+    #     wbKey = WorkbookKeyImp(str(path.name), path)
+    #     wbRs = self.getWorkbookRs(wbKey)
+    #     alreadyHasThisWorkbook = wbRs.isOk()
+    #     if not alreadyHasThisWorkbook:
+    #         loadResult: Result[Workbook, ErrorReport] = loader.loadRs(filePath)
+    #         if loadResult.isOk():
+    #             newWb: Workbook = loadResult.value
+    #             eventNewWb = self._makeEventWb(newWb)
+    #             self.wbContainer.addWorkbook(newWb)
+    #             # the file may have been move, therefore has different workbook key,
+    #             # must refresh script because the old script contains code for the old workbook key
+    #             newWb.refreshScript()
+    #             return Ok(eventNewWb)
+    #         else:
+    #             return loadResult
+    #     else:
+    #         return Err(
+    #             ErrorReport(
+    #                 header = P6FileLoaderErrors.AlreadyLoad.header,
+    #                 data = P6FileLoaderErrors.AlreadyLoad.Data(path, None)
+    #             )
+    #         )
 
     def refreshContainer(self):
         bookList = self.wbContainer.books()
@@ -238,15 +234,3 @@ class BaseApp(App, ABC):
         if not rt:
             rt = "No workbook"
         print(rt)
-
-    def _makeEventWb(self, workbook: Workbook | Optional[Workbook]) -> Optional[EventWorkbook]:
-        """create eventful workbook"""
-        if workbook is not None:
-            if isinstance(workbook, EventWorkbook):
-                return workbook
-            else:
-                return EventWorkbook.create(
-                    innerWorkbook = workbook,
-                    reactorContainer = self.eventNotifierContainer)
-        else:
-            return None

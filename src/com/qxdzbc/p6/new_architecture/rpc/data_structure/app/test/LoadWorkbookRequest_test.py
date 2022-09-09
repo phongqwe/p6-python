@@ -1,9 +1,7 @@
 import unittest
 from pathlib import Path
 
-from com.qxdzbc.p6.new_architecture.data_structure.app_event import \
-    LoadWorkbookRequest
-
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.LoadWorkbookRequest import LoadWorkbookRequest
 from com.qxdzbc.p6.proto.AppEventProtos_pb2 import LoadWorkbookRequestProto
 
 

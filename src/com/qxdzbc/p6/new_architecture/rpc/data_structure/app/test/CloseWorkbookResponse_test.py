@@ -1,12 +1,10 @@
 import unittest
 
-from com.qxdzbc.p6.new_architecture.data_structure.app_event import \
-    CloseWorkbookResponse
-
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorHeader import ErrorHeader
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.document_structure.util.result.Ok import Ok
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.CloseWorkbookResponse import CloseWorkbookResponse
 
 
 class CloseWorkbookResponse_test(unittest.TestCase):

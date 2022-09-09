@@ -1,10 +1,8 @@
 import unittest
 from pathlib import Path
 
-from com.qxdzbc.p6.new_architecture.data_structure.app_event import \
-    SetActiveWorksheetRequest
-
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.SetActiveWorksheetRequest import SetActiveWorksheetRequest
 from com.qxdzbc.p6.proto.AppEventProtos_pb2 import SetActiveWorksheetRequestProto
 
 

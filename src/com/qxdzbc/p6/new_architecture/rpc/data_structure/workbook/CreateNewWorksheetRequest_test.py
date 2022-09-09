@@ -8,16 +8,15 @@ from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.CreateNewWorkshe
 class CreateNewWorksheetRequest_test(unittest.TestCase):
     def test_toProto(self):
         o=CreateNewWorksheetRequest(
-            wbKey = WorkbookKeys.fromNameAndPath("q"),
+            workbookKey = WorkbookKeys.fromNameAndPath("q"),
             newWorksheetName = "qwe"
         )
         p = o.toProtoObj()
-        self.assertEqual(o.wbKey.toProtoObj(),p.wbKey)
+        self.assertEqual(o.workbookKey.toProtoObj(),p.workbookKey)
         self.assertEqual(o.newWorksheetName,p.newWorksheetName)
 
         o = CreateNewWorksheetRequest(
-            wbKey = WorkbookKeys.fromNameAndPath("q"),
-            
+            workbookKey = WorkbookKeys.fromNameAndPath("q"),
         )
         p = o.toProtoObj()
         self.assertFalse(p.HasField("newWorksheetName"))

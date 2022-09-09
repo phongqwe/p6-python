@@ -1,5 +1,4 @@
-
-from com.qxdzbc.p6.new_architecture.data_structure.workbook_event import \
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.WorkbookUpdateCommonResponse import \
     WorkbookUpdateCommonResponse
 
 

@@ -5,6 +5,7 @@ from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
 from com.qxdzbc.p6.document_structure.workbook.WorkBook import Workbook
 from com.qxdzbc.p6.document_structure.worksheet.Worksheet import Worksheet
 from com.qxdzbc.p6.document_structure.worksheet.Worksheets import Worksheets
+from com.qxdzbc.p6.new_architecture.rpc.StubProvider import RpcStubProvider
 from com.qxdzbc.p6.proto.rpc.workbook.WorkbooKServiceProtos_pb2 import GetWorksheetResponseProto
 
 
@@ -13,10 +14,10 @@ class GetActiveWorksheetResponse(ToProto[GetWorksheetResponseProto]):
     worksheet: Optional[Worksheet] = None
 
     @staticmethod
-    def fromProto(proto:GetWorksheetResponseProto,workbook:Workbook):
+    def fromProto(proto:GetWorksheetResponseProto):
         ws = None
         if proto.HasField("worksheet"):
-            ws = Worksheets.fromProto(proto.worksheet,workbook)
+            ws = Worksheets.fromProto(proto.worksheet)
         return GetActiveWorksheetResponse(
             worksheet = ws
         )

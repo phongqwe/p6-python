@@ -1,3 +1,5 @@
+from typing import Optional, Union
+
 import zmq
 from zmq import Socket
 
@@ -8,13 +10,15 @@ from com.qxdzbc.p6.document_structure.util.result.Ok import Ok
 from com.qxdzbc.p6.document_structure.util.result.Result import Result
 from com.qxdzbc.p6.new_architecture.communication.SocketProvider import SocketProvider
 from com.qxdzbc.p6.new_architecture.communication.msg.P6Message import P6Message
-from com.qxdzbc.p6.new_architecture.communication.response import P6Response
+from com.qxdzbc.p6.new_architecture.communication.response.P6Response import P6Response
 from com.qxdzbc.p6.new_architecture.communication.sender.MessageSenderErrors import MessageSenderErrors
 
 
 class MessageSender:
     @staticmethod
-    def sendP6MsgRes(socketProvider: SocketProvider | None, p6Msg: P6Message | P6Response):
+    def sendP6MsgRes(
+            socketProvider: Optional[SocketProvider],
+            p6Msg: Union[P6Message, P6Response]):
         """ send a p6msg/p6response """
         if socketProvider is not None:
             socket = socketProvider.notificationSocket()

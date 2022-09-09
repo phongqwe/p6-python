@@ -29,24 +29,9 @@ class BaseWorksheet(Worksheet,ABC):
         ws1 = self.rootWorksheet
         ws2 = ws2.rootWorksheet
         sameName = ws1.name == ws2.name
-        if sameName:
-            sameCellCount = ws1.cellCount == ws1.cellCount
-            if sameCellCount:
-                z = True
-                for c1 in ws1.cells:
-                    c2 = ws2.cell(c1.address)
-                    if c1 != c2:
-                        return False
+        sameWb = ws1.wbKey == ws2.wbKey
+        return sameName and sameWb
 
-                for c2 in ws2.cells:
-                    c1 = ws1.cell(c2.address)
-                    if c2 != c1:
-                        return False
-                return z
-            else:
-                return False
-        else:
-            return False
 
     @property
     def cellCount(self):

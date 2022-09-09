@@ -12,6 +12,7 @@ from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKey import WorkbookKe
 from com.qxdzbc.p6.document_structure.worksheet.BaseWorksheet import BaseWorksheet
 from com.qxdzbc.p6.document_structure.worksheet.Worksheet import Worksheet
 from com.qxdzbc.p6.new_architecture.common.RpcUtils import RpcUtils
+from com.qxdzbc.p6.new_architecture.di.RpcServiceContainer import RpcServiceContainer
 from com.qxdzbc.p6.new_architecture.rpc.StubProvider import RpcStubProvider
 from com.qxdzbc.p6.new_architecture.rpc.cell.RpcCell import RpcCell
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.BoolMsg import \
@@ -21,7 +22,7 @@ from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellId import CellId
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.SingleSignalResponse import \
     SingleSignalResponse
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.WorksheetId import WorksheetId
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.range import RangeId
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.range.RangeId import RangeId
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.RenameWorksheetRequest import RenameWorksheetRequest
 from com.qxdzbc.p6.new_architecture.rpc.range.RpcRange import RpcRange
 from com.qxdzbc.p6.new_architecture.worksheet.msg.CellCountResponse import CellCountResponse
@@ -29,6 +30,7 @@ from com.qxdzbc.p6.new_architecture.worksheet.msg.CheckContainAddressRequest imp
 from com.qxdzbc.p6.new_architecture.worksheet.msg.GetAllCellResponse import GetAllCellResponse
 from com.qxdzbc.p6.new_architecture.worksheet.msg.GetUsedRangeResponse import GetUsedRangeResponse
 from com.qxdzbc.p6.proto.CommonProtos_pb2 import SingleSignalResponseProto
+from com.qxdzbc.p6.proto.DocProtos_pb2 import WorksheetProto
 from com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService_pb2_grpc import WorkbookServiceStub
 from com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService_pb2_grpc import WorksheetServiceStub
 
@@ -39,10 +41,16 @@ class RpcWorksheet(BaseWorksheet):
             self,
             name: str,
             wbKey: WorkbookKey,
-            stubProvider: RpcStubProvider, ):
+            stubProvider: RpcStubProvider = RpcServiceContainer.insecureRpcServiceProvider()):
         self._name = name
         self._wbk = wbKey
         self._stubProvider = stubProvider
+
+    def toProtoObj(self) -> WorksheetProto:
+        return WorksheetProto(
+            name = self._name,
+            wbKey = self._wbk.toProtoObj(),
+        )
 
     @property
     def wbKey(self) -> WorkbookKey:
@@ -230,4 +238,5 @@ class RpcWorksheet(BaseWorksheet):
     def pasteDataFrameRs(self, anchorCell: CellAddress, dataFrame) -> Result[None, ErrorReport]:
         """todo make a request to update a range"""
         pass
+
 

@@ -23,10 +23,10 @@ class GetWorksheetResponse(ToProto[GetWorksheetResponseProto]):
             worksheet = ws
         )
     @staticmethod
-    def fromProto(proto:GetWorksheetResponseProto,wb:Workbook = None):
+    def fromProto(proto:GetWorksheetResponseProto):
         ws = None
         if proto.HasField("worksheet"):
-            ws = Worksheets.fromProto(proto.worksheet,wb)
+            ws = Worksheets.fromProto(proto.worksheet)
         return GetWorksheetResponse(worksheet = ws)
 
     @staticmethod

@@ -2,10 +2,8 @@ import unittest
 
 from com.qxdzbc.p6.document_structure.script.ScriptEntry import ScriptEntry
 from com.qxdzbc.p6.document_structure.script.ScriptEntryKey import ScriptEntryKey
-from com.qxdzbc.p6.new_architecture.data_structure import \
-    NewScriptRequest
-
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.script.new_script.NewScriptRequest import NewScriptRequest
 from com.qxdzbc.p6.proto.ScriptProtos_pb2 import NewScriptRequestProto
 
 

@@ -14,6 +14,7 @@ from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeyImp import Workboo
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.qxdzbc.p6.document_structure.worksheet.Worksheet import Worksheet
 from com.qxdzbc.p6.new_architecture.common.RpcUtils import RpcUtils
+from com.qxdzbc.p6.new_architecture.di.RpcServiceContainer import RpcServiceContainer
 from com.qxdzbc.p6.new_architecture.rpc.RpcErrors import RpcErrors
 from com.qxdzbc.p6.new_architecture.rpc.RpcValues import RpcValues
 from com.qxdzbc.p6.new_architecture.rpc.StubProvider import RpcStubProvider
@@ -50,7 +51,7 @@ class RpcWorkbook(Workbook):
             self,
             name: str,
             path: Optional[Path],
-            stubProvider: RpcStubProvider,
+            stubProvider: RpcStubProvider = RpcServiceContainer.insecureRpcServiceProvider()
     ):
         self.__key = WorkbookKeyImp(name, path)
         self._stubProvider = stubProvider
@@ -74,7 +75,7 @@ class RpcWorkbook(Workbook):
     def worksheets(self) -> list[Worksheet]:
         def f() -> list[Worksheet]:
             outProto = self._wbsv.getAllWorksheets(self.workbookKey.toProtoObj())
-            out = GetAllWorksheetsResponse.fromProto(outProto, self)
+            out = GetAllWorksheetsResponse.fromProto(outProto)
             return out.worksheets
 
         return self._onWbsvOk(f)
@@ -126,7 +127,7 @@ class RpcWorkbook(Workbook):
         def f() -> Optional[Worksheet]:
             wbsv = self._wbsv
             outProto: GetWorksheetResponseProto = wbsv.getActiveWorksheet(self.workbookKey.toProtoObj())
-            out = GetActiveWorksheetResponse.fromProto(outProto, self)
+            out = GetActiveWorksheetResponse.fromProto(outProto)
             if out.worksheet:
                 return out.worksheet
             else:
@@ -230,7 +231,7 @@ class RpcWorkbook(Workbook):
     def createNewWorksheetRs(self, newSheetName: Optional[str] = None) -> Result[Worksheet, ErrorReport]:
         def f() -> Result[Worksheet, ErrorReport]:
             req = CreateNewWorksheetRequest(
-                wbKey = self.__key,
+                workbookKey = self.__key,
                 newWorksheetName = newSheetName
             ).toProtoObj()
             outProto: WorksheetWithErrorReportMsgProto = self._wbsv.createNewWorksheet(request = req)
