@@ -6,7 +6,7 @@ from com.qxdzbc.p6.document_structure.util.report.error.ErrorHeader import Error
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.SetActiveWorksheetResponse import SetActiveWorksheetResponse
-from com.qxdzbc.p6.proto.AppEventProtos_pb2 import SetActiveWorksheetResponseProto
+from com.qxdzbc.p6.proto.AppProtos_pb2 import SetActiveWorksheetResponseProto
 
 
 class SetActiveWorksheetResponse_test(unittest.TestCase):

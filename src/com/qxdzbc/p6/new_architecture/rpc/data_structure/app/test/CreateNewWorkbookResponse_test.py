@@ -9,22 +9,18 @@ class CreateNewWorkbookResponse_test(unittest.TestCase):
 
     def test_toProtoObj(self):
         o = CreateNewWorkbookResponse(
-            isError = False
         )
         proto = o.toProtoObj()
-        self.assertEqual(o.isError, proto.isError)
         self.assertFalse(proto.HasField("errorReport"))
-        self.assertFalse(proto.HasField("workbook"))
+        self.assertFalse(proto.HasField("wbKey"))
         self.assertFalse(proto.HasField("windowId"))
 
     def test_toProtoObj_errorCase(self):
         er = AppErrors.WorkbookNotExist.report("qbc")
         o = CreateNewWorkbookResponse(
-            isError = False,
             errorReport = er
         )
         proto = o.toProtoObj()
-        self.assertEqual(o.isError, proto.isError)
         self.assertEqual(o.errorReport.toProtoObj(),proto.errorReport)
 
     # def test_toProtoObj_stdCase(self):
@@ -38,14 +34,12 @@ class CreateNewWorkbookResponse_test(unittest.TestCase):
 
     def test_toProtoObj_validWindowId(self):
         o = CreateNewWorkbookResponse(
-            isError = False,
             windowId = "abc"
         )
         proto = o.toProtoObj()
         self.assertEqual(o.windowId, proto.windowId)
 
         o2 = CreateNewWorkbookResponse(
-            isError = False,
             windowId = None
         )
         proto2 = o2.toProtoObj()

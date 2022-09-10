@@ -2,7 +2,7 @@ import unittest
 from pathlib import Path
 
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.LoadWorkbookRequest import LoadWorkbookRequest
-from com.qxdzbc.p6.proto.AppEventProtos_pb2 import LoadWorkbookRequestProto
+from com.qxdzbc.p6.proto.AppProtos_pb2 import LoadWorkbookRequestProto
 
 
 class LoadWorkbookRequest_test(unittest.TestCase):

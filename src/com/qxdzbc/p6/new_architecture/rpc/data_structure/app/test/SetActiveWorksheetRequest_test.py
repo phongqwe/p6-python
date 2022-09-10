@@ -3,7 +3,7 @@ from pathlib import Path
 
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.SetActiveWorksheetRequest import SetActiveWorksheetRequest
-from com.qxdzbc.p6.proto.AppEventProtos_pb2 import SetActiveWorksheetRequestProto
+from com.qxdzbc.p6.proto.AppProtos_pb2 import SetActiveWorksheetRequestProto
 
 
 class SetActiveWorksheetRequest_test(unittest.TestCase):

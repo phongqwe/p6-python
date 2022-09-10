@@ -90,16 +90,14 @@ def cell(address: Union[str, CellAddress, Tuple[int, int]]) -> Optional[Cell]:
         return None
     return sheet.cell(address)
 
-
 def getWorkbook(nameOrIndexOrKey: Union[str, int, WorkbookKey]) -> Optional[Workbook]:
     app: App = getApp()
     wb = app.getWorkbook(nameOrIndexOrKey)
     return wb
 
-
-def listWorkbook():
+def printWorkbookSummary():
     app = getApp()
-    app.listWorkbook()
+    app.printWorkbookSummary()
 
 
 def listWorksheet(workBookNameOrIndexOrKey: Union[str, int, WorkbookKey, None] = None) -> str:

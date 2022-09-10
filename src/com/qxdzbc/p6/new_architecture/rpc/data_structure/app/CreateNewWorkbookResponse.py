@@ -1,29 +1,45 @@
+from dataclasses import dataclass
 from typing import Optional
 
 from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
-from com.qxdzbc.p6.document_structure.workbook.WorkBook import Workbook
-from com.qxdzbc.p6.proto.AppEventProtos_pb2 import CreateNewWorkbookResponseProto
+from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
+from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
+from com.qxdzbc.p6.proto.AppProtos_pb2 import CreateNewWorkbookResponseProto
 
 
-class CreateNewWorkbookResponse( ToProto[CreateNewWorkbookResponseProto]):
-
-    def __init__(
-            self, isError: bool,
-            errorReport: Optional[ErrorReport] = None,
-            workbook: Optional[Workbook] = None,
-            windowId: Optional[str] = None):
-        self.windowId = windowId
-        self.workbook = workbook
-        self.errorReport = errorReport
-        self.isError = isError
+@dataclass
+class CreateNewWorkbookResponse(ToProto[CreateNewWorkbookResponseProto]):
+    errorReport: Optional[ErrorReport] = None
+    wbKey: Optional[WorkbookKey] = None
+    windowId: Optional[str] = None
 
     def toProtoObj(self) -> CreateNewWorkbookResponseProto:
-        proto = CreateNewWorkbookResponseProto(isError = self.isError)
+        proto = CreateNewWorkbookResponseProto()
         if self.errorReport:
             proto.errorReport.CopyFrom(self.errorReport.toProtoObj())
-        if self.workbook:
-            proto.workbook.CopyFrom(self.workbook.toProtoObj())
+        if self.wbKey:
+            proto.wbKey.CopyFrom(self.wbKey.toProtoObj())
         if self.windowId:
             proto.windowId = self.windowId
         return proto
+
+    def isErr(self)->bool:
+        return self.errorReport is not None
+
+    @staticmethod
+    def fromProto(proto:CreateNewWorkbookResponseProto):
+        e = None
+        wbk = None
+        wid = None
+        if proto.HasField("errorReport"):
+            e = ErrorReport.fromProto(proto.errorReport)
+        if proto.HasField("wbKey"):
+            wbk = WorkbookKeys.fromProto(proto.wbKey)
+        if proto.HasField("windowId"):
+            wid = proto.windowId
+        return CreateNewWorkbookResponse(
+            errorReport = e,
+            wbKey = wbk,
+            windowId = wid,
+        )

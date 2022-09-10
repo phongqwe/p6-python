@@ -6,7 +6,6 @@ from com.qxdzbc.p6.document_structure.script.ScriptEntry import ScriptEntry
 from com.qxdzbc.p6.document_structure.script.SimpleScriptEntry import SimpleScriptEntry
 
 from com.qxdzbc.p6.document_structure.app.App import App
-from com.qxdzbc.p6.document_structure.app.errors.AppErrors import AppErrors
 from com.qxdzbc.p6.document_structure.range.Range import Range
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.document_structure.util.result.Err import Err
@@ -15,7 +14,6 @@ from com.qxdzbc.p6.document_structure.util.result.Result import Result
 from com.qxdzbc.p6.document_structure.util.result.Results import Results
 from com.qxdzbc.p6.document_structure.workbook.WorkBook import Workbook
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
-from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeyImp import WorkbookKeyImp
 from com.qxdzbc.p6.document_structure.worksheet.Worksheet import Worksheet
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.range import RangeId
 
@@ -81,8 +79,8 @@ class BaseApp(App, ABC):
         createRs: Result[Workbook, ErrorReport] = self.createNewWorkbookRs(name)
         return Results.extractOrRaise(createRs)
 
-    def setActiveWorkbook(self, indexOrNameOrKey: Union[int, str, WorkbookKey]):
-        setRs = self.setActiveWorkbookRs(indexOrNameOrKey)
+    def setActiveWorkbook(self, wbKey: Union[int, str, WorkbookKey]):
+        setRs = self.setActiveWorkbookRs(wbKey)
         return Results.extractOrRaise(setRs)
 
     def getWorkbookByIndex(self, index: int) -> Workbook:
@@ -102,39 +100,14 @@ class BaseApp(App, ABC):
         rs: Result[Workbook, ErrorReport] = self.getWorkbookRs(key)
         return Results.extractOrNone(rs)
 
-    def getWorkbookRs(self, key: Union[str, int, WorkbookKey]) -> Result[Workbook, ErrorReport]:
-        rs = self.getBareWorkbookRs(key)
-        if rs.isOk():
-            return Ok(self._makeEventWb(rs.value))
-        else:
-            return rs
-
-    def getBareWorkbookRs(self, key: Union[str, int, WorkbookKey]) -> Result[Workbook, ErrorReport]:
-        wb = self.wbContainer.getWorkbook(key)
-        if wb is not None:
-            return Ok(wb.rootWorkbook)
-        else:
-            return Err(AppErrors.WorkbookNotExist.report(key))
-
     def createDefaultNewWorkbook(self, name: Optional[str] = None) -> Workbook:
         createRs: Result[Workbook, ErrorReport] = self.createDefaultNewWorkbookRs(name)
         return Results.extractOrRaise(createRs)
-
-    def hasWorkbook(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]) -> bool:
-        return self.wbContainer.getWorkbook(nameOrIndexOrKey) is not None
 
     def closeWorkbook(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]):
         closeRs = self.closeWorkbookRs(nameOrIndexOrKey)
         if closeRs.isErr():
             raise closeRs.err.toException()
-
-    def closeWorkbookRs(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]) -> Result[WorkbookKey, ErrorReport]:
-        wbRs = self.getWorkbookRs(nameOrIndexOrKey)
-        if wbRs.isOk():
-            self.wbContainer.removeWorkbook(wbRs.value.workbookKey)
-            return Ok(wbRs.value.workbookKey)
-        else:
-            return Err(wbRs.err)
 
     def forceLoadWorkbook(self, filePath: Union[str, Path]) -> Workbook:
         loadRs = self.forceLoadWorkbookRs(filePath)
@@ -144,93 +117,28 @@ class BaseApp(App, ABC):
         else:
             raise loadRs.err.toException()
 
-    def forceLoadWorkbookRs(self, filePath: Union[str, Path]) -> Result[Workbook, ErrorReport]:
-        loadRs: Result[Workbook, ErrorReport] = self.fileLoader.loadRs(Path(filePath))
-        if loadRs.isOk():
-            self.wbContainer.addWorkbook(loadRs.value)
-        return loadRs
 
-    def saveWorkbookAtPath(self, nameOrIndexOrKey: Union[int, str, WorkbookKey], filePath: Union[str, Path]):
-        saveRs: Result[Any, ErrorReport] = self.saveWorkbookAtPathRs(nameOrIndexOrKey, filePath)
+    def saveWorkbookAtPath(self, wbKey:WorkbookKey, filePath: Union[str, Path]):
+        saveRs: Result[Any, ErrorReport] = self.saveWorkbookAtPathRs(wbKey, filePath)
         Results.extractOrRaise(saveRs)
 
-    # def saveWorkbookAtPathRs(self,
-    #                          nameOrIndexOrKey: Union[int, str, WorkbookKey],
-    #                          filePath: str | Path) -> Result[Workbook , ErrorReport]:
-        # saver: P6FileSaver = self.fileSaver
-        # path = Path(filePath)
-        # getWbRs: Result[Workbook, ErrorReport] = self.getBareWorkbookRs(nameOrIndexOrKey)
-        # if getWbRs.isOk():
-        #     wb: Workbook = getWbRs.value
-        #     oldKey = wb.workbookKey
-        #     saveResult = saver.saveRs(wb, path)
-        #     if saveResult.isOk():
-        #         newKey = WorkbookKeyImp(str(path.name), path)
-        #         if newKey != wb.workbookKey:
-        #             self.wbContainer.removeWorkbook(oldKey)
-        #             wb.workbookKey = newKey
-        #             self.wbContainer.addWorkbook(wb.rootWorkbook)
-        #             wb.refreshScript()
-        #         return Ok(wb)
-        #     else:
-        #         return Err(saveResult.err)
-        # else:
-        #     return getWbRs
-
-    def saveWorkbook(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]):
-        saveRs = self.saveWorkbookRs(nameOrIndexOrKey)
+    def saveWorkbook(self, wbKey:WorkbookKey):
+        saveRs = self.saveWorkbookRs(wbKey)
         Results.extractOrRaise(saveRs)
 
-    def saveWorkbookRs(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]) -> Result[Any, ErrorReport]:
-        wbRs: Result[Workbook, ErrorReport] = self.getWorkbookRs(nameOrIndexOrKey)
-        if wbRs.isOk():
-            wb: Workbook = wbRs.value
-            saveResult = self.saveWorkbookAtPathRs(nameOrIndexOrKey, wb.workbookKey.filePath)
-            return saveResult
-        else:
-            return wbRs
+    def saveWorkbookRs(self, wbKey:WorkbookKey) -> Result[Any, ErrorReport]:
+        saveResult = self.saveWorkbookAtPathRs(wbKey, wbKey.filePath)
+        return saveResult
 
     def loadWorkbook(self, filePath: Union[str, Path]) -> Workbook:
         path = Path(filePath)
         loadRs: Result[Workbook, ErrorReport] = self.loadWorkbookRs(path)
         return Results.extractOrRaise(loadRs)
 
-    # def loadWorkbookRs(self, filePath: Union[str, Path]) -> Result[Workbook, ErrorReport]:
-    #     loader: P6FileLoader = self.fileLoader
-    #     path = Path(filePath)
-    #     wbKey = WorkbookKeyImp(str(path.name), path)
-    #     wbRs = self.getWorkbookRs(wbKey)
-    #     alreadyHasThisWorkbook = wbRs.isOk()
-    #     if not alreadyHasThisWorkbook:
-    #         loadResult: Result[Workbook, ErrorReport] = loader.loadRs(filePath)
-    #         if loadResult.isOk():
-    #             newWb: Workbook = loadResult.value
-    #             eventNewWb = self._makeEventWb(newWb)
-    #             self.wbContainer.addWorkbook(newWb)
-    #             # the file may have been move, therefore has different workbook key,
-    #             # must refresh script because the old script contains code for the old workbook key
-    #             newWb.refreshScript()
-    #             return Ok(eventNewWb)
-    #         else:
-    #             return loadResult
-    #     else:
-    #         return Err(
-    #             ErrorReport(
-    #                 header = P6FileLoaderErrors.AlreadyLoad.header,
-    #                 data = P6FileLoaderErrors.AlreadyLoad.Data(path, None)
-    #             )
-    #         )
-
-    def refreshContainer(self):
-        bookList = self.wbContainer.books()
-        self.wbContainer.clear()
-        for book in bookList:
-            self.wbContainer.addWorkbook(book)
-
-    def listWorkbook(self):
-        rt = ""
-        for (i, book) in enumerate(self.wbContainer.books()):
-            rt += f"{str(i)}. {book.name}\n"
-        if not rt:
-            rt = "No workbook"
-        print(rt)
+    # def printWorkbookSummary(self):
+    #     rt = ""
+    #     for (i, book) in enumerate(self.wbContainer.books()):
+    #         rt += f"{str(i)}. {book.name}\n"
+    #     if not rt:
+    #         rt = "No workbook"
+    #     print(rt)

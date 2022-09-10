@@ -5,7 +5,6 @@ import grpc
 from com.qxdzbc.p6.proto import CellProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_CellProtos__pb2
 from com.qxdzbc.p6.proto import CommonProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2
 from com.qxdzbc.p6.proto import DocProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2
-from com.qxdzbc.p6.proto.rpc.cell import CellServiceProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_cell_dot_CellServiceProtos__pb2
 
 
 class CellServiceStub(object):
@@ -39,7 +38,7 @@ class CellServiceStub(object):
                 )
         self.copyFrom = channel.unary_unary(
                 '/com.qxdzbc.p6.proto.rpc.cell.service.CellService/copyFrom',
-                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_cell_dot_CellServiceProtos__pb2.CopyCellRequestProto.SerializeToString,
+                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CellProtos__pb2.CopyCellRequestProto.SerializeToString,
                 response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
                 )
 
@@ -102,7 +101,7 @@ def add_CellServiceServicer_to_server(servicer, server):
             ),
             'copyFrom': grpc.unary_unary_rpc_method_handler(
                     servicer.copyFrom,
-                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_cell_dot_CellServiceProtos__pb2.CopyCellRequestProto.FromString,
+                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CellProtos__pb2.CopyCellRequestProto.FromString,
                     response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.SerializeToString,
             ),
     }
@@ -195,7 +194,7 @@ class CellService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.cell.service.CellService/copyFrom',
-            com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_cell_dot_CellServiceProtos__pb2.CopyCellRequestProto.SerializeToString,
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_CellProtos__pb2.CopyCellRequestProto.SerializeToString,
             com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

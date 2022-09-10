@@ -5,7 +5,6 @@ from com.qxdzbc.p6.document_structure.util.report.error.ErrorHeader import Error
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.LoadWorkbookResponse import LoadWorkbookResponse
 from com.qxdzbc.p6.new_architecture.workbook.RpcWorkbook import RpcWorkbook
-from com.qxdzbc.p6.proto.AppEventProtos_pb2 import LoadWorkbookResponseProto
 
 
 class LoadWorkbookResponse_test(unittest.TestCase):

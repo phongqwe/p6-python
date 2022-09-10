@@ -3,14 +3,14 @@ import unittest
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.save_wb.SaveWorkbookRequest import \
     SaveWorkbookRequest
-from com.qxdzbc.p6.proto.WorkbookProtos_pb2 import SaveWorkbookRequestProto
+from com.qxdzbc.p6.proto.AppProtos_pb2 import SaveWorkbookRequestProto
 
 
 class SaveWorkbookRequest_test(unittest.TestCase):
     def test_fromProtoBytes(self):
         wbk = WorkbookKeys.fromNameAndPath("a",None)
         proto = SaveWorkbookRequestProto(
-            workbookKey = wbk.toProtoObj(),
+            wbKey = wbk.toProtoObj(),
             path = "qwe"
         )
 

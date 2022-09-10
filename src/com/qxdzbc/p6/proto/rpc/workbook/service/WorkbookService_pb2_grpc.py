@@ -4,8 +4,8 @@ import grpc
 
 from com.qxdzbc.p6.proto import CommonProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2
 from com.qxdzbc.p6.proto import DocProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2
+from com.qxdzbc.p6.proto import WorkbookProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_WorkbookProtos__pb2
 from com.qxdzbc.p6.proto import WorksheetProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2
-from com.qxdzbc.p6.proto.rpc.workbook import WorkbooKServiceProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_workbook_dot_WorkbooKServiceProtos__pb2
 from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 
 
@@ -25,47 +25,47 @@ class WorkbookServiceStub(object):
                 )
         self.setWbKey = channel.unary_unary(
                 '/com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService/setWbKey',
-                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_workbook_dot_WorkbooKServiceProtos__pb2.SetWbKeyRequestProto.SerializeToString,
+                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorkbookProtos__pb2.SetWbKeyRequestProto.SerializeToString,
                 response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
                 )
         self.getAllWorksheets = channel.unary_unary(
                 '/com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService/getAllWorksheets',
                 request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.WorkbookKeyProto.SerializeToString,
-                response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_workbook_dot_WorkbooKServiceProtos__pb2.GetAllWorksheetsResponseProto.FromString,
+                response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorkbookProtos__pb2.GetAllWorksheetsResponseProto.FromString,
                 )
         self.setActiveWorksheet = channel.unary_unary(
                 '/com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService/setActiveWorksheet',
-                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdProto.SerializeToString,
+                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdWithIndexProto.SerializeToString,
                 response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
                 )
         self.getActiveWorksheet = channel.unary_unary(
                 '/com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService/getActiveWorksheet',
                 request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.WorkbookKeyProto.SerializeToString,
-                response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_workbook_dot_WorkbooKServiceProtos__pb2.GetWorksheetResponseProto.FromString,
+                response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.GetWorksheetResponseProto.FromString,
                 )
         self.getWorksheet = channel.unary_unary(
                 '/com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService/getWorksheet',
-                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdProto.SerializeToString,
-                response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_workbook_dot_WorkbooKServiceProtos__pb2.GetWorksheetResponseProto.FromString,
+                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdWithIndexProto.SerializeToString,
+                response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.GetWorksheetResponseProto.FromString,
                 )
         self.createNewWorksheet = channel.unary_unary(
                 '/com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService/createNewWorksheet',
-                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_workbook_dot_WorkbooKServiceProtos__pb2.CreateNewWorksheetRequestProto.SerializeToString,
-                response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_workbook_dot_WorkbooKServiceProtos__pb2.WorksheetWithErrorReportMsgProto.FromString,
+                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorkbookProtos__pb2.CreateNewWorksheetRequestProto.SerializeToString,
+                response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorkbookProtos__pb2.WorksheetWithErrorReportMsgProto.FromString,
                 )
         self.deleteWorksheet = channel.unary_unary(
                 '/com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService/deleteWorksheet',
-                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdProto.SerializeToString,
+                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdWithIndexProto.SerializeToString,
                 response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
                 )
         self.addWorksheet = channel.unary_unary(
                 '/com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService/addWorksheet',
-                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_workbook_dot_WorkbooKServiceProtos__pb2.AddWorksheetRequestProto.SerializeToString,
+                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorkbookProtos__pb2.AddWorksheetRequestProto.SerializeToString,
                 response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
                 )
         self.renameWorksheet = channel.unary_unary(
                 '/com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService/renameWorksheet',
-                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_workbook_dot_WorkbooKServiceProtos__pb2.RenameWorksheetRequestProto.SerializeToString,
+                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorkbookProtos__pb2.RenameWorksheetRequestProto.SerializeToString,
                 response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
                 )
 
@@ -143,47 +143,47 @@ def add_WorkbookServiceServicer_to_server(servicer, server):
             ),
             'setWbKey': grpc.unary_unary_rpc_method_handler(
                     servicer.setWbKey,
-                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_workbook_dot_WorkbooKServiceProtos__pb2.SetWbKeyRequestProto.FromString,
+                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorkbookProtos__pb2.SetWbKeyRequestProto.FromString,
                     response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.SerializeToString,
             ),
             'getAllWorksheets': grpc.unary_unary_rpc_method_handler(
                     servicer.getAllWorksheets,
                     request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.WorkbookKeyProto.FromString,
-                    response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_workbook_dot_WorkbooKServiceProtos__pb2.GetAllWorksheetsResponseProto.SerializeToString,
+                    response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorkbookProtos__pb2.GetAllWorksheetsResponseProto.SerializeToString,
             ),
             'setActiveWorksheet': grpc.unary_unary_rpc_method_handler(
                     servicer.setActiveWorksheet,
-                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdProto.FromString,
+                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdWithIndexProto.FromString,
                     response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.SerializeToString,
             ),
             'getActiveWorksheet': grpc.unary_unary_rpc_method_handler(
                     servicer.getActiveWorksheet,
                     request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.WorkbookKeyProto.FromString,
-                    response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_workbook_dot_WorkbooKServiceProtos__pb2.GetWorksheetResponseProto.SerializeToString,
+                    response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.GetWorksheetResponseProto.SerializeToString,
             ),
             'getWorksheet': grpc.unary_unary_rpc_method_handler(
                     servicer.getWorksheet,
-                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdProto.FromString,
-                    response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_workbook_dot_WorkbooKServiceProtos__pb2.GetWorksheetResponseProto.SerializeToString,
+                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdWithIndexProto.FromString,
+                    response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.GetWorksheetResponseProto.SerializeToString,
             ),
             'createNewWorksheet': grpc.unary_unary_rpc_method_handler(
                     servicer.createNewWorksheet,
-                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_workbook_dot_WorkbooKServiceProtos__pb2.CreateNewWorksheetRequestProto.FromString,
-                    response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_workbook_dot_WorkbooKServiceProtos__pb2.WorksheetWithErrorReportMsgProto.SerializeToString,
+                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorkbookProtos__pb2.CreateNewWorksheetRequestProto.FromString,
+                    response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorkbookProtos__pb2.WorksheetWithErrorReportMsgProto.SerializeToString,
             ),
             'deleteWorksheet': grpc.unary_unary_rpc_method_handler(
                     servicer.deleteWorksheet,
-                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdProto.FromString,
+                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdWithIndexProto.FromString,
                     response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.SerializeToString,
             ),
             'addWorksheet': grpc.unary_unary_rpc_method_handler(
                     servicer.addWorksheet,
-                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_workbook_dot_WorkbooKServiceProtos__pb2.AddWorksheetRequestProto.FromString,
+                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorkbookProtos__pb2.AddWorksheetRequestProto.FromString,
                     response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.SerializeToString,
             ),
             'renameWorksheet': grpc.unary_unary_rpc_method_handler(
                     servicer.renameWorksheet,
-                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_workbook_dot_WorkbooKServiceProtos__pb2.RenameWorksheetRequestProto.FromString,
+                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorkbookProtos__pb2.RenameWorksheetRequestProto.FromString,
                     response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.SerializeToString,
             ),
     }
@@ -225,7 +225,7 @@ class WorkbookService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService/setWbKey',
-            com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_workbook_dot_WorkbooKServiceProtos__pb2.SetWbKeyRequestProto.SerializeToString,
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_WorkbookProtos__pb2.SetWbKeyRequestProto.SerializeToString,
             com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
@@ -243,7 +243,7 @@ class WorkbookService(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService/getAllWorksheets',
             com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.WorkbookKeyProto.SerializeToString,
-            com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_workbook_dot_WorkbooKServiceProtos__pb2.GetAllWorksheetsResponseProto.FromString,
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_WorkbookProtos__pb2.GetAllWorksheetsResponseProto.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -259,7 +259,7 @@ class WorkbookService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService/setActiveWorksheet',
-            com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdProto.SerializeToString,
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdWithIndexProto.SerializeToString,
             com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
@@ -277,7 +277,7 @@ class WorkbookService(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService/getActiveWorksheet',
             com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.WorkbookKeyProto.SerializeToString,
-            com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_workbook_dot_WorkbooKServiceProtos__pb2.GetWorksheetResponseProto.FromString,
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.GetWorksheetResponseProto.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -293,8 +293,8 @@ class WorkbookService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService/getWorksheet',
-            com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdProto.SerializeToString,
-            com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_workbook_dot_WorkbooKServiceProtos__pb2.GetWorksheetResponseProto.FromString,
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdWithIndexProto.SerializeToString,
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.GetWorksheetResponseProto.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -310,8 +310,8 @@ class WorkbookService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService/createNewWorksheet',
-            com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_workbook_dot_WorkbooKServiceProtos__pb2.CreateNewWorksheetRequestProto.SerializeToString,
-            com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_workbook_dot_WorkbooKServiceProtos__pb2.WorksheetWithErrorReportMsgProto.FromString,
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_WorkbookProtos__pb2.CreateNewWorksheetRequestProto.SerializeToString,
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_WorkbookProtos__pb2.WorksheetWithErrorReportMsgProto.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -327,7 +327,7 @@ class WorkbookService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService/deleteWorksheet',
-            com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdProto.SerializeToString,
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdWithIndexProto.SerializeToString,
             com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
@@ -344,7 +344,7 @@ class WorkbookService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService/addWorksheet',
-            com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_workbook_dot_WorkbooKServiceProtos__pb2.AddWorksheetRequestProto.SerializeToString,
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_WorkbookProtos__pb2.AddWorksheetRequestProto.SerializeToString,
             com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
@@ -361,7 +361,7 @@ class WorkbookService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService/renameWorksheet',
-            com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_workbook_dot_WorkbooKServiceProtos__pb2.RenameWorksheetRequestProto.SerializeToString,
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_WorkbookProtos__pb2.RenameWorksheetRequestProto.SerializeToString,
             com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

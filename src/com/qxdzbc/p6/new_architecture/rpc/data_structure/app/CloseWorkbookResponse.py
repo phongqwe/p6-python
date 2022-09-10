@@ -4,7 +4,7 @@ from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.document_structure.util.result.Result import Result
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
-from com.qxdzbc.p6.proto.AppEventProtos_pb2 import CloseWorkbookResponseProto
+from com.qxdzbc.p6.proto.AppProtos_pb2 import CloseWorkbookResponseProto
 
 
 class CloseWorkbookResponse(ToProto[CloseWorkbookResponseProto]):

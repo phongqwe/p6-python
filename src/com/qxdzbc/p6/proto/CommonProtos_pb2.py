@@ -15,15 +15,23 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n&com/qxdzbc/p6/proto/CommonProtos.proto\x12\x13\x63om.qxdzbc.p6.proto\x1a\x1cgoogle/protobuf/struct.proto\"W\n\x10\x45rrorReportProto\x12\x11\n\terrorCode\x18\x01 \x01(\t\x12\x14\n\x0c\x65rrorMessage\x18\x02 \x01(\t\x12\x11\n\x04\x64\x61ta\x18\x03 \x01(\tH\x00\x88\x01\x01\x42\x07\n\x05_data\"w\n\x13\x45rrorIndicatorProto\x12\x0f\n\x07isError\x18\x01 \x01(\x08\x12?\n\x0b\x65rrorReport\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.ErrorReportProtoH\x00\x88\x01\x01\x42\x0e\n\x0c_errorReport\"l\n\x19SingleSignalResponseProto\x12?\n\x0b\x65rrorReport\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.ErrorReportProtoH\x00\x88\x01\x01\x42\x0e\n\x0c_errorReport\"\x19\n\x0c\x42oolMsgProto\x12\t\n\x01v\x18\x01 \x01(\x08\"\x18\n\x0bStrMsgProto\x12\t\n\x01v\x18\x01 \x01(\tb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n&com/qxdzbc/p6/proto/CommonProtos.proto\x12\x13\x63om.qxdzbc.p6.proto\x1a\x1cgoogle/protobuf/struct.proto\"\x0c\n\nEmptyProto\"W\n\x10\x45rrorReportProto\x12\x11\n\terrorCode\x18\x01 \x01(\t\x12\x14\n\x0c\x65rrorMessage\x18\x02 \x01(\t\x12\x11\n\x04\x64\x61ta\x18\x03 \x01(\tH\x00\x88\x01\x01\x42\x07\n\x05_data\"w\n\x13\x45rrorIndicatorProto\x12\x0f\n\x07isError\x18\x01 \x01(\x08\x12?\n\x0b\x65rrorReport\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.ErrorReportProtoH\x00\x88\x01\x01\x42\x0e\n\x0c_errorReport\"l\n\x19SingleSignalResponseProto\x12?\n\x0b\x65rrorReport\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.ErrorReportProtoH\x00\x88\x01\x01\x42\x0e\n\x0c_errorReport\"\x19\n\x0c\x42oolMsgProto\x12\t\n\x01v\x18\x01 \x01(\x08\"\x18\n\x0bStrMsgProto\x12\t\n\x01v\x18\x01 \x01(\tb\x06proto3')
 
 
 
+_EMPTYPROTO = DESCRIPTOR.message_types_by_name['EmptyProto']
 _ERRORREPORTPROTO = DESCRIPTOR.message_types_by_name['ErrorReportProto']
 _ERRORINDICATORPROTO = DESCRIPTOR.message_types_by_name['ErrorIndicatorProto']
 _SINGLESIGNALRESPONSEPROTO = DESCRIPTOR.message_types_by_name['SingleSignalResponseProto']
 _BOOLMSGPROTO = DESCRIPTOR.message_types_by_name['BoolMsgProto']
 _STRMSGPROTO = DESCRIPTOR.message_types_by_name['StrMsgProto']
+EmptyProto = _reflection.GeneratedProtocolMessageType('EmptyProto', (_message.Message,), {
+  'DESCRIPTOR' : _EMPTYPROTO,
+  '__module__' : 'com.qxdzbc.p6.proto.CommonProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.EmptyProto)
+  })
+_sym_db.RegisterMessage(EmptyProto)
+
 ErrorReportProto = _reflection.GeneratedProtocolMessageType('ErrorReportProto', (_message.Message,), {
   'DESCRIPTOR' : _ERRORREPORTPROTO,
   '__module__' : 'com.qxdzbc.p6.proto.CommonProtos_pb2'
@@ -62,14 +70,16 @@ _sym_db.RegisterMessage(StrMsgProto)
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _ERRORREPORTPROTO._serialized_start=93
-  _ERRORREPORTPROTO._serialized_end=180
-  _ERRORINDICATORPROTO._serialized_start=182
-  _ERRORINDICATORPROTO._serialized_end=301
-  _SINGLESIGNALRESPONSEPROTO._serialized_start=303
-  _SINGLESIGNALRESPONSEPROTO._serialized_end=411
-  _BOOLMSGPROTO._serialized_start=413
-  _BOOLMSGPROTO._serialized_end=438
-  _STRMSGPROTO._serialized_start=440
-  _STRMSGPROTO._serialized_end=464
+  _EMPTYPROTO._serialized_start=93
+  _EMPTYPROTO._serialized_end=105
+  _ERRORREPORTPROTO._serialized_start=107
+  _ERRORREPORTPROTO._serialized_end=194
+  _ERRORINDICATORPROTO._serialized_start=196
+  _ERRORINDICATORPROTO._serialized_end=315
+  _SINGLESIGNALRESPONSEPROTO._serialized_start=317
+  _SINGLESIGNALRESPONSEPROTO._serialized_end=425
+  _BOOLMSGPROTO._serialized_start=427
+  _BOOLMSGPROTO._serialized_end=452
+  _STRMSGPROTO._serialized_start=454
+  _STRMSGPROTO._serialized_end=478
 # @@protoc_insertion_point(module_scope)

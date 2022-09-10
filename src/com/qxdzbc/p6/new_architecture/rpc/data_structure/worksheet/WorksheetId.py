@@ -10,14 +10,12 @@ from com.qxdzbc.p6.proto.WorksheetProtos_pb2 import WorksheetIdProto
 @dataclass
 class WorksheetId(ToProto[WorksheetIdProto]):
     wbKey: WorkbookKey
-    wsName: Optional[str] = None
-    wsIndex:Optional[int] = None
+    wsName: str
 
     def toProtoObj(self) -> WorksheetIdProto:
         rt = WorksheetIdProto(
             wbKey = self.wbKey.toProtoObj(),
             wsName = self.wsName,
-            wsIndex = self.wsIndex,
         )
         return rt
 
@@ -29,14 +27,7 @@ class WorksheetId(ToProto[WorksheetIdProto]):
     
     @staticmethod
     def fromProto(proto:WorksheetIdProto):
-        wsName = None
-        if proto.HasField("wsName"):
-            wsName = proto.wsName
-        index = None
-        if proto.HasField("wsIndex"):
-            index = proto.wsIndex
         return WorksheetId(
             wbKey = WorkbookKeys.fromProto(proto.wbKey),
-            wsName = wsName,
-            wsIndex = index
+            wsName = proto.wsName,
         )

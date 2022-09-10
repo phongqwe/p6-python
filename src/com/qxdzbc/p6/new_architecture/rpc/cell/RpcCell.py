@@ -132,7 +132,7 @@ class RpcCell(Cell):
         return self._sp.cellService
 
     def _onCellSvOk(self, f):
-        return RpcUtils.onServiceOk(self._cellSv, f)
+        return RpcUtils.onServiceOkOrRaise(self._cellSv, f)
 
     def _onCellSvOkRs(self, f):
         return RpcUtils.onServiceOkRs(self._cellSv, f)

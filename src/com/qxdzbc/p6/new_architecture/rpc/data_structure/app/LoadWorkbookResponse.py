@@ -4,7 +4,7 @@ from typing import Optional
 from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.document_structure.workbook.WorkBook import Workbook
-from com.qxdzbc.p6.proto.AppEventProtos_pb2 import LoadWorkbookResponseProto
+from com.qxdzbc.p6.proto.AppProtos_pb2 import LoadWorkbookResponseProto
 
 
 # if TYPE_CHECKING:

@@ -60,26 +60,17 @@ class App(ABC):
         raise NotImplementedError()
 
     @property
-    def zContext(self):
-        """:return zmq context"""
-        raise NotImplementedError()
-
-    @property
-    def wbContainer(self) -> WorkbookContainer:
-        raise NotImplementedError()
-
-    @property
     def activeWorkbook(self) -> Optional[Workbook]:
         raise NotImplementedError()
 
-    def setActiveWorkbook(self, indexOrNameOrKey: Union[int, str, WorkbookKey]):
+    def setActiveWorkbook(self, wbKey: WorkbookKey):
         """
         Set workbook at indexOrName the active workbook.
         Should raise an exception if the indexOrName is invalid
         """
         raise NotImplementedError()
 
-    def setActiveWorkbookRs(self, indexOrNameOrKey: Union[int, str, WorkbookKey]) -> Result[Workbook, ErrorReport]:
+    def setActiveWorkbookRs(self, wbKey:  WorkbookKey) -> Result[Workbook, ErrorReport]:
         """
         Set workbook at indexOrName the active workbook.
         :return an Result object if there are error instead of raising an exception
@@ -117,16 +108,6 @@ class App(ABC):
 
     def getWorkbookRs(self, key: Union[str, int, WorkbookKey]) -> Result[Workbook, ErrorReport]:
         """:return workbook at a key that is either a name, an index, or a WorkbookKey. The returned workbook is connected to all the reactors/notifier of this app"""
-        raise NotImplementedError()
-
-    def getBareWorkbookRs(self, key: Union[str, int, WorkbookKey]) -> Result[Workbook, ErrorReport]:
-        """:return workbook at a key that is either a name, an index, or a WorkbookKey. The returned workbook is NOT hooked to any event reactors."""
-        raise NotImplementedError()
-
-    def hasNoWorkbook(self) -> bool:
-        """
-        :return: true if this app does not have any workbook
-        """
         raise NotImplementedError()
 
     def createDefaultNewWorkbook(self, name: Optional[str] = None) -> Workbook:
@@ -187,28 +168,22 @@ class App(ABC):
         raise NotImplementedError()
 
     def saveWorkbookAtPathRs(self,
-                             nameOrIndexOrKey: Union[int, str, WorkbookKey],
+                             wbKey: WorkbookKey,
                              filePath: str | Path) -> Result[Workbook, ErrorReport]:
         """
          save a workbook at nameOrIndex to a certain filePath, then update the workbook with that new path
-        :param nameOrIndexOrKey:
-        :param filePath:
-        :return: a Result object
         """
         raise NotImplementedError()
 
-    def saveWorkbook(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]):
+    def saveWorkbook(self, wbKey:WorkbookKey):
         """
         save a workbook at nameOrIndex
-        :param nameOrIndexOrKey:
-        :return:
         """
         raise NotImplementedError()
 
-    def saveWorkbookRs(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]) -> Result[Any, ErrorReport]:
+    def saveWorkbookRs(self, wbKey:WorkbookKey) -> Result[Any, ErrorReport]:
         """
         save a workbook at nameOrIndex
-        :param nameOrIndexOrKey:
         :return:
         """
         raise NotImplementedError()
@@ -235,13 +210,5 @@ class App(ABC):
         """make WorkbookContainer update-to-date with its elements"""
         raise NotImplementedError()
 
-    def listWorkbook(self):
-        raise NotImplementedError()
-
-    @property
-    def socketProvider(self) -> Optional[SocketProvider]:
-        raise NotImplementedError()
-
-    @socketProvider.setter
-    def socketProvider(self, socketProvider: Optional[SocketProvider] ):
+    def printWorkbookSummary(self):
         raise NotImplementedError()

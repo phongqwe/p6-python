@@ -20,13 +20,11 @@ from com.qxdzbc.p6.new_architecture.rpc.RpcValues import RpcValues
 from com.qxdzbc.p6.new_architecture.rpc.StubProvider import RpcStubProvider
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.SingleSignalResponse import \
     SingleSignalResponse
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.WorksheetId import \
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.worksheet.WorksheetId import \
     WorksheetId
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.AddWorksheetRequest import AddWorksheetRequest
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.CreateNewWorksheetRequest import \
     CreateNewWorksheetRequest
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.GetActiveWorksheetResponse import \
-    GetActiveWorksheetResponse
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.GetAllWorksheetsResponse import \
     GetAllWorksheetsResponse
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.GetWorksheetResponse import GetWorksheetResponse
@@ -35,10 +33,11 @@ from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.RenameWorksheetR
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.SetWbNameRequest import SetWbNameRequest
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.WorksheetWithErrorReportMsg import \
     WorksheetWithErrorReportMsg
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.worksheet.WorksheetIdWithIndex import WorksheetIdWithIndex
 from com.qxdzbc.p6.new_architecture.worksheet.RpcWorksheet import RpcWorksheet
 from com.qxdzbc.p6.proto.CommonProtos_pb2 import SingleSignalResponseProto
-from com.qxdzbc.p6.proto.rpc.workbook.WorkbooKServiceProtos_pb2 import GetWorksheetResponseProto, \
-    WorksheetWithErrorReportMsgProto
+from com.qxdzbc.p6.proto.WorksheetProtos_pb2 import GetWorksheetResponseProto
+from com.qxdzbc.p6.proto.WorkbookProtos_pb2 import WorksheetWithErrorReportMsgProto
 from com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService_pb2_grpc import WorkbookServiceStub
 
 
@@ -47,13 +46,24 @@ class RpcWorkbook(Workbook):
         .report("Can't get sheet count because rpc server is down.")
     _serverDownException = _serverDownReport.toException()
 
-    def __init__(
-            self,
+    @staticmethod
+    def fromNameAndPath(
             name: str,
-            path: Optional[Path],
+            path: Optional[Path] = None,
             stubProvider: RpcStubProvider = RpcServiceContainer.insecureRpcServiceProvider()
     ):
-        self.__key = WorkbookKeyImp(name, path)
+        return RpcWorkbook(
+            wbKey = WorkbookKeyImp(name, path),
+            stubProvider = stubProvider
+        )
+
+
+    def __init__(
+            self,
+            wbKey:WorkbookKey,
+            stubProvider: RpcStubProvider = RpcServiceContainer.insecureRpcServiceProvider()
+    ):
+        self.__key = wbKey
         self._stubProvider = stubProvider
 
     def __eq__(self, o: object) -> bool:
@@ -97,20 +107,20 @@ class RpcWorkbook(Workbook):
             return Err(CommonErrors.WrongTypeReport("nameOrIndex", "str or int"))
 
     def setActiveWorksheetByNameRs(self, name: str) -> Result[None, ErrorReport]:
-        request = WorksheetId(
+        request = WorksheetIdWithIndex(
             wbKey = self.workbookKey,
             wsName = name
         )
         return self.setActiveWsRpcRs(request)
 
     def setActiveWorksheetByIndexRs(self, index: int) -> Result[None, ErrorReport]:
-        request = WorksheetId(
+        request = WorksheetIdWithIndex(
             wbKey = self.workbookKey,
             wsIndex = index,
         )
         return self.setActiveWsRpcRs(request)
 
-    def setActiveWsRpcRs(self, request: WorksheetId) -> Result[None, ErrorReport]:
+    def setActiveWsRpcRs(self, request: WorksheetIdWithIndex) -> Result[None, ErrorReport]:
         def f() -> Result[None, ErrorReport]:
             outProto: SingleSignalResponseProto = self._wbsv.setActiveWorksheet(
                 request = request.toProtoObj())
@@ -127,9 +137,14 @@ class RpcWorkbook(Workbook):
         def f() -> Optional[Worksheet]:
             wbsv = self._wbsv
             outProto: GetWorksheetResponseProto = wbsv.getActiveWorksheet(self.workbookKey.toProtoObj())
-            out = GetActiveWorksheetResponse.fromProto(outProto)
-            if out.worksheet:
-                return out.worksheet
+            out = GetWorksheetResponse.fromProto(outProto)
+            wsId =out.wsId
+            if wsId:
+                return RpcWorksheet(
+                    name =wsId.wsName,
+                    wbKey = wsId.wbKey,
+                    stubProvider = self._stubProvider
+                )
             else:
                 return None
 
@@ -142,9 +157,9 @@ class RpcWorkbook(Workbook):
         return RpcUtils.onServiceOkRs(self._wbsv,f)
 
     def _onWbsvOk(self, f):
-        return RpcUtils.onServiceOk(self._wbsv,f)
+        return RpcUtils.onServiceOkOrRaise(self._wbsv, f)
 
-    def _makeGetWsRpcRequestRs(self, request: WorksheetId) -> Result[Worksheet, ErrorReport]:
+    def _makeGetWsRpcRequestRs(self, request: WorksheetIdWithIndex) -> Result[Worksheet, ErrorReport]:
         def repStr(index, name) -> str:
             if name:
                 return f"Worksheet \"{name}\" does not exist"
@@ -155,9 +170,11 @@ class RpcWorkbook(Workbook):
 
         def f():
             outProto: GetWorksheetResponseProto = self._wbsv.getWorksheet(request = request.toProtoObj())
-            out = GetWorksheetResponse.fromProto2(outProto,self.__key,self._stubProvider)
-            if out.worksheet:
-                return Ok(out.worksheet)
+            out:GetWorksheetResponse = GetWorksheetResponse.fromProto(outProto)
+            wsId = out.wsId
+
+            if wsId:
+                return Ok(wsId)
             else:
                 return Err(WorkbookErrors.WorksheetNotExistReport.report(repStr(request.wsIndex, request.wsName)))
 
@@ -171,7 +188,7 @@ class RpcWorkbook(Workbook):
         return self._makeGetWsRpcRequestRs(req)
 
     def getWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
-        req = WorksheetId(
+        req = WorksheetIdWithIndex(
             wbKey = self.workbookKey,
             wsIndex = index
         )
@@ -231,7 +248,7 @@ class RpcWorkbook(Workbook):
     def createNewWorksheetRs(self, newSheetName: Optional[str] = None) -> Result[Worksheet, ErrorReport]:
         def f() -> Result[Worksheet, ErrorReport]:
             req = CreateNewWorksheetRequest(
-                workbookKey = self.__key,
+                wbKey = self.__key,
                 newWorksheetName = newSheetName
             ).toProtoObj()
             outProto: WorksheetWithErrorReportMsgProto = self._wbsv.createNewWorksheet(request = req)
@@ -248,7 +265,7 @@ class RpcWorkbook(Workbook):
 
         return self._onWbsvOkRs(f)
 
-    def _deleteWorksheetRsRpc(self, request: WorksheetId) -> Result[None, ErrorReport]:
+    def _deleteWorksheetRsRpc(self, request: WorksheetIdWithIndex) -> Result[None, ErrorReport]:
         def f() -> Result[None, ErrorReport]:
             req = request.toProtoObj()
             outProto: SingleSignalResponseProto = self._wbsv.deleteWorksheet(request = req)
@@ -258,14 +275,14 @@ class RpcWorkbook(Workbook):
         return self._onWbsvOkRs(f)
 
     def deleteWorksheetByNameRs(self, sheetName: str) -> Result[None, ErrorReport]:
-        req = WorksheetId(
+        req = WorksheetIdWithIndex(
             wbKey = self.__key,
             wsName = sheetName
         )
         return self._deleteWorksheetRsRpc(req)
 
     def deleteWorksheetByIndexRs(self, index: int) -> Result[None, ErrorReport]:
-        req = WorksheetId(
+        req = WorksheetIdWithIndex(
             wbKey = self.__key,
             wsIndex = index
         )

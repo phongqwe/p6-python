@@ -18,7 +18,7 @@ class Workbooks:
     def fromProto(proto: WorkbookProto, filePath: Path | None = None) -> Workbook:
         wbName = proto.workbookKey.name
 
-        wb = RpcWorkbook(
+        wb = RpcWorkbook.fromNameAndPath(
             name = wbName,
             path = filePath,
         )

@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from com.qxdzbc.p6.proto.AppEventProtos_pb2 import LoadWorkbookRequestProto
+from com.qxdzbc.p6.proto.AppProtos_pb2 import LoadWorkbookRequestProto
 
 
 class LoadWorkbookRequest:

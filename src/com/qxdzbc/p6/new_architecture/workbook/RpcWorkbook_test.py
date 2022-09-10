@@ -8,15 +8,14 @@ from com.qxdzbc.p6.document_structure.worksheet.Worksheet import Worksheet
 from com.qxdzbc.p6.new_architecture.rpc.RpcValues import RpcValues
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.SingleSignalResponse import \
     SingleSignalResponse
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.WorksheetId import WorksheetId
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.worksheet.WorksheetId import WorksheetId
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.AddWorksheetRequest import AddWorksheetRequest
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.GetActiveWorksheetResponse import \
-    GetActiveWorksheetResponse
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.GetAllWorksheetsResponse import \
     GetAllWorksheetsResponse
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.GetWorksheetResponse import GetWorksheetResponse
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.WorksheetWithErrorReportMsg import \
     WorksheetWithErrorReportMsg
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.worksheet.WorksheetIdWithIndex import WorksheetIdWithIndex
 from com.qxdzbc.p6.new_architecture.workbook.RpcWorkbook import RpcWorkbook
 from com.qxdzbc.p6.new_architecture.worksheet.RpcWorksheet import RpcWorksheet
 from com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService_pb2_grpc import WorkbookServiceServicer
@@ -37,9 +36,8 @@ class RpcWorkbook_test(unittest.TestCase):
         mockSP.wbService = mockWbService
         self.mockSP = mockSP
         self.mockWbService = mockWbService
-        self.wb = RpcWorkbook(
+        self.wb = RpcWorkbook.fromNameAndPath(
             name = "qwe",
-            path = None,
             stubProvider = self.mockSP
         )
 
@@ -93,7 +91,7 @@ class RpcWorkbook_test(unittest.TestCase):
         o1 = wb.setActiveWorksheetRs(123)
         self.assertTrue(o1.isOk())
         rpcCall.assert_called_with(
-            request=WorksheetId(
+            request=WorksheetIdWithIndex(
                 wbKey=wb.workbookKey,
                 wsIndex = 123
             ).toProtoObj()
@@ -101,7 +99,7 @@ class RpcWorkbook_test(unittest.TestCase):
         o2 = wb.setActiveWorksheetRs("qwe")
         self.assertTrue(o2.isOk())
         rpcCall.assert_called_with(
-            request = WorksheetId(
+            request = WorksheetIdWithIndex(
                 wbKey = wb.workbookKey,
                 wsName = "qwe"
             ).toProtoObj()
@@ -120,14 +118,14 @@ class RpcWorkbook_test(unittest.TestCase):
     
     def test_getActiveWorksheet(self):
         self.mockWbService.getActiveWorksheet = MagicMock(
-            return_value = GetActiveWorksheetResponse().toProtoObj()
+            return_value = GetWorksheetResponse().toProtoObj()
         )
         wb=self.wb
         o = wb.activeWorksheet
         self.assertIsNone(o)
         self.mockWbService.getActiveWorksheet = MagicMock(
-            return_value = GetActiveWorksheetResponse(
-                worksheet = RpcWorksheet("w",self.wb.workbookKey,self.mockSP)
+            return_value = GetWorksheetResponse(
+                wsId = RpcWorksheet("w",self.wb.workbookKey,self.mockSP).id
             ).toProtoObj()
         )
         o2 = wb.activeWorksheet
@@ -164,37 +162,35 @@ class RpcWorkbook_test(unittest.TestCase):
 
             o14=wb.getWorksheetRs(123)
             self.assertTrue(o14.isErr())
-
-        failTest()
         def okTest():
             ws2 = RpcWorksheet("ws2", self.wb.workbookKey, self.mockSP)
             self.mockWbService.getWorksheet = MagicMock(
                 return_value = GetWorksheetResponse(
-                    worksheet = ws2
+                    wsId = ws2.id
                 ).toProtoObj()
             )
             o21 = self.wb.getWorksheetByNameRs("q")
             self.assertTrue(o21.isOk())
-            self.assertTrue(o21.value.compareContent(ws2))
+            self.assertTrue(o21.value == ws2.id)
 
-            self.assertTrue(wb.getWorksheetByName("q").compareContent(ws2))
-            self.assertTrue(wb.getWorksheetByNameOrNone("q").compareContent(ws2))
-            self.assertTrue(wb.getWorksheetOrNone("q").compareContent(ws2))
+            self.assertEqual(wb.getWorksheetByName("q"), ws2.id)
+            self.assertEqual(wb.getWorksheetByNameOrNone("q"), ws2.id)
+            self.assertEqual(wb.getWorksheetOrNone("q"), ws2.id)
 
             o22 = wb.getWorksheetRs("q")
-            self.assertTrue(o22.value.compareContent(ws2))
+            self.assertEqual(o22.value, ws2.id)
 
             o21 = self.wb.getWorksheetByIndexRs(123)
             self.assertTrue(o21.isOk())
-            self.assertTrue(o21.value.compareContent(ws2))
+            self.assertEqual(o21.value, ws2.id)
 
-            self.assertTrue(wb.getWorksheetByIndex(123).compareContent(ws2))
-            self.assertTrue(wb.getWorksheetByIndexOrNone(123).compareContent(ws2))
-            self.assertTrue(wb.getWorksheetOrNone(123).compareContent(ws2))
+            self.assertEqual(wb.getWorksheetByIndex(123), ws2.id)
+            self.assertEqual(wb.getWorksheetByIndexOrNone(123), ws2.id)
+            self.assertEqual(wb.getWorksheetOrNone(123), ws2.id)
 
             o22 = wb.getWorksheetRs(123)
-            self.assertTrue(o22.value.compareContent(ws2))
-
+            self.assertEqual(o22.value, ws2.id)
+        failTest()
         okTest()
 
     def test_createNewWorksheet(self):

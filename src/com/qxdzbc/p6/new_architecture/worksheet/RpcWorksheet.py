@@ -21,7 +21,7 @@ from com.qxdzbc.p6.new_architecture.rpc.data_structure.Cell2Pr import Cell2Pr
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellId import CellId
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.SingleSignalResponse import \
     SingleSignalResponse
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.WorksheetId import WorksheetId
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.worksheet.WorksheetId import WorksheetId
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.range.RangeId import RangeId
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.RenameWorksheetRequest import RenameWorksheetRequest
 from com.qxdzbc.p6.new_architecture.rpc.range.RpcRange import RpcRange
@@ -117,7 +117,7 @@ class RpcWorksheet(BaseWorksheet):
     def containsAddress(self, address: CellAddress) -> bool:
         def f():
             req = CheckContainAddressRequest(
-                wsId = self._id,
+                wsId = self.id,
                 cellAddress = address
             )
             oProto = self._wssv.containAddress(request=req.toProtoObj())
@@ -129,7 +129,7 @@ class RpcWorksheet(BaseWorksheet):
         return self.containsAddress(CellAddresses.fromColRow(col, row))
 
     @property
-    def _id(self) -> WorksheetId:
+    def id(self) -> WorksheetId:
         return WorksheetId(
             wbKey = self._wbk,
             wsName = self._name,
@@ -144,7 +144,7 @@ class RpcWorksheet(BaseWorksheet):
         return self._stubProvider.wsService
 
     def _onWsSvOk(self, f):
-        return RpcUtils.onServiceOk(self._wssv, f)
+        return RpcUtils.onServiceOkOrRaise(self._wssv, f)
 
     def _onWbsvOkRs(self, f):
         return RpcUtils.onServiceOkRs(self._wbsv, f)
@@ -152,7 +152,7 @@ class RpcWorksheet(BaseWorksheet):
     @property
     def size(self) -> int:
         def f() -> int:
-            request = self._id
+            request = self.id
             out = self._wssv.getCellCount(request = request.toProtoObj())
             countResponse = CellCountResponse.fromProto(out)
             return countResponse.count
@@ -162,7 +162,7 @@ class RpcWorksheet(BaseWorksheet):
     @property
     def cells(self) -> list[Cell]:
         def f() -> list[Cell]:
-            request = self._id.toProtoObj()
+            request = self.id.toProtoObj()
             oProto = self._wssv.getAllCell(request = request)
             o = GetAllCellResponse.fromProto(oProto)
             rt = []
@@ -183,7 +183,7 @@ class RpcWorksheet(BaseWorksheet):
     @property
     def usedRangeAddress(self) -> RangeAddress | None:
         def f() -> RangeAddress:
-            request = self._id
+            request = self.id
             outProto = self._wssv.getUsedRangeAddress(request = request.toProtoObj())
             out = GetUsedRangeResponse.fromProto(outProto)
             r = out.rangeAddress

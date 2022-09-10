@@ -7,7 +7,7 @@ from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookK
 from com.qxdzbc.p6.document_structure.worksheet.Worksheet import Worksheet
 from com.qxdzbc.p6.document_structure.worksheet.Worksheets import Worksheets
 from com.qxdzbc.p6.new_architecture.rpc.StubProvider import RpcStubProvider
-from com.qxdzbc.p6.proto.rpc.workbook.WorkbooKServiceProtos_pb2 import AddWorksheetRequestProto
+from com.qxdzbc.p6.proto.WorkbookProtos_pb2 import AddWorksheetRequestProto
 
 
 @dataclass

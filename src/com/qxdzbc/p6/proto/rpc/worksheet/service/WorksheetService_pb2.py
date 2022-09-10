@@ -16,11 +16,10 @@ from com.qxdzbc.p6.proto import CommonProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_pr
 from com.qxdzbc.p6.proto import DocProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2
 from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
-from com.qxdzbc.p6.proto.rpc.worksheet import WorksheetServiceProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_rpc_dot_worksheet_dot_WorksheetServiceProtos__pb2
 from com.qxdzbc.p6.proto import WorksheetProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n@com/qxdzbc/p6/proto/rpc/worksheet/service/WorksheetService.proto\x12)com.qxdzbc.p6.proto.rpc.worksheet.service\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\x1a#com/qxdzbc/p6/proto/DocProtos.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a>com/qxdzbc/p6/proto/rpc/worksheet/WorksheetServiceProtos.proto\x1a)com/qxdzbc/p6/proto/WorksheetProtos.proto2\xd2\x07\n\x10WorksheetService\x12]\n\x07getCell\x12 .com.qxdzbc.p6.proto.CellIdProto\x1a..com.qxdzbc.p6.proto.SingleSignalResponseProto\"\x00\x12q\n\ngetAllCell\x12%.com.qxdzbc.p6.proto.WorksheetIdProto\x1a:.com.qxdzbc.p6.proto.rpc.worksheet.GetAllCellResponseProto\"\x00\x12r\n\x0cgetCellCount\x12%.com.qxdzbc.p6.proto.WorksheetIdProto\x1a\x39.com.qxdzbc.p6.proto.rpc.worksheet.CellCountResponseProto\"\x00\x12|\n\x13getUsedRangeAddress\x12%.com.qxdzbc.p6.proto.WorksheetIdProto\x1a<.com.qxdzbc.p6.proto.rpc.worksheet.GetUsedRangeResponseProto\"\x00\x12[\n\x05paste\x12 .com.qxdzbc.p6.proto.CellIdProto\x1a..com.qxdzbc.p6.proto.SingleSignalResponseProto\"\x00\x12\\\n\x07\x61\x64\x64\x43\x65ll\x12\x1f.com.qxdzbc.p6.proto.Cell2Proto\x1a..com.qxdzbc.p6.proto.SingleSignalResponseProto\"\x00\x12`\n\ndeleteCell\x12 .com.qxdzbc.p6.proto.CellIdProto\x1a..com.qxdzbc.p6.proto.SingleSignalResponseProto\"\x00\x12\x62\n\x0b\x64\x65leteRange\x12!.com.qxdzbc.p6.proto.RangeIdProto\x1a..com.qxdzbc.p6.proto.SingleSignalResponseProto\"\x00\x12y\n\x0e\x63ontainAddress\x12\x42.com.qxdzbc.p6.proto.rpc.worksheet.CheckContainAddressRequestProto\x1a!.com.qxdzbc.p6.proto.BoolMsgProto\"\x00')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n@com/qxdzbc/p6/proto/rpc/worksheet/service/WorksheetService.proto\x12)com.qxdzbc.p6.proto.rpc.worksheet.service\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\x1a#com/qxdzbc/p6/proto/DocProtos.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a)com/qxdzbc/p6/proto/WorksheetProtos.proto2\x9a\x07\n\x10WorksheetService\x12]\n\x07getCell\x12 .com.qxdzbc.p6.proto.CellIdProto\x1a..com.qxdzbc.p6.proto.SingleSignalResponseProto\"\x00\x12\x63\n\ngetAllCell\x12%.com.qxdzbc.p6.proto.WorksheetIdProto\x1a,.com.qxdzbc.p6.proto.GetAllCellResponseProto\"\x00\x12\x64\n\x0cgetCellCount\x12%.com.qxdzbc.p6.proto.WorksheetIdProto\x1a+.com.qxdzbc.p6.proto.CellCountResponseProto\"\x00\x12n\n\x13getUsedRangeAddress\x12%.com.qxdzbc.p6.proto.WorksheetIdProto\x1a..com.qxdzbc.p6.proto.GetUsedRangeResponseProto\"\x00\x12[\n\x05paste\x12 .com.qxdzbc.p6.proto.CellIdProto\x1a..com.qxdzbc.p6.proto.SingleSignalResponseProto\"\x00\x12\\\n\x07\x61\x64\x64\x43\x65ll\x12\x1f.com.qxdzbc.p6.proto.Cell2Proto\x1a..com.qxdzbc.p6.proto.SingleSignalResponseProto\"\x00\x12`\n\ndeleteCell\x12 .com.qxdzbc.p6.proto.CellIdProto\x1a..com.qxdzbc.p6.proto.SingleSignalResponseProto\"\x00\x12\x62\n\x0b\x64\x65leteRange\x12!.com.qxdzbc.p6.proto.RangeIdProto\x1a..com.qxdzbc.p6.proto.SingleSignalResponseProto\"\x00\x12k\n\x0e\x63ontainAddress\x12\x34.com.qxdzbc.p6.proto.CheckContainAddressRequestProto\x1a!.com.qxdzbc.p6.proto.BoolMsgProto\"\x00\x62\x06proto3')
 
 
 
@@ -28,6 +27,6 @@ _WORKSHEETSERVICE = DESCRIPTOR.services_by_name['WorksheetService']
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _WORKSHEETSERVICE._serialized_start=357
-  _WORKSHEETSERVICE._serialized_end=1335
+  _WORKSHEETSERVICE._serialized_start=293
+  _WORKSHEETSERVICE._serialized_end=1215
 # @@protoc_insertion_point(module_scope)

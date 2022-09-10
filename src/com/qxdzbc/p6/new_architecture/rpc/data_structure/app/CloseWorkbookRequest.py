@@ -2,7 +2,7 @@ from typing import Optional
 
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
-from com.qxdzbc.p6.proto.AppEventProtos_pb2 import CloseWorkbookRequestProto
+from com.qxdzbc.p6.proto.AppProtos_pb2 import CloseWorkbookRequestProto
 
 
 class CloseWorkbookRequest:

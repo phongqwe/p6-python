@@ -10,6 +10,7 @@ from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.document_structure.util.result.Result import Result
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.worksheet.WorksheetId import WorksheetId
 from com.qxdzbc.p6.proto.DocProtos_pb2 import WorksheetProto
 
 if TYPE_CHECKING:
@@ -19,6 +20,10 @@ if TYPE_CHECKING:
 class Worksheet(MutableCellContainer,
                 ToProto[WorksheetProto],
                 ABC):
+
+    @property
+    def id(self) -> WorksheetId:
+        raise NotImplementedError()
     def range(self, rangeAddress: Union[str, RangeAddress, Tuple[CellAddress, CellAddress]]) -> Range:
         raise NotImplementedError()
 

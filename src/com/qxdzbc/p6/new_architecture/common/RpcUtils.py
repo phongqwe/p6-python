@@ -29,8 +29,15 @@ class RpcUtils:
             return RpcUtils._serverDownReport
 
     @staticmethod
-    def onServiceOk(rpcStub, f):
+    def onServiceOkOrRaise(rpcStub, f):
         if rpcStub is not None:
             return f()
         else:
             raise RpcUtils._serverDownException
+
+    @staticmethod
+    def onServiceOkOrNone(rpcStub, f):
+        if rpcStub is not None:
+            return f()
+        else:
+            return None

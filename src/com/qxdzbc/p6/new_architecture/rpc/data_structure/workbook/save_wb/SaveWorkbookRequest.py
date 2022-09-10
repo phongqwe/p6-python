@@ -2,13 +2,13 @@ from com.qxdzbc.p6.document_structure.util.ToProto import ToProto
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.ToP6Msg import ToP6Msg
-from com.qxdzbc.p6.proto.WorkbookProtos_pb2 import SaveWorkbookRequestProto
+from com.qxdzbc.p6.proto.AppProtos_pb2 import SaveWorkbookRequestProto
 
 
 class SaveWorkbookRequest(ToP6Msg, ToProto[SaveWorkbookRequestProto]):
 
-    def __init__(self, workbookKey:WorkbookKey, path:str):
-        self.workbookKey = workbookKey
+    def __init__(self, wbKey:WorkbookKey, path:str):
+        self.workbookKey = wbKey
         self.path = path
 
     @staticmethod
@@ -16,13 +16,13 @@ class SaveWorkbookRequest(ToP6Msg, ToProto[SaveWorkbookRequestProto]):
         proto = SaveWorkbookRequestProto()
         proto.ParseFromString(data)
         return SaveWorkbookRequest(
-            workbookKey = WorkbookKeys.fromProto(proto.workbookKey),
+            wbKey = WorkbookKeys.fromProto(proto.wbKey),
             path = proto.path
         )
 
     def toProtoObj(self) -> SaveWorkbookRequestProto:
         proto = SaveWorkbookRequestProto(
-            workbookKey = self.workbookKey.toProtoObj(),
+            wbKey = self.workbookKey.toProtoObj(),
             path = self.path
         )
         return proto

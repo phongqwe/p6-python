@@ -6,7 +6,7 @@ from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import Error
 from com.qxdzbc.p6.document_structure.workbook.WorkBook import Workbook
 from com.qxdzbc.p6.document_structure.worksheet.Worksheet import Worksheet
 from com.qxdzbc.p6.document_structure.worksheet.Worksheets import Worksheets
-from com.qxdzbc.p6.proto.rpc.workbook.WorkbooKServiceProtos_pb2 import GetAllWorksheetsResponseProto
+from com.qxdzbc.p6.proto.WorkbookProtos_pb2 import GetAllWorksheetsResponseProto
 
 
 @dataclass

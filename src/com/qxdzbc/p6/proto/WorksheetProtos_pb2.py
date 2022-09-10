@@ -16,22 +16,27 @@ from com.qxdzbc.p6.proto import CommonProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_pr
 from com.qxdzbc.p6.proto import DocProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n)com/qxdzbc/p6/proto/WorksheetProtos.proto\x12\x13\x63om.qxdzbc.p6.proto\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\x1a#com/qxdzbc/p6/proto/DocProtos.proto\"{\n\x1bRenameWorksheetRequestProto\x12:\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x0f\n\x07oldName\x18\x02 \x01(\t\x12\x0f\n\x07newName\x18\x03 \x01(\t\"\xc9\x01\n\x1cRenameWorksheetResponseProto\x12:\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x0f\n\x07oldName\x18\x02 \x01(\t\x12\x0f\n\x07newName\x18\x03 \x01(\t\x12\x0f\n\x07isError\x18\x04 \x01(\x08\x12:\n\x0b\x65rrorReport\x18\x05 \x01(\x0b\x32%.com.qxdzbc.p6.proto.ErrorReportProto\"\xa7\x01\n\x16\x44\x65leteCellRequestProto\x12:\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x02 \x01(\t\x12:\n\x0b\x63\x65llAddress\x18\x03 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\"\xae\x02\n\x17\x44\x65leteCellResponseProto\x12:\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x02 \x01(\t\x12:\n\x0b\x63\x65llAddress\x18\x03 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\x12\x37\n\x0bnewWorkbook\x18\x04 \x01(\x0b\x32\".com.qxdzbc.p6.proto.WorkbookProto\x12\x0f\n\x07isError\x18\x05 \x01(\x08\x12:\n\x0b\x65rrorReport\x18\x06 \x01(\x0b\x32%.com.qxdzbc.p6.proto.ErrorReportProto\"\xd8\x01\n\x17\x44\x65leteMultiRequestProto\x12\x35\n\x05range\x18\x01 \x03(\x0b\x32&.com.qxdzbc.p6.proto.RangeAddressProto\x12\x33\n\x04\x63\x65ll\x18\x02 \x03(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\x12:\n\x0bworkbookKey\x18\x03 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x04 \x01(\t\"\x8a\x01\n\x10WorksheetIdProto\x12\x34\n\x05wbKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x13\n\x06wsName\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\x14\n\x07wsIndex\x18\x03 \x01(\x05H\x01\x88\x01\x01\x42\t\n\x07_wsNameB\n\n\x08_wsIndexb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n)com/qxdzbc/p6/proto/WorksheetProtos.proto\x12\x13\x63om.qxdzbc.p6.proto\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\x1a#com/qxdzbc/p6/proto/DocProtos.proto\"^\n\x19GetWorksheetResponseProto\x12\x38\n\x04wsId\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorksheetIdProtoH\x00\x88\x01\x01\x42\x07\n\x05_wsId\"\xc9\x01\n\x1cRenameWorksheetResponseProto\x12:\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x0f\n\x07oldName\x18\x02 \x01(\t\x12\x0f\n\x07newName\x18\x03 \x01(\t\x12\x0f\n\x07isError\x18\x04 \x01(\x08\x12:\n\x0b\x65rrorReport\x18\x05 \x01(\x0b\x32%.com.qxdzbc.p6.proto.ErrorReportProto\"\xa7\x01\n\x16\x44\x65leteCellRequestProto\x12:\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x02 \x01(\t\x12:\n\x0b\x63\x65llAddress\x18\x03 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\"\xae\x02\n\x17\x44\x65leteCellResponseProto\x12:\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x02 \x01(\t\x12:\n\x0b\x63\x65llAddress\x18\x03 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\x12\x37\n\x0bnewWorkbook\x18\x04 \x01(\x0b\x32\".com.qxdzbc.p6.proto.WorkbookProto\x12\x0f\n\x07isError\x18\x05 \x01(\x08\x12:\n\x0b\x65rrorReport\x18\x06 \x01(\x0b\x32%.com.qxdzbc.p6.proto.ErrorReportProto\"\xd8\x01\n\x17\x44\x65leteMultiRequestProto\x12\x35\n\x05range\x18\x01 \x03(\x0b\x32&.com.qxdzbc.p6.proto.RangeAddressProto\x12\x33\n\x04\x63\x65ll\x18\x02 \x03(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\x12:\n\x0bworkbookKey\x18\x03 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x04 \x01(\t\"\x93\x01\n\x19WorksheetIdWithIndexProto\x12\x34\n\x05wbKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x13\n\x06wsName\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\x14\n\x07wsIndex\x18\x03 \x01(\x05H\x01\x88\x01\x01\x42\t\n\x07_wsNameB\n\n\x08_wsIndex\"X\n\x10WorksheetIdProto\x12\x34\n\x05wbKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x0e\n\x06wsName\x18\x02 \x01(\t\"\'\n\x16\x43\x65llCountResponseProto\x12\r\n\x05\x63ount\x18\x01 \x01(\x03\"Y\n\x17GetAllCellResponseProto\x12>\n\x0f\x63\x65llAddressList\x18\x01 \x03(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\"\x92\x01\n\x1f\x43heckContainAddressRequestProto\x12\x33\n\x04wsId\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorksheetIdProto\x12:\n\x0b\x63\x65llAddress\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\"o\n\x19GetUsedRangeResponseProto\x12\x41\n\x0crangeAddress\x18\x01 \x01(\x0b\x32&.com.qxdzbc.p6.proto.RangeAddressProtoH\x00\x88\x01\x01\x42\x0f\n\r_rangeAddressb\x06proto3')
 
 
 
-_RENAMEWORKSHEETREQUESTPROTO = DESCRIPTOR.message_types_by_name['RenameWorksheetRequestProto']
+_GETWORKSHEETRESPONSEPROTO = DESCRIPTOR.message_types_by_name['GetWorksheetResponseProto']
 _RENAMEWORKSHEETRESPONSEPROTO = DESCRIPTOR.message_types_by_name['RenameWorksheetResponseProto']
 _DELETECELLREQUESTPROTO = DESCRIPTOR.message_types_by_name['DeleteCellRequestProto']
 _DELETECELLRESPONSEPROTO = DESCRIPTOR.message_types_by_name['DeleteCellResponseProto']
 _DELETEMULTIREQUESTPROTO = DESCRIPTOR.message_types_by_name['DeleteMultiRequestProto']
+_WORKSHEETIDWITHINDEXPROTO = DESCRIPTOR.message_types_by_name['WorksheetIdWithIndexProto']
 _WORKSHEETIDPROTO = DESCRIPTOR.message_types_by_name['WorksheetIdProto']
-RenameWorksheetRequestProto = _reflection.GeneratedProtocolMessageType('RenameWorksheetRequestProto', (_message.Message,), {
-  'DESCRIPTOR' : _RENAMEWORKSHEETREQUESTPROTO,
+_CELLCOUNTRESPONSEPROTO = DESCRIPTOR.message_types_by_name['CellCountResponseProto']
+_GETALLCELLRESPONSEPROTO = DESCRIPTOR.message_types_by_name['GetAllCellResponseProto']
+_CHECKCONTAINADDRESSREQUESTPROTO = DESCRIPTOR.message_types_by_name['CheckContainAddressRequestProto']
+_GETUSEDRANGERESPONSEPROTO = DESCRIPTOR.message_types_by_name['GetUsedRangeResponseProto']
+GetWorksheetResponseProto = _reflection.GeneratedProtocolMessageType('GetWorksheetResponseProto', (_message.Message,), {
+  'DESCRIPTOR' : _GETWORKSHEETRESPONSEPROTO,
   '__module__' : 'com.qxdzbc.p6.proto.WorksheetProtos_pb2'
-  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.RenameWorksheetRequestProto)
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.GetWorksheetResponseProto)
   })
-_sym_db.RegisterMessage(RenameWorksheetRequestProto)
+_sym_db.RegisterMessage(GetWorksheetResponseProto)
 
 RenameWorksheetResponseProto = _reflection.GeneratedProtocolMessageType('RenameWorksheetResponseProto', (_message.Message,), {
   'DESCRIPTOR' : _RENAMEWORKSHEETRESPONSEPROTO,
@@ -61,6 +66,13 @@ DeleteMultiRequestProto = _reflection.GeneratedProtocolMessageType('DeleteMultiR
   })
 _sym_db.RegisterMessage(DeleteMultiRequestProto)
 
+WorksheetIdWithIndexProto = _reflection.GeneratedProtocolMessageType('WorksheetIdWithIndexProto', (_message.Message,), {
+  'DESCRIPTOR' : _WORKSHEETIDWITHINDEXPROTO,
+  '__module__' : 'com.qxdzbc.p6.proto.WorksheetProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.WorksheetIdWithIndexProto)
+  })
+_sym_db.RegisterMessage(WorksheetIdWithIndexProto)
+
 WorksheetIdProto = _reflection.GeneratedProtocolMessageType('WorksheetIdProto', (_message.Message,), {
   'DESCRIPTOR' : _WORKSHEETIDPROTO,
   '__module__' : 'com.qxdzbc.p6.proto.WorksheetProtos_pb2'
@@ -68,19 +80,57 @@ WorksheetIdProto = _reflection.GeneratedProtocolMessageType('WorksheetIdProto', 
   })
 _sym_db.RegisterMessage(WorksheetIdProto)
 
+CellCountResponseProto = _reflection.GeneratedProtocolMessageType('CellCountResponseProto', (_message.Message,), {
+  'DESCRIPTOR' : _CELLCOUNTRESPONSEPROTO,
+  '__module__' : 'com.qxdzbc.p6.proto.WorksheetProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.CellCountResponseProto)
+  })
+_sym_db.RegisterMessage(CellCountResponseProto)
+
+GetAllCellResponseProto = _reflection.GeneratedProtocolMessageType('GetAllCellResponseProto', (_message.Message,), {
+  'DESCRIPTOR' : _GETALLCELLRESPONSEPROTO,
+  '__module__' : 'com.qxdzbc.p6.proto.WorksheetProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.GetAllCellResponseProto)
+  })
+_sym_db.RegisterMessage(GetAllCellResponseProto)
+
+CheckContainAddressRequestProto = _reflection.GeneratedProtocolMessageType('CheckContainAddressRequestProto', (_message.Message,), {
+  'DESCRIPTOR' : _CHECKCONTAINADDRESSREQUESTPROTO,
+  '__module__' : 'com.qxdzbc.p6.proto.WorksheetProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.CheckContainAddressRequestProto)
+  })
+_sym_db.RegisterMessage(CheckContainAddressRequestProto)
+
+GetUsedRangeResponseProto = _reflection.GeneratedProtocolMessageType('GetUsedRangeResponseProto', (_message.Message,), {
+  'DESCRIPTOR' : _GETUSEDRANGERESPONSEPROTO,
+  '__module__' : 'com.qxdzbc.p6.proto.WorksheetProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.GetUsedRangeResponseProto)
+  })
+_sym_db.RegisterMessage(GetUsedRangeResponseProto)
+
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _RENAMEWORKSHEETREQUESTPROTO._serialized_start=143
-  _RENAMEWORKSHEETREQUESTPROTO._serialized_end=266
-  _RENAMEWORKSHEETRESPONSEPROTO._serialized_start=269
-  _RENAMEWORKSHEETRESPONSEPROTO._serialized_end=470
-  _DELETECELLREQUESTPROTO._serialized_start=473
-  _DELETECELLREQUESTPROTO._serialized_end=640
-  _DELETECELLRESPONSEPROTO._serialized_start=643
-  _DELETECELLRESPONSEPROTO._serialized_end=945
-  _DELETEMULTIREQUESTPROTO._serialized_start=948
-  _DELETEMULTIREQUESTPROTO._serialized_end=1164
-  _WORKSHEETIDPROTO._serialized_start=1167
-  _WORKSHEETIDPROTO._serialized_end=1305
+  _GETWORKSHEETRESPONSEPROTO._serialized_start=143
+  _GETWORKSHEETRESPONSEPROTO._serialized_end=237
+  _RENAMEWORKSHEETRESPONSEPROTO._serialized_start=240
+  _RENAMEWORKSHEETRESPONSEPROTO._serialized_end=441
+  _DELETECELLREQUESTPROTO._serialized_start=444
+  _DELETECELLREQUESTPROTO._serialized_end=611
+  _DELETECELLRESPONSEPROTO._serialized_start=614
+  _DELETECELLRESPONSEPROTO._serialized_end=916
+  _DELETEMULTIREQUESTPROTO._serialized_start=919
+  _DELETEMULTIREQUESTPROTO._serialized_end=1135
+  _WORKSHEETIDWITHINDEXPROTO._serialized_start=1138
+  _WORKSHEETIDWITHINDEXPROTO._serialized_end=1285
+  _WORKSHEETIDPROTO._serialized_start=1287
+  _WORKSHEETIDPROTO._serialized_end=1375
+  _CELLCOUNTRESPONSEPROTO._serialized_start=1377
+  _CELLCOUNTRESPONSEPROTO._serialized_end=1416
+  _GETALLCELLRESPONSEPROTO._serialized_start=1418
+  _GETALLCELLRESPONSEPROTO._serialized_end=1507
+  _CHECKCONTAINADDRESSREQUESTPROTO._serialized_start=1510
+  _CHECKCONTAINADDRESSREQUESTPROTO._serialized_end=1656
+  _GETUSEDRANGERESPONSEPROTO._serialized_start=1658
+  _GETUSEDRANGERESPONSEPROTO._serialized_end=1769
 # @@protoc_insertion_point(module_scope)

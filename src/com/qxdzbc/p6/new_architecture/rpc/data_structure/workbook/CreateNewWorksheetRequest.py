@@ -8,13 +8,13 @@ from com.qxdzbc.p6.proto.WorkbookProtos_pb2 import CreateNewWorksheetRequestProt
 
 @dataclass
 class CreateNewWorksheetRequest(ToProto[CreateNewWorksheetRequestProto]):
-    workbookKey:WorkbookKey
+    wbKey:WorkbookKey
     newWorksheetName:Optional[str] = None
 
     @staticmethod
     def fromProto(proto: CreateNewWorksheetRequestProto):
         return CreateNewWorksheetRequest(
-            workbookKey = WorkbookKeys.fromProto(proto.workbookKey),
+            wbKey = WorkbookKeys.fromProto(proto.wbKey),
             newWorksheetName = proto.newWorksheetName
         )
 
@@ -22,5 +22,5 @@ class CreateNewWorksheetRequest(ToProto[CreateNewWorksheetRequestProto]):
         rt = CreateNewWorksheetRequestProto()
         if self.newWorksheetName:
             rt.newWorksheetName = self.newWorksheetName
-        rt.workbookKey.CopyFrom(self.workbookKey.toProtoObj())
+        rt.wbKey.CopyFrom(self.wbKey.toProtoObj())
         return rt
