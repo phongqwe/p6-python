@@ -108,15 +108,6 @@ class BaseApp(App, ABC):
         closeRs = self.closeWorkbookRs(wbKey)
         return Results.extractOrRaise(closeRs)
 
-    def forceLoadWorkbook(self, filePath: Union[str, Path]) -> Workbook:
-        loadRs = self.forceLoadWorkbookRs(filePath)
-        if loadRs.isOk():
-            wb: Workbook = loadRs.value
-            return wb
-        else:
-            raise loadRs.err.toException()
-
-
     def saveWorkbookAtPath(self, wbKey:WorkbookKey, filePath: Union[str, Path]):
         saveRs: Result[Any, ErrorReport] = self.saveWorkbookAtPathRs(wbKey, filePath)
         Results.extractOrRaise(saveRs)
@@ -134,10 +125,10 @@ class BaseApp(App, ABC):
         loadRs: Result[Workbook, ErrorReport] = self.loadWorkbookRs(path)
         return Results.extractOrRaise(loadRs)
 
-    # def printWorkbookSummary(self):
-    #     rt = ""
-    #     for (i, book) in enumerate(self.wbContainer.books()):
-    #         rt += f"{str(i)}. {book.name}\n"
-    #     if not rt:
-    #         rt = "No workbook"
-    #     print(rt)
+    def printWorkbookSummary(self):
+        rt = ""
+        for (i, book) in enumerate(self.workbooks):
+            rt += f"{str(i)}. {book.name}\n"
+        if not rt:
+            rt = "No workbook"
+        print(rt)

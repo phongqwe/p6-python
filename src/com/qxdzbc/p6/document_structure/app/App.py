@@ -22,6 +22,11 @@ class App(ABC):
     this class represents the state of the app.
     """
 
+    @property
+    def workbooks(self)->list[Workbook]:
+        """return a list of all the currently opened workbooks"""
+        raise NotImplementedError()
+
     def addScript(self, name:str, script:str):
         raise NotImplementedError()
 

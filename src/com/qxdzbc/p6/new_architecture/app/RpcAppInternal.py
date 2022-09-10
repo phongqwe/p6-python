@@ -14,6 +14,7 @@ from com.qxdzbc.p6.new_architecture.rpc.data_structure.BoolMsg import BoolMsg
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.SingleSignalResponse import SingleSignalResponse
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.CreateNewWorkbookRequest import CreateNewWorkbookRequest
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.CreateNewWorkbookResponse import CreateNewWorkbookResponse
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.GetAllWorkbookResponse import GetAllWorkbookResponse
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.GetWorkbookRequest import GetWorkbookRequest
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.LoadWorkbookRequest import LoadWorkbookRequest
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.LoadWorkbookResponse import LoadWorkbookResponse
@@ -29,6 +30,12 @@ from com.qxdzbc.p6.proto.CommonProtos_pb2 import EmptyProto
 
 class RpcAppInternal(BaseApp):
 
+    @property
+    def workbooks(self) -> list[Workbook]:
+        oProto = self.appSv.getAllWorkbooks(request=EmptyProto())
+        o:GetAllWorkbookResponse = GetAllWorkbookResponse.fromProto(oProto)
+        rt = list(map(lambda wbk: RpcWorkbook(wbKey = wbk,stubProvider = self.rpcSP),o.wbKeys))
+        return rt
 
     def hasWorkbook(self, wbKey: WorkbookKey) -> bool:
         oProto = self.appSv.checkWbExistence(request=wbKey.toProtoObj())
