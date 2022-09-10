@@ -31,8 +31,8 @@ from com.qxdzbc.p6.new_architecture.worksheet.msg.GetAllCellResponse import GetA
 from com.qxdzbc.p6.new_architecture.worksheet.msg.GetUsedRangeResponse import GetUsedRangeResponse
 from com.qxdzbc.p6.proto.CommonProtos_pb2 import SingleSignalResponseProto
 from com.qxdzbc.p6.proto.DocProtos_pb2 import WorksheetProto
-from com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService_pb2_grpc import WorkbookServiceStub
-from com.qxdzbc.p6.proto.rpc.worksheet.service.WorksheetService_pb2_grpc import WorksheetServiceStub
+from com.qxdzbc.p6.proto.rpc.WorkbookService_pb2_grpc import WorkbookServiceStub
+from com.qxdzbc.p6.proto.rpc.WorksheetService_pb2_grpc import WorksheetServiceStub
 
 
 class RpcWorksheet(BaseWorksheet):

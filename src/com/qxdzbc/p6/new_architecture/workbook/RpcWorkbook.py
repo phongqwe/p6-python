@@ -38,7 +38,7 @@ from com.qxdzbc.p6.new_architecture.worksheet.RpcWorksheet import RpcWorksheet
 from com.qxdzbc.p6.proto.CommonProtos_pb2 import SingleSignalResponseProto
 from com.qxdzbc.p6.proto.WorksheetProtos_pb2 import GetWorksheetResponseProto
 from com.qxdzbc.p6.proto.WorkbookProtos_pb2 import WorksheetWithErrorReportMsgProto
-from com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService_pb2_grpc import WorkbookServiceStub
+from com.qxdzbc.p6.proto.rpc.WorkbookService_pb2_grpc import WorkbookServiceStub
 
 
 class RpcWorkbook(Workbook):

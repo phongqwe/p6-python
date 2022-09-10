@@ -18,16 +18,9 @@ from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.WorksheetWithErr
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.worksheet.WorksheetIdWithIndex import WorksheetIdWithIndex
 from com.qxdzbc.p6.new_architecture.workbook.RpcWorkbook import RpcWorkbook
 from com.qxdzbc.p6.new_architecture.worksheet.RpcWorksheet import RpcWorksheet
-from com.qxdzbc.p6.proto.rpc.workbook.service.WorkbookService_pb2_grpc import WorkbookServiceServicer
 
 
 class RpcWorkbook_test(unittest.TestCase):
-    class WorkbookServicerImp(WorkbookServiceServicer):
-        def sheetCount(self, request, context):
-            return RpcValues.int64(123)
-
-        def setWbName(self, request, context):
-            return SingleSignalResponse().toProtoObj()
 
     def setUp(self) -> None:
         super().setUp()

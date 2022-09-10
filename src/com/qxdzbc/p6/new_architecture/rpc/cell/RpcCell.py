@@ -15,7 +15,7 @@ from com.qxdzbc.p6.new_architecture.rpc.data_structure.CellValue import CellValu
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.SingleSignalResponse import \
     SingleSignalResponse
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.StrMsg import StrMsg
-from com.qxdzbc.p6.proto.rpc.cell.service.CellService_pb2_grpc import CellServiceStub
+from com.qxdzbc.p6.proto.rpc.CellService_pb2_grpc import CellServiceStub
 
 
 class RpcCell(Cell):
