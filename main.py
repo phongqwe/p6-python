@@ -1,4 +1,4 @@
-from com.qxdzbc.p6.new_architecture.communication import P6Events
+from com.qxdzbc.p6.communication import P6Events
 
 
 def main():

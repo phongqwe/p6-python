@@ -3,9 +3,9 @@ from dataclasses import dataclass
 
 from typing import Optional
 
-from com.qxdzbc.p6.new_architecture.rpc.StubProvider import RpcStubProvider
-from com.qxdzbc.p6.new_architecture.workbook.RpcWorkbook import RpcWorkbook
-from com.qxdzbc.p6.new_architecture.worksheet.RpcWorksheet import RpcWorksheet
+from com.qxdzbc.p6.rpc import RpcStubProvider
+from com.qxdzbc.p6.workbook.RpcWorkbook import RpcWorkbook
+from com.qxdzbc.p6.worksheet import RpcWorksheet
 
 
 @dataclass
@@ -13,15 +13,14 @@ class B:
     x: int
     v: Optional[str] = "Default v"
 
-from com.qxdzbc.p6.document_structure.app.TopLevel import *
-from com.qxdzbc.p6.document_structure.app.GlobalScope import *
+
 class Bench(unittest.TestCase):
 
     def test_configRpc(self):
-        from com.qxdzbc.p6.new_architecture.rpc.RpcInfo import RpcInfo
+        from com.qxdzbc.p6.rpc import RpcInfo
 
         setIPythonGlobals(globals())
-        app:App = getApp()
+        app: App = getApp()
         rpcSP:RpcStubProvider = app.rpcSP
         port = 50052
         rpcInfo = RpcInfo(
