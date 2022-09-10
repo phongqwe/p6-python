@@ -14,6 +14,8 @@ from com.qxdzbc.p6.new_architecture.rpc.data_structure.SingleSignalResponse impo
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.CreateNewWorkbookRequest import CreateNewWorkbookRequest
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.CreateNewWorkbookResponse import CreateNewWorkbookResponse
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.GetWorkbookRequest import GetWorkbookRequest
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.LoadWorkbookRequest import LoadWorkbookRequest
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.LoadWorkbookResponse import LoadWorkbookResponse
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.WorkbookKeyWithErrorResponse import \
     WorkbookKeyWithErrorResponse
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.GetWorksheetResponse import GetWorksheetResponse
@@ -26,6 +28,17 @@ from com.qxdzbc.p6.proto.CommonProtos_pb2 import EmptyProto
 
 class RpcAppInternal(BaseApp):
 
+
+    def loadWorkbookRs(self, filePath: Union[str, Path]) -> Result[Workbook, ErrorReport]:
+        req = LoadWorkbookRequest(
+            path = str(filePath)
+        )
+        oProto = self.appSv.loadWorkbook(request=req.toProtoObj())
+        o:LoadWorkbookResponse = LoadWorkbookResponse.fromProto(oProto)
+        if o.wbKey:
+            return Ok(RpcWorkbook(wbKey = o.wbKey,stubProvider = self.rpcSP))
+        else:
+            return Err(o.errorReport)
 
     def closeWorkbookRs(self, wbKey: WorkbookKey) -> Result[WorkbookKey, ErrorReport]:
         oProto = self.appSv.closeWorkbook(request=wbKey.toProtoObj())

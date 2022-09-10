@@ -1,12 +1,16 @@
+from dataclasses import dataclass
 from pathlib import Path
 
+from com.qxdzbc.p6.document_structure.util.ToProto import ToProto, P
 from com.qxdzbc.p6.proto.AppProtos_pb2 import LoadWorkbookRequestProto
 
 
-class LoadWorkbookRequest:
-    def __init__(self, path: str, windowId: str):
-        self.path = path
-        self.windowId = windowId
+@dataclass
+class LoadWorkbookRequest(ToProto[LoadWorkbookRequestProto]):
+    path: str
+
+    def toProtoObj(self) -> LoadWorkbookRequestProto:
+        return LoadWorkbookRequestProto(path = self.path)
 
     @property
     def absolutePath(self) -> Path:
@@ -16,4 +20,4 @@ class LoadWorkbookRequest:
     def fromProtoBytes(data: bytes) -> 'LoadWorkbookRequest':
         proto = LoadWorkbookRequestProto()
         proto.ParseFromString(data)
-        return LoadWorkbookRequest(proto.path, proto.windowId)
+        return LoadWorkbookRequest(proto.path)

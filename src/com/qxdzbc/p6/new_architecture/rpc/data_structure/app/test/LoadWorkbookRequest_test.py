@@ -7,13 +7,12 @@ from com.qxdzbc.p6.proto.AppProtos_pb2 import LoadWorkbookRequestProto
 
 class LoadWorkbookRequest_test(unittest.TestCase):
     def test_fromProtoBytes(self):
-        protoBytes = LoadWorkbookRequestProto(path = "a_path",windowId="windowId").SerializeToString()
+        protoBytes = LoadWorkbookRequestProto(path = "a_path").SerializeToString()
         o = LoadWorkbookRequest.fromProtoBytes(protoBytes)
         self.assertEqual("a_path", o.path)
-        self.assertEqual("windowId", o.windowId)
 
     def test_absolutePath(self):
-        o = LoadWorkbookRequest("path","windowId")
+        o = LoadWorkbookRequest("path")
         self.assertEqual(Path("path").absolute(), o.absolutePath)
 
 

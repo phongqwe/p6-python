@@ -37,6 +37,9 @@ class RpcApp(BaseApp):
         self.rpcSP = rpcStubProvider
         self.iApp = RpcAppInternal(self.rpcSP)
 
+    def loadWorkbookRs(self, filePath: Union[str, Path]) -> Result[Workbook, ErrorReport]:
+        return self._onAppSvOkRs(partial(self.iApp.loadWorkbookRs, filePath))
+
     def closeWorkbookRs(self, wbKey: WorkbookKey) -> Result[WorkbookKey, ErrorReport]:
         return self._onAppSvOkRs(partial(self.iApp.closeWorkbookRs,wbKey))
 

@@ -5,6 +5,7 @@ from com.qxdzbc.p6.document_structure.util.for_test import TestUtils
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.qxdzbc.p6.new_architecture.app.RpcApp import RpcApp
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.SingleSignalResponse import SingleSignalResponse
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.LoadWorkbookResponse import LoadWorkbookResponse
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.save_wb.SaveWorkbookRequest import SaveWorkbookRequest
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.save_wb.SaveWorkbookResponse import SaveWorkbookResponse
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.worksheet.WorksheetId import WorksheetId
@@ -30,7 +31,31 @@ class RpcApp_test(unittest.TestCase):
         self.app = RpcApp(
             rpcStubProvider = mockSP
         )
-
+        self.wbk = WorkbookKeys.fromNameAndPath("wb1")
+    def test_loadWb(self):
+        wbk = self.wbk
+        p = "some/path"
+        def okCase():
+            self.appService.loadWorkbook = MagicMock(
+                return_value = LoadWorkbookResponse(
+                    wbKey = wbk
+                ).toProtoObj()
+            )
+            o = self.app.loadWorkbookRs(p)
+            self.assertTrue(o.isOk())
+            self.app.loadWorkbook(p)
+        def errCase():
+            self.appService.loadWorkbook = MagicMock(
+                return_value = LoadWorkbookResponse(
+                    errorReport = TestUtils.TestErrorReport
+                ).toProtoObj()
+            )
+            o = self.app.loadWorkbookRs(p)
+            self.assertTrue(o.isErr())
+            with self.assertRaises(Exception):
+                self.app.loadWorkbook(p)
+        okCase()
+        errCase()
     def test_closeWb(self):
         wbk = WorkbookKeys.fromNameAndPath("wb1")
         def okCase():
@@ -68,7 +93,6 @@ class RpcApp_test(unittest.TestCase):
             self.appService.saveWorkbookAtPath.assert_called_with(
                 request= SaveWorkbookRequest(wbKey = wbk,path=path).toProtoObj()
             )
-
             self.app.saveWorkbookAtPath(wbKey = wbk,filePath = path)
             o = self.app.saveWorkbookRs(wbKey = wbk)
             self.assertTrue(o.isOk())
