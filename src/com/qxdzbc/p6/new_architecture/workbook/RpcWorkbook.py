@@ -68,7 +68,7 @@ class RpcWorkbook(Workbook):
 
     def __eq__(self, o: object) -> bool:
         if isinstance(o,Workbook):
-            return self.workbookKey == o.workbookKey
+            return self.workbookKey == o.key
         else:
             return False
 
@@ -218,14 +218,14 @@ class RpcWorkbook(Workbook):
 
     @path.setter
     def path(self, newPath: Path):
-        self.workbookKey = WorkbookKeys.fromNameAndPath(self.name, newPath)
+        self.key = WorkbookKeys.fromNameAndPath(self.name, newPath)
 
     @property
     def name(self) -> str:
         return self.workbookKey.fileName
 
     @workbookKey.setter
-    def workbookKey(self, newKey: WorkbookKey):
+    def key(self, newKey: WorkbookKey):
         if self._wbsv is not None:
             if newKey == self.__key:
                 return

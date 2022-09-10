@@ -66,7 +66,7 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
 
     def isSimilar(self, o: object) -> bool:
         if isinstance(o, Workbook):
-            c1 = self.workbookKey == o.workbookKey,
+            c1 = self.key == o.key,
             c2 = len(self.worksheets) == len(o.worksheets)
             c3 = True
             for i in range(len(self.worksheets)):
@@ -94,7 +94,7 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
     def toProtoObj(self) -> WorkbookProto:
         # rootWb = self.rootWorkbook
         rt = WorkbookProto()
-        rt.workbookKey.CopyFrom(self.workbookKey.toProtoObj())
+        rt.key.CopyFrom(self.key.toProtoObj())
         sheets = []
         for sheet in self.worksheets:
             sheets.append(sheet.toProtoObj())
@@ -123,11 +123,11 @@ class Workbook(ToJson, CanCheckEmpty, ToProto[WorkbookProto], ABC):
         raise NotImplementedError()
 
     @property
-    def workbookKey(self) -> WorkbookKey:
+    def key(self) -> WorkbookKey:
         raise NotImplementedError()
 
-    @workbookKey.setter
-    def workbookKey(self, newKey: WorkbookKey):
+    @key.setter
+    def key(self, newKey: WorkbookKey):
         raise NotImplementedError()
 
     @property

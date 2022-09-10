@@ -1,8 +1,6 @@
 import inspect
 
 from com.qxdzbc.p6.new_architecture.communication.msg.P6Event import P6Event
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.CloseWorkbookRequest import CloseWorkbookRequest
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.CloseWorkbookResponse import CloseWorkbookResponse
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.CreateNewWorkbookRequest import CreateNewWorkbookRequest
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.CreateNewWorkbookResponse import CreateNewWorkbookResponse
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.LoadWorkbookRequest import LoadWorkbookRequest
@@ -189,11 +187,6 @@ class P6Events:
             event = P6Event(f"{APPE}3", "create new workbook")
             Request = CreateNewWorkbookRequest
             Response = CreateNewWorkbookResponse
-
-        class CloseWorkbook:
-            event = P6Event(f"{APPE}4", "close workbook")
-            Request = CloseWorkbookRequest
-            Response = CloseWorkbookResponse
 
     class Fallback:
         class UnknownEvent:

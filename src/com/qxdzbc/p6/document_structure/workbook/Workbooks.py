@@ -16,7 +16,7 @@ from com.qxdzbc.p6.proto.DocProtos_pb2 import WorkbookProto
 class Workbooks:
     @staticmethod
     def fromProto(proto: WorkbookProto, filePath: Path | None = None) -> Workbook:
-        wbName = proto.workbookKey.name
+        wbName = proto.key.name
 
         wb = RpcWorkbook.fromNameAndPath(
             name = wbName,

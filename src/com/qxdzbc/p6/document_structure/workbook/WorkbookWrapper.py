@@ -71,11 +71,11 @@ class WorkbookWrapper(Workbook):
 
     @property
     def workbookKey(self) -> WorkbookKey:
-        return self.rootWorkbook.workbookKey
+        return self.rootWorkbook.key
 
     @workbookKey.setter
-    def workbookKey(self, newKey: WorkbookKey):
-        self.rootWorkbook.workbookKey = newKey
+    def key(self, newKey: WorkbookKey):
+        self.rootWorkbook.key = newKey
 
     @property
     def activeWorksheet(self) -> Optional[Worksheet]:

@@ -17,7 +17,7 @@ class WorkbookContainerImp(WorkbookContainer,WithSize):
     ### >> WorkbookContainer << ###
 
     def addWorkbook(self, workbook: Workbook):
-        self.__wbDict[workbook.workbookKey] = workbook
+        self.__wbDict[workbook.key] = workbook
 
     def books(self) -> list[Workbook]:
         return list(self.__wbDict.values())
@@ -67,7 +67,7 @@ class WorkbookContainerImp(WorkbookContainer,WithSize):
     def removeWorkbook(self, indexOrKey: Union[int, str, WorkbookKey]):
         wb = self.getWorkbook(indexOrKey)
         if wb is not None:
-            del self.__wbDict[wb.workbookKey]
+            del self.__wbDict[wb.key]
 
 
     def isEmpty(self) -> bool:

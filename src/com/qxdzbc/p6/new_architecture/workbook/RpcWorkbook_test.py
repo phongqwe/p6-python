@@ -47,7 +47,7 @@ class RpcWorkbook_test(unittest.TestCase):
     def test_set_wbKey_ok(self):
         self.mockWbService.setWbKey = MagicMock(
             return_value = SingleSignalResponse().toProtoObj())
-        self.wb.workbookKey = WorkbookKeys.fromNameAndPath("newName")
+        self.wb.key = WorkbookKeys.fromNameAndPath("newName")
         self.assertEqual("newName", self.wb.name)
 
     def test_set_wbKey_fail(self):
@@ -55,13 +55,13 @@ class RpcWorkbook_test(unittest.TestCase):
             errorReport = TestUtils.TestErrorReport
         ).toProtoObj())
         with self.assertRaises(Exception):
-            self.wb.workbookKey = WorkbookKeys.fromNameAndPath("newName")
+            self.wb.key = WorkbookKeys.fromNameAndPath("newName")
         self.assertEqual("qwe", self.wb.name)
 
     def test_worksheets(self):
         wsl = [
-            RpcWorksheet("Sheet1", self.wb.workbookKey,self.mockSP),
-            RpcWorksheet("Sheet2", self.wb.workbookKey,self.mockSP),
+            RpcWorksheet("Sheet1", self.wb.key, self.mockSP),
+            RpcWorksheet("Sheet2", self.wb.key, self.mockSP),
         ]
         self.mockWbService.getAllWorksheets = MagicMock(return_value = GetAllWorksheetsResponse(
             worksheets = wsl,
@@ -85,7 +85,7 @@ class RpcWorkbook_test(unittest.TestCase):
         self.assertTrue(o1.isOk())
         rpcCall.assert_called_with(
             request=WorksheetIdWithIndex(
-                wbKey=wb.workbookKey,
+                wbKey=wb.key,
                 wsIndex = 123
             ).toProtoObj()
         )
@@ -93,7 +93,7 @@ class RpcWorkbook_test(unittest.TestCase):
         self.assertTrue(o2.isOk())
         rpcCall.assert_called_with(
             request = WorksheetIdWithIndex(
-                wbKey = wb.workbookKey,
+                wbKey = wb.key,
                 wsName = "qwe"
             ).toProtoObj()
         )
@@ -118,7 +118,7 @@ class RpcWorkbook_test(unittest.TestCase):
         self.assertIsNone(o)
         self.mockWbService.getActiveWorksheet = MagicMock(
             return_value = GetWorksheetResponse(
-                wsId = RpcWorksheet("w",self.wb.workbookKey,self.mockSP).id
+                wsId = RpcWorksheet("w", self.wb.key, self.mockSP).id
             ).toProtoObj()
         )
         o2 = wb.activeWorksheet
@@ -156,7 +156,7 @@ class RpcWorkbook_test(unittest.TestCase):
             o14=wb.getWorksheetRs(123)
             self.assertTrue(o14.isErr())
         def okTest():
-            ws2 = RpcWorksheet("ws2", self.wb.workbookKey, self.mockSP)
+            ws2 = RpcWorksheet("ws2", self.wb.key, self.mockSP)
             self.mockWbService.getWorksheet = MagicMock(
                 return_value = GetWorksheetResponse(
                     wsId = ws2.id
@@ -187,7 +187,7 @@ class RpcWorkbook_test(unittest.TestCase):
         okTest()
 
     def test_createNewWorksheet(self):
-        ws2 = RpcWorksheet("ws2", self.wb.workbookKey, self.mockSP)
+        ws2 = RpcWorksheet("ws2", self.wb.key, self.mockSP)
         self.mockWbService.createNewWorksheet = MagicMock(
             return_value = WorksheetWithErrorReportMsg(
                 wsName = ws2.name
@@ -246,13 +246,13 @@ class RpcWorkbook_test(unittest.TestCase):
         self.mockWbService.addWorksheet = MagicMock(
             return_value = SingleSignalResponse().toProtoObj()
         )
-        ws = RpcWorksheet("qwe", self.wb.workbookKey, self.mockSP)
+        ws = RpcWorksheet("qwe", self.wb.key, self.mockSP)
         wb= self.wb
         rs = wb.addWorksheetRs(ws)
 
         self.mockWbService.addWorksheet.assert_called_with(
             request=AddWorksheetRequest(
-                wbKey = wb.workbookKey,
+                wbKey = wb.key,
                 worksheet = ws
             ).toProtoObj()
         )

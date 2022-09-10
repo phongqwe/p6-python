@@ -49,7 +49,7 @@ class RpcApp_test(unittest.TestCase):
         o = self.app.workbooks
         self.assertEqual(2,len(o))
         self.assertEqual(
-            wbks, list(map(lambda wb: wb.workbookKey, o))
+            wbks, list(map(lambda wb: wb.key, o))
         )
 
 
