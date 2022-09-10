@@ -31,6 +31,28 @@ class RpcApp_test(unittest.TestCase):
             rpcStubProvider = mockSP
         )
 
+    def test_closeWb(self):
+        wbk = WorkbookKeys.fromNameAndPath("wb1")
+        def okCase():
+            self.appService.closeWorkbook = MagicMock(
+                return_value = SingleSignalResponse().toProtoObj()
+            )
+            o = self.app.closeWorkbookRs(wbKey = wbk)
+            self.assertTrue(o.isOk())
+            self.app.closeWorkbook(wbk)
+        def errCase():
+            self.appService.closeWorkbook = MagicMock(
+                return_value = SingleSignalResponse(
+                    TestUtils.TestErrorReport
+                ).toProtoObj()
+            )
+            o = self.app.closeWorkbookRs(wbKey = wbk)
+            self.assertTrue(o.isErr())
+            with self.assertRaises(Exception):
+                self.app.closeWorkbook(wbk)
+        okCase()
+        errCase()
+
     def test_saveWorkbookAtPath(self):
         wbk = WorkbookKeys.fromNameAndPath("wb1")
         path = "some/path"

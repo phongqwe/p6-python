@@ -104,10 +104,9 @@ class BaseApp(App, ABC):
         createRs: Result[Workbook, ErrorReport] = self.createDefaultNewWorkbookRs(name)
         return Results.extractOrRaise(createRs)
 
-    def closeWorkbook(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]):
-        closeRs = self.closeWorkbookRs(nameOrIndexOrKey)
-        if closeRs.isErr():
-            raise closeRs.err.toException()
+    def closeWorkbook(self, wbKey:WorkbookKey)->WorkbookKey:
+        closeRs = self.closeWorkbookRs(wbKey)
+        return Results.extractOrRaise(closeRs)
 
     def forceLoadWorkbook(self, filePath: Union[str, Path]) -> Workbook:
         loadRs = self.forceLoadWorkbookRs(filePath)

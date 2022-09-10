@@ -137,11 +137,11 @@ class App(ABC):
     def hasWorkbook(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]) -> bool:
         raise NotImplementedError()
 
-    def closeWorkbook(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]):
+    def closeWorkbook(self, wbKey:WorkbookKey)->WorkbookKey:
         """close a workbook"""
         raise NotImplementedError()
 
-    def closeWorkbookRs(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]) -> Result[WorkbookKey, ErrorReport]:
+    def closeWorkbookRs(self, wbKey:WorkbookKey) -> Result[WorkbookKey, ErrorReport]:
         """
         close a workbook
         :return a Result object if there are error instead of raising an exception
