@@ -4,6 +4,7 @@ from unittest.mock import MagicMock
 from com.qxdzbc.p6.document_structure.util.for_test import TestUtils
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKeys import WorkbookKeys
 from com.qxdzbc.p6.new_architecture.app.RpcApp import RpcApp
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.BoolMsg import BoolMsg
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.SingleSignalResponse import SingleSignalResponse
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.LoadWorkbookResponse import LoadWorkbookResponse
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.save_wb.SaveWorkbookRequest import SaveWorkbookRequest
@@ -32,6 +33,15 @@ class RpcApp_test(unittest.TestCase):
             rpcStubProvider = mockSP
         )
         self.wbk = WorkbookKeys.fromNameAndPath("wb1")
+
+    def test_hasWorkbook(self):
+        wbk = self.wbk
+        self.appService.checkWbExistence = MagicMock(
+            return_value = BoolMsg(True).toProtoObj()
+        )
+        o = self.app.hasWorkbook(wbk)
+        self.assertTrue(o)
+
     def test_loadWb(self):
         wbk = self.wbk
         p = "some/path"

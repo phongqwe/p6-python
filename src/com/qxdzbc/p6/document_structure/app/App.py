@@ -134,7 +134,7 @@ class App(ABC):
         """
         raise NotImplementedError()
 
-    def hasWorkbook(self, nameOrIndexOrKey: Union[int, str, WorkbookKey]) -> bool:
+    def hasWorkbook(self, wbKey:WorkbookKey) -> bool:
         raise NotImplementedError()
 
     def closeWorkbook(self, wbKey:WorkbookKey)->WorkbookKey:
@@ -145,17 +145,6 @@ class App(ABC):
         """
         close a workbook
         :return a Result object if there are error instead of raising an exception
-        """
-        raise NotImplementedError()
-
-    def forceLoadWorkbook(self, filePath: Union[str, Path]) -> Workbook:
-        """force load a workbook from a file path, and add it to this app state"""
-        raise NotImplementedError()
-
-    def forceLoadWorkbookRs(self, filePath: Union[str, Path]) -> Result[Workbook, ErrorReport]:
-        """
-        force load a workbook from a file path, and add it to this app state, replace whatever workbook with the same key
-        :return an Result object if there are error instead of raising an exception
         """
         raise NotImplementedError()
 

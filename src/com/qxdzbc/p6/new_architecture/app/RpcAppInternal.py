@@ -10,6 +10,7 @@ from com.qxdzbc.p6.document_structure.workbook.WorkBook import Workbook
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.document_structure.worksheet.Worksheet import Worksheet
 from com.qxdzbc.p6.new_architecture.rpc.StubProvider import RpcStubProvider
+from com.qxdzbc.p6.new_architecture.rpc.data_structure.BoolMsg import BoolMsg
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.SingleSignalResponse import SingleSignalResponse
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.CreateNewWorkbookRequest import CreateNewWorkbookRequest
 from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.CreateNewWorkbookResponse import CreateNewWorkbookResponse
@@ -28,6 +29,11 @@ from com.qxdzbc.p6.proto.CommonProtos_pb2 import EmptyProto
 
 class RpcAppInternal(BaseApp):
 
+
+    def hasWorkbook(self, wbKey: WorkbookKey) -> bool:
+        oProto = self.appSv.checkWbExistence(request=wbKey.toProtoObj())
+        o = BoolMsg.fromProto(oProto)
+        return o.v
 
     def loadWorkbookRs(self, filePath: Union[str, Path]) -> Result[Workbook, ErrorReport]:
         req = LoadWorkbookRequest(

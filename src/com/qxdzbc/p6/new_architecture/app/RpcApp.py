@@ -3,10 +3,7 @@ from pathlib import Path
 from typing import Union, Optional
 
 from com.qxdzbc.p6.document_structure.app.BaseApp import BaseApp
-from com.qxdzbc.p6.document_structure.util.Util import makeGetter
 from com.qxdzbc.p6.document_structure.util.report.error.ErrorReport import ErrorReport
-from com.qxdzbc.p6.document_structure.util.result.Err import Err
-from com.qxdzbc.p6.document_structure.util.result.Ok import Ok
 from com.qxdzbc.p6.document_structure.util.result.Result import Result
 from com.qxdzbc.p6.document_structure.workbook.WorkBook import Workbook
 from com.qxdzbc.p6.document_structure.workbook.key.WorkbookKey import WorkbookKey
@@ -14,19 +11,6 @@ from com.qxdzbc.p6.document_structure.worksheet.Worksheet import Worksheet
 from com.qxdzbc.p6.new_architecture.app.RpcAppInternal import RpcAppInternal
 from com.qxdzbc.p6.new_architecture.common.RpcUtils import RpcUtils
 from com.qxdzbc.p6.new_architecture.rpc.StubProvider import RpcStubProvider
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.SingleSignalResponse import SingleSignalResponse
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.CreateNewWorkbookRequest import CreateNewWorkbookRequest
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.CreateNewWorkbookResponse import CreateNewWorkbookResponse
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.GetWorkbookRequest import GetWorkbookRequest
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.app.WorkbookKeyWithErrorResponse import \
-    WorkbookKeyWithErrorResponse
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.GetWorksheetResponse import GetWorksheetResponse
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.save_wb.SaveWorkbookRequest import SaveWorkbookRequest
-from com.qxdzbc.p6.new_architecture.rpc.data_structure.workbook.save_wb.SaveWorkbookResponse import SaveWorkbookResponse
-from com.qxdzbc.p6.new_architecture.workbook.RpcWorkbook import RpcWorkbook
-from com.qxdzbc.p6.new_architecture.worksheet.RpcWorksheet import RpcWorksheet
-from com.qxdzbc.p6.proto.CommonProtos_pb2 import EmptyProto
-
 
 class RpcApp(BaseApp):
 
@@ -36,6 +20,9 @@ class RpcApp(BaseApp):
     ):
         self.rpcSP = rpcStubProvider
         self.iApp = RpcAppInternal(self.rpcSP)
+
+    def hasWorkbook(self, wbKey: WorkbookKey) -> bool:
+        return self._onAppSvOk(partial(self.iApp.hasWorkbook, wbKey))
 
     def loadWorkbookRs(self, filePath: Union[str, Path]) -> Result[Workbook, ErrorReport]:
         return self._onAppSvOkRs(partial(self.iApp.loadWorkbookRs, filePath))
