@@ -3,7 +3,11 @@ from dataclasses import dataclass
 
 from typing import Optional
 
-from com.qxdzbc.p6.rpc import RpcStubProvider
+from com.qxdzbc.p6.app.App import App
+from com.qxdzbc.p6.app.GlobalScope import setIPythonGlobals
+from com.qxdzbc.p6.app.RpcApp import RpcApp
+from com.qxdzbc.p6.app.TopLevel import getApp
+from com.qxdzbc.p6.rpc.StubProvider import RpcStubProvider
 from com.qxdzbc.p6.workbook.RpcWorkbook import RpcWorkbook
 from com.qxdzbc.p6.worksheet import RpcWorksheet
 
@@ -17,12 +21,12 @@ class B:
 class Bench(unittest.TestCase):
 
     def test_configRpc(self):
-        from com.qxdzbc.p6.rpc import RpcInfo
+        from com.qxdzbc.p6.rpc.RpcInfo import RpcInfo
 
         setIPythonGlobals(globals())
-        app: App = getApp()
+        app: RpcApp = getApp()
         rpcSP:RpcStubProvider = app.rpcSP
-        port = 50052
+        port = 52500
         rpcInfo = RpcInfo(
             host="localhost",
             port=port
