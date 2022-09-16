@@ -17,7 +17,7 @@ from com.qxdzbc.p6.proto import DocProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto
 from com.qxdzbc.p6.proto import ScriptProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_ScriptProtos__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n&com/qxdzbc/p6/proto/P6FileProtos.proto\x12\x13\x63om.qxdzbc.p6.proto\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\x1a#com/qxdzbc/p6/proto/DocProtos.proto\x1a&com/qxdzbc/p6/proto/ScriptProtos.proto\"#\n\x13P6FileMetaInfoProto\x12\x0c\n\x04\x64\x61te\x18\x01 \x01(\x02\"\x82\x01\n\x12P6FileContentProto\x12\x36\n\x04meta\x18\x01 \x01(\x0b\x32(.com.qxdzbc.p6.proto.P6FileMetaInfoProto\x12\x34\n\x08workbook\x18\x02 \x01(\x0b\x32\".com.qxdzbc.p6.proto.WorkbookProto\"/\n\x0bP6FileProto\x12\x0f\n\x07version\x18\x01 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x02 \x01(\x0c\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n&com/qxdzbc/p6/proto/P6FileProtos.proto\x12\x13\x63om.qxdzbc.p6.proto\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\x1a#com/qxdzbc/p6/proto/DocProtos.proto\x1a&com/qxdzbc/p6/proto/ScriptProtos.proto\"#\n\x13P6FileMetaInfoProto\x12\x0c\n\x04\x64\x61te\x18\x01 \x01(\x03\"\x82\x01\n\x12P6FileContentProto\x12\x36\n\x04meta\x18\x01 \x01(\x0b\x32(.com.qxdzbc.p6.proto.P6FileMetaInfoProto\x12\x34\n\x08workbook\x18\x02 \x01(\x0b\x32\".com.qxdzbc.p6.proto.WorkbookProto\"/\n\x0bP6FileProto\x12\x0f\n\x07version\x18\x01 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x02 \x01(\x0c\x62\x06proto3')
 
 
 

@@ -18,6 +18,10 @@ class Results:
 
     @staticmethod
     def extractOrNone(result:Result[Any,ErrorReport]):
+        """
+        @deprecated: don't use this. use "getOrNone" directly on Result objs
+        extract the value or raise the err as an exception
+        """
         if result.isOk():
             return result.value
         else:

@@ -15,6 +15,13 @@ from com.qxdzbc.p6.rpc.StubProvider import RpcStubProvider
 
 class RpcApp(BaseApp):
 
+    def closeWorkbookRs(self, keyOrNameOrIndex: Union[WorkbookKey, str, int]) -> Result[WorkbookKey, ErrorReport]:
+        wbKey = keyOrNameOrIndex
+        if isinstance(keyOrNameOrIndex,str) or isinstance(keyOrNameOrIndex,int):
+            wb = self.getWorkbook(keyOrNameOrIndex)
+            wbKey = wb.key
+        return self.closeWorkbookByWbKeyRs(wbKey)
+
     @property
     def workbooks(self) -> list[Workbook]:
         def f():
@@ -34,16 +41,16 @@ class RpcApp(BaseApp):
     def loadWorkbookRs(self, filePath: Union[str, Path]) -> Result[Workbook, ErrorReport]:
         return self._onAppSvOkRs(partial(self.iApp.loadWorkbookRs, filePath))
 
-    def closeWorkbookRs(self, wbKey: WorkbookKey) -> Result[WorkbookKey, ErrorReport]:
-        return self._onAppSvOkRs(partial(self.iApp.closeWorkbookRs, wbKey))
+    def closeWorkbookByWbKeyRs(self, wbKey: WorkbookKey) -> Result[WorkbookKey, ErrorReport]:
+        return self._onAppSvOkRs(partial(self.iApp.closeWorkbookByWbKeyRs, wbKey))
 
     def saveWorkbookAtPathRs(self, wbKey: WorkbookKey, filePath: Union[str, Path]) -> Result[Workbook, ErrorReport]:
         return self._onAppSvOkRs(partial(self.iApp.saveWorkbookAtPathRs, wbKey, filePath))
 
     @property
-    def activeSheet(self) -> Optional[Worksheet]:
+    def activeWorksheet(self) -> Optional[Worksheet]:
         def f():
-            return self.iApp.activeSheet
+            return self.iApp.activeWorksheet
 
         return self._onAppSvOk(f)
 

@@ -91,19 +91,19 @@ class RpcApp_test(unittest.TestCase):
             self.appService.closeWorkbook = MagicMock(
                 return_value = SingleSignalResponse().toProtoObj()
             )
-            o = self.app.closeWorkbookRs(wbKey = wbk)
+            o = self.app.closeWorkbookByWbKeyRs(wbKey = wbk)
             self.assertTrue(o.isOk())
-            self.app.closeWorkbook(wbk)
+            self.app.closeWorkbookByWbKey(wbk)
         def errCase():
             self.appService.closeWorkbook = MagicMock(
                 return_value = SingleSignalResponse(
                     TestUtils.TestErrorReport
                 ).toProtoObj()
             )
-            o = self.app.closeWorkbookRs(wbKey = wbk)
+            o = self.app.closeWorkbookByWbKeyRs(wbKey = wbk)
             self.assertTrue(o.isErr())
             with self.assertRaises(Exception):
-                self.app.closeWorkbook(wbk)
+                self.app.closeWorkbookByWbKey(wbk)
         okCase()
         errCase()
 
@@ -156,7 +156,7 @@ class RpcApp_test(unittest.TestCase):
                 wsId = wsId
             ).toProtoObj()
         )
-        o = self.app.activeSheet
+        o = self.app.activeWorksheet
         self.appService.getActiveWorksheet.assert_called_with(
             request=EmptyProto()
         )

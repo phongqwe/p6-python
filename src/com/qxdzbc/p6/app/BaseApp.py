@@ -19,31 +19,31 @@ from com.qxdzbc.p6.rpc.data_structure.range import RangeId
 
 
 class BaseApp(App, ABC):
-    @property
-    def allScripts(self) -> list[SimpleScriptEntry]:
-        return self.scriptContainer.allScripts
-
-    def addScript(self, name: str, script: str):
-        self.scriptContainer.addScript(name, script)
-
-    def getScript(self, name: str) -> Optional[str]:
-        return self.scriptContainer.getScript(name)
-
-    def removeScript(self, name: str):
-        self.scriptContainer.removeScript(name)
-
-    def removeAllScript(self):
-        self.scriptContainer.removeAll()
-
-    def addAllScripts(self, scripts: list[SimpleScriptEntry]):
-        self.scriptContainer.addAllScripts(scripts)
-
-    @property
-    def allAsScriptEntry(self) -> list[ScriptEntry]:
-        return self.scriptContainer.allAsScriptEntry(None)
+    # @property
+    # def allScripts(self) -> list[SimpleScriptEntry]:
+    #     return self.scriptContainer.allScripts
+    #
+    # def addScript(self, name: str, script: str):
+    #     self.scriptContainer.addScript(name, script)
+    #
+    # def getScript(self, name: str) -> Optional[str]:
+    #     return self.scriptContainer.getScript(name)
+    #
+    # def removeScript(self, name: str):
+    #     self.scriptContainer.removeScript(name)
+    #
+    # def removeAllScript(self):
+    #     self.scriptContainer.removeAll()
+    #
+    # def addAllScripts(self, scripts: list[SimpleScriptEntry]):
+    #     self.scriptContainer.addAllScripts(scripts)
+    #
+    # @property
+    # def allAsScriptEntry(self) -> list[ScriptEntry]:
+    #     return self.scriptContainer.allAsScriptEntry(None)
 
     def getRangeRs(self, rangeId: RangeId) -> Result[Range, ErrorReport]:
-        getWbRs = self.getBareWorkbookRs(rangeId.workbookKey)
+        getWbRs = self.getWorkbookRs(rangeId.workbookKey)
         if getWbRs.isOk():
             wb = getWbRs.value
             getWsRs = wb.getWorksheetRs(rangeId.worksheetName)
@@ -67,13 +67,6 @@ class BaseApp(App, ABC):
     @property
     def rootApp(self) -> 'App':
         return self
-
-    def createDefaultNewWorkbookRs(self, name: Optional[str] = None) -> Result[Workbook, ErrorReport]:
-        newWbRs: Result[Workbook, ErrorReport] = self.createNewWorkbookRs(name)
-        if newWbRs.isOk():
-            wb = newWbRs.value.rootWorkbook
-            wb.createNewWorksheetRs()
-        return newWbRs
 
     def createNewWorkbook(self, name: Optional[str] = None) -> Workbook:
         createRs: Result[Workbook, ErrorReport] = self.createNewWorkbookRs(name)
@@ -100,12 +93,8 @@ class BaseApp(App, ABC):
         rs: Result[Workbook, ErrorReport] = self.getWorkbookRs(key)
         return Results.extractOrNone(rs)
 
-    def createDefaultNewWorkbook(self, name: Optional[str] = None) -> Workbook:
-        createRs: Result[Workbook, ErrorReport] = self.createDefaultNewWorkbookRs(name)
-        return Results.extractOrRaise(createRs)
-
-    def closeWorkbook(self, wbKey:WorkbookKey)->WorkbookKey:
-        closeRs = self.closeWorkbookRs(wbKey)
+    def closeWorkbookByWbKey(self, wbKey:WorkbookKey)->WorkbookKey:
+        closeRs = self.closeWorkbookByWbKeyRs(wbKey)
         return Results.extractOrRaise(closeRs)
 
     def saveWorkbookAtPath(self, wbKey:WorkbookKey, filePath: Union[str, Path]):
@@ -132,3 +121,7 @@ class BaseApp(App, ABC):
         if not rt:
             rt = "No workbook"
         print(rt)
+
+    def closeWorkbook(self, keyOrNameOrIndex: Union[WorkbookKey, str, int]) -> WorkbookKey:
+        rs = self.closeWorkbookRs(keyOrNameOrIndex)
+        return rs.getOrRaise()

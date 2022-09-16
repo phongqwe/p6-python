@@ -53,7 +53,7 @@ class RpcAppInternal(BaseApp):
         else:
             return Err(o.errorReport)
 
-    def closeWorkbookRs(self, wbKey: WorkbookKey) -> Result[WorkbookKey, ErrorReport]:
+    def closeWorkbookByWbKeyRs(self, wbKey: WorkbookKey) -> Result[WorkbookKey, ErrorReport]:
         oProto = self.appSv.closeWorkbook(request=wbKey.toProtoObj())
         o = SingleSignalResponse.fromProto(oProto)
         if o.isOk():
@@ -77,7 +77,7 @@ class RpcAppInternal(BaseApp):
         else:
             return Err(o.errorReport)
     @property
-    def activeSheet(self) -> Optional[Worksheet]:
+    def activeWorksheet(self) -> Optional[Worksheet]:
         oProto = self.appSv.getActiveWorksheet(request = EmptyProto())
         o:GetWorksheetResponse = GetWorksheetResponse.fromProto(oProto)
         wsId = o.wsId
@@ -158,6 +158,3 @@ class RpcAppInternal(BaseApp):
             ))
         else:
             return Err(out.errorReport)
-
-
-

@@ -4,6 +4,7 @@ from typing import Optional, Union, Any
 
 from com.qxdzbc.p6.range.Range import Range
 from com.qxdzbc.p6.rpc.data_structure.range.RangeId import RangeId
+from com.qxdzbc.p6.script.ScriptContainer import ScriptContainer
 from com.qxdzbc.p6.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.util.result.Result import Result
 from com.qxdzbc.p6.workbook.WorkBook import Workbook
@@ -77,7 +78,7 @@ class App(ABC):
         raise NotImplementedError()
 
     @property
-    def activeSheet(self) -> Optional[Worksheet]:
+    def activeWorksheet(self) -> Optional[Worksheet]:
         """
         :return: the activesheet of the activebook.  The returned worksheet is connected to all the reactors of this app
         """
@@ -109,41 +110,38 @@ class App(ABC):
         """:return workbook at a key that is either a name, an index, or a WorkbookKey. The returned workbook is connected to all the reactors/notifier of this app"""
         raise NotImplementedError()
 
-    def createDefaultNewWorkbook(self, name: Optional[str] = None) -> Workbook:
-        """
-        create a new workbook with an auto generated name, a blank worksheet with auto generated name
-        :return a the newly created workbook or raising an exception if there's an error
-        """
-        raise NotImplementedError()
-
-    def createDefaultNewWorkbookRs(self, name: Optional[str] = None) -> Result[Workbook, ErrorReport]:
-        """
-        create a new workbook with an auto generated name, a blank worksheet with auto generated name
-        :return a Result object if there are error instead of raising an exception
-        """
-        raise NotImplementedError()
-
     def createNewWorkbook(self, name: Optional[str] = None) -> Workbook:
         """create a new workbook, and add it to this app """
         raise NotImplementedError()
 
     def createNewWorkbookRs(self, name: Optional[str] = None) -> Result[Workbook, ErrorReport]:
         """create a new workbook, and add it to this app 
-        :return a Result object if there are error instead of raising an exception
+        :return a Result object containinng the new workbook
         """
         raise NotImplementedError()
 
     def hasWorkbook(self, wbKey:WorkbookKey) -> bool:
         raise NotImplementedError()
 
-    def closeWorkbook(self, wbKey:WorkbookKey)->WorkbookKey:
+    def closeWorkbookRs(self, keyOrNameOrIndex:Union[WorkbookKey,str,int])-> Result[WorkbookKey, ErrorReport]:
+        """
+        close a workbook
+        :return a Result object containing the target workbook key
+        """
+        raise NotImplementedError()
+
+    def closeWorkbook(self, keyOrNameOrIndex:Union[WorkbookKey,str,int])->WorkbookKey:
+        """close a workbook or raise an exception if there's an error"""
+        raise NotImplementedError()
+
+    def closeWorkbookByWbKey(self, wbKey:WorkbookKey)->WorkbookKey:
         """close a workbook"""
         raise NotImplementedError()
 
-    def closeWorkbookRs(self, wbKey:WorkbookKey) -> Result[WorkbookKey, ErrorReport]:
+    def closeWorkbookByWbKeyRs(self, wbKey:WorkbookKey) -> Result[WorkbookKey, ErrorReport]:
         """
         close a workbook
-        :return a Result object if there are error instead of raising an exception
+        :return a Result object containing the target workbook key
         """
         raise NotImplementedError()
 

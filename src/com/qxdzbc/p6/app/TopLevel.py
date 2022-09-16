@@ -2,6 +2,7 @@ from typing import Optional, Union, Tuple
 
 from com.qxdzbc.p6.app import App
 from com.qxdzbc.p6.app.GlobalScope import getGlobals
+from com.qxdzbc.p6.app.RpcApp import RpcApp
 from com.qxdzbc.p6.app.errors.AppErrors import AppErrors
 from com.qxdzbc.p6.cell.Cell import Cell
 from com.qxdzbc.p6.cell.address.CellAddress import CellAddress
@@ -10,7 +11,7 @@ from com.qxdzbc.p6.range.address.RangeAddress import RangeAddress
 from com.qxdzbc.p6.workbook.WorkBook import Workbook
 from com.qxdzbc.p6.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.worksheet.Worksheet import Worksheet
-from com.qxdzbc.p6.di import Container
+from com.qxdzbc.p6.di.Container import Container
 
 """
 This module contains functions to be used by users to control the application.
@@ -38,7 +39,7 @@ def restartApp():
     stopApp()
     startApp()
 
-def getApp() -> App:
+def getApp() -> RpcApp:
     """get the singleton App instance"""
     startApp()
     g = getGlobals()
