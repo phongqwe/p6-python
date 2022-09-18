@@ -5,7 +5,7 @@ import numpy
 import pandas
 
 from com.qxdzbc.p6.cell.Cell import Cell
-from com.qxdzbc.p6.cell.PrimitiveCellDataContainer import SimpleDataCell
+from com.qxdzbc.p6.cell.CellProtoMapping import CellProtoMapping
 from com.qxdzbc.p6.cell.address.CellAddress import CellAddress
 from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
 from com.qxdzbc.p6.range.Range import Range
@@ -20,7 +20,7 @@ from com.qxdzbc.p6.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.worksheet.BaseWorksheet import BaseWorksheet
 from com.qxdzbc.p6.worksheet.InternalRpcWorksheet import InternalRpcWorksheet
 from com.qxdzbc.p6.worksheet.LoadType import LoadType
-from com.qxdzbc.p6.worksheet.SimpleWs import SimpleWs
+from com.qxdzbc.p6.worksheet.WorksheetProtoMapping import WorksheetProtoMapping
 from com.qxdzbc.p6.worksheet.Worksheet import Worksheet
 from com.qxdzbc.p6.rpc.RpcUtils import RpcUtils
 from com.qxdzbc.p6.di.RpcServiceContainer import RpcServiceContainer
@@ -56,14 +56,18 @@ class RpcWorksheet(WorksheetWrapper):
         super().__init__(InternalRpcWorksheet(name, wbKey, stubProvider))
         self._stubProvider = stubProvider
 
-    def loadArrayRs(self, dataAray, anchorCell: CellAddress = CellAddresses.A1,
-                    loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> \
+    def load2DArrayRs(self, dataAray, anchorCell: CellAddress = CellAddresses.A1,
+                      loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> \
             Result['Worksheet', ErrorReport]:
-        return self._onWbsvOkRs(partial(self.rootWorksheet.loadArrayRs,dataAray,anchorCell,loadType))
+        return self._onWbsvOkRs(partial(self.rootWorksheet.load2DArrayRs, dataAray, anchorCell, loadType))
 
-    def loadDataFrameRs(self, dataFrame, anchorCell: CellAddress = CellAddresses.A1,
-                        loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> Result['Worksheet', ErrorReport]:
-        return self._onWbsvOkRs(partial(self.rootWorksheet.loadDataFrameRs,dataFrame,anchorCell,loadType))
+    def loadDataFrameRs(
+            self, dataFrame,
+            anchorCell: CellAddress = CellAddresses.A1,
+            loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE,
+            keepHeader: bool = True,
+    ) -> Result['Worksheet', ErrorReport]:
+        return self._onWbsvOkRs(partial(self.rootWorksheet.loadDataFrameRs,dataFrame,anchorCell,loadType,keepHeader))
 
     def addCell(self, cell: Cell):
         return self._onWsSvOk(partial(self.rootWorksheet.addCell,cell))

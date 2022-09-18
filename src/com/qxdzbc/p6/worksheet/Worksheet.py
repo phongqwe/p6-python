@@ -27,26 +27,40 @@ class Worksheet(MutableCellContainer,
     def id(self) -> WorksheetId:
         raise NotImplementedError()
 
-    def loadArrayRs(self, dataAray, anchorCell: CellAddress= CellAddresses.A1, loadType: LoadType=LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> Result['Worksheet', ErrorReport]:
+    def load2DArrayRs(self, dataAray, anchorCell: CellAddress= CellAddresses.A1, loadType: LoadType=LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> Result['Worksheet', ErrorReport]:
         raise NotImplementedError()
 
-    def loadArray(self, dataAray, anchorCell: CellAddress= CellAddresses.A1, loadType: LoadType=LoadType.KEEP_OLD_DATA_IF_COLLIDE)->'Worksheet':
+    def load2DArray(self, dataAray, anchorCell: CellAddress= CellAddresses.A1, loadType: LoadType=LoadType.KEEP_OLD_DATA_IF_COLLIDE)-> 'Worksheet':
         raise NotImplementedError()
 
-    def loadDataFrame(self, dataFrame, anchorCell: CellAddress= CellAddresses.A1, loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> 'Worksheet':
+    def loadDataFrame(
+            self, dataFrame,
+            anchorCell: CellAddress= CellAddresses.A1,
+            loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE,
+            keepHeader: bool = True,
+    ) -> 'Worksheet':
         """
         load a pandas data frame into this worksheet
-        :param dataFrame is a pandas dataframe
-        :param loadType controls how the data should be loaded (overwrite everything, keep old data, etc)
+        :param keepHeader: keep or not keep column header in the input pandas DataFrame
+        :param anchorCell: a starting point to load the data
+        :param dataFrame: a pandas dataframe
+        :param loadType: controls how the data should be loaded (overwrite everything, keep old data, etc)
         :return a worksheet containing the new data
         """
         raise NotImplementedError()
 
-    def loadDataFrameRs(self, dataFrame, anchorCell: CellAddress= CellAddresses.A1, loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> Result['Worksheet', ErrorReport]:
+    def loadDataFrameRs(
+            self, dataFrame,
+            anchorCell: CellAddress= CellAddresses.A1,
+            loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE,
+            keepHeader:bool=True,
+    ) -> Result['Worksheet', ErrorReport]:
         """
         load a pandas data frame into this worksheet
-        :param dataFrame is a pandas dataframe
-        :param loadType controls how the data should be loaded (overwrite everything, keep old data, etc)
+        :param keepHeader: keep or not keep column header in the input pandas DataFrame
+        :param anchorCell: a starting point to load the data
+        :param dataFrame: a pandas dataframe
+        :param loadType: controls how the data should be loaded (overwrite everything, keep old data, etc)
         :return a result obj
         """
         raise NotImplementedError()

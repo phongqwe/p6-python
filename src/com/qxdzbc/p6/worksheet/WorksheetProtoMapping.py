@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from com.qxdzbc.p6.cell.PrimitiveCellDataContainer import SimpleDataCell
+from com.qxdzbc.p6.cell.CellProtoMapping import CellProtoMapping
 from com.qxdzbc.p6.proto.DocProtos_pb2 import WorksheetProto
 from com.qxdzbc.p6.util.ToProto import ToProto
 from com.qxdzbc.p6.workbook.key.WorkbookKey import WorkbookKey
@@ -8,13 +8,13 @@ from com.qxdzbc.p6.worksheet.Worksheet import Worksheet
 
 
 @dataclass
-class SimpleWs(Worksheet):
+class WorksheetProtoMapping(ToProto[WorksheetProto]):
     """
-    this is not a real worksheet, just a data container
+    a direct mapping to WorksheetProto
     """
     name:str
     wbKey:WorkbookKey
-    cells: list[SimpleDataCell]
+    cells: list[CellProtoMapping]
 
     def toProtoObj(self) -> WorksheetProto:
         return WorksheetProto(

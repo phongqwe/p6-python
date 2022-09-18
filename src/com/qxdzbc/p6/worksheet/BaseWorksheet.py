@@ -11,9 +11,9 @@ from com.qxdzbc.p6.worksheet.Worksheet import Worksheet
 
 class BaseWorksheet(Worksheet,ABC):
 
-    def loadArray(self, dataAray, anchorCell: CellAddress= CellAddresses.A1,
-                  loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> 'Worksheet':
-        rs = self.loadArrayRs(dataAray, anchorCell, loadType)
+    def load2DArray(self, dataAray, anchorCell: CellAddress= CellAddresses.A1,
+                    loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> 'Worksheet':
+        rs = self.load2DArrayRs(dataAray, anchorCell, loadType)
         return rs.getOrRaise()
 
     def loadDataFrame(self, dataFrame, anchorCell: CellAddress= CellAddresses.A1, loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> 'Worksheet':

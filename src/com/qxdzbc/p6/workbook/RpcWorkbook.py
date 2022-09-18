@@ -2,7 +2,6 @@ from functools import partial
 from pathlib import Path
 from typing import Union, Optional
 
-from com.qxdzbc.p6.util.CommonError import CommonErrors
 from com.qxdzbc.p6.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.util.result.Err import Err
 from com.qxdzbc.p6.util.result.Ok import Ok
@@ -59,7 +58,6 @@ class RpcWorkbook(WorkbookWrapper):
             wbKey = WorkbookKeyImp(name, path),
             stubProvider = stubProvider
         )
-
 
     def __init__(self, wbKey: WorkbookKey,
                  stubProvider: RpcStubProvider = RpcServiceContainer.insecureRpcServiceProvider()):

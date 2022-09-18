@@ -4,7 +4,7 @@ import numpy
 import pandas
 
 from com.qxdzbc.p6.cell.Cell import Cell
-from com.qxdzbc.p6.cell.PrimitiveCellDataContainer import SimpleDataCell
+from com.qxdzbc.p6.cell.CellProtoMapping import CellProtoMapping
 from com.qxdzbc.p6.cell.address.CellAddress import CellAddress
 from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
 from com.qxdzbc.p6.range.Range import Range
@@ -18,7 +18,7 @@ from com.qxdzbc.p6.util.result.Result import Result
 from com.qxdzbc.p6.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.worksheet.BaseWorksheet import BaseWorksheet
 from com.qxdzbc.p6.worksheet.LoadType import LoadType
-from com.qxdzbc.p6.worksheet.SimpleWs import SimpleWs
+from com.qxdzbc.p6.worksheet.WorksheetProtoMapping import WorksheetProtoMapping
 from com.qxdzbc.p6.worksheet.Worksheet import Worksheet
 from com.qxdzbc.p6.rpc.RpcUtils import RpcUtils
 from com.qxdzbc.p6.di.RpcServiceContainer import RpcServiceContainer
@@ -55,46 +55,96 @@ class InternalRpcWorksheet(BaseWorksheet):
         self._wbk = wbKey
         self._stubProvider = stubProvider
 
-    def loadArrayRs(self, dataAray, anchorCell: CellAddress = CellAddresses.A1,
-                    loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> \
+    def _makeLoadDataRequestRs(self, cpmList: list[CellProtoMapping], anchorCell: CellAddress, loadType: LoadType) -> \
+            Result['Worksheet', ErrorReport]:
+        request = LoadDataRequest(
+            loadType = loadType,
+            ws = WorksheetProtoMapping(
+                name = self.name,
+                wbKey = self.wbKey,
+                cells = cpmList
+            ),
+            anchorCell = anchorCell
+        )
+        oProto = self._wssv.loadData(request = request.toProtoObj())
+        o = SingleSignalResponse.fromProto(oProto)
+        if o.isOk():
+            return Ok(self)
+        else:
+            return Err(o.errorReport)
+
+    def load2DArrayRs(self, dataAray, anchorCell: CellAddress = CellAddresses.A1,
+                      loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> \
             Result['Worksheet', ErrorReport]:
         is2D = len(numpy.shape(dataAray)) == 2
         anchorRow = anchorCell.rowIndex
         anchorCol = anchorCell.colIndex
-        cellDatas = []
+        cpmList = []
         if is2D:
+            # x: construct cpmList, each sub array is treated as a row
             for (r, arrayRow) in enumerate(dataAray):
                 for (c, item) in enumerate(arrayRow):
                     targetCellAddress: CellAddress = CellAddresses.fromColRow(anchorCol + c, anchorRow + r)
-                    cellDatas.append(SimpleDataCell(targetCellAddress, item))
-            request = LoadDataRequest(
-                loadType = loadType,
-                ws = SimpleWs(
-                    name = self.name,
-                    wbKey = self.wbKey,
-                    cells = cellDatas
-                ),
-                anchorCell = anchorCell
-            )
-            oProto = self._wssv.loadData(request=request.toProtoObj())
-            o = SingleSignalResponse.fromProto(oProto)
-            if o.isOk():
-                return Ok(self)
-            else:
-                return Err(o.errorReport)
+                    cpmList.append(CellProtoMapping(
+                        id = CellId(
+                            cellAddress = targetCellAddress,
+                            wbKey = self.wbKey,
+                            wsName = self.name
+                        ),
+                        value = item
+                    ))
+            return self._makeLoadDataRequestRs(cpmList, anchorCell, loadType)
         else:
             return Err(CommonErrors.WrongTypeReport.report("data obj is not 2D"))
 
-    def loadDataFrameRs(self, dataFrame, anchorCell: CellAddress = CellAddresses.A1,
-                        loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> Result['Worksheet', ErrorReport]:
+    def loadDataFrameRs(
+            self, dataFrame,
+            anchorCell: CellAddress = CellAddresses.A1,
+            loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE,
+            keepHeader: bool = True,
+    ) -> Result['Worksheet', ErrorReport]:
+        # x: a dataframe is always 2d so, no need to check its dimension
         df = dataFrame
-        isPandasDataFrame = isinstance(dataFrame, pandas.core.frame.DataFrame)
+        isPandasDataFrame = isinstance(df, pandas.core.frame.DataFrame)
+        anchorCol = anchorCell.colIndex
+        anchorRow = anchorCell.rowIndex
         if isPandasDataFrame:
-            is2D = len(df.shape) == 2
-            if is2D:
-                pass
-            else:
-                return Err(CommonErrors.WrongTypeReport.report("dataFrame obj is not 2D"))
+            cpmList = []
+            headerCpmList = []
+            rowOffset = 0
+            if keepHeader:
+                rowOffset = 1
+                # x: construct header cells
+                for (i, header) in enumerate(list(df.columns)):
+                    cpm = CellProtoMapping(
+                        id = CellId(
+                            cellAddress = CellAddresses.fromColRow(
+                                anchorCol+i,
+                                anchorRow
+                            ),
+                            wbKey = self.wbKey,
+                            wsName = self.name
+                        ),
+                        value = str(header)
+                    )
+                    headerCpmList.append(cpm)
+
+            # x: construct cpmList
+            for colIndex in df:
+                col = df[colIndex]
+                for (rowIndex, item) in enumerate(col):
+                    cpm = CellProtoMapping(
+                        id = CellId(
+                            cellAddress = CellAddresses.fromColRow(
+                                anchorCol + colIndex,
+                                anchorRow + rowIndex + rowOffset),
+                            wbKey = self.wbKey,
+                            wsName = self.name
+                        ),
+                        value = item
+                    )
+                    cpmList.append(cpm)
+            return self._makeLoadDataRequestRs(headerCpmList+cpmList, anchorCell, loadType)
         else:
             return Err(CommonErrors.WrongTypeReport.report("dataFrame obj is not a pandas DataFrame"))
 
@@ -116,7 +166,7 @@ class InternalRpcWorksheet(BaseWorksheet):
         a = RangeAddresses.parse(rangeAddress)
         return RpcRange(a, self._wbk, self._name)
 
-    def addCellRs(self, cell: Cell)->Result[None,ErrorReport]:
+    def addCellRs(self, cell: Cell) -> Result[None, ErrorReport]:
         newCellId = CellId(cell.address, self.wbKey, self.name)
         cellProto = cell.toProtoObj()
         cellProto.id.CopyFrom(newCellId.toProtoObj())

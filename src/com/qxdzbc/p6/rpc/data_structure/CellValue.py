@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional, Union
+from typing import Optional, Union, Any
 
 from com.qxdzbc.p6.util.CanCheckEmpty import CanCheckEmpty
 from com.qxdzbc.p6.util.ToProto import ToProto
@@ -11,6 +11,19 @@ class CellValue(CanCheckEmpty, ToProto[CellValueProto]):
     vStr: Optional[str] = None
     vNum: Optional[float] = None
     vBool: Optional[bool] = None
+
+    @staticmethod
+    def fromAny(a:Optional[Any]):
+        if a is None:
+            return CellValue.empty()
+        if isinstance(a,int) or isinstance(a,float) :
+            return CellValue(vNum = float(a))
+        elif isinstance(a,str):
+            return CellValue(vStr = a)
+        elif isinstance(a,bool):
+            return CellValue(vBool = a)
+        else:
+            raise TypeError("CellValue can only hold number, string, boolean, or nothing")
 
     @staticmethod
     def fromNum(i: float):
@@ -41,9 +54,13 @@ class CellValue(CanCheckEmpty, ToProto[CellValueProto]):
             vBool = b,
         )
 
+
+    __empty = None
     @staticmethod
     def empty():
-        return CellValue()
+        if CellValue.__empty is None:
+            CellValue.__empty = CellValue()
+        return CellValue.__empty
 
     def isEmpty(self) -> bool:
         return self.vStr is None and \

@@ -27,12 +27,16 @@ class WorksheetWrapper(BaseWorksheet):
     def id(self) -> WorksheetId:
         return self.rootWorksheet.id
 
-    def loadArrayRs(self, dataAray, anchorCell: CellAddress = CellAddresses.A1,
-                    loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> Result['Worksheet', ErrorReport]:
-        return self.rootWorksheet.loadArrayRs(dataAray, anchorCell, loadType)
+    def load2DArrayRs(self, dataAray, anchorCell: CellAddress = CellAddresses.A1,
+                      loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> Result['Worksheet', ErrorReport]:
+        return self.rootWorksheet.load2DArrayRs(dataAray, anchorCell, loadType)
 
-    def loadDataFrameRs(self, dataFrame, anchorCell: CellAddress = CellAddresses.A1,
-                        loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> Result['Worksheet', ErrorReport]:
+    def loadDataFrameRs(
+            self, dataFrame,
+            anchorCell: CellAddress = CellAddresses.A1,
+            loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE,
+            keepHeader: bool = True,
+    ) -> Result['Worksheet', ErrorReport]:
         return self.loadDataFrameRs(dataFrame, anchorCell, loadType)
 
     def toProtoObj(self) -> WorksheetProto:
