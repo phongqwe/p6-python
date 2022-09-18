@@ -1,19 +1,27 @@
 from pathlib import Path
 from typing import Union, Optional
 
-from com.qxdzbc.p6.document_structure.formula_translator.FormulaTranslator import FormulaTranslator
 from com.qxdzbc.p6.script import SimpleScriptEntry
 from com.qxdzbc.p6.script.ScriptContainer import ScriptContainer
 from com.qxdzbc.p6.script.ScriptEntry import ScriptEntry
 
 from com.qxdzbc.p6.util.report.error.ErrorReport import ErrorReport
-from com.qxdzbc.p6.util.result import Result
+from com.qxdzbc.p6.util.result.Result import Result
 from com.qxdzbc.p6.workbook.WorkBook import Workbook
 from com.qxdzbc.p6.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.worksheet.Worksheet import Worksheet
 
 
 class WorkbookWrapper(Workbook):
+
+    def __init__(self, innerWorkbook: Workbook):
+        self._innerWorkbook = innerWorkbook
+
+    def addScriptRs(self, name: str, script: str) -> Result[None, ErrorReport]:
+        return self.rootWorkbook.addScriptRs(name, script)
+
+    def renameWorksheetRs(self, oldName: str, ws: Worksheet) -> Result[None, ErrorReport]:
+        return self.rootWorkbook.renameWorksheetRs(oldName, ws)
 
     def addAllScriptsRs(self, scripts: list[SimpleScriptEntry]) -> Result[None, ErrorReport]:
         return self.rootWorkbook.addAllScriptsRs(scripts)
@@ -49,17 +57,11 @@ class WorkbookWrapper(Workbook):
     def rootWorkbook(self) -> 'Workbook':
         return self._innerWorkbook.rootWorkbook
 
-    def renameWorksheetName(self, oldName: str, ws: Worksheet):
-        self.rootWorkbook.renameWorksheetName(oldName, ws)
+    def renameWorksheet(self, oldName: str, ws: Worksheet):
+        self.rootWorkbook.renameWorksheet(oldName, ws)
 
     def addWorksheetRs(self, ws: Worksheet) -> Result[None, ErrorReport]:
         return self.rootWorkbook.addWorksheetRs(ws)
-
-    def __init__(self, innerWorkbook: Workbook):
-        self._innerWorkbook = innerWorkbook
-
-    def getTranslator(self, sheetName: str) -> FormulaTranslator:
-        return self.rootWorkbook.getTranslator(sheetName)
 
     @property
     def path(self) -> Path:
@@ -70,10 +72,10 @@ class WorkbookWrapper(Workbook):
         return self.rootWorkbook.worksheets
 
     @property
-    def workbookKey(self) -> WorkbookKey:
+    def key(self) -> WorkbookKey:
         return self.rootWorkbook.key
 
-    @workbookKey.setter
+    @key.setter
     def key(self, newKey: WorkbookKey):
         self.rootWorkbook.key = newKey
 
@@ -104,9 +106,6 @@ class WorkbookWrapper(Workbook):
 
     def setActiveWorksheetRs(self, indexOrName: Union[int, str]) -> Result[Worksheet, ErrorReport]:
         return self.rootWorkbook.setActiveWorksheetRs(indexOrName)
-
-    def toJsonDict(self) -> dict:
-        return self.rootWorkbook.toJsonDict()
 
     def isEmpty(self) -> bool:
         return self.rootWorkbook.isEmpty()

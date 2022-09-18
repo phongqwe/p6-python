@@ -4,7 +4,7 @@ from com.qxdzbc.p6.cell.Cells import Cells
 from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
 from com.qxdzbc.p6.rpc.data_structure.CellId import CellId
 from com.qxdzbc.p6.workbook.key.WorkbookKeys import WorkbookKeys
-from com.qxdzbc.p6.proto.DocProtos_pb2 import CellValueProto, Cell2Proto
+from com.qxdzbc.p6.proto.DocProtos_pb2 import CellValueProto, CellProto
 
 
 class Cells_test(unittest.TestCase):
@@ -12,7 +12,7 @@ class Cells_test(unittest.TestCase):
     def test_FromProto2(self):
         address = CellAddresses.fromLabel("C23")
 
-        proto = Cell2Proto(
+        proto = CellProto(
             id = CellId(
                 cellAddress = address,
                 wbKey = WorkbookKeys.fromNameAndPath("wb1"),
@@ -22,5 +22,5 @@ class Cells_test(unittest.TestCase):
             formula = "formula z",
         )
 
-        cell = Cells.fromProto2(proto)
+        cell = Cells.fromProto(proto)
         self.assertEqual(proto.id,cell.id.toProtoObj())

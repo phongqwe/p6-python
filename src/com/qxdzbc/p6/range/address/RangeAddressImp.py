@@ -28,8 +28,8 @@ class RangeAddressImp(RangeAddress):
             raise ValueError("invalid firstAddress and lastAddress: {reason}".format(reason=reason))
 
     def moveByTopLeftTo(self, newTopLeft: CellAddress) -> 'RangeAddress':
-        colDif:int = newTopLeft.minusCol(self.topLeft)
-        rowDif:int = newTopLeft.minusRow(self.topLeft)
+        colDif:int = newTopLeft.colDif(self.topLeft)
+        rowDif:int = newTopLeft.rowDif(self.topLeft)
         return RangeAddressImp(
             topLeft = newTopLeft,
             botRight = CellAddresses.fromColRow(

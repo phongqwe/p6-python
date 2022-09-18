@@ -264,10 +264,10 @@ class Workbook(CanCheckEmpty, ToProto[WorkbookProto], ABC):
         else:
             raise addRs.err.toException()
 
-    def renameWorksheetName(self, oldName: str, ws: Worksheet):
+    def renameWorksheet(self, oldName: str, ws: Worksheet):
         raise NotImplementedError()
     
-    def renameWorksheetNameRs(self, oldName: str, ws: Worksheet)->Result[None, ErrorReport]:
+    def renameWorksheetRs(self, oldName: str, ws: Worksheet)->Result[None, ErrorReport]:
         raise NotImplementedError()
 
     def addWorksheetRs(self, ws: Worksheet) -> Result[None, ErrorReport]:
@@ -285,14 +285,8 @@ class Workbook(CanCheckEmpty, ToProto[WorkbookProto], ABC):
             rt = "empty book"
         return rt
 
-    def showSummary(self):
+    def printSummary(self):
         print(self.summary())
-
-    def reportJsonStr(self) -> str:
-        return json.dumps(self.toJson().toJsonDict())
-
-    def toJsonStrForSaving(self) -> str:
-        return self.toJson().toJsonStrForSaving()
 
     def __str__(self):
         return self.summary()

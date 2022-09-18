@@ -1,3 +1,5 @@
+from typing import Optional
+
 from com.qxdzbc.p6.util.ToException import ToException
 from com.qxdzbc.p6.util.ToRepStr import ToRepStr
 from com.qxdzbc.p6.util.report.error.ErrorHeader import ErrorHeader
@@ -9,6 +11,14 @@ class CommonErrors:
 
     class WrongTypeReport(ErrorReport):
         header = ErrorHeader(f"{CE}0", "Incorrect type")
+
+        @staticmethod
+        def report(detail:Optional[str])->ErrorReport:
+            h = CommonErrors.WrongTypeReport.header
+            if detail:
+                h = h.setDescription(detail)
+            return ErrorReport(header = h)
+
         class Data(ToRepStr,ToException):
             def __init__(self,varName:str, correctType:str):
                 self.varName = varName

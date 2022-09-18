@@ -1,7 +1,7 @@
 import unittest
 
 from com.qxdzbc.p6.workbook.key.WorkbookKeys import WorkbookKeys
-from com.qxdzbc.p6.rpc.data_structure.worksheet.WorksheetId import WorksheetId
+from com.qxdzbc.p6.worksheet.rpc_data_structure.WorksheetId import WorksheetId
 
 
 class WorksheetIdWithIndex_test(unittest.TestCase):

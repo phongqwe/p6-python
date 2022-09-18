@@ -1,13 +1,28 @@
 from abc import ABC
 from typing import Tuple
 
+from com.qxdzbc.p6.cell.Cell import Cell
 from com.qxdzbc.p6.cell.address.CellAddress import CellAddress
+from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
 from com.qxdzbc.p6.range.Range import Range
-from com.qxdzbc.p6.util.result import Results
+from com.qxdzbc.p6.worksheet.LoadType import LoadType
 from com.qxdzbc.p6.worksheet.Worksheet import Worksheet
 
 
 class BaseWorksheet(Worksheet,ABC):
+
+    def loadArray(self, dataAray, anchorCell: CellAddress= CellAddresses.A1,
+                  loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> 'Worksheet':
+        rs = self.loadArrayRs(dataAray, anchorCell, loadType)
+        return rs.getOrRaise()
+
+    def loadDataFrame(self, dataFrame, anchorCell: CellAddress= CellAddresses.A1, loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> 'Worksheet':
+        rs = self.loadDataFrameRs(dataFrame, anchorCell,loadType)
+        return rs.getOrRaise()
+
+    def addCell(self, cell: Cell):
+        rs = self.addCellRs(cell)
+        rs.getOrRaise()
 
     def paste(self, cell: CellAddress):
         rs = self.pasteRs(cell)
@@ -20,9 +35,9 @@ class BaseWorksheet(Worksheet,ABC):
         else:
             return None
 
-    def pasteDataFrame(self, anchorCell: CellAddress,dataFrame):
-        rs = self.pasteDataFrameRs(anchorCell,dataFrame)
-        Results.extractOrRaise(rs)
+    # def pasteDataFrame(self, anchorCell: CellAddress,dataFrame):
+    #     rs = self.pasteDataFrameRs(anchorCell,dataFrame)
+    #     Results.extractOrRaise(rs)
 
     def compareContent(self, ws2: Worksheet) -> bool:
         """compare all cell of this sheet with another. Very inefficient, use with care"""

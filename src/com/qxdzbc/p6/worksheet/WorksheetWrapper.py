@@ -2,13 +2,17 @@ from typing import Optional, Tuple
 
 from com.qxdzbc.p6.cell.Cell import Cell
 from com.qxdzbc.p6.cell.address.CellAddress import CellAddress
+from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
+from com.qxdzbc.p6.proto.DocProtos_pb2 import WorksheetProto
 from com.qxdzbc.p6.range.Range import Range
 from com.qxdzbc.p6.range.address.RangeAddress import RangeAddress
 from com.qxdzbc.p6.util.report.error.ErrorReport import ErrorReport
-from com.qxdzbc.p6.util.result import Result
+from com.qxdzbc.p6.util.result.Result import Result
 from com.qxdzbc.p6.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.worksheet.BaseWorksheet import BaseWorksheet
+from com.qxdzbc.p6.worksheet.LoadType import LoadType
 from com.qxdzbc.p6.worksheet.Worksheet import Worksheet
+from com.qxdzbc.p6.worksheet.rpc_data_structure import WorksheetId
 
 
 class WorksheetWrapper(BaseWorksheet):
@@ -16,12 +20,27 @@ class WorksheetWrapper(BaseWorksheet):
     def __init__(self, innerWorksheet: Worksheet):
         self._innerSheet: Worksheet = innerWorksheet
 
+    def addCellRs(self, cell: Cell) -> Result[None, ErrorReport]:
+        return self.rootWorksheet.addCellRs(cell)
+
+    @property
+    def id(self) -> WorksheetId:
+        return self.rootWorksheet.id
+
+    def loadArrayRs(self, dataAray, anchorCell: CellAddress = CellAddresses.A1,
+                    loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> Result['Worksheet', ErrorReport]:
+        return self.rootWorksheet.loadArrayRs(dataAray, anchorCell, loadType)
+
+    def loadDataFrameRs(self, dataFrame, anchorCell: CellAddress = CellAddresses.A1,
+                        loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> Result['Worksheet', ErrorReport]:
+        return self.loadDataFrameRs(dataFrame, anchorCell, loadType)
+
+    def toProtoObj(self) -> WorksheetProto:
+        return self.rootWorksheet.toProtoObj()
+
     @property
     def wbKey(self) -> WorkbookKey:
         return self.rootWorksheet.wbKey
-
-    def pasteDataFrameRs(self, anchorCell: CellAddress, dataFrame) -> Result[None, ErrorReport]:
-        return self.rootWorksheet.pasteDataFrameRs(anchorCell, dataFrame)
 
     def pasteRs(self, cell: CellAddress) -> Result[None, ErrorReport]:
         return self.rootWorksheet.pasteRs(cell)
@@ -50,7 +69,7 @@ class WorksheetWrapper(BaseWorksheet):
         return self.rootWorksheet.hasCellAtIndex(col, row)
 
     def containsAddressIndex(self, col: int, row: int) -> bool:
-        return self.containsAddressIndex(col, row)
+        return self.rootWorksheet.containsAddressIndex(col, row)
 
     def deleteRangeRs(self, rangeAddress: RangeAddress) -> Result[None, ErrorReport]:
         return self.rootWorksheet.deleteRangeRs(rangeAddress)
@@ -76,9 +95,6 @@ class WorksheetWrapper(BaseWorksheet):
     def range(self, rangeAddress: str | RangeAddress | Tuple[CellAddress, CellAddress]) -> Range:
         return self.rootWorksheet.range(rangeAddress)
 
-    def addCell(self, cell: Cell):
-        self.rootWorksheet.addCell(cell)
-
     def getOrMakeCell(self, address: CellAddress) -> Cell:
         return self.rootWorksheet.getOrMakeCell(address)
 
@@ -87,9 +103,6 @@ class WorksheetWrapper(BaseWorksheet):
 
     def getCell(self, address: CellAddress) -> Optional[Cell]:
         return self.rootWorksheet.getCell(address)
-
-    def isEmpty(self) -> bool:
-        return self.rootWorksheet.isEmpty()
 
     def containsAddress(self, address: CellAddress) -> bool:
         return self.rootWorksheet.containsAddress(address)
@@ -101,13 +114,6 @@ class WorksheetWrapper(BaseWorksheet):
     @property
     def rangeAddress(self) -> RangeAddress:
         return self.rootWorksheet.rangeAddress
-
-    def isSameRangeAddress(self, other):
-        return self.rootWorksheet.isSameRangeAddress(other)
-
-    @property
-    def innerSheet(self):
-        return self.rootWorksheet
 
     def renameRs(self, newName: str) -> Result[None, ErrorReport]:
         return self.rootWorksheet.renameRs(newName)

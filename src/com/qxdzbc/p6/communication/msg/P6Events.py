@@ -28,8 +28,8 @@ from com.qxdzbc.p6.rpc.data_structure.workbook.DeleteWorksheetResponse import De
 from com.qxdzbc.p6.rpc.data_structure.workbook.RenameWorksheetRequest import RenameWorksheetRequest
 from com.qxdzbc.p6.rpc.data_structure.workbook.save_wb.SaveWorkbookRequest import SaveWorkbookRequest
 from com.qxdzbc.p6.rpc.data_structure.workbook.save_wb.SaveWorkbookResponse import SaveWorkbookResponse
-from com.qxdzbc.p6.rpc.data_structure.worksheet.DeleteMultiRequest import DeleteMultiRequest
-from com.qxdzbc.p6.rpc.data_structure.worksheet.DeleteMultiResponse import DeleteMultiResponse
+from com.qxdzbc.p6.worksheet.rpc_data_structure.DeleteMultiRequest import DeleteMultiRequest
+from com.qxdzbc.p6.worksheet.rpc_data_structure import DeleteMultiResponse
 from com.qxdzbc.p6.rpc.data_structure.workbook.RenameWorksheetResponse import RenameWorksheetResponse
 
 WSE = "WORKSHEET_EVENT"  # worksheet event

@@ -14,6 +14,9 @@ from com.qxdzbc.p6.proto.DocProtos_pb2 import CellAddressProto
 class CellAddresses:
     __labelPattern = re.compile("[A-Za-z]+[1-9][0-9]*")
 
+
+
+
     @staticmethod
     def fromProto(proto: CellAddressProto):
         return CellIndex(proto.col, proto.row)
@@ -63,6 +66,8 @@ class CellAddresses:
     def fromColRow(col: int, row: int) -> CellAddress:
         """A special, invalid cell address"""
         return CellIndex(col, row)
+
+    A1 = fromColRow(1,1)
 
     @staticmethod
     def __checkCellAddressFormat(address: str) -> Result[None, ErrorReport]:

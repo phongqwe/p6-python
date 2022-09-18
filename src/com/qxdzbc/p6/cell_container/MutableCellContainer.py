@@ -13,6 +13,10 @@ from com.qxdzbc.p6.util.result.Results import Results
 class MutableCellContainer(CellContainer, ABC):
     """ container of cells """
 
+    def addCellRs(self, cell: Cell)->Result[None,ErrorReport]:
+        """add a cell to this container"""
+        raise NotImplementedError()
+
     def addCell(self, cell: Cell):
         """add a cell to this container"""
         raise NotImplementedError()

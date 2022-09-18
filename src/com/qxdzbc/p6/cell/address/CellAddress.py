@@ -9,10 +9,15 @@ class CellAddress(ToProto[CellAddressProto], ABC):
     an interface representing a position of a cell, including row and column index
     """
 
-    def minusCol(self, anotherCellAddress: 'CellAddress'):
+    def addRow(self,i:int)->'CellAddress':
+        raise NotImplementedError()
+    def addCol(self,i:int)->'CellAddress':
+        raise NotImplementedError()
+
+    def colDif(self, anotherCellAddress: 'CellAddress'):
         return self.colIndex - anotherCellAddress.colIndex
 
-    def minusRow(self, anotherCellAddress: 'CellAddress'):
+    def rowDif(self, anotherCellAddress: 'CellAddress'):
         return self.rowIndex - anotherCellAddress.rowIndex
 
     @property

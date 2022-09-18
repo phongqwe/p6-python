@@ -28,6 +28,7 @@ class Cell(CanCheckEmpty,ToProto[CellProto],ABC):
     @property
     def id(self) -> CellId:
         return CellId(self.address, self.wbKey, self.wsName)
+
     @property
     def cellValue(self)->CellValue:
         raise NotImplementedError()
@@ -158,11 +159,12 @@ class Cell(CanCheckEmpty,ToProto[CellProto],ABC):
     def toProtoObj(self) -> CellProto:
         v = None
         if self.cellValue:
-            v = self.cellValue.toProtoObj()
+            if self.cellValue.isNotEmpty():
+                v = self.cellValue.toProtoObj()
         f = self.formula
         return CellProto(
+            id = self.id.toProtoObj(),
             value = v,
             formula = f,
-            address = self.address.toProtoObj()
         )
 

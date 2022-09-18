@@ -54,7 +54,7 @@ def setActiveWorkbook(indexOrName):
     getApp().setActiveWorkbook(indexOrName)
 
 
-def getActiveSheetRs() -> Optional[Worksheet]:
+def getActiveWorksheetRs() -> Optional[Worksheet]:
     wb = getActiveWorkbookRs()
     if wb is not None:
         return getActiveWorkbookRs().activeWorksheet
@@ -78,7 +78,7 @@ def getWorksheetRs(nameOrIndex: Union[str, int]) -> Optional[Worksheet]:
 
 
 def getRange(rangeAddress: Union[str, RangeAddress, Tuple[CellAddress, CellAddress]]) -> Optional[Range]:
-    sheet = getActiveSheetRs()
+    sheet = getActiveWorksheetRs()
     if sheet is None:
         return None
     return sheet.range(rangeAddress)
@@ -86,7 +86,7 @@ def getRange(rangeAddress: Union[str, RangeAddress, Tuple[CellAddress, CellAddre
 
 def cell(address: Union[str, CellAddress, Tuple[int, int]]) -> Optional[Cell]:
     """get a cell from the current active sheet"""
-    sheet = getActiveSheetRs()
+    sheet = getActiveWorksheetRs()
     if sheet is None:
         return None
     return sheet.cell(address)

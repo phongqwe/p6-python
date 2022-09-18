@@ -13,7 +13,7 @@ from com.qxdzbc.p6.rpc.data_structure.workbook.GetAllWorksheetsResponse import \
 from com.qxdzbc.p6.rpc.data_structure.workbook.GetWorksheetResponse import GetWorksheetResponse
 from com.qxdzbc.p6.rpc.data_structure.workbook.WorksheetWithErrorReportMsg import \
     WorksheetWithErrorReportMsg
-from com.qxdzbc.p6.rpc.data_structure.worksheet.WorksheetIdWithIndex import WorksheetIdWithIndex
+from com.qxdzbc.p6.worksheet.rpc_data_structure.WorksheetIdWithIndex import WorksheetIdWithIndex
 from com.qxdzbc.p6.workbook.RpcWorkbook import RpcWorkbook
 from com.qxdzbc.p6.worksheet.RpcWorksheet import RpcWorksheet
 

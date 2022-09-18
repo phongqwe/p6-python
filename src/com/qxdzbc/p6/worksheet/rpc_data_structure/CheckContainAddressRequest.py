@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from com.qxdzbc.p6.cell.address.CellAddress import CellAddress
 from com.qxdzbc.p6.util.ToProto import ToProto
-from com.qxdzbc.p6.rpc.data_structure.worksheet.WorksheetId import WorksheetId
+from com.qxdzbc.p6.worksheet.rpc_data_structure.WorksheetId import WorksheetId
 from com.qxdzbc.p6.proto.WorksheetProtos_pb2 import CheckContainAddressRequestProto
 
 

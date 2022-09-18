@@ -95,25 +95,25 @@ class DataCell(Cell):
     def formula(self, newFormula):
         self.__formula = newFormula
 
-    def toProtoObj(self) -> CellProto:
-        cellProto = CellProto()
-        cellProto.address.CopyFrom(self.address.toProtoObj())
-
-        if self.__formula:
-            cellProto.formula = self.__formula
-        else:
-            if self.__value:
-                cellValueProto = CellValueProto()
-                if isinstance(self.__value, bool):
-                    cellValueProto.bool = self.__value
-                if isinstance(self.__value, str):
-                    cellValueProto.vStr = self.__value
-                if isinstance(self.__value, int) or isinstance(self.__value, float):
-                    cellValueProto.num = self.__value
-
-                cellProto.value.CopyFrom(cellValueProto)
-
-        return cellProto
+    # def toProtoObj(self) -> CellProto:
+    #     cellProto = CellProto()
+    #     cellProto.address.CopyFrom(self.address.toProtoObj())
+    #
+    #     if self.__formula:
+    #         cellProto.formula = self.__formula
+    #     else:
+    #         if self.__value:
+    #             cellValueProto = CellValueProto()
+    #             if isinstance(self.__value, bool):
+    #                 cellValueProto.bool = self.__value
+    #             if isinstance(self.__value, str):
+    #                 cellValueProto.vStr = self.__value
+    #             if isinstance(self.__value, int) or isinstance(self.__value, float):
+    #                 cellValueProto.num = self.__value
+    #
+    #             cellProto.value.CopyFrom(cellValueProto)
+    #
+    #     return cellProto
 
     @property
     def bareValue(self):

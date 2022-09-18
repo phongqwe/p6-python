@@ -1,6 +1,6 @@
 from typing import Optional
 
-from com.qxdzbc.p6.util import ToRepStr
+from com.qxdzbc.p6.util.ToRepStr import ToRepStr
 from com.qxdzbc.p6.util.report.error.ErrorHeader import ErrorHeader
 from com.qxdzbc.p6.util.report.error.ErrorReport import ErrorReport
 

@@ -6,6 +6,12 @@ from com.qxdzbc.p6.proto.DocProtos_pb2 import CellAddressProto
 class CellIndex(CellAddress):
     """ cell address in form of col index and row index """
 
+    def addRow(self, i: int) -> 'CellAddress':
+        return CellIndex(colIndex = self.colIndex,rowIndex = self.rowIndex+i)
+
+    def addCol(self, i: int) -> 'CellAddress':
+        return CellIndex(colIndex = self.colIndex+i, rowIndex = self.rowIndex)
+
     def __init__(self, colIndex: int, rowIndex: int):
         self.__rowIndex = rowIndex
         self.__colIndex = colIndex

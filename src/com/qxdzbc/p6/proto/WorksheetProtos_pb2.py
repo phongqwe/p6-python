@@ -16,7 +16,7 @@ from com.qxdzbc.p6.proto import CommonProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_pr
 from com.qxdzbc.p6.proto import DocProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n)com/qxdzbc/p6/proto/WorksheetProtos.proto\x12\x13\x63om.qxdzbc.p6.proto\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\x1a#com/qxdzbc/p6/proto/DocProtos.proto\"^\n\x19GetWorksheetResponseProto\x12\x38\n\x04wsId\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorksheetIdProtoH\x00\x88\x01\x01\x42\x07\n\x05_wsId\"\xc9\x01\n\x1cRenameWorksheetResponseProto\x12:\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x0f\n\x07oldName\x18\x02 \x01(\t\x12\x0f\n\x07newName\x18\x03 \x01(\t\x12\x0f\n\x07isError\x18\x04 \x01(\x08\x12:\n\x0b\x65rrorReport\x18\x05 \x01(\x0b\x32%.com.qxdzbc.p6.proto.ErrorReportProto\"\xa7\x01\n\x16\x44\x65leteCellRequestProto\x12:\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x02 \x01(\t\x12:\n\x0b\x63\x65llAddress\x18\x03 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\"\xae\x02\n\x17\x44\x65leteCellResponseProto\x12:\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x02 \x01(\t\x12:\n\x0b\x63\x65llAddress\x18\x03 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\x12\x37\n\x0bnewWorkbook\x18\x04 \x01(\x0b\x32\".com.qxdzbc.p6.proto.WorkbookProto\x12\x0f\n\x07isError\x18\x05 \x01(\x08\x12:\n\x0b\x65rrorReport\x18\x06 \x01(\x0b\x32%.com.qxdzbc.p6.proto.ErrorReportProto\"\xd8\x01\n\x17\x44\x65leteMultiRequestProto\x12\x35\n\x05range\x18\x01 \x03(\x0b\x32&.com.qxdzbc.p6.proto.RangeAddressProto\x12\x33\n\x04\x63\x65ll\x18\x02 \x03(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\x12:\n\x0bworkbookKey\x18\x03 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x04 \x01(\t\"\x93\x01\n\x19WorksheetIdWithIndexProto\x12\x34\n\x05wbKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x13\n\x06wsName\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\x14\n\x07wsIndex\x18\x03 \x01(\x05H\x01\x88\x01\x01\x42\t\n\x07_wsNameB\n\n\x08_wsIndex\"X\n\x10WorksheetIdProto\x12\x34\n\x05wbKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x0e\n\x06wsName\x18\x02 \x01(\t\"\'\n\x16\x43\x65llCountResponseProto\x12\r\n\x05\x63ount\x18\x01 \x01(\x03\"Y\n\x17GetAllCellResponseProto\x12>\n\x0f\x63\x65llAddressList\x18\x01 \x03(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\"\x92\x01\n\x1f\x43heckContainAddressRequestProto\x12\x33\n\x04wsId\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorksheetIdProto\x12:\n\x0b\x63\x65llAddress\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\"o\n\x19GetUsedRangeResponseProto\x12\x41\n\x0crangeAddress\x18\x01 \x01(\x0b\x32&.com.qxdzbc.p6.proto.RangeAddressProtoH\x00\x88\x01\x01\x42\x0f\n\r_rangeAddressb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n)com/qxdzbc/p6/proto/WorksheetProtos.proto\x12\x13\x63om.qxdzbc.p6.proto\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\x1a#com/qxdzbc/p6/proto/DocProtos.proto\"^\n\x19GetWorksheetResponseProto\x12\x38\n\x04wsId\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorksheetIdProtoH\x00\x88\x01\x01\x42\x07\n\x05_wsId\"\xc9\x01\n\x1cRenameWorksheetResponseProto\x12:\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x0f\n\x07oldName\x18\x02 \x01(\t\x12\x0f\n\x07newName\x18\x03 \x01(\t\x12\x0f\n\x07isError\x18\x04 \x01(\x08\x12:\n\x0b\x65rrorReport\x18\x05 \x01(\x0b\x32%.com.qxdzbc.p6.proto.ErrorReportProto\"\xa7\x01\n\x16\x44\x65leteCellRequestProto\x12:\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x02 \x01(\t\x12:\n\x0b\x63\x65llAddress\x18\x03 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\"\xae\x02\n\x17\x44\x65leteCellResponseProto\x12:\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x02 \x01(\t\x12:\n\x0b\x63\x65llAddress\x18\x03 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\x12\x37\n\x0bnewWorkbook\x18\x04 \x01(\x0b\x32\".com.qxdzbc.p6.proto.WorkbookProto\x12\x0f\n\x07isError\x18\x05 \x01(\x08\x12:\n\x0b\x65rrorReport\x18\x06 \x01(\x0b\x32%.com.qxdzbc.p6.proto.ErrorReportProto\"\xd8\x01\n\x17\x44\x65leteMultiRequestProto\x12\x35\n\x05range\x18\x01 \x03(\x0b\x32&.com.qxdzbc.p6.proto.RangeAddressProto\x12\x33\n\x04\x63\x65ll\x18\x02 \x03(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\x12:\n\x0bworkbookKey\x18\x03 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x04 \x01(\t\"\x93\x01\n\x19WorksheetIdWithIndexProto\x12\x34\n\x05wbKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x13\n\x06wsName\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\x14\n\x07wsIndex\x18\x03 \x01(\x05H\x01\x88\x01\x01\x42\t\n\x07_wsNameB\n\n\x08_wsIndex\"X\n\x10WorksheetIdProto\x12\x34\n\x05wbKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x0e\n\x06wsName\x18\x02 \x01(\t\"\'\n\x16\x43\x65llCountResponseProto\x12\r\n\x05\x63ount\x18\x01 \x01(\x03\"Y\n\x17GetAllCellResponseProto\x12>\n\x0f\x63\x65llAddressList\x18\x01 \x03(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\"\x92\x01\n\x1f\x43heckContainAddressRequestProto\x12\x33\n\x04wsId\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorksheetIdProto\x12:\n\x0b\x63\x65llAddress\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\"o\n\x19GetUsedRangeResponseProto\x12\x41\n\x0crangeAddress\x18\x01 \x01(\x0b\x32&.com.qxdzbc.p6.proto.RangeAddressProtoH\x00\x88\x01\x01\x42\x0f\n\r_rangeAddress\"\x8b\x02\n\x14LoadDataRequestProto\x12I\n\x08loadType\x18\x01 \x01(\x0e\x32\x37.com.qxdzbc.p6.proto.LoadDataRequestProto.LoadTypeProto\x12/\n\x02ws\x18\x02 \x01(\x0b\x32#.com.qxdzbc.p6.proto.WorksheetProto\x12\x39\n\nanchorCell\x18\x03 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\"<\n\rLoadTypeProto\x12\r\n\tOVERWRITE\x10\x00\x12\x1c\n\x18KEEP_OLD_DATA_IF_COLLIDE\x10\x01\x62\x06proto3')
 
 
 
@@ -31,6 +31,8 @@ _CELLCOUNTRESPONSEPROTO = DESCRIPTOR.message_types_by_name['CellCountResponsePro
 _GETALLCELLRESPONSEPROTO = DESCRIPTOR.message_types_by_name['GetAllCellResponseProto']
 _CHECKCONTAINADDRESSREQUESTPROTO = DESCRIPTOR.message_types_by_name['CheckContainAddressRequestProto']
 _GETUSEDRANGERESPONSEPROTO = DESCRIPTOR.message_types_by_name['GetUsedRangeResponseProto']
+_LOADDATAREQUESTPROTO = DESCRIPTOR.message_types_by_name['LoadDataRequestProto']
+_LOADDATAREQUESTPROTO_LOADTYPEPROTO = _LOADDATAREQUESTPROTO.enum_types_by_name['LoadTypeProto']
 GetWorksheetResponseProto = _reflection.GeneratedProtocolMessageType('GetWorksheetResponseProto', (_message.Message,), {
   'DESCRIPTOR' : _GETWORKSHEETRESPONSEPROTO,
   '__module__' : 'com.qxdzbc.p6.proto.WorksheetProtos_pb2'
@@ -108,6 +110,13 @@ GetUsedRangeResponseProto = _reflection.GeneratedProtocolMessageType('GetUsedRan
   })
 _sym_db.RegisterMessage(GetUsedRangeResponseProto)
 
+LoadDataRequestProto = _reflection.GeneratedProtocolMessageType('LoadDataRequestProto', (_message.Message,), {
+  'DESCRIPTOR' : _LOADDATAREQUESTPROTO,
+  '__module__' : 'com.qxdzbc.p6.proto.WorksheetProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.LoadDataRequestProto)
+  })
+_sym_db.RegisterMessage(LoadDataRequestProto)
+
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
@@ -133,4 +142,8 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _CHECKCONTAINADDRESSREQUESTPROTO._serialized_end=1656
   _GETUSEDRANGERESPONSEPROTO._serialized_start=1658
   _GETUSEDRANGERESPONSEPROTO._serialized_end=1769
+  _LOADDATAREQUESTPROTO._serialized_start=1772
+  _LOADDATAREQUESTPROTO._serialized_end=2039
+  _LOADDATAREQUESTPROTO_LOADTYPEPROTO._serialized_start=1979
+  _LOADDATAREQUESTPROTO_LOADTYPEPROTO._serialized_end=2039
 # @@protoc_insertion_point(module_scope)

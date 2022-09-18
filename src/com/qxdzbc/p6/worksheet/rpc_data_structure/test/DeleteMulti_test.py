@@ -4,7 +4,7 @@ import unittest
 from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
 from com.qxdzbc.p6.range.address.RangeAddresses import RangeAddresses
 from com.qxdzbc.p6.workbook.key.WorkbookKeys import WorkbookKeys
-from com.qxdzbc.p6.rpc.data_structure.worksheet.DeleteMultiRequest import \
+from com.qxdzbc.p6.worksheet.rpc_data_structure.DeleteMultiRequest import \
     DeleteMultiRequest
 from com.qxdzbc.p6.proto.WorksheetProtos_pb2 import DeleteMultiRequestProto
 

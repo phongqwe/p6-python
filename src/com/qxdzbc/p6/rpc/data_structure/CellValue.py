@@ -7,14 +7,13 @@ from com.qxdzbc.p6.proto.DocProtos_pb2 import CellValueProto
 
 
 @dataclass
-class CellValue(CanCheckEmpty,ToProto[CellValueProto]):
-
+class CellValue(CanCheckEmpty, ToProto[CellValueProto]):
     vStr: Optional[str] = None
     vNum: Optional[float] = None
     vBool: Optional[bool] = None
 
     @staticmethod
-    def fromNum(i:float):
+    def fromNum(i: float):
         return CellValue(vNum = i)
 
     @staticmethod
@@ -26,7 +25,7 @@ class CellValue(CanCheckEmpty,ToProto[CellValueProto]):
         return CellValue(vBool = i)
 
     @staticmethod
-    def fromProto(proto:CellValueProto):
+    def fromProto(proto: CellValueProto):
         s = None
         n = None
         b = None
@@ -42,18 +41,17 @@ class CellValue(CanCheckEmpty,ToProto[CellValueProto]):
             vBool = b,
         )
 
-
     @staticmethod
     def empty():
         return CellValue()
 
     def isEmpty(self) -> bool:
-        return self.vStr \
-               or self.vNum \
-               or self.vBool is not None
+        return self.vStr is None and \
+               self.vNum is None and \
+               self.vBool is None
 
     @property
-    def value(self)->Union[str, float, bool, None]:
+    def value(self) -> Union[str, float, bool, None]:
         if self.vStr:
             return self.vStr
         if self.vNum:
@@ -61,7 +59,6 @@ class CellValue(CanCheckEmpty,ToProto[CellValueProto]):
         if self.vBool is not None:
             return self.vBool
         return None
-
 
     def toProtoObj(self) -> CellValueProto:
         return CellValueProto(
