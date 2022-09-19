@@ -36,16 +36,14 @@ class Bench(unittest.TestCase):
             for num in df[c]:
                 print(num)
 
-
     def test_configRpc(self):
         from com.qxdzbc.p6.rpc.RpcInfo import RpcInfo
         setIPythonGlobals(globals())
         app: RpcApp = getApp()
-        rpcSP:RpcStubProvider = app.rpcSP
-        port = 52533
+        rpcSP: RpcStubProvider = app.rpcSP
         rpcInfo = RpcInfo(
-            host="localhost",
-            port=port
+            host = "localhost",
+            port = 52533
         )
         rpcSP.setRpcInfo(
             rpcInfo
@@ -54,11 +52,12 @@ class Bench(unittest.TestCase):
         # wb0:Workbook=app.getWorkbook(1)
         awb = app.activeWorkbook
 
-        for ws in awb.worksheets:
-            awb.removeWorksheet(ws.name)
+        rs = awb.removeAllWorksheetRs()
+        self.assertTrue(rs.isOk())
 
-        # for x in range(20):
-        #     awb.createNewWorksheet()
+        for x in range(10):
+            print(f"ws: {x} ")
+            awb.createNewWorksheet()
 
         # ar1=[
         #     [1,2,3],
@@ -79,7 +78,6 @@ class Bench(unittest.TestCase):
         #     anchorCell = CellAddresses.fromLabel("B1"),
         #     loadType = LoadType.OVERWRITE
         # )
-
 
         # app.printWorkbookSummary()
         # o = app.closeWorkbook(WorkbookKeys.fromNameAndPath("Book1"))

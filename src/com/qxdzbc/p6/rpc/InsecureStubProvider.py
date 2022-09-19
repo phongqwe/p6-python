@@ -60,7 +60,10 @@ class InsecureRpcStubProvider(RpcStubProvider):
     def __createObj(self):
         rpcInfo = self._rpcInfo
         if rpcInfo is not None:
-            self._channel = grpc.insecure_channel(f"{rpcInfo.host}:{rpcInfo.port}")
+            self._channel = grpc.insecure_channel(
+                f"{rpcInfo.host}:{rpcInfo.port}",
+                # options = (('grpc.enable_http_proxy', 0),)
+            )
             self._cellService = self.cellServiceProvider(self._channel)
             self._wbService = self.wbServiceProvider(self._channel)
             self._appService = self._appServiceProvider(self._channel)

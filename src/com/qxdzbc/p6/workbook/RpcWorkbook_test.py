@@ -55,8 +55,6 @@ class RpcWorkbook_test(unittest.TestCase):
         okCase()
         errCase()
 
-
-
     def test_sheetCount(self):
         self.mockWbService.sheetCount = MagicMock(return_value = RpcValues.int64(123))
         wb = self.wb
