@@ -10,12 +10,11 @@ from com.qxdzbc.p6.util.result.Ok import Ok
 from com.qxdzbc.p6.util.result.Result import Result
 from com.qxdzbc.p6.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.rpc.data_structure.CellValue import CellValue
-from com.qxdzbc.p6.proto.DocProtos_pb2 import CellProto, CellValueProto
 
 
-class DataCell(Cell):
+class TestDataCell(Cell):
     """
-    A Cell that holds some data.
+    A Cell that holds some data, only for testing
     """
     def __init__(self,
                  address: CellAddress,
@@ -28,7 +27,6 @@ class DataCell(Cell):
         self._wbKey = wbKey
         self.__value: Any = value
         self.__formula: str = formula
-        self.__scriptAlreadyRun: bool = False
         self.__addr: CellAddress = address
 
     @property
@@ -95,25 +93,6 @@ class DataCell(Cell):
     def formula(self, newFormula):
         self.__formula = newFormula
 
-    # def toProtoObj(self) -> CellProto:
-    #     cellProto = CellProto()
-    #     cellProto.address.CopyFrom(self.address.toProtoObj())
-    #
-    #     if self.__formula:
-    #         cellProto.formula = self.__formula
-    #     else:
-    #         if self.__value:
-    #             cellValueProto = CellValueProto()
-    #             if isinstance(self.__value, bool):
-    #                 cellValueProto.bool = self.__value
-    #             if isinstance(self.__value, str):
-    #                 cellValueProto.vStr = self.__value
-    #             if isinstance(self.__value, int) or isinstance(self.__value, float):
-    #                 cellValueProto.num = self.__value
-    #
-    #             cellProto.value.CopyFrom(cellValueProto)
-    #
-    #     return cellProto
 
     @property
     def bareValue(self):
@@ -142,14 +121,12 @@ class DataCell(Cell):
     @value.setter
     def value(self, newValue):
         self.__value = newValue
-        self.__script = None
         self.__formula = None
-        self.__scriptAlreadyRun = False
+
 
     def __setScriptWithoutChangingFormula(self, newScript):
         self.__script = newScript
         self.__value = None
-        self.__scriptAlreadyRun = False
 
     @property
     def address(self) -> CellAddress:

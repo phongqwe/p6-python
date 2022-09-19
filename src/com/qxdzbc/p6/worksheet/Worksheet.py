@@ -27,7 +27,11 @@ class Worksheet(MutableCellContainer,
     def id(self) -> WorksheetId:
         raise NotImplementedError()
 
-    def load2DArrayRs(self, dataAray, anchorCell: CellAddress= CellAddresses.A1, loadType: LoadType=LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> Result['Worksheet', ErrorReport]:
+    def load2DArrayRs(
+            self, dataAray,
+            anchorCell: CellAddress= CellAddresses.A1,
+            loadType: LoadType=LoadType.KEEP_OLD_DATA_IF_COLLIDE
+    ) -> Result['Worksheet', ErrorReport]:
         """
         :param dataAray: a python array or anything that is array-like
         :param anchorCell: starting point to load the data into
@@ -36,7 +40,11 @@ class Worksheet(MutableCellContainer,
         """
         raise NotImplementedError()
 
-    def load2DArray(self, dataAray, anchorCell: CellAddress= CellAddresses.A1, loadType: LoadType=LoadType.KEEP_OLD_DATA_IF_COLLIDE)-> 'Worksheet':
+    def load2DArray(
+            self, dataAray,
+            anchorCell: CellAddress= CellAddresses.A1,
+            loadType: LoadType=LoadType.KEEP_OLD_DATA_IF_COLLIDE
+    )-> 'Worksheet':
         """
         :param dataAray: a python array or anything that is array-like
         :param anchorCell: starting point to load the data into

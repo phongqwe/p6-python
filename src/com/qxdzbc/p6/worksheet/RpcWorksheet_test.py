@@ -4,7 +4,7 @@ from unittest.mock import MagicMock
 import numpy
 
 from com.qxdzbc.p6.cell.CellProtoMapping import CellProtoMapping
-from com.qxdzbc.p6.cell.DataCell import DataCell
+from com.qxdzbc.p6.cell.TestDataCell import TestDataCell
 from com.qxdzbc.p6.cell.IndCell import IndCell
 from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
 from com.qxdzbc.p6.proto.DocProtos_pb2 import CellProto
@@ -191,7 +191,7 @@ class RpcWorksheet_test(unittest.TestCase):
         self.assertFalse(o)
 
     def test_addCell(self):
-        cell = DataCell(
+        cell = TestDataCell(
             address = CellAddresses.fromLabel("B4"),
             wsName = "anyWsName",
             wbKey = WorkbookKeys.fromNameAndPath("anyWbName", None),

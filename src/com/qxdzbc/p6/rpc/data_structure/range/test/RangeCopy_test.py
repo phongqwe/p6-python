@@ -1,6 +1,6 @@
 import unittest
 
-from com.qxdzbc.p6.cell.DataCell import DataCell
+from com.qxdzbc.p6.cell.TestDataCell import TestDataCell
 from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
 from com.qxdzbc.p6.range.address.RangeAddresses import RangeAddresses
 from com.qxdzbc.p6.workbook.key.WorkbookKeys import WorkbookKeys
@@ -18,9 +18,9 @@ class RangeCopy_test(unittest.TestCase):
                 worksheetName = "S1"
             ),
             cells = [
-                DataCell(CellAddresses.fromLabel("B3"),wsName = "S1",wbKey = wbk),
-                DataCell(CellAddresses.fromLabel("D4"),wsName = "S1",wbKey = wbk),
-                DataCell(CellAddresses.fromLabel("E4"),wsName = "S1",wbKey = wbk),
+                TestDataCell(CellAddresses.fromLabel("B3"), wsName = "S1", wbKey = wbk),
+                TestDataCell(CellAddresses.fromLabel("D4"), wsName = "S1", wbKey = wbk),
+                TestDataCell(CellAddresses.fromLabel("E4"), wsName = "S1", wbKey = wbk),
             ]
         )
         proto = o.toProtoObj()
@@ -38,9 +38,9 @@ class RangeCopy_test(unittest.TestCase):
                 worksheetName = "S1"
             ),
             cells = [
-                DataCell(CellAddresses.fromLabel("B3"),wsName = "S1",wbKey = wbk),
-                DataCell(CellAddresses.fromLabel("D4"),wsName = "S1",wbKey = wbk),
-                DataCell(CellAddresses.fromLabel("E4"),wsName = "S1",wbKey = wbk),
+                TestDataCell(CellAddresses.fromLabel("B3"), wsName = "S1", wbKey = wbk),
+                TestDataCell(CellAddresses.fromLabel("D4"), wsName = "S1", wbKey = wbk),
+                TestDataCell(CellAddresses.fromLabel("E4"), wsName = "S1", wbKey = wbk),
             ]
         )
         proto = o.toProtoObj()

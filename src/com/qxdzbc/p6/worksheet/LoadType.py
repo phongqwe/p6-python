@@ -1,7 +1,6 @@
 from enum import Enum
 
 from com.qxdzbc.p6.proto.WorksheetProtos_pb2 import LoadDataRequestProto
-from com.qxdzbc.p6.util.ToProto import ToProto
 
 
 class LoadType(Enum):

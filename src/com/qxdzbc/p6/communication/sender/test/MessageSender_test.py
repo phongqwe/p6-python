@@ -3,7 +3,7 @@ import unittest
 
 import zmq
 
-from com.qxdzbc.p6.cell.DataCell import DataCell
+from com.qxdzbc.p6.cell.TestDataCell import TestDataCell
 from com.qxdzbc.p6.cell.address.CellIndex import CellIndex
 from com.qxdzbc.p6.util.for_test.TestUtils import findNewSocketPort
 from com.qxdzbc.p6.workbook.key.WorkbookKeys import WorkbookKeys
@@ -44,7 +44,7 @@ def startREPServerProto(isOk, context, onReceive):
 class MessageSenderREQTest(unittest.TestCase):
     messageForProto = P6Message(
         header = P6MessageHeader("id1", P6Events.Cell.Update.event),
-        data = DataCell(
+        data = TestDataCell(
             value = "cell value",
             formula = "=1234",
             address = CellIndex(1, 34),
