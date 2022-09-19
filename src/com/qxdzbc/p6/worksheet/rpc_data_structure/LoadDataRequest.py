@@ -12,10 +12,8 @@ from com.qxdzbc.p6.worksheet.Worksheet import Worksheet
 class LoadDataRequest(ToProto[LoadDataRequestProto]):
     loadType: LoadType
     ws:ToProto[IndWorksheetProto]
-    anchorCell: CellAddress
     def toProtoObj(self) -> LoadDataRequestProto:
         return LoadDataRequestProto(
             loadType = self.loadType.toProtoObj(),
             ws = self.ws.toProtoObj(),
-            anchorCell = self.anchorCell.toProtoObj(),
         )

@@ -76,7 +76,6 @@ class RpcWorksheet_test(unittest.TestCase):
                     id = self.ws.id,
                     cells = expectedCells
                 ),
-                anchorCell = ca
             )
             print(expectedInput.toProtoObj())
             self.mockWsService.loadData.assert_called_with(request = expectedInput.toProtoObj())
@@ -128,7 +127,6 @@ class RpcWorksheet_test(unittest.TestCase):
                     id = self.ws.id,
                     cells = cpmList
                 ),
-                anchorCell = ca
             )
 
             rs = self.ws.loadDataFrameRs(df, ca, lt, False)
@@ -167,7 +165,6 @@ class RpcWorksheet_test(unittest.TestCase):
                     id = self.ws.id,
                     cells = headerCpmList + cpmList
                 ),
-                anchorCell = ca
             )
             rs = self.ws.loadDataFrameRs(df, ca, lt, True)
             self.assertTrue(rs.isOk())

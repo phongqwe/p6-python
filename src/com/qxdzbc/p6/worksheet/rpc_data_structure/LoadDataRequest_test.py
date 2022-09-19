@@ -16,13 +16,11 @@ class LoadDataRequest_test(unittest.TestCase):
         ca = CellAddresses.fromColRow(2, 3)
         o = LoadDataRequest(
             loadType = LoadType.OVERWRITE,
-            ws = mockWs,
-            anchorCell = ca
+            ws = mockWs
         )
         p = o.toProtoObj()
         self.assertEqual(LoadDataRequestProto.LoadTypeProto.OVERWRITE, p.loadType)
         self.assertEqual(protoWs, p.ws)
-        self.assertEqual(ca.toProtoObj(), p.anchorCell)
 
 
 if __name__ == '__main__':

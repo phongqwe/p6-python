@@ -1,5 +1,7 @@
 from typing import TypeVar, Generic
 
+from com.qxdzbc.p6.util.report.error.ErrorReport import ErrorReport
+
 V = TypeVar("V")
 E = TypeVar("E")
 M = TypeVar("M")
@@ -34,7 +36,12 @@ class Result(Generic[V, E]):
         if self.isOk():
             return self.value
         else:
-            raise self.err
+            if isinstance(self.err,ErrorReport):
+                raise self.err.toException()
+            elif isinstance(self.err, BaseException):
+                raise self.err
+            else:
+                raise Exception(self.err)
 
     def getOrNone(self) -> V | None:
         if self.isOk():

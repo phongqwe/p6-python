@@ -66,7 +66,6 @@ class InternalRpcWorksheet(BaseWorksheet):
                 ),
                 cells = cells
             ),
-            anchorCell = anchorCell
         )
         oProto = self._wssv.loadData(request = request.toProtoObj())
         o = SingleSignalResponse.fromProto(oProto)
@@ -124,8 +123,8 @@ class InternalRpcWorksheet(BaseWorksheet):
                     headerCpmList.append(cpm)
 
             # x: construct cpmList
-            for colIndex in df:
-                col = df[colIndex]
+            for (colIndex, colLabel) in enumerate(list(df.columns)):
+                col = df[colLabel]
                 for (rowIndex, item) in enumerate(col):
                     cpm = IndCell(
                         address = CellAddresses.fromColRow(

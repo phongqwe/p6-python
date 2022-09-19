@@ -7,7 +7,7 @@ from com.qxdzbc.p6.util.report.error.ErrorHeader import ErrorHeader
 from com.qxdzbc.p6.proto.CommonProtos_pb2 import ErrorReportProto
 
 
-class ErrorReport(ToProto[ErrorReportProto]):
+class ErrorReport(ToProto[ErrorReportProto],BaseException):
 
     def __init__(
             self,

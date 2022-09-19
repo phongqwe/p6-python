@@ -7,12 +7,14 @@ from com.qxdzbc.p6.app.App import App
 from com.qxdzbc.p6.app.GlobalScope import setIPythonGlobals
 from com.qxdzbc.p6.app.RpcApp import RpcApp
 from com.qxdzbc.p6.app.TopLevel import getApp
+from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
 from com.qxdzbc.p6.proto.WorksheetProtos_pb2 import LoadDataRequestProto
 from com.qxdzbc.p6.rpc.StubProvider import RpcStubProvider
 from com.qxdzbc.p6.workbook.RpcWorkbook import RpcWorkbook
 from com.qxdzbc.p6.workbook.WorkBook import Workbook
 from com.qxdzbc.p6.workbook.key.WorkbookKeys import WorkbookKeys
 from com.qxdzbc.p6.worksheet import RpcWorksheet
+from com.qxdzbc.p6.worksheet.LoadType import LoadType
 from com.qxdzbc.p6.worksheet.Worksheet import Worksheet
 
 
@@ -52,8 +54,27 @@ class Bench(unittest.TestCase):
         # wb0:Workbook=app.getWorkbook(1)
         aw = app.activeWorkbook
         aws = app.activeWorksheet
-        print(aw.key)
-        # print(aws.wbKey)
+        ar1=[
+            [1,2,3],
+            [4,5,6]
+        ]
+        import pandas as pd
+        df = pd.DataFrame({
+            "a":ar1[0],
+            "b":ar1[1]
+        })
+
+        aws.loadDataFrame(df,loadType = LoadType.OVERWRITE,keepHeader = False)
+
+        # aws.load2DArray(
+        #     [
+        #         [100, 200, 300],
+        #         [400, 500, 600]
+        #     ],
+        #     anchorCell = CellAddresses.fromLabel("B1"),
+        #     loadType = LoadType.OVERWRITE
+        # )
+
 
         # app.printWorkbookSummary()
         # o = app.closeWorkbook(WorkbookKeys.fromNameAndPath("Book1"))

@@ -16,8 +16,13 @@ class BaseWorksheet(Worksheet,ABC):
         rs = self.load2DArrayRs(dataAray, anchorCell, loadType)
         return rs.getOrRaise()
 
-    def loadDataFrame(self, dataFrame, anchorCell: CellAddress= CellAddresses.A1, loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> 'Worksheet':
-        rs = self.loadDataFrameRs(dataFrame, anchorCell,loadType)
+    def loadDataFrame(
+            self, dataFrame,
+            anchorCell: CellAddress= CellAddresses.A1,
+            loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE,
+            keepHeader:bool = True
+    ) -> 'Worksheet':
+        rs = self.loadDataFrameRs(dataFrame, anchorCell,loadType,keepHeader)
         return rs.getOrRaise()
 
     def addCell(self, cell: Cell):
