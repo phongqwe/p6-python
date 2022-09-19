@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
+from com.qxdzbc.p6.proto.DocProtos_pb2 import WorksheetIdProto
 from com.qxdzbc.p6.util.ToProto import ToProto
 from com.qxdzbc.p6.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.workbook.key.WorkbookKeys import WorkbookKeys
-from com.qxdzbc.p6.proto.WorksheetProtos_pb2 import WorksheetIdProto
 
 
 @dataclass

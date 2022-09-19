@@ -5,6 +5,7 @@ import numpy
 
 from com.qxdzbc.p6.cell.CellProtoMapping import CellProtoMapping
 from com.qxdzbc.p6.cell.DataCell import DataCell
+from com.qxdzbc.p6.cell.IndCell import IndCell
 from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
 from com.qxdzbc.p6.proto.DocProtos_pb2 import CellProto
 from com.qxdzbc.p6.range.address.RangeAddresses import RangeAddresses
@@ -15,6 +16,7 @@ from com.qxdzbc.p6.rpc.data_structure.CellId import CellId
 from com.qxdzbc.p6.rpc.data_structure.CellValue import CellValue
 from com.qxdzbc.p6.rpc.data_structure.SingleSignalResponse import \
     SingleSignalResponse
+from com.qxdzbc.p6.worksheet.IndWorksheet import IndWorksheet
 from com.qxdzbc.p6.worksheet.LoadType import LoadType
 from com.qxdzbc.p6.worksheet.RpcWorksheet import RpcWorksheet
 from com.qxdzbc.p6.worksheet.WorksheetProtoMapping import WorksheetProtoMapping
@@ -66,19 +68,16 @@ class RpcWorksheet_test(unittest.TestCase):
             expectedCells = []
             for (r, rowArray) in enumerate(array2d):
                 for (c, item) in enumerate(rowArray):
-                    expectedCells.append(CellProtoMapping(
-                        id = CellId(
-                            cellAddress = CellAddresses.fromColRow(ca.colIndex + c, ca.rowIndex + r),
-                            wbKey = self.ws.wbKey,
-                            wsName = self.ws.name
+                    expectedCells.append(IndCell(
+                        address = CellAddresses.fromColRow(
+                            ca.colIndex + c, ca.rowIndex + r
                         ),
-                        value = item
+                        value = CellValue.fromAny(item)
                     ))
             expectedInput = LoadDataRequest(
                 loadType = lt,
-                ws = WorksheetProtoMapping(
-                    name = self.ws.name,
-                    wbKey = self.ws.wbKey,
+                ws = IndWorksheet(
+                    id = self.ws.id,
                     cells = expectedCells
                 ),
                 anchorCell = ca
@@ -96,26 +95,20 @@ class RpcWorksheet_test(unittest.TestCase):
     def test_loadDataFrame_incorrect_dimen(self):
         array2d = [[1, 2, 3], [4, 5, 6]]
         # each sub array is a column
-        df = pd.DataFrame({"a":array2d[0], "b":array2d[1]})
+        df = pd.DataFrame({"a": array2d[0], "b": array2d[1]})
         # each sub array is a row
-        # print(list(df.columns))
 
         df2 = pd.DataFrame(array2d)
-        # print(list(df2.columns))
-
         # pandas data loop by column, not by row
 
-        # print(df2)
-        # print("===")
-
-
-        ca = CellAddresses.fromColRow(33,22)
+        ca = CellAddresses.fromColRow(33, 22)
         lt = LoadType.KEEP_OLD_DATA_IF_COLLIDE
+
         def errCase():
             self.mockWsService.loadData = MagicMock(
                 return_value = SingleSignalResponse(errorReport = TestUtils.TestErrorReport).toProtoObj())
             df = "not a data frame"
-            rs = self.ws.loadDataFrameRs(df,ca,lt)
+            rs = self.ws.loadDataFrameRs(df, ca, lt)
             self.mockWsService.loadData.assert_not_called()
             self.assertTrue(rs.isErr())
 
@@ -125,69 +118,56 @@ class RpcWorksheet_test(unittest.TestCase):
             cpmList = []
             for ci in df:
                 for (i, item) in enumerate(df[ci]):
-                    cpm=CellProtoMapping(
-                        id = CellId(
-                            cellAddress = CellAddresses.fromColRow(
-                                ca.colIndex+ci,ca.rowIndex+i
-                            ),
-                            wbKey = self.ws.wbKey,
-                            wsName = self.ws.name
+                    cpm = IndCell(
+                        address = CellAddresses.fromColRow(
+                            ca.colIndex + ci, ca.rowIndex + i
                         ),
-                        value = item
+                        value = CellValue.fromAny(item)
                     )
                     cpmList.append(cpm)
             expectedInput_WithoutHeader = LoadDataRequest(
                 loadType = lt,
-                ws = WorksheetProtoMapping(
-                    name = self.ws.name,
-                    wbKey = self.ws.wbKey,
+                ws = IndWorksheet(
+                    id = self.ws.id,
                     cells = cpmList
                 ),
                 anchorCell = ca
             )
 
-            rs = self.ws.loadDataFrameRs(df,ca,lt,False)
+            rs = self.ws.loadDataFrameRs(df, ca, lt, False)
             self.assertTrue(rs.isOk())
-            self.mockWsService.loadData.assert_called_with(request=expectedInput_WithoutHeader.toProtoObj())
+            self.mockWsService.loadData.assert_called_with(request = expectedInput_WithoutHeader.toProtoObj())
 
             ##########
+
         def ok_withHeader():
             df = pd.DataFrame(array2d)
             self.mockWsService.loadData = MagicMock(return_value = SingleSignalResponse().toProtoObj())
             headerCpmList = []
             for (i, header) in enumerate(list(df.columns)):
-                cpm = CellProtoMapping(
-                    id = CellId(
-                        cellAddress = CellAddresses.fromColRow(
-                            ca.colIndex + i, ca.rowIndex
-                        ),
-                        wbKey = self.ws.wbKey,
-                        wsName = self.ws.name
+                cpm = IndCell(
+                    address = CellAddresses.fromColRow(
+                        ca.colIndex + i, ca.rowIndex
                     ),
-                    value = str(header)
+                    value = CellValue.fromStr(str(header))
                 )
                 headerCpmList.append(cpm)
 
             cpmList = []
             for ci in df:
                 for (i, item) in enumerate(df[ci]):
-                    cpm = CellProtoMapping(
-                        id = CellId(
-                            cellAddress = CellAddresses.fromColRow(
-                                ca.colIndex + ci, ca.rowIndex + i+1
-                            ),
-                            wbKey = self.ws.wbKey,
-                            wsName = self.ws.name
+                    cpm = IndCell(
+                        address = CellAddresses.fromColRow(
+                            ca.colIndex + ci, ca.rowIndex + i + 1
                         ),
-                        value = item
+                        value = CellValue.fromAny(item)
                     )
                     cpmList.append(cpm)
 
             expectedInput_Header = LoadDataRequest(
                 loadType = lt,
-                ws = WorksheetProtoMapping(
-                    name = self.ws.name,
-                    wbKey = self.ws.wbKey,
+                ws = IndWorksheet(
+                    id = self.ws.id,
                     cells = headerCpmList + cpmList
                 ),
                 anchorCell = ca

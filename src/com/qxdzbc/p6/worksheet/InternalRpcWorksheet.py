@@ -4,12 +4,13 @@ import numpy
 import pandas
 
 from com.qxdzbc.p6.cell.Cell import Cell
-from com.qxdzbc.p6.cell.CellProtoMapping import CellProtoMapping
+from com.qxdzbc.p6.cell.IndCell import IndCell
 from com.qxdzbc.p6.cell.address.CellAddress import CellAddress
 from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
 from com.qxdzbc.p6.range.Range import Range
 from com.qxdzbc.p6.range.address.RangeAddress import RangeAddress
 from com.qxdzbc.p6.range.address.RangeAddresses import RangeAddresses
+from com.qxdzbc.p6.rpc.data_structure.CellValue import CellValue
 from com.qxdzbc.p6.util.CommonError import CommonErrors
 from com.qxdzbc.p6.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.util.result.Err import Err
@@ -17,6 +18,7 @@ from com.qxdzbc.p6.util.result.Ok import Ok
 from com.qxdzbc.p6.util.result.Result import Result
 from com.qxdzbc.p6.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.worksheet.BaseWorksheet import BaseWorksheet
+from com.qxdzbc.p6.worksheet.IndWorksheet import IndWorksheet
 from com.qxdzbc.p6.worksheet.LoadType import LoadType
 from com.qxdzbc.p6.worksheet.WorksheetProtoMapping import WorksheetProtoMapping
 from com.qxdzbc.p6.worksheet.Worksheet import Worksheet
@@ -39,7 +41,7 @@ from com.qxdzbc.p6.worksheet.rpc_data_structure.CheckContainAddressRequest impor
 from com.qxdzbc.p6.worksheet.rpc_data_structure.GetAllCellResponse import GetAllCellResponse
 from com.qxdzbc.p6.worksheet.rpc_data_structure.GetUsedRangeResponse import GetUsedRangeResponse
 from com.qxdzbc.p6.proto.CommonProtos_pb2 import SingleSignalResponseProto
-from com.qxdzbc.p6.proto.DocProtos_pb2 import WorksheetProto
+from com.qxdzbc.p6.proto.DocProtos_pb2 import WorksheetProto, IndCellProto
 from com.qxdzbc.p6.proto.rpc.WorkbookService_pb2_grpc import WorkbookServiceStub
 from com.qxdzbc.p6.proto.rpc.WorksheetService_pb2_grpc import WorksheetServiceStub
 
@@ -55,14 +57,16 @@ class InternalRpcWorksheet(BaseWorksheet):
         self._wbk = wbKey
         self._stubProvider = stubProvider
 
-    def _makeLoadDataRequestRs(self, cpmList: list[CellProtoMapping], anchorCell: CellAddress, loadType: LoadType) -> \
+    def _makeLoadDataRequestRs(self, cells: list[IndCell], anchorCell: CellAddress, loadType: LoadType) -> \
             Result['Worksheet', ErrorReport]:
         request = LoadDataRequest(
             loadType = loadType,
-            ws = WorksheetProtoMapping(
-                name = self.name,
-                wbKey = self.wbKey,
-                cells = cpmList
+            ws = IndWorksheet(
+                id = WorksheetId(
+                    wsName = self.name,
+                    wbKey = self.wbKey,
+                ),
+                cells = cells
             ),
             anchorCell = anchorCell
         )
@@ -85,13 +89,9 @@ class InternalRpcWorksheet(BaseWorksheet):
             for (r, arrayRow) in enumerate(dataAray):
                 for (c, item) in enumerate(arrayRow):
                     targetCellAddress: CellAddress = CellAddresses.fromColRow(anchorCol + c, anchorRow + r)
-                    cpmList.append(CellProtoMapping(
-                        id = CellId(
-                            cellAddress = targetCellAddress,
-                            wbKey = self.wbKey,
-                            wsName = self.name
-                        ),
-                        value = item
+                    cpmList.append(IndCell(
+                        address = targetCellAddress,
+                        value = CellValue.fromAny(item)
                     ))
             return self._makeLoadDataRequestRs(cpmList, anchorCell, loadType)
         else:
@@ -116,16 +116,12 @@ class InternalRpcWorksheet(BaseWorksheet):
                 rowOffset = 1
                 # x: construct header cells
                 for (i, header) in enumerate(list(df.columns)):
-                    cpm = CellProtoMapping(
-                        id = CellId(
-                            cellAddress = CellAddresses.fromColRow(
-                                anchorCol+i,
-                                anchorRow
-                            ),
-                            wbKey = self.wbKey,
-                            wsName = self.name
+                    cpm = IndCell(
+                        address = CellAddresses.fromColRow(
+                            anchorCol + i,
+                            anchorRow
                         ),
-                        value = str(header)
+                        value = CellValue.fromStr(str(header))
                     )
                     headerCpmList.append(cpm)
 
@@ -133,18 +129,14 @@ class InternalRpcWorksheet(BaseWorksheet):
             for colIndex in df:
                 col = df[colIndex]
                 for (rowIndex, item) in enumerate(col):
-                    cpm = CellProtoMapping(
-                        id = CellId(
-                            cellAddress = CellAddresses.fromColRow(
-                                anchorCol + colIndex,
-                                anchorRow + rowIndex + rowOffset),
-                            wbKey = self.wbKey,
-                            wsName = self.name
-                        ),
-                        value = item
+                    cpm = IndCell(
+                        address = CellAddresses.fromColRow(
+                            anchorCol + colIndex,
+                            anchorRow + rowIndex + rowOffset),
+                        value = CellValue.fromAny(item)
                     )
                     cpmList.append(cpm)
-            return self._makeLoadDataRequestRs(headerCpmList+cpmList, anchorCell, loadType)
+            return self._makeLoadDataRequestRs(headerCpmList + cpmList, anchorCell, loadType)
         else:
             return Err(CommonErrors.WrongTypeReport.report("dataFrame obj is not a pandas DataFrame"))
 

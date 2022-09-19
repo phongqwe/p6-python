@@ -19,6 +19,6 @@ class WorksheetProtoMapping(ToProto[WorksheetProto]):
     def toProtoObj(self) -> WorksheetProto:
         return WorksheetProto(
             name = self.name,
-            cell = map(lambda c:c.toProtoObj(),self.cells),
+            cells = map(lambda c:c.toProtoObj(),self.cells),
             wbKey = self.wbKey.toProtoObj()
         )
