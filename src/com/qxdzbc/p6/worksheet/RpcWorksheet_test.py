@@ -82,6 +82,7 @@ class RpcWorksheet_test(unittest.TestCase):
                 ),
                 anchorCell = ca
             )
+            print(expectedInput.toProtoObj())
             self.mockWsService.loadData.assert_called_with(request = expectedInput.toProtoObj())
 
         okCase()

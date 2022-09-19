@@ -28,9 +28,22 @@ class Worksheet(MutableCellContainer,
         raise NotImplementedError()
 
     def load2DArrayRs(self, dataAray, anchorCell: CellAddress= CellAddresses.A1, loadType: LoadType=LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> Result['Worksheet', ErrorReport]:
+        """
+        :param dataAray: a python array or anything that is array-like
+        :param anchorCell: starting point to load the data into
+        :param loadType: load type
+        :return: a Result obj encasing a new worksheet with the loaded data, but in case or a rpc worksheet (which is stateless), that is just the old worksheet.
+        """
         raise NotImplementedError()
 
     def load2DArray(self, dataAray, anchorCell: CellAddress= CellAddresses.A1, loadType: LoadType=LoadType.KEEP_OLD_DATA_IF_COLLIDE)-> 'Worksheet':
+        """
+        :param dataAray: a python array or anything that is array-like
+        :param anchorCell: starting point to load the data into
+        :param loadType: load type
+        :return: a new worksheet with the loaded data, but in case or a rpc worksheet (which is stateless), that is just the old worksheet.
+        :raise: an exception if there are errors.
+        """
         raise NotImplementedError()
 
     def loadDataFrame(
@@ -45,7 +58,8 @@ class Worksheet(MutableCellContainer,
         :param anchorCell: a starting point to load the data
         :param dataFrame: a pandas dataframe
         :param loadType: controls how the data should be loaded (overwrite everything, keep old data, etc)
-        :return a worksheet containing the new data
+        :return: a new worksheet with the loaded data, but in case or a rpc worksheet (which is stateless), that is just the old worksheet.
+         :raise: an exception if there are errors.
         """
         raise NotImplementedError()
 
@@ -61,7 +75,7 @@ class Worksheet(MutableCellContainer,
         :param anchorCell: a starting point to load the data
         :param dataFrame: a pandas dataframe
         :param loadType: controls how the data should be loaded (overwrite everything, keep old data, etc)
-        :return a result obj
+       :return: a Result obj encasing a new worksheet with the loaded data, but in case or a rpc worksheet (which is stateless), that is just the old worksheet.
         """
         raise NotImplementedError()
 
