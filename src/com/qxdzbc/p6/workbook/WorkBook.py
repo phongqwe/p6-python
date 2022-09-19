@@ -109,12 +109,7 @@ class Workbook(CanCheckEmpty, ToProto[WorkbookProto], ABC):
 
     def reRun(self, refreshScript: bool = False):
         """rerun all worksheet in this workbook"""
-        for sheet in self.worksheets:
-            sheet.reRun(refreshScript = refreshScript)
-
-    def refreshScript(self):
-        for sheet in self.worksheets:
-            sheet.refreshScript()
+        raise NotImplementedError()
 
     @property
     def worksheets(self) -> list[Worksheet]:
@@ -226,35 +221,42 @@ class Workbook(CanCheckEmpty, ToProto[WorkbookProto], ABC):
         """
         raise NotImplementedError()
 
+    def removeAllWorksheetRs(self)->Result[None,ErrorReport]:
+        raise NotImplementedError()
+
+    def removeAllWorksheet(self):
+        rs = self.removeAllWorksheetRs()
+        rs.getOrRaise()
+
     def removeWorksheetByName(self, sheetName: str) -> Worksheet:
         """ remove sheet by name. If the target sheet does not exist, simply return"""
-        removeRs = self.deleteWorksheetByNameRs(sheetName)
+        removeRs = self.removeWorksheetByNameRs(sheetName)
         return Results.extractOrRaise(removeRs)
 
     def removeWorksheetByIndex(self, index: int) -> Worksheet:
         """ remove sheet by index. If the target sheet does not exist, simply return"""
-        removeRs = self.deleteWorksheetByIndexRs(index)
+        removeRs = self.removeWorksheetByIndexRs(index)
         return Results.extractOrRaise(removeRs)
 
-    def deleteWorksheet(self, nameOrIndex: Union[str, int]) -> Worksheet:
+    def removeWorksheet(self, nameOrIndex: Union[str, int]) -> Worksheet:
         """ remove sheet by either index or name. If the target sheet does not exist, simply return"""
-        removeRs = self.deleteWorksheetRs(nameOrIndex)
+        removeRs = self.removeWorksheetRs(nameOrIndex)
         return Results.extractOrRaise(removeRs)
 
-    def deleteWorksheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
+    def removeWorksheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
         """ remove sheet by name. If the target sheet does not exist, simply return"""
         raise NotImplementedError()
 
-    def deleteWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
+    def removeWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
         """ remove sheet by index. If the target sheet does not exist, simply return"""
         raise NotImplementedError()
 
-    def deleteWorksheetRs(self, nameOrIndex: Union[str, int]) -> Result[Worksheet, ErrorReport]:
+    def removeWorksheetRs(self, nameOrIndex: Union[str, int]) -> Result[Worksheet, ErrorReport]:
         """ remove sheet by either index or name. If the target sheet does not exist, simply return"""
         if isinstance(nameOrIndex, str):
-            return self.deleteWorksheetByNameRs(nameOrIndex)
+            return self.removeWorksheetByNameRs(nameOrIndex)
         if isinstance(nameOrIndex, int):
-            return self.deleteWorksheetByIndexRs(nameOrIndex)
+            return self.removeWorksheetByIndexRs(nameOrIndex)
         raise ValueError("nameOrIndex must either be a string or a number")
 
     def addWorksheet(self, ws: Worksheet):

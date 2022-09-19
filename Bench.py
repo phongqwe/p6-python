@@ -13,7 +13,7 @@ from com.qxdzbc.p6.rpc.StubProvider import RpcStubProvider
 from com.qxdzbc.p6.workbook.RpcWorkbook import RpcWorkbook
 from com.qxdzbc.p6.workbook.WorkBook import Workbook
 from com.qxdzbc.p6.workbook.key.WorkbookKeys import WorkbookKeys
-from com.qxdzbc.p6.worksheet import RpcWorksheet
+from com.qxdzbc.p6.worksheet.RpcWorksheet import RpcWorksheet
 from com.qxdzbc.p6.worksheet.LoadType import LoadType
 from com.qxdzbc.p6.worksheet.Worksheet import Worksheet
 
@@ -52,19 +52,24 @@ class Bench(unittest.TestCase):
         )
 
         # wb0:Workbook=app.getWorkbook(1)
-        aw = app.activeWorkbook
-        aws = app.activeWorksheet
-        ar1=[
-            [1,2,3],
-            [4,5,6]
-        ]
-        import pandas as pd
-        df = pd.DataFrame({
-            "a":ar1[0],
-            "b":ar1[1]
-        })
+        awb = app.activeWorkbook
 
-        aws.loadDataFrame(df,loadType = LoadType.OVERWRITE,keepHeader = False)
+        for ws in awb.worksheets:
+            awb.removeWorksheet(ws.name)
+
+        # for x in range(20):
+        #     awb.createNewWorksheet()
+
+        # ar1=[
+        #     [1,2,3],
+        #     [4,5,6]
+        # ]
+        # import pandas as pd
+        # df = pd.DataFrame({
+        #     "a":ar1[0],
+        #     "b":ar1[1]
+        # })
+        # aws.loadDataFrame(df,loadType = LoadType.OVERWRITE,keepHeader = False)
 
         # aws.load2DArray(
         #     [

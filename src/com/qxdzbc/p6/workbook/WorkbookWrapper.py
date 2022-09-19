@@ -98,11 +98,11 @@ class WorkbookWrapper(Workbook):
     def createNewWorksheetRs(self, newSheetName: Optional[str] = None) -> Result[Worksheet, ErrorReport]:
         return self.rootWorkbook.createNewWorksheetRs(newSheetName)
 
-    def deleteWorksheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
-        return self.rootWorkbook.deleteWorksheetByNameRs(sheetName)
+    def removeWorksheetByNameRs(self, sheetName: str) -> Result[Worksheet, ErrorReport]:
+        return self.rootWorkbook.removeWorksheetByNameRs(sheetName)
 
-    def deleteWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
-        return self.rootWorkbook.deleteWorksheetByIndexRs(index)
+    def removeWorksheetByIndexRs(self, index: int) -> Result[Worksheet, ErrorReport]:
+        return self.rootWorkbook.removeWorksheetByIndexRs(index)
 
     def setActiveWorksheetRs(self, indexOrName: Union[int, str]) -> Result[Worksheet, ErrorReport]:
         return self.rootWorkbook.setActiveWorksheetRs(indexOrName)

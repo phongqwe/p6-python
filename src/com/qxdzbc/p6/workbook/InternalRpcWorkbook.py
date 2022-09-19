@@ -57,6 +57,11 @@ class InternalRpcWorkbook(Workbook):
         else:
             return False
 
+    def removeAllWorksheetRs(self) -> Result[None, ErrorReport]:
+        oProto = self._wbsv.removeAllWorksheet(request = self.key.toProtoObj())
+        o = SingleSignalResponse.fromProto(oProto)
+        return o.toRs()
+
     def setStubProvider(self, stubProvider: RpcStubProvider):
         self._stubProvider = stubProvider
 
@@ -239,14 +244,14 @@ class InternalRpcWorkbook(Workbook):
         out = SingleSignalResponse.fromProto(outProto)
         return out.toRs()
 
-    def deleteWorksheetByNameRs(self, sheetName: str) -> Result[None, ErrorReport]:
+    def removeWorksheetByNameRs(self, sheetName: str) -> Result[None, ErrorReport]:
         req = WorksheetIdWithIndex(
             wbKey = self.__key,
             wsName = sheetName
         )
         return self._deleteWorksheetRsRpc(req)
 
-    def deleteWorksheetByIndexRs(self, index: int) -> Result[None, ErrorReport]:
+    def removeWorksheetByIndexRs(self, index: int) -> Result[None, ErrorReport]:
         req = WorksheetIdWithIndex(
             wbKey = self.__key,
             wsIndex = index

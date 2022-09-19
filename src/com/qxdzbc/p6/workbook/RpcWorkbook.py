@@ -51,6 +51,9 @@ class RpcWorkbook(WorkbookWrapper):
 
     ### >> Workbook << ###
 
+    def removeAllWorksheetRs(self) -> Result[None, ErrorReport]:
+        return self._onWbsvOkRs(self.rootWorkbook.removeAllWorksheetRs)
+
     @property
     def worksheets(self) -> list[Worksheet]:
         def f() -> list[Worksheet]:
@@ -104,11 +107,11 @@ class RpcWorkbook(WorkbookWrapper):
     def createNewWorksheetRs(self, newSheetName: Optional[str] = None) -> Result[Worksheet, ErrorReport]:
         return self._onWbsvOkRs(partial(self.rootWorkbook.createNewWorksheetRs,newSheetName))
 
-    def deleteWorksheetByNameRs(self, sheetName: str) -> Result[None, ErrorReport]:
-        return self._onWbsvOkRs(partial(self.rootWorkbook.deleteWorksheetByNameRs,sheetName))
+    def removeWorksheetByNameRs(self, sheetName: str) -> Result[None, ErrorReport]:
+        return self._onWbsvOkRs(partial(self.rootWorkbook.removeWorksheetByNameRs, sheetName))
 
-    def deleteWorksheetByIndexRs(self, index: int) -> Result[None, ErrorReport]:
-        return self._onWbsvOkRs(partial(self.rootWorkbook.deleteWorksheetByIndexRs,index))
+    def removeWorksheetByIndexRs(self, index: int) -> Result[None, ErrorReport]:
+        return self._onWbsvOkRs(partial(self.rootWorkbook.removeWorksheetByIndexRs, index))
 
     def addWorksheetRs(self, ws: Worksheet) -> Result[Worksheet, ErrorReport]:
         return self._onWbsvOkRs(partial(self.rootWorkbook.addWorksheetRs,ws))

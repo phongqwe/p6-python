@@ -37,6 +37,26 @@ class RpcWorkbook_test(unittest.TestCase):
         # self.mockServer.stop()
         pass
 
+    def test_removeAllWorksheet(self):
+        def okCase():
+            self.mockWbService.removeAllWorksheet = MagicMock(return_value = SingleSignalResponse().toProtoObj())
+            wb = self.wb
+            rs = wb.removeAllWorksheetRs()
+            self.assertTrue(rs.isOk())
+            wb.removeAllWorksheet()
+        def errCase():
+            self.mockWbService.removeAllWorksheet = MagicMock(return_value = SingleSignalResponse(TestUtils.TestErrorReport).toProtoObj())
+            wb = self.wb
+            rs = wb.removeAllWorksheetRs()
+            self.assertTrue(rs.isErr())
+            with self.assertRaises(BaseException):
+                wb.removeAllWorksheet()
+
+        okCase()
+        errCase()
+
+
+
     def test_sheetCount(self):
         self.mockWbService.sheetCount = MagicMock(return_value = RpcValues.int64(123))
         wb = self.wb
@@ -213,9 +233,9 @@ class RpcWorkbook_test(unittest.TestCase):
         )
 
         wb = self.wb
-        o = wb.deleteWorksheetByNameRs("qwe")
+        o = wb.removeWorksheetByNameRs("qwe")
         self.assertTrue(o.isOk())
-        o = wb.deleteWorksheetByIndexRs(123)
+        o = wb.removeWorksheetByIndexRs(123)
         self.assertTrue(o.isOk())
 
         self.mockWbService.deleteWorksheet = MagicMock(
@@ -224,19 +244,19 @@ class RpcWorkbook_test(unittest.TestCase):
             ).toProtoObj()
         )
 
-        o = wb.deleteWorksheetByNameRs("qwe")
+        o = wb.removeWorksheetByNameRs("qwe")
         self.assertTrue(o.isErr())
         self.assertTrue(o.err.isSameErr(TestUtils.TestErrorReport))
-        o = wb.deleteWorksheetByIndexRs(123)
+        o = wb.removeWorksheetByIndexRs(123)
         self.assertTrue(o.isErr())
         self.assertTrue(o.err.isSameErr(TestUtils.TestErrorReport))
 
 
         with self.assertRaises(Exception):
-            wb.deleteWorksheet(123)
+            wb.removeWorksheet(123)
 
         with self.assertRaises(Exception):
-            wb.deleteWorksheet("qwe")
+            wb.removeWorksheet("qwe")
 
 
 
