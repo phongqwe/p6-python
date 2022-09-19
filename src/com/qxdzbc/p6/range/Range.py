@@ -106,7 +106,7 @@ class Range( MutableCellContainer, ABC):
             return []
 
     def toRangeCopy(self):
-        from com.qxdzbc.p6.rpc.data_structure.range.RangeCopy import \
+        from com.qxdzbc.p6.range.rpc_data_structure.RangeCopy import \
             RangeCopy
         copyObj = RangeCopy(
             rangeId = self.id,

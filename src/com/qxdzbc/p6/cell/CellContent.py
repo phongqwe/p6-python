@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 from com.qxdzbc.p6.util.ToProto import ToProto
-from com.qxdzbc.p6.rpc.data_structure.CellValue import CellValue
+from com.qxdzbc.p6.cell.rpc_data_structure.CellValue import CellValue
 from com.qxdzbc.p6.proto.CellProtos_pb2 import CellContentProto
 
 

@@ -7,11 +7,11 @@ from com.qxdzbc.p6.worksheet.Worksheet import Worksheet
 from com.qxdzbc.p6.rpc.RpcValues import RpcValues
 from com.qxdzbc.p6.rpc.data_structure.SingleSignalResponse import \
     SingleSignalResponse
-from com.qxdzbc.p6.rpc.data_structure.workbook.AddWorksheetRequest import AddWorksheetRequest
-from com.qxdzbc.p6.rpc.data_structure.workbook.GetAllWorksheetsResponse import \
+from com.qxdzbc.p6.workbook.rpc_data_structure.AddWorksheetRequest import AddWorksheetRequest
+from com.qxdzbc.p6.workbook.rpc_data_structure.GetAllWorksheetsResponse import \
     GetAllWorksheetsResponse
-from com.qxdzbc.p6.rpc.data_structure.workbook.GetWorksheetResponse import GetWorksheetResponse
-from com.qxdzbc.p6.rpc.data_structure.workbook.WorksheetWithErrorReportMsg import \
+from com.qxdzbc.p6.workbook.rpc_data_structure.GetWorksheetResponse import GetWorksheetResponse
+from com.qxdzbc.p6.workbook.rpc_data_structure.WorksheetWithErrorReportMsg import \
     WorksheetWithErrorReportMsg
 from com.qxdzbc.p6.worksheet.rpc_data_structure.WorksheetIdWithIndex import WorksheetIdWithIndex
 from com.qxdzbc.p6.workbook.RpcWorkbook import RpcWorkbook

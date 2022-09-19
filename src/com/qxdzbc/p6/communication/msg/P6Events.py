@@ -1,36 +1,36 @@
 import inspect
 
 from com.qxdzbc.p6.communication.msg.P6Event import P6Event
-from com.qxdzbc.p6.rpc.data_structure.app.CreateNewWorkbookRequest import CreateNewWorkbookRequest
-from com.qxdzbc.p6.rpc.data_structure.app.CreateNewWorkbookResponse import CreateNewWorkbookResponse
-from com.qxdzbc.p6.rpc.data_structure.app.LoadWorkbookRequest import LoadWorkbookRequest
-from com.qxdzbc.p6.rpc.data_structure.app.LoadWorkbookResponse import LoadWorkbookResponse
-from com.qxdzbc.p6.rpc.data_structure.app.SetActiveWorksheetRequest import SetActiveWorksheetRequest
-from com.qxdzbc.p6.rpc.data_structure.app.SetActiveWorksheetResponse import SetActiveWorksheetResponse
-from com.qxdzbc.p6.rpc.data_structure.cell.CellMultiUpdateRequest import CellMultiUpdateRequest
-from com.qxdzbc.p6.rpc.data_structure.cell.CellMultiUpdateResponse import CellMultiUpdateResponse
-from com.qxdzbc.p6.rpc.data_structure.cell.CellUpdateRequest import CellUpdateRequest
-from com.qxdzbc.p6.rpc.data_structure.cell.CellUpdateResponse import CellUpdateResponse
-from com.qxdzbc.p6.rpc.data_structure.range.paste_range.PasteRangeRequest import PasteRangeRequest
-from com.qxdzbc.p6.rpc.data_structure.range.paste_range.PasteRangeResponse import PasteRangeResponse
-from com.qxdzbc.p6.rpc.data_structure.range.range_to_clipboard.RangeToClipboardRequest import \
+from com.qxdzbc.p6.app.rpc_data_structure.CreateNewWorkbookRequest import CreateNewWorkbookRequest
+from com.qxdzbc.p6.app.rpc_data_structure.CreateNewWorkbookResponse import CreateNewWorkbookResponse
+from com.qxdzbc.p6.app.rpc_data_structure.LoadWorkbookRequest import LoadWorkbookRequest
+from com.qxdzbc.p6.app.rpc_data_structure.LoadWorkbookResponse import LoadWorkbookResponse
+from com.qxdzbc.p6.app.rpc_data_structure.SetActiveWorksheetRequest import SetActiveWorksheetRequest
+from com.qxdzbc.p6.app.rpc_data_structure.SetActiveWorksheetResponse import SetActiveWorksheetResponse
+from com.qxdzbc.p6.cell.rpc_data_structure.CellMultiUpdateRequest import CellMultiUpdateRequest
+from com.qxdzbc.p6.cell.rpc_data_structure.CellMultiUpdateResponse import CellMultiUpdateResponse
+from com.qxdzbc.p6.cell.rpc_data_structure.CellUpdateRequest import CellUpdateRequest
+from com.qxdzbc.p6.cell.rpc_data_structure.CellUpdateResponse import CellUpdateResponse
+from com.qxdzbc.p6.range.rpc_data_structure.paste_range.PasteRangeRequest import PasteRangeRequest
+from com.qxdzbc.p6.range.rpc_data_structure.paste_range import PasteRangeResponse
+from com.qxdzbc.p6.range.rpc_data_structure.range_to_clipboard import \
     RangeToClipboardRequest
-from com.qxdzbc.p6.rpc.data_structure.range.range_to_clipboard.RangeToClipboardResponse import \
+from com.qxdzbc.p6.range.rpc_data_structure.range_to_clipboard import \
     RangeToClipboardResponse
-from com.qxdzbc.p6.rpc.data_structure.script.new_script.NewScriptRequest import NewScriptRequest
-from com.qxdzbc.p6.rpc.data_structure.script.new_script.NewScriptResponse import NewScriptResponse
-from com.qxdzbc.p6.rpc.data_structure.workbook.CreateNewWorksheetRequest import \
+from com.qxdzbc.p6.script.rpc_data_structure.new_script.NewScriptRequest import NewScriptRequest
+from com.qxdzbc.p6.script.rpc_data_structure.new_script.NewScriptResponse import NewScriptResponse
+from com.qxdzbc.p6.workbook.rpc_data_structure.CreateNewWorksheetRequest import \
     CreateNewWorksheetRequest
-from com.qxdzbc.p6.rpc.data_structure.workbook.CreateNewWorksheetResponse import \
+from com.qxdzbc.p6.workbook.rpc_data_structure.CreateNewWorksheetResponse import \
     CreateNewWorksheetResponse
-from com.qxdzbc.p6.rpc.data_structure.workbook.DeleteWorksheetRequest import DeleteWorksheetRequest
-from com.qxdzbc.p6.rpc.data_structure.workbook.DeleteWorksheetResponse import DeleteWorksheetResponse
-from com.qxdzbc.p6.rpc.data_structure.workbook.RenameWorksheetRequest import RenameWorksheetRequest
-from com.qxdzbc.p6.rpc.data_structure.workbook.save_wb.SaveWorkbookRequest import SaveWorkbookRequest
-from com.qxdzbc.p6.rpc.data_structure.workbook.save_wb.SaveWorkbookResponse import SaveWorkbookResponse
+from com.qxdzbc.p6.workbook.rpc_data_structure.DeleteWorksheetRequest import DeleteWorksheetRequest
+from com.qxdzbc.p6.workbook.rpc_data_structure.DeleteWorksheetResponse import DeleteWorksheetResponse
+from com.qxdzbc.p6.workbook.rpc_data_structure.RenameWorksheetRequest import RenameWorksheetRequest
+from com.qxdzbc.p6.workbook.rpc_data_structure.save_wb.SaveWorkbookRequest import SaveWorkbookRequest
+from com.qxdzbc.p6.workbook.rpc_data_structure.save_wb.SaveWorkbookResponse import SaveWorkbookResponse
 from com.qxdzbc.p6.worksheet.rpc_data_structure.DeleteMultiRequest import DeleteMultiRequest
-from com.qxdzbc.p6.worksheet.rpc_data_structure import DeleteMultiResponse
-from com.qxdzbc.p6.rpc.data_structure.workbook.RenameWorksheetResponse import RenameWorksheetResponse
+from com.qxdzbc.p6.worksheet.rpc_data_structure.DeleteMultiResponse import DeleteMultiResponse
+from com.qxdzbc.p6.workbook.rpc_data_structure.RenameWorksheetResponse import RenameWorksheetResponse
 
 WSE = "WORKSHEET_EVENT"  # worksheet event
 CE = "CELL_EVENT"  # cell event

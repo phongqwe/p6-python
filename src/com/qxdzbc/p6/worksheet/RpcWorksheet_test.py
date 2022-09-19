@@ -1,9 +1,6 @@
 import unittest
 from unittest.mock import MagicMock
 
-import numpy
-
-from com.qxdzbc.p6.cell.CellProtoMapping import CellProtoMapping
 from com.qxdzbc.p6.cell.TestDataCell import TestDataCell
 from com.qxdzbc.p6.cell.IndCell import IndCell
 from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
@@ -12,14 +9,13 @@ from com.qxdzbc.p6.range.address.RangeAddresses import RangeAddresses
 from com.qxdzbc.p6.util.for_test import TestUtils
 from com.qxdzbc.p6.workbook.key.WorkbookKeys import WorkbookKeys
 from com.qxdzbc.p6.rpc.data_structure.BoolMsg import BoolMsg
-from com.qxdzbc.p6.rpc.data_structure.CellId import CellId
-from com.qxdzbc.p6.rpc.data_structure.CellValue import CellValue
+from com.qxdzbc.p6.cell.rpc_data_structure.CellId import CellId
+from com.qxdzbc.p6.cell.rpc_data_structure.CellValue import CellValue
 from com.qxdzbc.p6.rpc.data_structure.SingleSignalResponse import \
     SingleSignalResponse
 from com.qxdzbc.p6.worksheet.IndWorksheet import IndWorksheet
 from com.qxdzbc.p6.worksheet.LoadType import LoadType
 from com.qxdzbc.p6.worksheet.RpcWorksheet import RpcWorksheet
-from com.qxdzbc.p6.worksheet.WorksheetProtoMapping import WorksheetProtoMapping
 from com.qxdzbc.p6.worksheet.rpc_data_structure.CellCountResponse import CellCountResponse
 from com.qxdzbc.p6.worksheet.rpc_data_structure.GetAllCellResponse import GetAllCellResponse
 from com.qxdzbc.p6.worksheet.rpc_data_structure.GetUsedRangeResponse import GetUsedRangeResponse

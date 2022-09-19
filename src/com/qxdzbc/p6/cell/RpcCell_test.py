@@ -6,9 +6,9 @@ from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
 from com.qxdzbc.p6.util.for_test import TestUtils
 from com.qxdzbc.p6.workbook.key.WorkbookKeys import WorkbookKeys
 from com.qxdzbc.p6.cell.RpcCell import RpcCell
-from com.qxdzbc.p6.rpc.data_structure.cell.CopyCellRequest import CopyCellRequest
-from com.qxdzbc.p6.rpc.data_structure.CellId import CellId
-from com.qxdzbc.p6.rpc.data_structure.CellValue import CellValue
+from com.qxdzbc.p6.cell.rpc_data_structure.CopyCellRequest import CopyCellRequest
+from com.qxdzbc.p6.cell.rpc_data_structure.CellId import CellId
+from com.qxdzbc.p6.cell.rpc_data_structure.CellValue import CellValue
 from com.qxdzbc.p6.rpc.data_structure.SingleSignalResponse import \
     SingleSignalResponse
 from com.qxdzbc.p6.rpc.data_structure.StrMsg import StrMsg

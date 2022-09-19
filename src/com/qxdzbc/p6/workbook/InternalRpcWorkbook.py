@@ -10,7 +10,6 @@ from com.qxdzbc.p6.util.result.Results import Results
 from com.qxdzbc.p6.workbook.WorkBook import Workbook
 from com.qxdzbc.p6.workbook.WorkbookErrors import WorkbookErrors
 from com.qxdzbc.p6.workbook.key.WorkbookKey import WorkbookKey
-from com.qxdzbc.p6.workbook.key.WorkbookKeyImp import WorkbookKeyImp
 from com.qxdzbc.p6.workbook.key.WorkbookKeys import WorkbookKeys
 from com.qxdzbc.p6.worksheet.Worksheet import Worksheet
 from com.qxdzbc.p6.rpc.RpcUtils import RpcUtils
@@ -20,18 +19,16 @@ from com.qxdzbc.p6.rpc.RpcValues import RpcValues
 from com.qxdzbc.p6.rpc.StubProvider import RpcStubProvider
 from com.qxdzbc.p6.rpc.data_structure.SingleSignalResponse import \
     SingleSignalResponse
-from com.qxdzbc.p6.worksheet.rpc_data_structure.WorksheetId import \
-    WorksheetId
-from com.qxdzbc.p6.rpc.data_structure.workbook.AddWorksheetRequest import AddWorksheetRequest
-from com.qxdzbc.p6.rpc.data_structure.workbook.CreateNewWorksheetRequest import \
+from com.qxdzbc.p6.workbook.rpc_data_structure.AddWorksheetRequest import AddWorksheetRequest
+from com.qxdzbc.p6.workbook.rpc_data_structure.CreateNewWorksheetRequest import \
     CreateNewWorksheetRequest
-from com.qxdzbc.p6.rpc.data_structure.workbook.GetAllWorksheetsResponse import \
+from com.qxdzbc.p6.workbook.rpc_data_structure.GetAllWorksheetsResponse import \
     GetAllWorksheetsResponse
-from com.qxdzbc.p6.rpc.data_structure.workbook.GetWorksheetResponse import GetWorksheetResponse
-from com.qxdzbc.p6.rpc.data_structure.workbook.RenameWorksheetRequest import \
+from com.qxdzbc.p6.workbook.rpc_data_structure.GetWorksheetResponse import GetWorksheetResponse
+from com.qxdzbc.p6.workbook.rpc_data_structure.RenameWorksheetRequest import \
     RenameWorksheetRequest
-from com.qxdzbc.p6.rpc.data_structure.workbook.SetWbNameRequest import SetWbNameRequest
-from com.qxdzbc.p6.rpc.data_structure.workbook.WorksheetWithErrorReportMsg import \
+from com.qxdzbc.p6.workbook.rpc_data_structure.SetWbNameRequest import SetWbNameRequest
+from com.qxdzbc.p6.workbook.rpc_data_structure.WorksheetWithErrorReportMsg import \
     WorksheetWithErrorReportMsg
 from com.qxdzbc.p6.worksheet.rpc_data_structure.WorksheetIdWithIndex import WorksheetIdWithIndex
 from com.qxdzbc.p6.worksheet.RpcWorksheet import RpcWorksheet

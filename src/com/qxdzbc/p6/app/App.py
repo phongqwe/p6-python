@@ -3,8 +3,7 @@ from pathlib import Path
 from typing import Optional, Union, Any
 
 from com.qxdzbc.p6.range.Range import Range
-from com.qxdzbc.p6.rpc.data_structure.range.RangeId import RangeId
-from com.qxdzbc.p6.script.ScriptContainer import ScriptContainer
+from com.qxdzbc.p6.range.rpc_data_structure.RangeId import RangeId
 from com.qxdzbc.p6.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.util.result.Result import Result
 from com.qxdzbc.p6.workbook.WorkBook import Workbook

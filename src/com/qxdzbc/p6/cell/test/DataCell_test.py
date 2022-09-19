@@ -5,7 +5,7 @@ from com.qxdzbc.p6.cell.TestDataCell import TestDataCell
 from com.qxdzbc.p6.cell.CellContent import CellContent
 from com.qxdzbc.p6.cell.address.CellIndex import CellIndex
 from com.qxdzbc.p6.workbook.key.WorkbookKeys import WorkbookKeys
-from com.qxdzbc.p6.rpc.data_structure.CellValue import CellValue
+from com.qxdzbc.p6.cell.rpc_data_structure.CellValue import CellValue
 from com.qxdzbc.p6.proto.DocProtos_pb2 import CellProto
 
 

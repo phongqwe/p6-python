@@ -2,9 +2,6 @@ from abc import ABC
 from pathlib import Path
 from typing import Optional, Union, Any
 
-from com.qxdzbc.p6.script.ScriptEntry import ScriptEntry
-from com.qxdzbc.p6.script.SimpleScriptEntry import SimpleScriptEntry
-
 from com.qxdzbc.p6.app.App import App
 from com.qxdzbc.p6.range.Range import Range
 from com.qxdzbc.p6.util.report.error.ErrorReport import ErrorReport
@@ -15,7 +12,7 @@ from com.qxdzbc.p6.util.result.Results import Results
 from com.qxdzbc.p6.workbook.WorkBook import Workbook
 from com.qxdzbc.p6.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.worksheet.Worksheet import Worksheet
-from com.qxdzbc.p6.rpc.data_structure.range import RangeId
+from com.qxdzbc.p6.range.rpc_data_structure.RangeId import RangeId
 
 
 class BaseApp(App, ABC):

@@ -9,9 +9,9 @@ from com.qxdzbc.p6.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.rpc.RpcUtils import RpcUtils
 from com.qxdzbc.p6.di.RpcServiceContainer import RpcServiceContainer
 from com.qxdzbc.p6.rpc.StubProvider import RpcStubProvider
-from com.qxdzbc.p6.rpc.data_structure.cell.CopyCellRequest import CopyCellRequest
-from com.qxdzbc.p6.rpc.data_structure.CellId import CellId
-from com.qxdzbc.p6.rpc.data_structure.CellValue import CellValue
+from com.qxdzbc.p6.cell.rpc_data_structure.CopyCellRequest import CopyCellRequest
+from com.qxdzbc.p6.cell.rpc_data_structure.CellId import CellId
+from com.qxdzbc.p6.cell.rpc_data_structure.CellValue import CellValue
 from com.qxdzbc.p6.rpc.data_structure.SingleSignalResponse import \
     SingleSignalResponse
 from com.qxdzbc.p6.rpc.data_structure.StrMsg import StrMsg

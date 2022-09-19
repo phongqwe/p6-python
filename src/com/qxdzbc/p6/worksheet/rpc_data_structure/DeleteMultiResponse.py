@@ -1,4 +1,4 @@
-from com.qxdzbc.p6.rpc.data_structure.workbook.WorkbookUpdateCommonResponse import \
+from com.qxdzbc.p6.workbook.rpc_data_structure.WorkbookUpdateCommonResponse import \
     WorkbookUpdateCommonResponse
 
 

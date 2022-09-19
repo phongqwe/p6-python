@@ -2,7 +2,7 @@ import unittest
 
 from com.qxdzbc.p6.cell.IndCell import IndCell
 from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
-from com.qxdzbc.p6.rpc.data_structure.CellValue import CellValue
+from com.qxdzbc.p6.cell.rpc_data_structure.CellValue import CellValue
 
 
 class IndCell_test(unittest.TestCase):

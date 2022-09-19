@@ -4,12 +4,12 @@ from com.qxdzbc.p6.cell.Cell import Cell
 from com.qxdzbc.p6.cell.CellContent import CellContent
 from com.qxdzbc.p6.cell.address.CellAddress import CellAddress
 from com.qxdzbc.p6.cell.util.CellUtils import convertExceptionToStr, CellUtils
-from com.qxdzbc.p6.rpc.data_structure.CellId import CellId
+from com.qxdzbc.p6.cell.rpc_data_structure.CellId import CellId
 from com.qxdzbc.p6.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.util.result.Ok import Ok
 from com.qxdzbc.p6.util.result.Result import Result
 from com.qxdzbc.p6.workbook.key.WorkbookKey import WorkbookKey
-from com.qxdzbc.p6.rpc.data_structure.CellValue import CellValue
+from com.qxdzbc.p6.cell.rpc_data_structure.CellValue import CellValue
 
 
 class TestDataCell(Cell):

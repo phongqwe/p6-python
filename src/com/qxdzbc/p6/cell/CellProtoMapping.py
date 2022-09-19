@@ -1,11 +1,10 @@
 from dataclasses import dataclass
 from typing import Any, Optional
 
-from com.qxdzbc.p6.cell.address.CellAddress import CellAddress
 from com.qxdzbc.p6.proto.DocProtos_pb2 import CellProto
-from com.qxdzbc.p6.rpc.data_structure.CellId import CellId
-from com.qxdzbc.p6.rpc.data_structure.CellValue import CellValue
-from com.qxdzbc.p6.util.ToProto import ToProto, P
+from com.qxdzbc.p6.cell.rpc_data_structure.CellId import CellId
+from com.qxdzbc.p6.cell.rpc_data_structure.CellValue import CellValue
+from com.qxdzbc.p6.util.ToProto import ToProto
 
 
 @dataclass

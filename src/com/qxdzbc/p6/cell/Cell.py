@@ -6,14 +6,14 @@ from typing import TYPE_CHECKING, Optional
 from com.qxdzbc.p6.cell.CellContent import CellContent
 from com.qxdzbc.p6.cell.address.CellAddress import CellAddress
 from com.qxdzbc.p6.cell.util.CellUtils import CellUtils
-from com.qxdzbc.p6.rpc.data_structure.CellId import CellId
+from com.qxdzbc.p6.cell.rpc_data_structure.CellId import CellId
 from com.qxdzbc.p6.util.CanCheckEmpty import CanCheckEmpty
 from com.qxdzbc.p6.util.ToProto import ToProto
 from com.qxdzbc.p6.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.util.result.Result import Result
 from com.qxdzbc.p6.util.result.Results import Results
 from com.qxdzbc.p6.workbook.key.WorkbookKey import WorkbookKey
-from com.qxdzbc.p6.rpc.data_structure.CellValue import CellValue
+from com.qxdzbc.p6.cell.rpc_data_structure.CellValue import CellValue
 from com.qxdzbc.p6.proto.DocProtos_pb2 import CellProto
 
 if TYPE_CHECKING:

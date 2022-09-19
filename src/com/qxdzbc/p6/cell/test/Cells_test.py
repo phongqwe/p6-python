@@ -2,7 +2,7 @@ import unittest
 
 from com.qxdzbc.p6.cell.Cells import Cells
 from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
-from com.qxdzbc.p6.rpc.data_structure.CellId import CellId
+from com.qxdzbc.p6.cell.rpc_data_structure.CellId import CellId
 from com.qxdzbc.p6.workbook.key.WorkbookKeys import WorkbookKeys
 from com.qxdzbc.p6.proto.DocProtos_pb2 import CellValueProto, CellProto
 
