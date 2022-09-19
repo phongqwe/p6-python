@@ -11,6 +11,10 @@ from com.qxdzbc.p6.worksheet.Worksheet import Worksheet
 
 class BaseWorksheet(Worksheet,ABC):
 
+    def removeAllCell(self):
+        rs = self.removeAllCellRs()
+        rs.getOrRaise()
+
     def load2DArray(self, dataAray, anchorCell: CellAddress= CellAddresses.A1,
                     loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> 'Worksheet':
         rs = self.load2DArrayRs(dataAray, anchorCell, loadType)
@@ -73,5 +77,5 @@ class BaseWorksheet(Worksheet,ABC):
         if rs.isErr():
             raise rs.err.toException()
 
-    def deleteCell(self, address: CellAddress | Tuple[int, int] | str):
-        return self.deleteCellRs(address)
+    def removeCell(self, address: CellAddress | Tuple[int, int] | str):
+        return self.removeCellRs(address)

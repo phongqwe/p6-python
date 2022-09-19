@@ -38,6 +38,19 @@ class RpcWorksheet_test(unittest.TestCase):
             stubProvider = self.mockSP
         )
 
+    def test_removeAllCell(self):
+        self.mockWsService.removeAllCell = MagicMock(return_value = SingleSignalResponse().toProtoObj())
+        rs = self.ws.removeAllCellRs()
+        self.assertTrue(rs.isOk())
+        self.ws.removeAllCell()  # not raise any exception
+
+        self.mockWsService.removeAllCell = MagicMock(return_value = SingleSignalResponse(TestUtils.TestErrorReport).toProtoObj())
+
+        rs = self.ws.removeAllCellRs()
+        self.assertTrue(rs.isErr())
+        with self.assertRaises(Exception):
+            self.ws.removeAllCell()
+
     def test_loadArray(self):
         array3d = [[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [10, 11, 12]]]
         array2d = [[1, 2, 3], [4, 5, 6]]

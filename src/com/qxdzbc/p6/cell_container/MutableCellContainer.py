@@ -11,7 +11,7 @@ from com.qxdzbc.p6.util.result.Results import Results
 
 
 class MutableCellContainer(CellContainer, ABC):
-    """ container of cells """
+    """ an interface for a mutable container of cells """
 
     def addCellRs(self, cell: Cell)->Result[None,ErrorReport]:
         """add a cell to this container"""
@@ -21,11 +21,17 @@ class MutableCellContainer(CellContainer, ABC):
         """add a cell to this container"""
         raise NotImplementedError()
 
-    def deleteCell(self, address: CellAddress | Tuple[int, int] | str):
-        delRs = self.deleteCellRs(address)
+    def removeCell(self, address: CellAddress | Tuple[int, int] | str):
+        delRs = self.removeCellRs(address)
         return Results.extractOrRaise(delRs)
 
-    def deleteCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
+    def removeAllCell(self):
+        raise NotImplementedError()
+
+    def removeAllCellRs(self)->Result[None,ErrorReport]:
+        raise NotImplementedError()
+
+    def removeCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
         raise NotImplementedError()
 
     def getOrMakeCell(self, address: CellAddress) -> Cell:

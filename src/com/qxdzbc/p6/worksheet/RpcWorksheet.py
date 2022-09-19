@@ -44,8 +44,11 @@ class RpcWorksheet(WorksheetWrapper):
     def addCell(self, cell: Cell):
         return self._onWsSvOk(partial(self.rootWorksheet.addCell,cell))
 
-    def deleteCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
-        return self._onWbsvOkRs(partial(self.rootWorksheet.deleteCellRs,address))
+    def removeAllCellRs(self) -> Result[None, ErrorReport]:
+        return self._onWbsvOkRs(partial(self.rootWorksheet.removeAllCellRs))
+
+    def removeCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
+        return self._onWbsvOkRs(partial(self.rootWorksheet.removeCellRs, address))
 
     def deleteRangeRs(self, rangeAddress: RangeAddress) -> Result[None, ErrorReport]:
         return self._onWbsvOkRs(partial(self.rootWorksheet.deleteRangeRs,rangeAddress))

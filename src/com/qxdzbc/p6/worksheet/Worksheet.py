@@ -118,12 +118,6 @@ class Worksheet(MutableCellContainer,
     def usedRange(self) -> Range | None:
         raise NotImplementedError()
 
-    # def pasteDataFrame(self, anchorCell: CellAddress, dataFrame):
-    #     raise NotImplementedError()
-    #
-    # def pasteDataFrameRs(self, anchorCell: CellAddress, dataFrame) -> Result[None, ErrorReport]:
-    #     raise NotImplementedError()
-
     def pasteRs(self, cell: CellAddress) -> Result[None, ErrorReport]:
         """paste what inside the system clipboard into the sheet, starting at a cell"""
         raise NotImplementedError()

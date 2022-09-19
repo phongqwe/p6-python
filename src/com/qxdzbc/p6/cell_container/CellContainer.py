@@ -59,11 +59,3 @@ class CellContainer(WithSize,ABC):
             return self.rangeAddress == other.rangeAddress
         else:
             raise Exception("Can only compare range address with another CellContainer")
-
-    def reRun(self,refreshScript:bool = False):
-        for cell in self.cells:
-            cell.reRun(refreshScript=refreshScript)
-
-    def refreshScript(self):
-        for cell in self.cells:
-            cell.refreshScript()

@@ -18,8 +18,8 @@ class RangeWrapper(Range,ABC):
     def worksheet(self) -> Worksheet:
         return self.rootRange.worksheet
 
-    def deleteCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
-        return self.rootRange.deleteCellRs(address)
+    def removeCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
+        return self.rootRange.removeCellRs(address)
 
     def deleteRangeRs(self, rangeAddress: RangeAddress) -> Result[None, ErrorReport]:
         return self.rootRange.deleteRangeRs(rangeAddress)
@@ -46,8 +46,8 @@ class RangeWrapper(Range,ABC):
     def addCell(self, cell: Cell):
         self.rootRange.addCell(cell)
 
-    def deleteCell(self, address: CellAddress):
-        self.rootRange.deleteCell(address)
+    def removeCell(self, address: CellAddress):
+        self.rootRange.removeCell(address)
 
     def getOrMakeCell(self, address: CellAddress) -> Cell:
         return self.rootRange.getOrMakeCell(address)

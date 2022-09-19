@@ -164,9 +164,14 @@ class InternalRpcWorksheet(BaseWorksheet):
         oRs = o.toRs()
         return oRs
 
-    def deleteCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
+    def removeAllCellRs(self)->Result[None,ErrorReport]:
+        oProto = self._wssv.removeAllCell(request=self.id.toProtoObj())
+        o = SingleSignalResponse.fromProto(oProto)
+        return o.toRs()
+
+    def removeCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
         cellId = CellId(address, self._wbk, self._name)
-        oProto = self._wssv.deleteCell(request = cellId.toProtoObj())
+        oProto = self._wssv.removeCell(request = cellId.toProtoObj())
         o = SingleSignalResponse.fromProto(oProto)
         return o.toRs()
 

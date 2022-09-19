@@ -78,8 +78,8 @@ class WorksheetWrapper(BaseWorksheet):
     def deleteRangeRs(self, rangeAddress: RangeAddress) -> Result[None, ErrorReport]:
         return self.rootWorksheet.deleteRangeRs(rangeAddress)
 
-    def deleteCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
-        return self.rootWorksheet.deleteCellRs(address)
+    def removeCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
+        return self.rootWorksheet.removeCellRs(address)
 
     @property
     def rootWorksheet(self) -> 'Worksheet':

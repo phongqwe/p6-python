@@ -237,11 +237,11 @@ class RangeImp(Range):
         if (self._minUsedRow and cell.row < self._minUsedRow) or not self._minUsedRow:
             self._minUsedRow = cell.row
 
-    def deleteCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
+    def removeCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
         """only perform deletion if the target cell is within this range, return err otherwise"""
         address = CellAddresses.parse(address)
         if self.containsAddress(address):
-            rs = self.__worksheet.deleteCellRs(address)
+            rs = self.__worksheet.removeCellRs(address)
             self._updateExtremeColRow()
             return rs
         else:

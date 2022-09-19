@@ -13,7 +13,7 @@ class MockCellContainer(MutableCellContainer):
     def addCell(self, cell: Cell):
         self._l[cell.address] = cell
 
-    def deleteCell(self, address: CellAddress):
+    def removeCell(self, address: CellAddress):
         del self._l[address]
 
     def getOrMakeCell(self, address: CellAddress) -> Cell:
