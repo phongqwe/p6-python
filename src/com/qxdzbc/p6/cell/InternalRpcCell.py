@@ -3,6 +3,7 @@ from typing import Optional
 from com.qxdzbc.p6.cell.Cell import Cell
 from com.qxdzbc.p6.cell.CellContent import CellContent
 from com.qxdzbc.p6.cell.address.CellAddress import CellAddress
+from com.qxdzbc.p6.cell.rpc_data_structure.CellUpdateRequest import CellUpdateRequest
 from com.qxdzbc.p6.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.util.result.Result import Result
 from com.qxdzbc.p6.workbook.key.WorkbookKey import WorkbookKey
@@ -92,11 +93,14 @@ class InternalRpcCell(Cell):
 
     @content.setter
     def content(self, newContent: CellContent):
-        if newContent.isNotEmpty():
-            reqProto = newContent.toProtoObj()
-            oProto = self._cellSv.updateCellContent(request=reqProto)
-            o = SingleSignalResponse.fromProto(oProto)
-            o.toRs().getOrRaise()
+        req = CellUpdateRequest(
+            cellId = self.id,
+            cellContent = newContent
+        )
+        reqProto = req.toProtoObj()
+        oProto = self._cellSv.updateCellContent(request=reqProto)
+        o = SingleSignalResponse.fromProto(oProto)
+        o.toRs().getOrRaise()
 
     @property
     def address(self) -> CellAddress:

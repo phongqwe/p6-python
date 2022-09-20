@@ -7,7 +7,7 @@ from com.qxdzbc.p6.app.rpc_data_structure.LoadWorkbookRequest import LoadWorkboo
 from com.qxdzbc.p6.app.rpc_data_structure.LoadWorkbookResponse import LoadWorkbookResponse
 from com.qxdzbc.p6.app.rpc_data_structure.SetActiveWorksheetRequest import SetActiveWorksheetRequest
 from com.qxdzbc.p6.app.rpc_data_structure.SetActiveWorksheetResponse import SetActiveWorksheetResponse
-from com.qxdzbc.p6.cell.rpc_data_structure.CellMultiUpdateRequest import CellMultiUpdateRequest
+from com.qxdzbc.p6.cell.rpc_data_structure.UpdateMultiCellRequest import UpdateMultiCellRequest
 from com.qxdzbc.p6.cell.rpc_data_structure.CellMultiUpdateResponse import CellMultiUpdateResponse
 from com.qxdzbc.p6.cell.rpc_data_structure.CellUpdateRequest import CellUpdateRequest
 from com.qxdzbc.p6.cell.rpc_data_structure.CellUpdateResponse import CellUpdateResponse
@@ -81,10 +81,10 @@ class P6Events:
             Response = CellUpdateResponse
             Request = CellUpdateRequest
 
-        class MultiUpdate:
-            event = P6Event(f"{CE}2", "cell multi update")
-            Request = CellMultiUpdateRequest
-            Response = CellMultiUpdateResponse
+        # class MultiUpdate:
+        #     event = P6Event(f"{CE}2", "cell multi update")
+        #     Request = CellMultiUpdateRequest
+        #     Response = CellMultiUpdateResponse
 
     class Worksheet:
         @classmethod

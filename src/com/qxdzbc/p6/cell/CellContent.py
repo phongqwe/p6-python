@@ -26,9 +26,8 @@ class CellContent(ToProto[CellContentProto],CanCheckEmpty):
         )
 
     def toProtoObj(self) -> CellContentProto:
-        cv = self.value.toProtoObj()
         return CellContentProto(
-            cellValue = cv,
+            cellValue = self.value.toProtoObj(),
             formula = self.formula,
         )
 

@@ -16,14 +16,13 @@ from com.qxdzbc.p6.proto import CommonProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_pr
 from com.qxdzbc.p6.proto import DocProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n$com/qxdzbc/p6/proto/CellProtos.proto\x12\x13\x63om.qxdzbc.p6.proto\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\x1a#com/qxdzbc/p6/proto/DocProtos.proto\"\xc7\x01\n\x16\x43\x65llUpdateRequestProto\x12:\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x02 \x01(\t\x12:\n\x0b\x63\x65llAddress\x18\x03 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\x12\r\n\x05value\x18\x04 \x01(\t\x12\x0f\n\x07\x66ormula\x18\x05 \x01(\t\":\n\x16\x43\x65llUpdateContentProto\x12\x0f\n\x07\x66ormula\x18\x01 \x01(\t\x12\x0f\n\x07literal\x18\x02 \x01(\t\"\x90\x01\n\x14\x43\x65llUpdateEntryProto\x12:\n\x0b\x63\x65llAddress\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\x12<\n\x07\x63ontent\x18\x02 \x01(\x0b\x32+.com.qxdzbc.p6.proto.CellUpdateContentProto\"\xaf\x01\n\x1b\x43\x65llMultiUpdateRequestProto\x12:\n\x0bworkbookKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x02 \x01(\t\x12=\n\ncellUpdate\x18\x03 \x03(\x0b\x32).com.qxdzbc.p6.proto.CellUpdateEntryProto\"l\n\x10\x43\x65llContentProto\x12\x36\n\tcellValue\x18\x01 \x01(\x0b\x32#.com.qxdzbc.p6.proto.CellValueProto\x12\x14\n\x07\x66ormula\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\n\n\x08_formula\"|\n\x14\x43opyCellRequestProto\x12\x32\n\x08\x66romCell\x18\x01 \x01(\x0b\x32 .com.qxdzbc.p6.proto.CellIdProto\x12\x30\n\x06toCell\x18\x02 \x01(\x0b\x32 .com.qxdzbc.p6.proto.CellIdProtob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n$com/qxdzbc/p6/proto/CellProtos.proto\x12\x13\x63om.qxdzbc.p6.proto\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\x1a#com/qxdzbc/p6/proto/DocProtos.proto\"\x86\x01\n\x16\x43\x65llUpdateRequestProto\x12\x30\n\x06\x63\x65llId\x18\x01 \x01(\x0b\x32 .com.qxdzbc.p6.proto.CellIdProto\x12:\n\x0b\x63\x65llContent\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellContentProto\"\x8a\x01\n\x14\x43\x65llUpdateEntryProto\x12:\n\x0b\x63\x65llAddress\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\x12\x36\n\x07\x63ontent\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellContentProto\"\x94\x01\n\x1bUpdateMultiCellRequestProto\x12\x33\n\x04wsId\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorksheetIdProto\x12@\n\rupdateEntries\x18\x02 \x03(\x0b\x32).com.qxdzbc.p6.proto.CellUpdateEntryProto\"l\n\x10\x43\x65llContentProto\x12\x36\n\tcellValue\x18\x01 \x01(\x0b\x32#.com.qxdzbc.p6.proto.CellValueProto\x12\x14\n\x07\x66ormula\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\n\n\x08_formula\"|\n\x14\x43opyCellRequestProto\x12\x32\n\x08\x66romCell\x18\x01 \x01(\x0b\x32 .com.qxdzbc.p6.proto.CellIdProto\x12\x30\n\x06toCell\x18\x02 \x01(\x0b\x32 .com.qxdzbc.p6.proto.CellIdProtob\x06proto3')
 
 
 
 _CELLUPDATEREQUESTPROTO = DESCRIPTOR.message_types_by_name['CellUpdateRequestProto']
-_CELLUPDATECONTENTPROTO = DESCRIPTOR.message_types_by_name['CellUpdateContentProto']
 _CELLUPDATEENTRYPROTO = DESCRIPTOR.message_types_by_name['CellUpdateEntryProto']
-_CELLMULTIUPDATEREQUESTPROTO = DESCRIPTOR.message_types_by_name['CellMultiUpdateRequestProto']
+_UPDATEMULTICELLREQUESTPROTO = DESCRIPTOR.message_types_by_name['UpdateMultiCellRequestProto']
 _CELLCONTENTPROTO = DESCRIPTOR.message_types_by_name['CellContentProto']
 _COPYCELLREQUESTPROTO = DESCRIPTOR.message_types_by_name['CopyCellRequestProto']
 CellUpdateRequestProto = _reflection.GeneratedProtocolMessageType('CellUpdateRequestProto', (_message.Message,), {
@@ -33,13 +32,6 @@ CellUpdateRequestProto = _reflection.GeneratedProtocolMessageType('CellUpdateReq
   })
 _sym_db.RegisterMessage(CellUpdateRequestProto)
 
-CellUpdateContentProto = _reflection.GeneratedProtocolMessageType('CellUpdateContentProto', (_message.Message,), {
-  'DESCRIPTOR' : _CELLUPDATECONTENTPROTO,
-  '__module__' : 'com.qxdzbc.p6.proto.CellProtos_pb2'
-  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.CellUpdateContentProto)
-  })
-_sym_db.RegisterMessage(CellUpdateContentProto)
-
 CellUpdateEntryProto = _reflection.GeneratedProtocolMessageType('CellUpdateEntryProto', (_message.Message,), {
   'DESCRIPTOR' : _CELLUPDATEENTRYPROTO,
   '__module__' : 'com.qxdzbc.p6.proto.CellProtos_pb2'
@@ -47,12 +39,12 @@ CellUpdateEntryProto = _reflection.GeneratedProtocolMessageType('CellUpdateEntry
   })
 _sym_db.RegisterMessage(CellUpdateEntryProto)
 
-CellMultiUpdateRequestProto = _reflection.GeneratedProtocolMessageType('CellMultiUpdateRequestProto', (_message.Message,), {
-  'DESCRIPTOR' : _CELLMULTIUPDATEREQUESTPROTO,
+UpdateMultiCellRequestProto = _reflection.GeneratedProtocolMessageType('UpdateMultiCellRequestProto', (_message.Message,), {
+  'DESCRIPTOR' : _UPDATEMULTICELLREQUESTPROTO,
   '__module__' : 'com.qxdzbc.p6.proto.CellProtos_pb2'
-  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.CellMultiUpdateRequestProto)
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.UpdateMultiCellRequestProto)
   })
-_sym_db.RegisterMessage(CellMultiUpdateRequestProto)
+_sym_db.RegisterMessage(UpdateMultiCellRequestProto)
 
 CellContentProto = _reflection.GeneratedProtocolMessageType('CellContentProto', (_message.Message,), {
   'DESCRIPTOR' : _CELLCONTENTPROTO,
@@ -72,15 +64,13 @@ if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   _CELLUPDATEREQUESTPROTO._serialized_start=139
-  _CELLUPDATEREQUESTPROTO._serialized_end=338
-  _CELLUPDATECONTENTPROTO._serialized_start=340
-  _CELLUPDATECONTENTPROTO._serialized_end=398
-  _CELLUPDATEENTRYPROTO._serialized_start=401
-  _CELLUPDATEENTRYPROTO._serialized_end=545
-  _CELLMULTIUPDATEREQUESTPROTO._serialized_start=548
-  _CELLMULTIUPDATEREQUESTPROTO._serialized_end=723
-  _CELLCONTENTPROTO._serialized_start=725
-  _CELLCONTENTPROTO._serialized_end=833
-  _COPYCELLREQUESTPROTO._serialized_start=835
-  _COPYCELLREQUESTPROTO._serialized_end=959
+  _CELLUPDATEREQUESTPROTO._serialized_end=273
+  _CELLUPDATEENTRYPROTO._serialized_start=276
+  _CELLUPDATEENTRYPROTO._serialized_end=414
+  _UPDATEMULTICELLREQUESTPROTO._serialized_start=417
+  _UPDATEMULTICELLREQUESTPROTO._serialized_end=565
+  _CELLCONTENTPROTO._serialized_start=567
+  _CELLCONTENTPROTO._serialized_end=675
+  _COPYCELLREQUESTPROTO._serialized_start=677
+  _COPYCELLREQUESTPROTO._serialized_end=801
 # @@protoc_insertion_point(module_scope)

@@ -51,13 +51,19 @@ class Bench(unittest.TestCase):
 
         # wb0:Workbook=app.getWorkbook(1)
         awb = app.activeWorkbook
+        aws = app.activeWorksheet
 
-        rs = awb.removeAllWorksheetRs()
-        self.assertTrue(rs.isOk())
+        cell = aws.getCell(CellAddresses.fromLabel("B3"))
 
         for x in range(1000):
-            print(f"ws: {x} ")
-            z=awb.removeAllWorksheet()
+            cell.value = x
+
+        # rs = awb.removeAllWorksheetRs()
+        # self.assertTrue(rs.isOk())
+
+        # for x in range(1000):
+        #     print(f"ws: {x} ")
+        #     z=awb.removeAllWorksheet()
 
         # ar1=[
         #     [1,2,3],
