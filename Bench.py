@@ -55,9 +55,9 @@ class Bench(unittest.TestCase):
         rs = awb.removeAllWorksheetRs()
         self.assertTrue(rs.isOk())
 
-        for x in range(10):
+        for x in range(1000):
             print(f"ws: {x} ")
-            awb.createNewWorksheet()
+            z=awb.removeAllWorksheet()
 
         # ar1=[
         #     [1,2,3],

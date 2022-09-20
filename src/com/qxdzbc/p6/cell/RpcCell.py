@@ -1,7 +1,10 @@
+from functools import partial
 from typing import Optional
 
 from com.qxdzbc.p6.cell.Cell import Cell
 from com.qxdzbc.p6.cell.CellContent import CellContent
+from com.qxdzbc.p6.cell.InternalRpcCell import InternalRpcCell
+from com.qxdzbc.p6.cell.WrapperCell import WrapperCell
 from com.qxdzbc.p6.cell.address.CellAddress import CellAddress
 from com.qxdzbc.p6.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.util.result.Result import Result
@@ -18,27 +21,28 @@ from com.qxdzbc.p6.rpc.data_structure.StrMsg import StrMsg
 from com.qxdzbc.p6.proto.rpc.CellService_pb2_grpc import CellServiceStub
 
 
-class RpcCell(Cell):
+class RpcCell(WrapperCell):
 
     def __init__(
-            self,
-            cellAddress: CellAddress,
-            wbKey: WorkbookKey,
-            wsName: str,
-            stubProvider: RpcStubProvider = RpcServiceContainer.insecureRpcServiceProvider(),
-    ):
+            self, cellAddress: CellAddress,
+            wbKey: WorkbookKey, wsName: str,
+            stubProvider: RpcStubProvider = RpcServiceContainer.insecureRpcServiceProvider()):
+        self._ic = InternalRpcCell(
+            cellAddress = cellAddress,
+            wbKey = wbKey,
+            wsName = wsName,
+            stubProvider = stubProvider
+        )
+        super().__init__(self._ic)
         self._address = cellAddress
         self._wbk = wbKey
         self._wsName = wsName
         self._sp = stubProvider
 
-    def copyFromCellRs(self, anotherCell: Cell) -> Result[None, ErrorReport]:
-        return self.copyFrom(anotherCell.id)
-
     @staticmethod
     def fromCell(
-            cell:Cell,
-            stubProvider:RpcStubProvider = RpcServiceContainer.insecureRpcServiceProvider()):
+            cell: Cell,
+            stubProvider: RpcStubProvider = RpcServiceContainer.insecureRpcServiceProvider()):
         return RpcCell(
             cellAddress = cell.address,
             wbKey = cell.wbKey,
@@ -48,84 +52,50 @@ class RpcCell(Cell):
 
     @property
     def displayValue(self) -> str:
-        def f() -> str:
-            oProto = self._cellSv.getDisplayValue(request = self.id.toProtoObj())
-            o = StrMsg.fromProto(oProto)
-            return o.v
-
+        def f():
+            return self._ic.displayValue
         return self._onCellSvOk(f)
 
     @property
-    def wsName(self) -> Optional[str]:
-        return self._wsName
-
-    @property
-    def wbKey(self) -> Optional[WorkbookKey]:
-        return self._wbk
-
-    @property
     def formula(self) -> str:
-        def f() -> str:
-            oProto = self._cellSv.getFormula(request = self.id.toProtoObj())
-            o = StrMsg.fromProto(oProto)
-            return o.v
-
+        def f():
+            return self._ic.formula
         return self._onCellSvOk(f)
 
     @formula.setter
     def formula(self, newFormula):
-        """ set new formula, script will also be updated """
-        raise NotImplementedError()
-
-    @property
-    def bareValue(self):
-        cv: CellValue = self.cellValue
-        return cv.value
+        def f():
+            self._ic.formula = newFormula
+        self._onCellSvOk(f)
 
     @property
     def value(self):
-        return self.bareValue
+        return super().value
 
     @value.setter
     def value(self, newValue):
-        """ set the value of this cell """
-        raise NotImplementedError()
-
-    def isEmpty(self):
-        return self.cellValue.isEmpty()
+        def f():
+            self._ic.value = newValue
+        self._onCellSvOk(f)
 
     def copyFromRs(self, anotherCell: CellId) -> Result[None, ErrorReport]:
-        def f():
-            request = CopyCellRequest(
-                fromCell = anotherCell,
-                toCell = self.id
-            )
-            oProto = self._cellSv.copyFrom(request = request.toProtoObj())
-            o = SingleSignalResponse.fromProto(oProto)
-            return o.toRs()
-
-        return self._onCellSvOkRs(f)
+        return self._onCellSvOkRs(partial(self._ic.copyFromRs,anotherCell))
 
     @property
     def rootCell(self) -> 'Cell':
-        return self
+        return super().rootCell
 
     @property
     def content(self) -> CellContent:
-        def f() -> CellContent:
-            oProto = self._cellSv.getCellContent(request = self.id.toProtoObj())
-            o = CellContent.fromProto(oProto)
-            return o
-
+        def f():
+            return self._ic.content
         return self._onCellSvOk(f)
 
     @content.setter
     def content(self, newContent: CellContent):
-        raise NotImplementedError()
-
-    @property
-    def address(self) -> CellAddress:
-        return self._address
+        def f():
+            self._ic.content = newContent
+        self._onCellSvOk(f)
 
     @property
     def _cellSv(self) -> Optional[CellServiceStub]:
@@ -140,8 +110,5 @@ class RpcCell(Cell):
     @property
     def cellValue(self) -> CellValue:
         def f() -> CellValue:
-            oProto = self._cellSv.getCellValue(request = self.id.toProtoObj())
-            o = CellValue.fromProto(oProto)
-            return o
-
+            return self._ic.cellValue
         return self._onCellSvOk(f)

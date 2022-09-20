@@ -1,19 +1,39 @@
 from abc import ABC
 from typing import Optional
 
-from com.qxdzbc.p6.cell import CellJson
-
 from com.qxdzbc.p6.cell.Cell import Cell
 from com.qxdzbc.p6.cell.CellContent import CellContent
 from com.qxdzbc.p6.cell.address.CellAddress import CellAddress
-from com.qxdzbc.p6.worksheet.Worksheet import Worksheet
+from com.qxdzbc.p6.cell.rpc_data_structure.CellId import CellId
+from com.qxdzbc.p6.cell.rpc_data_structure.CellValue import CellValue
+from com.qxdzbc.p6.util.report.error.ErrorReport import ErrorReport
+from com.qxdzbc.p6.util.result.Result import Result
+from com.qxdzbc.p6.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.proto.DocProtos_pb2 import CellProto
 
 
-class WrapperCell(Cell, ABC):
+class WrapperCell(Cell):
     """
     An abstract Cell decorator that wraps around another cell and carries out its work using the inner cell
     """
+
+    @property
+    def cellValue(self) -> CellValue:
+        return self.rootCell.cellValue
+
+    @property
+    def wsName(self) -> Optional[str]:
+        return self.rootCell.wsName
+
+    @property
+    def wbKey(self) -> Optional[WorkbookKey]:
+        return self.rootCell.wbKey
+
+    def copyFromRs(self, anotherCell: CellId) -> Result[None, ErrorReport]:
+        return self.rootCell.copyFromRs(anotherCell)
+
+    def copyFromCellRs(self, anotherCell: Cell) -> Result[None, ErrorReport]:
+        pass
 
     @property
     def innerCell(self)->'Cell':
@@ -21,10 +41,6 @@ class WrapperCell(Cell, ABC):
 
     def __init__(self, innerCell: Cell):
         self._innerCell: Cell = innerCell
-
-    @property
-    def sourceValue(self) -> str:
-        return self.rootCell.sourceValue
 
     @property
     def rootCell(self) -> 'Cell':
@@ -37,14 +53,6 @@ class WrapperCell(Cell, ABC):
     @content.setter
     def content(self, newContent: CellContent):
         self.rootCell.content = newContent
-
-    @property
-    def worksheet(self) -> Optional[Worksheet]:
-        return self.rootCell.worksheet
-
-    @worksheet.setter
-    def worksheet(self, newWorksheet: Optional[Worksheet]):
-        self.rootCell.worksheet = newWorksheet
 
     def toProtoObj(self) -> CellProto:
         return self.rootCell.toProtoObj()
@@ -67,12 +75,6 @@ class WrapperCell(Cell, ABC):
     def isEmpty(self):
         return self.rootCell.isEmpty()
 
-    def reRun(self, globalScope = None, localScope = None, refreshScript:bool =False):
-        self.rootCell.reRun(globalScope, localScope,refreshScript)
-
-    def toJsonDict(self) -> dict:
-        return self.rootCell.toJsonDict()
-
     @property
     def formula(self) -> str:
         return self.rootCell.formula
@@ -82,19 +84,8 @@ class WrapperCell(Cell, ABC):
         self.rootCell.formula = newFormula
 
     @property
-    def bareScript(self) -> str:
-        return self.rootCell.bareScript
-
-    @property
-    def bareFormula(self) -> str:
-        return self.rootCell.bareFormula
-
-    @property
     def bareValue(self):
         return self.rootCell.bareValue
-
-    def toJson(self) -> CellJson:
-        return self.rootCell.toJson()
 
     @property
     def displayValue(self) -> str:
@@ -107,14 +98,6 @@ class WrapperCell(Cell, ABC):
     @value.setter
     def value(self, newValue):
         self.rootCell.value = newValue
-
-    @property
-    def script(self) -> str:
-        return self.rootCell.script
-
-    @script.setter
-    def script(self, newScript: str):
-        self.rootCell.script = newScript
 
     @property
     def address(self) -> CellAddress:
@@ -131,20 +114,8 @@ class WrapperCell(Cell, ABC):
     def col(self) -> int:
         return self.rootCell.col
 
-    def runScript(self, globalScope = None, localScope = None):
-        self.rootCell.runScript(globalScope, localScope)
-
-    def setScriptAndRun(self, newScript, globalScope = None, localScope = None):
-        self.rootCell.setScriptAndRun(newScript, globalScope, localScope)
-
-    def hasScript(self) -> bool:
-        return self.rootCell.hasScript()
-
     def __hash__(self) -> int:
         return self.rootCell.__hash__()
 
-    def clearScriptResult(self):
-        return self.rootCell.clearScriptResult()
-
-    def copyFrom(self, anotherCell: "Cell"):
+    def copyFrom(self, anotherCell: CellId):
         self.rootCell.copyFrom(anotherCell)
