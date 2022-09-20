@@ -7,8 +7,6 @@ from com.qxdzbc.p6.app.rpc_data_structure.LoadWorkbookRequest import LoadWorkboo
 from com.qxdzbc.p6.app.rpc_data_structure.LoadWorkbookResponse import LoadWorkbookResponse
 from com.qxdzbc.p6.app.rpc_data_structure.SetActiveWorksheetRequest import SetActiveWorksheetRequest
 from com.qxdzbc.p6.app.rpc_data_structure.SetActiveWorksheetResponse import SetActiveWorksheetResponse
-from com.qxdzbc.p6.cell.rpc_data_structure.UpdateMultiCellRequest import UpdateMultiCellRequest
-from com.qxdzbc.p6.cell.rpc_data_structure.CellMultiUpdateResponse import CellMultiUpdateResponse
 from com.qxdzbc.p6.cell.rpc_data_structure.CellUpdateRequest import CellUpdateRequest
 from com.qxdzbc.p6.cell.rpc_data_structure.CellUpdateResponse import CellUpdateResponse
 from com.qxdzbc.p6.range.rpc_data_structure.paste_range.PasteRangeRequest import PasteRangeRequest
