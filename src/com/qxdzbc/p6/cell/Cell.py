@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 
 from com.qxdzbc.p6.cell.CellContent import CellContent
 from com.qxdzbc.p6.cell.address.CellAddress import CellAddress
@@ -20,7 +20,7 @@ if TYPE_CHECKING:
     pass
 
 
-class Cell(CanCheckEmpty,ToProto[CellProto],ABC):
+class Cell(CanCheckEmpty, ToProto[CellProto], ABC):
     """
     Cell interface
     """
@@ -30,8 +30,15 @@ class Cell(CanCheckEmpty,ToProto[CellProto],ABC):
         return CellId(self.address, self.wbKey, self.wsName)
 
     @property
-    def cellValue(self)->CellValue:
+    def cellValue(self) -> CellValue:
         raise NotImplementedError()
+
+    @cellValue.setter
+    def cellValue(self, newCellValue: CellValue):
+        c = CellContent(
+            value = newCellValue
+        )
+        self.content = c
 
     def __eq__(self, other):
         if isinstance(other, Cell):
@@ -42,7 +49,7 @@ class Cell(CanCheckEmpty,ToProto[CellProto],ABC):
             return False
 
     @property
-    def displayValue(self)->str:
+    def displayValue(self) -> str:
         raise NotImplementedError()
 
     @property
@@ -50,7 +57,7 @@ class Cell(CanCheckEmpty,ToProto[CellProto],ABC):
         raise NotImplementedError()
 
     @property
-    def wbKey(self)->Optional[WorkbookKey]:
+    def wbKey(self) -> Optional[WorkbookKey]:
         raise NotImplementedError()
 
     @property
@@ -62,6 +69,12 @@ class Cell(CanCheckEmpty,ToProto[CellProto],ABC):
     def formula(self, newFormula):
         """ set new formula, script will also be updated """
         raise NotImplementedError()
+
+    def setFormula(self,newFormula):
+        c = CellContent(
+            formula = newFormula
+        )
+        self.content = c
 
     @property
     def intValue(self) -> int:
@@ -81,7 +94,7 @@ class Cell(CanCheckEmpty,ToProto[CellProto],ABC):
         if v is None:
             return ""
         else:
-            if isinstance(v,str):
+            if isinstance(v, str):
                 if CellUtils.isNumericString(v):
                     return v[1:]
                 else:
@@ -90,21 +103,20 @@ class Cell(CanCheckEmpty,ToProto[CellProto],ABC):
                 return str(v)
 
     @property
-    def bareValue(self):
-        """
-        :return: the bare value, may not be consistent with the result of running the script of this cell.
-        """
-        raise NotImplementedError()
-
-    @property
     def value(self):
-        """ return the value of this cell """
+        """ return the value of this cell. This value may be the literal value the cell or holding or the result of the formula of this cell """
         raise NotImplementedError()
 
     @value.setter
-    def value(self, newValue):
+    def value(self, newValue: Any):
         """ set the value of this cell """
         raise NotImplementedError()
+
+    def setValue(self,newValue: Any):
+        c = CellContent(
+            value = CellValue.fromAny(newValue)
+        )
+        self.content = c
 
     @property
     def address(self) -> CellAddress:
@@ -127,7 +139,7 @@ class Cell(CanCheckEmpty,ToProto[CellProto],ABC):
     def isEmpty(self):
         raise NotImplementedError()
 
-    def copyFromRs(self, anotherCell: CellId)->Result[None,ErrorReport]:
+    def copyFromRs(self, anotherCell: CellId) -> Result[None, ErrorReport]:
         """copy everything (data, format, etc.) from another cell to this cell"""
         raise NotImplementedError()
 
@@ -135,7 +147,7 @@ class Cell(CanCheckEmpty,ToProto[CellProto],ABC):
         """copy everything (data, format, etc.) from another cell to this cell"""
         Results.extractOrRaise(self.copyFromRs(anotherCell))
 
-    def copyFromCellRs(self, anotherCell: Cell)->Result[None,ErrorReport]:
+    def copyFromCellRs(self, anotherCell: Cell) -> Result[None, ErrorReport]:
         """copy everything (data, format, etc.) from another cell to this cell"""
         raise NotImplementedError()
 
@@ -144,16 +156,16 @@ class Cell(CanCheckEmpty,ToProto[CellProto],ABC):
         Results.extractOrRaise(self.copyFromCellRs(anotherCell))
 
     @property
-    def rootCell(self)->'Cell':
+    def rootCell(self) -> 'Cell':
         raise NotImplementedError()
 
     @property
-    def content(self)->CellContent:
+    def content(self) -> CellContent:
         """extract a CellContent object from this cell"""
         raise NotImplementedError()
 
     @content.setter
-    def content(self,newContent:CellContent):
+    def content(self, newContent: CellContent):
         raise NotImplementedError()
 
     def toProtoObj(self) -> CellProto:
@@ -167,4 +179,3 @@ class Cell(CanCheckEmpty,ToProto[CellProto],ABC):
             value = v,
             formula = f,
         )
-

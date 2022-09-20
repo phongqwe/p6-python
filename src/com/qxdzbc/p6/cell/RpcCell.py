@@ -1,5 +1,5 @@
 from functools import partial
-from typing import Optional
+from typing import Optional, Any
 
 from com.qxdzbc.p6.cell.Cell import Cell
 from com.qxdzbc.p6.cell.CellContent import CellContent
@@ -56,27 +56,31 @@ class RpcCell(WrapperCell):
             return self._ic.displayValue
         return self._onCellSvOk(f)
 
-    @property
-    def formula(self) -> str:
-        def f():
-            return self._ic.formula
-        return self._onCellSvOk(f)
+    # @property
+    # def formula(self) -> str:
+    #     def f():
+    #         return self._ic.formula
+    #     return self._onCellSvOk(f)
+    #
+    # @formula.setter
+    # def formula(self, newFormula):
+    #     super().formula = newFormula
+    #     # Cell.formula.fset(self,newFormula)
+    #     # def f():
+    #     #     self._ic.formula = newFormula
+    #     # self._onCellSvOk(f)
 
-    @formula.setter
-    def formula(self, newFormula):
-        def f():
-            self._ic.formula = newFormula
-        self._onCellSvOk(f)
+    # @property
+    # def value(self):
+    #     return super().value
 
-    @property
-    def value(self):
-        return super().value
-
-    @value.setter
-    def value(self, newValue):
-        def f():
-            self._ic.value = newValue
-        self._onCellSvOk(f)
+    # @value.setter
+    # def value(self, newValue:Any):
+    #     super().value = newValue
+        # def f():
+        #     self._ic.value = newValue
+        # self._onCellSvOk(f)
+        # Cell.value.fset(self,newValue)
 
     def copyFromRs(self, anotherCell: CellId) -> Result[None, ErrorReport]:
         return self._onCellSvOkRs(partial(self._ic.copyFromRs,anotherCell))

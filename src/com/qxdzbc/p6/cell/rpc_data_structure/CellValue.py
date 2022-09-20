@@ -23,7 +23,7 @@ class CellValue(CanCheckEmpty, ToProto[CellValueProto]):
         elif isinstance(a,bool):
             return CellValue(vBool = a)
         else:
-            raise TypeError("CellValue can only hold number, string, boolean, or nothing")
+            raise TypeError(f"CellValue can only hold number, string, boolean, or nothing. The provided value is of type {type(a)}")
 
     @staticmethod
     def fromNum(i: float):

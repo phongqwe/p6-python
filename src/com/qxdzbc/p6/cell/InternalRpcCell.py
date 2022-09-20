@@ -57,22 +57,16 @@ class InternalRpcCell(Cell):
 
     @formula.setter
     def formula(self, newFormula):
-        """ set new formula, script will also be updated """
-        raise NotImplementedError()
-
-    @property
-    def bareValue(self):
-        cv: CellValue = self.cellValue
-        return cv.value
+        self.setFormula(newFormula)
 
     @property
     def value(self):
-        return self.bareValue
+        cv: CellValue = self.cellValue
+        return cv.value
 
     @value.setter
     def value(self, newValue):
-        """ set the value of this cell """
-        raise NotImplementedError()
+        self.setValue(newValue)
 
     def isEmpty(self):
         return self.cellValue.isEmpty()
@@ -98,7 +92,11 @@ class InternalRpcCell(Cell):
 
     @content.setter
     def content(self, newContent: CellContent):
-        raise NotImplementedError()
+        if newContent.isNotEmpty():
+            reqProto = newContent.toProtoObj()
+            oProto = self._cellSv.updateCellContent(request=reqProto)
+            o = SingleSignalResponse.fromProto(oProto)
+            o.toRs().getOrRaise()
 
     @property
     def address(self) -> CellAddress:
