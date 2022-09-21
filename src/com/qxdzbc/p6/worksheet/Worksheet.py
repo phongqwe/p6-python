@@ -14,6 +14,7 @@ from com.qxdzbc.p6.util.result.Result import Result
 from com.qxdzbc.p6.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.proto.DocProtos_pb2 import WorksheetProto
 from com.qxdzbc.p6.worksheet.LoadType import LoadType
+from com.qxdzbc.p6.worksheet.rpc_data_structure.CellUpdateEntry import CellUpdateEntry
 
 if TYPE_CHECKING:
     from com.qxdzbc.p6.range.Range import Range
@@ -22,6 +23,12 @@ if TYPE_CHECKING:
 class Worksheet(MutableCellContainer,
                 ToProto[WorksheetProto],
                 ABC):
+
+    def updateMultipleCellRs(self,updateEntries:list[CellUpdateEntry])->Result[None, ErrorReport]:
+        raise NotImplementedError()
+
+    def updateMultipleCell(self,updateEntries:list[CellUpdateEntry]):
+        raise NotImplementedError()
 
     @property
     def id(self) -> WorksheetId:

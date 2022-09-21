@@ -7,9 +7,15 @@ from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
 from com.qxdzbc.p6.range.Range import Range
 from com.qxdzbc.p6.worksheet.LoadType import LoadType
 from com.qxdzbc.p6.worksheet.Worksheet import Worksheet
+from com.qxdzbc.p6.worksheet.rpc_data_structure.CellUpdateEntry import CellUpdateEntry
 
 
 class BaseWorksheet(Worksheet,ABC):
+
+
+    def updateMultipleCell(self, updateEntries: list[CellUpdateEntry]):
+        rs = self.updateMultipleCellRs(updateEntries)
+        rs.getOrRaise()
 
     def removeAllCell(self):
         rs = self.removeAllCellRs()

@@ -71,6 +71,11 @@ class WorksheetServiceStub(object):
                 request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.LoadDataRequestProto.SerializeToString,
                 response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
                 )
+        self.updateMultiCellContent = channel.unary_unary(
+                '/com.qxdzbc.p6.proto.rpc.WorksheetService/updateMultiCellContent',
+                request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.MultiCellUpdateRequestProto.SerializeToString,
+                response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
+                )
 
 
 class WorksheetServiceServicer(object):
@@ -142,6 +147,12 @@ class WorksheetServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def updateMultiCellContent(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_WorksheetServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -198,6 +209,11 @@ def add_WorksheetServiceServicer_to_server(servicer, server):
             'loadData': grpc.unary_unary_rpc_method_handler(
                     servicer.loadData,
                     request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.LoadDataRequestProto.FromString,
+                    response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.SerializeToString,
+            ),
+            'updateMultiCellContent': grpc.unary_unary_rpc_method_handler(
+                    servicer.updateMultiCellContent,
+                    request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.MultiCellUpdateRequestProto.FromString,
                     response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.SerializeToString,
             ),
     }
@@ -393,6 +409,23 @@ class WorksheetService(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.WorksheetService/loadData',
             com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.LoadDataRequestProto.SerializeToString,
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def updateMultiCellContent(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.WorksheetService/updateMultiCellContent',
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.MultiCellUpdateRequestProto.SerializeToString,
             com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

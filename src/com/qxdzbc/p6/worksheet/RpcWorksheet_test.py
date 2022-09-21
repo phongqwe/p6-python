@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import MagicMock
 
+from com.qxdzbc.p6.cell.CellContent import CellContent
 from com.qxdzbc.p6.cell.TestDataCell import TestDataCell
 from com.qxdzbc.p6.cell.IndCell import IndCell
 from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
@@ -13,15 +14,18 @@ from com.qxdzbc.p6.cell.rpc_data_structure.CellId import CellId
 from com.qxdzbc.p6.cell.rpc_data_structure.CellValue import CellValue
 from com.qxdzbc.p6.rpc.data_structure.SingleSignalResponse import \
     SingleSignalResponse
+from com.qxdzbc.p6.workbook.rpc_data_structure.RenameWorksheetRequest import RenameWorksheetRequest
 from com.qxdzbc.p6.worksheet.IndWorksheet import IndWorksheet
 from com.qxdzbc.p6.worksheet.LoadType import LoadType
 from com.qxdzbc.p6.worksheet.RpcWorksheet import RpcWorksheet
 from com.qxdzbc.p6.worksheet.rpc_data_structure.CellCountResponse import CellCountResponse
+from com.qxdzbc.p6.worksheet.rpc_data_structure.CellUpdateEntry import CellUpdateEntry
 from com.qxdzbc.p6.worksheet.rpc_data_structure.GetAllCellResponse import GetAllCellResponse
 from com.qxdzbc.p6.worksheet.rpc_data_structure.GetUsedRangeResponse import GetUsedRangeResponse
 import pandas as pd
 
 from com.qxdzbc.p6.worksheet.rpc_data_structure.LoadDataRequest import LoadDataRequest
+from com.qxdzbc.p6.worksheet.rpc_data_structure.MultiCellUpdateRequest import MultiCellUpdateRequest
 
 
 class RpcWorksheet_test(unittest.TestCase):
@@ -29,14 +33,59 @@ class RpcWorksheet_test(unittest.TestCase):
         super().setUp()
         mockSP = MagicMock()
         mockWsService = MagicMock()
+        mockWbService = MagicMock()
         mockSP.wsService = mockWsService
+        mockSP.wbService = mockWbService
         self.mockSP = mockSP
         self.mockWsService = mockWsService
+        self.mockWbService = mockWbService
         self.ws = RpcWorksheet(
             name = "qwe",
             wbKey = WorkbookKeys.fromNameAndPath("wb1"),
             stubProvider = self.mockSP
         )
+
+    def test_updateMultiCell(self):
+        self.mockWsService.updateMultiCellContent = MagicMock(return_value = SingleSignalResponse().toProtoObj())
+        updateEntries = [
+            CellUpdateEntry(
+                cellAddress = CellAddresses.fromLabel("QT12"),
+                content = CellContent.fromAny(123)
+            ),
+            CellUpdateEntry(
+                cellAddress = CellAddresses.fromLabel("MM11"),
+                content = CellContent.fromAny(123)
+            )
+        ]
+
+        rs = self.ws.updateMultipleCellRs(updateEntries)
+        self.assertTrue(rs.isOk())
+        self.mockWsService.updateMultiCellContent.assert_called_with(
+            request=MultiCellUpdateRequest(
+                wsId = self.ws.id,
+                updateEntries =updateEntries
+            ).toProtoObj()
+        )
+        self.mockWsService.updateMultiCellContent = MagicMock(return_value = SingleSignalResponse(TestUtils.TestErrorReport).toProtoObj())
+
+        rs=self.ws.updateMultipleCellRs(updateEntries)
+        self.assertTrue(rs.isErr())
+
+    def test_rename(self):
+        self.mockWbService.renameWorksheet = MagicMock(return_value = SingleSignalResponse().toProtoObj())
+        rs = self.ws.renameRs("qwe")
+        self.assertTrue(rs.isOk())
+        self.mockWbService.renameWorksheet.assert_called_with(
+            request = RenameWorksheetRequest(
+                wbKey = self.ws.wbKey,
+                oldName = self.ws.name,
+                newName = "qwe"
+            ).toProtoObj()
+        )
+
+        self.mockWbService.renameWorksheet = MagicMock(return_value = SingleSignalResponse(TestUtils.TestErrorReport).toProtoObj())
+        rs = self.ws.renameRs("qwe")
+        self.assertTrue(rs.isErr())
 
     def test_removeAllCell(self):
         self.mockWsService.removeAllCell = MagicMock(return_value = SingleSignalResponse().toProtoObj())

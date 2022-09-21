@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Any
 
 from com.qxdzbc.p6.util.CanCheckEmpty import CanCheckEmpty
 from com.qxdzbc.p6.util.ToProto import ToProto
@@ -25,6 +25,16 @@ class CellContent(ToProto[CellContentProto],CanCheckEmpty):
             value = CellValue.fromProto(proto.cellValue)
         )
 
+    @staticmethod
+    def fromAny(a:Any)->'CellContent':
+        return CellContent(
+            value = CellValue.fromAny(a)
+        )
+    @staticmethod
+    def fromFormula(formula:str)->'CellContent':
+        return CellContent(
+            formula = formula
+        )
     def toProtoObj(self) -> CellContentProto:
         return CellContentProto(
             cellValue = self.value.toProtoObj(),

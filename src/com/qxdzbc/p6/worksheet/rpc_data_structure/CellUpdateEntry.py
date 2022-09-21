@@ -2,13 +2,18 @@ from dataclasses import dataclass
 
 from com.qxdzbc.p6.cell.CellContent import CellContent
 from com.qxdzbc.p6.cell.address.CellAddress import CellAddress
-from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
-from com.qxdzbc.p6.proto.CellProtos_pb2 import CellUpdateEntryProto
-from com.qxdzbc.p6.util.ToProto import ToProto
+from com.qxdzbc.p6.proto.WorksheetProtos_pb2 import CellUpdateEntryProto
+from com.qxdzbc.p6.util.ToProto import ToProto, P
 
 
 @dataclass
-class CellUpdateEntry:
+class CellUpdateEntry(ToProto[CellUpdateEntryProto]):
+
+    def toProtoObj(self) -> CellUpdateEntryProto:
+        return CellUpdateEntryProto(
+            cellAddress = self.cellAddress.toProtoObj(),
+            content = self.content.toProtoObj()
+        )
 
     cellAddress: CellAddress
     content: ToProto[CellContent]

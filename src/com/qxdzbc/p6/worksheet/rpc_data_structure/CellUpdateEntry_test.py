@@ -1,13 +1,21 @@
 import unittest
 
+from com.qxdzbc.p6.cell.CellContent import CellContent
 from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
-from com.qxdzbc.p6.cell.rpc_data_structure.CellUpdateEntry import \
+from com.qxdzbc.p6.worksheet.rpc_data_structure.CellUpdateEntry import \
     CellUpdateEntry
-from com.qxdzbc.p6.proto.CellProtos_pb2 import CellUpdateEntryProto
 
 
 class CellUpdateEntry_test(unittest.TestCase):
-    pass
+
+    def test_toProto(self):
+        o = CellUpdateEntry(
+            cellAddress = CellAddresses.fromLabel("QT12"),
+            content = CellContent.fromAny(123)
+        )
+        p = o.toProtoObj()
+        self.assertEqual(o.cellAddress.toProtoObj(),p.cellAddress)
+        self.assertEqual(o.content.toProtoObj(),p.content)
     # def setUp(self) -> None:
     #     super().setUp()
     #     contentProto = CellUpdateContentProto()

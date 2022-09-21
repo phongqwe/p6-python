@@ -7,6 +7,7 @@ from com.qxdzbc.p6.cell.Cell import Cell
 from com.qxdzbc.p6.cell.IndCell import IndCell
 from com.qxdzbc.p6.cell.address.CellAddress import CellAddress
 from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
+from com.qxdzbc.p6.proto.WorksheetProtos_pb2 import MultiCellUpdateRequestProto
 from com.qxdzbc.p6.range.Range import Range
 from com.qxdzbc.p6.range.address.RangeAddress import RangeAddress
 from com.qxdzbc.p6.range.address.RangeAddresses import RangeAddresses
@@ -29,7 +30,9 @@ from com.qxdzbc.p6.rpc.data_structure.BoolMsg import \
 from com.qxdzbc.p6.cell.rpc_data_structure.CellId import CellId
 from com.qxdzbc.p6.rpc.data_structure.SingleSignalResponse import \
     SingleSignalResponse
+from com.qxdzbc.p6.worksheet.rpc_data_structure.CellUpdateEntry import CellUpdateEntry
 from com.qxdzbc.p6.worksheet.rpc_data_structure.LoadDataRequest import LoadDataRequest
+from com.qxdzbc.p6.worksheet.rpc_data_structure.MultiCellUpdateRequest import MultiCellUpdateRequest
 from com.qxdzbc.p6.worksheet.rpc_data_structure.WorksheetId import WorksheetId
 from com.qxdzbc.p6.range.rpc_data_structure.RangeId import RangeId
 from com.qxdzbc.p6.workbook.rpc_data_structure.RenameWorksheetRequest import RenameWorksheetRequest
@@ -54,6 +57,15 @@ class InternalRpcWorksheet(BaseWorksheet):
         self._name = name
         self._wbk = wbKey
         self._stubProvider = stubProvider
+
+    def updateMultipleCellRs(self, updateEntries: list[CellUpdateEntry]) -> Result[None, ErrorReport]:
+        request = MultiCellUpdateRequest(
+            wsId = self.id,
+            updateEntries = updateEntries
+        )
+        oProto = self._wssv.updateMultiCellContent(request = request.toProtoObj())
+        rt = SingleSignalResponse.fromProto(oProto).toRs()
+        return rt
 
     def _makeLoadDataRequestRs(self, cells: list[IndCell], anchorCell: CellAddress, loadType: LoadType) -> \
             Result['Worksheet', ErrorReport]:
@@ -164,8 +176,8 @@ class InternalRpcWorksheet(BaseWorksheet):
         oRs = o.toRs()
         return oRs
 
-    def removeAllCellRs(self)->Result[None,ErrorReport]:
-        oProto = self._wssv.removeAllCell(request=self.id.toProtoObj())
+    def removeAllCellRs(self) -> Result[None, ErrorReport]:
+        oProto = self._wssv.removeAllCell(request = self.id.toProtoObj())
         o = SingleSignalResponse.fromProto(oProto)
         return o.toRs()
 

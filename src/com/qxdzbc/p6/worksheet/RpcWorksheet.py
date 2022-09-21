@@ -17,6 +17,8 @@ from com.qxdzbc.p6.rpc.StubProvider import RpcStubProvider
 from com.qxdzbc.p6.worksheet.WorksheetWrapper import WorksheetWrapper
 from com.qxdzbc.p6.proto.rpc.WorkbookService_pb2_grpc import WorkbookServiceStub
 from com.qxdzbc.p6.proto.rpc.WorksheetService_pb2_grpc import WorksheetServiceStub
+from com.qxdzbc.p6.worksheet.rpc_data_structure.CellUpdateEntry import CellUpdateEntry
+from com.qxdzbc.p6.worksheet.rpc_data_structure.MultiCellUpdateRequest import MultiCellUpdateRequest
 
 
 class RpcWorksheet(WorksheetWrapper):
@@ -28,10 +30,13 @@ class RpcWorksheet(WorksheetWrapper):
         super().__init__(InternalRpcWorksheet(name, wbKey, stubProvider))
         self._stubProvider = stubProvider
 
+    def updateMultipleCellRs(self, updateEntries: list[CellUpdateEntry]) -> Result[None, ErrorReport]:
+        return self._onWsSvOkRs(partial(self.rootWorksheet.updateMultipleCellRs,updateEntries))
+
     def load2DArrayRs(self, dataAray, anchorCell: CellAddress = CellAddresses.A1,
                       loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> \
             Result['Worksheet', ErrorReport]:
-        return self._onWbsvOkRs(partial(self.rootWorksheet.load2DArrayRs, dataAray, anchorCell, loadType))
+        return self._onWsSvOkRs(partial(self.rootWorksheet.load2DArrayRs, dataAray, anchorCell, loadType))
 
     def loadDataFrameRs(
             self, dataFrame,
@@ -39,19 +44,19 @@ class RpcWorksheet(WorksheetWrapper):
             loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE,
             keepHeader: bool = True,
     ) -> Result['Worksheet', ErrorReport]:
-        return self._onWbsvOkRs(partial(self.rootWorksheet.loadDataFrameRs,dataFrame,anchorCell,loadType,keepHeader))
+        return self._onWsSvOkRs(partial(self.rootWorksheet.loadDataFrameRs,dataFrame,anchorCell,loadType,keepHeader))
 
     def addCell(self, cell: Cell):
         return self._onWsSvOk(partial(self.rootWorksheet.addCell,cell))
 
     def removeAllCellRs(self) -> Result[None, ErrorReport]:
-        return self._onWbsvOkRs(partial(self.rootWorksheet.removeAllCellRs))
+        return self._onWsSvOkRs(partial(self.rootWorksheet.removeAllCellRs))
 
     def removeCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
-        return self._onWbsvOkRs(partial(self.rootWorksheet.removeCellRs, address))
+        return self._onWsSvOkRs(partial(self.rootWorksheet.removeCellRs, address))
 
     def deleteRangeRs(self, rangeAddress: RangeAddress) -> Result[None, ErrorReport]:
-        return self._onWbsvOkRs(partial(self.rootWorksheet.deleteRangeRs,rangeAddress))
+        return self._onWsSvOkRs(partial(self.rootWorksheet.deleteRangeRs,rangeAddress))
 
     def getCell(self, address: CellAddress) -> Optional[Cell]:
         return self._onWsSvOk(partial(self.rootWorksheet.getCell,address))
@@ -69,6 +74,9 @@ class RpcWorksheet(WorksheetWrapper):
 
     def _onWsSvOk(self, f):
         return RpcUtils.onServiceOkOrRaise(self._wssv, f)
+
+    def _onWsSvOkRs(self, f):
+        return RpcUtils.onServiceOkRs(self._wssv, f)
 
     def _onWbsvOkRs(self, f):
         return RpcUtils.onServiceOkRs(self._wbsv, f)
@@ -95,4 +103,4 @@ class RpcWorksheet(WorksheetWrapper):
         return self._onWbsvOkRs(partial(self.rootWorksheet.renameRs,newName))
 
     def pasteRs(self, cell: CellAddress) -> Result[None, ErrorReport]:
-        return self._onWsSvOk(partial(self.rootWorksheet.pasteRs,cell))
+        return self._onWsSvOkRs(partial(self.rootWorksheet.pasteRs,cell))

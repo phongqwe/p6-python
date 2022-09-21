@@ -1,3 +1,4 @@
+from abc import ABC
 from typing import Optional, Tuple
 
 from com.qxdzbc.p6.cell.Cell import Cell
@@ -13,12 +14,19 @@ from com.qxdzbc.p6.worksheet.BaseWorksheet import BaseWorksheet
 from com.qxdzbc.p6.worksheet.LoadType import LoadType
 from com.qxdzbc.p6.worksheet.Worksheet import Worksheet
 from com.qxdzbc.p6.worksheet.rpc_data_structure import WorksheetId
+from com.qxdzbc.p6.worksheet.rpc_data_structure.CellUpdateEntry import CellUpdateEntry
 
 
-class WorksheetWrapper(BaseWorksheet):
+class WorksheetWrapper(BaseWorksheet,ABC):
 
     def __init__(self, innerWorksheet: Worksheet):
         self._innerSheet: Worksheet = innerWorksheet
+
+    def removeAllCellRs(self) -> Result[None, ErrorReport]:
+        return self.rootWorksheet.removeAllCellRs()
+
+    def updateMultipleCellRs(self, updateEntries: list[CellUpdateEntry]) -> Result[None, ErrorReport]:
+        return self.rootWorksheet.updateMultipleCellRs(updateEntries)
 
     def addCellRs(self, cell: Cell) -> Result[None, ErrorReport]:
         return self.rootWorksheet.addCellRs(cell)
