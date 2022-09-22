@@ -61,6 +61,10 @@ class Range(CellContainer, ABC):
             return self.assign2dArrayRs(dataFrameOr2DArray)
         else:
             return Err(CommonErrors.WrongTypeError.report("can only assign array or DataFrame to a Range"))
+
+    def assign(self,dataFrameOr2DArray):
+        rs = self.assignRs(dataFrameOr2DArray)
+        rs.getOrRaise()
     @property
     def address(self)->RangeAddress:
         return self.rangeAddress

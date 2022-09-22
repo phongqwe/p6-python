@@ -31,21 +31,66 @@ class RpcRange_test(unittest.TestCase):
             wbKey = WorkbookKeys.fromNameAndPath("wb1"),
             stubProvider = self.mockSP
         )
-
-    def test_assignDataFrame(self):
-        d = pandas.DataFrame({
+        self.arr = [
+                [1, 2, 3, 4, 5, 6],
+                [7, 8, 9, 10, 11, 12]
+            ]
+        self.df = pandas.DataFrame({
             "a": [14, 15, 16, 17, 18, 19],
             "b": [24, 25, 26, 27, 28, 29],
             "c": [34, 35, 36, 37, 38, 39],
             "d": [44, 45, 46, 47, 48, 49],
         })
 
+    def test_assign(self):
+        def okCase():
+            self.mockWsService.updateMultiCellContent = MagicMock(
+                return_value = SingleSignalResponse().toProtoObj())
+            d = self.df
+            a = self.arr
+            rs = self.range.assignRs(d)
+            self.assertTrue(rs.isOk())
+            rs = self.range.assignRs(a)
+            self.assertTrue(rs.isOk())
+
+            self.range.assign(d)
+            self.range.assign(a)
+
+        def errCase():
+            self.mockWsService.updateMultiCellContent = MagicMock(
+                return_value = SingleSignalResponse(TestUtils.TestErrorReport).toProtoObj())
+            d = self.df
+            a = self.arr
+            rs = self.range.assignRs(d)
+            self.assertTrue(rs.isErr())
+            rs = self.range.assignRs(a)
+            self.assertTrue(rs.isErr())
+
+            rs = self.range.assignRs("qwewqe")
+            self.assertTrue(rs.isErr())
+
+            with self.assertRaises(BaseException):
+                self.range.assign(d)
+            with self.assertRaises(BaseException):
+                self.range.assign(a)
+            with self.assertRaises(BaseException):
+                self.range.assign("qwewqe")
+
+
+        okCase()
+        errCase()
+
+    def test_assignDataFrame(self):
+        d = self.df
         def errCase():
             self.mockWsService.updateMultiCellContent = MagicMock(
                 return_value = SingleSignalResponse(TestUtils.TestErrorReport).toProtoObj())
             rs = self.range.assignDataFrameRs(d)
             self.assertTrue(rs.isErr())
             self.assertTrue(rs.err.isSameErr(TestUtils.TestErrorReport))
+
+            with self.assertRaises(BaseException):
+                self.range.assignDataFrame(d)
 
         def okCase():
             self.mockWsService.updateMultiCellContent = MagicMock(
@@ -69,14 +114,16 @@ class RpcRange_test(unittest.TestCase):
                     updateEntries = expectedUpdateEntries
                 ).toProtoObj()
             )
+            # x: not throwing exception
+            self.range.assignDataFrameRs(d)
 
         okCase()
         errCase()
 
     def test_assign2DArray(self):
+        a = self.arr
         def okCase():
             self.mockWsService.updateMultiCellContent = MagicMock(return_value = SingleSignalResponse().toProtoObj())
-            a = [[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]]
 
             rs = self.range.assign2dArrayRs(a)
 
@@ -105,7 +152,6 @@ class RpcRange_test(unittest.TestCase):
         def errCase():
             self.mockWsService.updateMultiCellContent = MagicMock(
                 return_value = SingleSignalResponse(TestUtils.TestErrorReport).toProtoObj())
-            a = [[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]]
             rs = self.range.assign2dArrayRs(a)
             self.assertTrue(rs.isErr())
             with self.assertRaises(BaseException):
