@@ -14,9 +14,10 @@ _sym_db = _symbol_database.Default()
 
 from com.qxdzbc.p6.proto import CommonProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2
 from com.qxdzbc.p6.proto import DocProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2
+from com.qxdzbc.p6.proto import WorksheetProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n%com/qxdzbc/p6/proto/RangeProtos.proto\x12\x13\x63om.qxdzbc.p6.proto\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\x1a#com/qxdzbc/p6/proto/DocProtos.proto\"t\n\x1aRangeOperationRequestProto\x12\x32\n\x07rangeId\x18\x01 \x01(\x0b\x32!.com.qxdzbc.p6.proto.RangeIdProto\x12\x15\n\x08windowId\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\x0b\n\t_windowId\"\xb9\x01\n\x1dRangeToClipboardResponseProto\x12@\n\x0e\x65rrorIndicator\x18\x01 \x01(\x0b\x32(.com.qxdzbc.p6.proto.ErrorIndicatorProto\x12\x32\n\x07rangeId\x18\x02 \x01(\x0b\x32!.com.qxdzbc.p6.proto.RangeIdProto\x12\x15\n\x08windowId\x18\x03 \x01(\tH\x00\x88\x01\x01\x42\x0b\n\t_windowId\"m\n\x0eRangeCopyProto\x12-\n\x02id\x18\x01 \x01(\x0b\x32!.com.qxdzbc.p6.proto.RangeIdProto\x12,\n\x04\x63\x65ll\x18\x02 \x03(\x0b\x32\x1e.com.qxdzbc.p6.proto.CellProto\"\xa5\x01\n\x16PasteRangeRequestProto\x12\x39\n\nanchorCell\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\x12,\n\x04wsWb\x18\x02 \x01(\x0b\x32\x1e.com.qxdzbc.p6.proto.WsWbProto\x12\x15\n\x08windowId\x18\x03 \x01(\tH\x00\x88\x01\x01\x42\x0b\n\t_windowIdb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n%com/qxdzbc/p6/proto/RangeProtos.proto\x12\x13\x63om.qxdzbc.p6.proto\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\x1a#com/qxdzbc/p6/proto/DocProtos.proto\x1a)com/qxdzbc/p6/proto/WorksheetProtos.proto\"t\n\x1aRangeOperationRequestProto\x12\x32\n\x07rangeId\x18\x01 \x01(\x0b\x32!.com.qxdzbc.p6.proto.RangeIdProto\x12\x15\n\x08windowId\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\x0b\n\t_windowId\"\xb9\x01\n\x1dRangeToClipboardResponseProto\x12@\n\x0e\x65rrorIndicator\x18\x01 \x01(\x0b\x32(.com.qxdzbc.p6.proto.ErrorIndicatorProto\x12\x32\n\x07rangeId\x18\x02 \x01(\x0b\x32!.com.qxdzbc.p6.proto.RangeIdProto\x12\x15\n\x08windowId\x18\x03 \x01(\tH\x00\x88\x01\x01\x42\x0b\n\t_windowId\"m\n\x0eRangeCopyProto\x12-\n\x02id\x18\x01 \x01(\x0b\x32!.com.qxdzbc.p6.proto.RangeIdProto\x12,\n\x04\x63\x65ll\x18\x02 \x03(\x0b\x32\x1e.com.qxdzbc.p6.proto.CellProto\"\xa5\x01\n\x16PasteRangeRequestProto\x12\x39\n\nanchorCell\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\x12,\n\x04wsWb\x18\x02 \x01(\x0b\x32\x1e.com.qxdzbc.p6.proto.WsWbProto\x12\x15\n\x08windowId\x18\x03 \x01(\tH\x00\x88\x01\x01\x42\x0b\n\t_windowIdb\x06proto3')
 
 
 
@@ -55,12 +56,12 @@ _sym_db.RegisterMessage(PasteRangeRequestProto)
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _RANGEOPERATIONREQUESTPROTO._serialized_start=139
-  _RANGEOPERATIONREQUESTPROTO._serialized_end=255
-  _RANGETOCLIPBOARDRESPONSEPROTO._serialized_start=258
-  _RANGETOCLIPBOARDRESPONSEPROTO._serialized_end=443
-  _RANGECOPYPROTO._serialized_start=445
-  _RANGECOPYPROTO._serialized_end=554
-  _PASTERANGEREQUESTPROTO._serialized_start=557
-  _PASTERANGEREQUESTPROTO._serialized_end=722
+  _RANGEOPERATIONREQUESTPROTO._serialized_start=182
+  _RANGEOPERATIONREQUESTPROTO._serialized_end=298
+  _RANGETOCLIPBOARDRESPONSEPROTO._serialized_start=301
+  _RANGETOCLIPBOARDRESPONSEPROTO._serialized_end=486
+  _RANGECOPYPROTO._serialized_start=488
+  _RANGECOPYPROTO._serialized_end=597
+  _PASTERANGEREQUESTPROTO._serialized_start=600
+  _PASTERANGEREQUESTPROTO._serialized_end=765
 # @@protoc_insertion_point(module_scope)

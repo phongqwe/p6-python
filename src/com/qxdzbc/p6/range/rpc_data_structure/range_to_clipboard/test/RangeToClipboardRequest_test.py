@@ -14,8 +14,8 @@ class RangeToClipboardRequest_test(unittest.TestCase):
         super().setUp()
         self.rangeId = RangeId(
             rangeAddress = RangeAddresses.fromLabel("A1:B3"),
-            workbookKey = WorkbookKeys.fromNameAndPath("zz"),
-            worksheetName = "abc"
+            wbKey = WorkbookKeys.fromNameAndPath("zz"),
+            wsName = "abc"
         )
 
     def test_fromProto(self):

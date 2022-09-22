@@ -34,7 +34,7 @@ class CellServiceStub(object):
         self.getCellContent = channel.unary_unary(
                 '/com.qxdzbc.p6.proto.rpc.CellService/getCellContent',
                 request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellIdProto.SerializeToString,
-                response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CellProtos__pb2.CellContentProto.FromString,
+                response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellContentProto.FromString,
                 )
         self.copyFrom = channel.unary_unary(
                 '/com.qxdzbc.p6.proto.rpc.CellService/copyFrom',
@@ -108,7 +108,7 @@ def add_CellServiceServicer_to_server(servicer, server):
             'getCellContent': grpc.unary_unary_rpc_method_handler(
                     servicer.getCellContent,
                     request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellIdProto.FromString,
-                    response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CellProtos__pb2.CellContentProto.SerializeToString,
+                    response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellContentProto.SerializeToString,
             ),
             'copyFrom': grpc.unary_unary_rpc_method_handler(
                     servicer.copyFrom,
@@ -194,7 +194,7 @@ class CellService(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.CellService/getCellContent',
             com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellIdProto.SerializeToString,
-            com_dot_qxdzbc_dot_p6_dot_proto_dot_CellProtos__pb2.CellContentProto.FromString,
+            com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellContentProto.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

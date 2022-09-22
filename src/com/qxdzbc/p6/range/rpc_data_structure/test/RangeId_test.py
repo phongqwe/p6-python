@@ -9,19 +9,19 @@ class RangeId_test(unittest.TestCase):
     def test_toProto(self):
         o = RangeId(
             rangeAddress = RangeAddresses.fromLabel("A1:B3"),
-            workbookKey = WorkbookKeys.fromNameAndPath(""),
-            worksheetName = "abc"
+            wbKey = WorkbookKeys.fromNameAndPath(""),
+            wsName = "abc"
         )
         pt = o.toProtoObj()
         self.assertEqual(o.rangeAddress.toProtoObj(),pt.rangeAddress)
-        self.assertEqual(o.worksheetName, pt.worksheetName)
-        self.assertEqual(o.workbookKey.toProtoObj(), pt.workbookKey)
+        self.assertEqual(o.wsName, pt.wsName)
+        self.assertEqual(o.wbKey.toProtoObj(), pt.wbKey)
 
     def test_fromProto(self):
         o = RangeId(
             rangeAddress = RangeAddresses.fromLabel("A1:B3"),
-            workbookKey = WorkbookKeys.fromNameAndPath(""),
-            worksheetName = "abc"
+            wbKey = WorkbookKeys.fromNameAndPath(""),
+            wsName = "abc"
         )
         proto = o.toProtoObj()
         o2 = RangeId.fromProto(proto)

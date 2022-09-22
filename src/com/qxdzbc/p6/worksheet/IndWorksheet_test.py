@@ -1,5 +1,6 @@
 import unittest
 
+from com.qxdzbc.p6.cell.CellContent import CellContent
 from com.qxdzbc.p6.cell.IndCell import IndCell
 from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
 from com.qxdzbc.p6.cell.rpc_data_structure.CellValue import CellValue
@@ -16,8 +17,8 @@ class IndWorksheet_test(unittest.TestCase):
                 wsName = "ws1"
             ),
             cells = [
-                IndCell(CellAddresses.fromLabel("B3"),CellValue.fromNum(123)),
-                IndCell(CellAddresses.fromLabel("C10"),formula = "qqq"),
+                IndCell(CellAddresses.fromLabel("B3"),CellContent.fromAny(123)),
+                IndCell(CellAddresses.fromLabel("C10"),CellContent.fromFormula("qqq")),
             ]
         )
         p = o.toProtoObj()

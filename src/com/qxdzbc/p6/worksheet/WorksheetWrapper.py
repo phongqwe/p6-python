@@ -2,6 +2,7 @@ from abc import ABC
 from typing import Optional, Tuple
 
 from com.qxdzbc.p6.cell.Cell import Cell
+from com.qxdzbc.p6.cell.IndCell import IndCell
 from com.qxdzbc.p6.cell.address.CellAddress import CellAddress
 from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
 from com.qxdzbc.p6.proto.DocProtos_pb2 import WorksheetProto
@@ -14,7 +15,6 @@ from com.qxdzbc.p6.worksheet.BaseWorksheet import BaseWorksheet
 from com.qxdzbc.p6.worksheet.LoadType import LoadType
 from com.qxdzbc.p6.worksheet.Worksheet import Worksheet
 from com.qxdzbc.p6.worksheet.rpc_data_structure import WorksheetId
-from com.qxdzbc.p6.worksheet.rpc_data_structure.CellUpdateEntry import CellUpdateEntry
 
 
 class WorksheetWrapper(BaseWorksheet,ABC):
@@ -25,7 +25,7 @@ class WorksheetWrapper(BaseWorksheet,ABC):
     def removeAllCellRs(self) -> Result[None, ErrorReport]:
         return self.rootWorksheet.removeAllCellRs()
 
-    def updateMultipleCellRs(self, updateEntries: list[CellUpdateEntry]) -> Result[None, ErrorReport]:
+    def updateMultipleCellRs(self, updateEntries: list[IndCell]) -> Result[None, ErrorReport]:
         return self.rootWorksheet.updateMultipleCellRs(updateEntries)
 
     def addCellRs(self, cell: Cell) -> Result[None, ErrorReport]:
@@ -35,9 +35,9 @@ class WorksheetWrapper(BaseWorksheet,ABC):
     def id(self) -> WorksheetId:
         return self.rootWorksheet.id
 
-    def load2DArrayRs(self, dataAray, anchorCell: CellAddress = CellAddresses.A1,
+    def load2DArrayRs(self, data2DArray, anchorCell: CellAddress = CellAddresses.A1,
                       loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> Result['Worksheet', ErrorReport]:
-        return self.rootWorksheet.load2DArrayRs(dataAray, anchorCell, loadType)
+        return self.rootWorksheet.load2DArrayRs(data2DArray, anchorCell, loadType)
 
     def loadDataFrameRs(
             self, dataFrame,
@@ -101,8 +101,8 @@ class WorksheetWrapper(BaseWorksheet,ABC):
     def size(self) -> int:
         return self.rootWorksheet.size
 
-    def cell(self, address: str | CellAddress | Tuple[int, int]) -> Cell:
-        return self.rootWorksheet.cell(address)
+    def getCell(self, address: str | CellAddress | Tuple[int, int]) -> Cell:
+        return self.rootWorksheet.getCell(address)
 
     def range(self, rangeAddress: str | RangeAddress | Tuple[CellAddress, CellAddress]) -> Range:
         return self.rootWorksheet.range(rangeAddress)
@@ -113,8 +113,8 @@ class WorksheetWrapper(BaseWorksheet,ABC):
     def hasCellAt(self, address: CellAddress) -> bool:
         return self.rootWorksheet.hasCellAt(address)
 
-    def getCell(self, address: CellAddress) -> Optional[Cell]:
-        return self.rootWorksheet.getCell(address)
+    def getCellAtAddress(self, address: CellAddress) -> Optional[Cell]:
+        return self.rootWorksheet.getCellAtAddress(address)
 
     def containsAddress(self, address: CellAddress) -> bool:
         return self.rootWorksheet.containsAddress(address)

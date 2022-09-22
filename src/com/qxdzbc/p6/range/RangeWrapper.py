@@ -7,22 +7,39 @@ from com.qxdzbc.p6.range.Range import Range
 from com.qxdzbc.p6.range.address.RangeAddress import RangeAddress
 from com.qxdzbc.p6.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.util.result.Result import Result
+from com.qxdzbc.p6.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.worksheet.Worksheet import Worksheet
 
 
-class RangeWrapper(Range,ABC):
+class RangeWrapper(Range):
+
+    def assign2dArrayRs(self, data2DArray) -> Result[None, ErrorReport]:
+        return self.rootRange.assign2dArrayRs(data2DArray)
+
+    def assignDataFrameRs(self, dataFrame) -> Result[None, ErrorReport]:
+        return self.rootRange.assignDataFrameRs(dataFrame)
+
     def __init__(self, innerRange: Range):
         self._innerRange = innerRange
 
+
+
+    def copySourceValuesToClipboard(self):
+        self.rootRange.copySourceValuesToClipboard()
+
+    def copyStrictSourceValuesToClipboard(self):
+        self.rootRange.copyStrictSourceValuesToClipboard()
+
+    def copyToClipboard(self) -> Result[None, ErrorReport]:
+        return self.rootRange.copyToClipboard()
+
     @property
-    def worksheet(self) -> Worksheet:
-        return self.rootRange.worksheet
+    def wsName(self) -> str:
+        return self.rootRange.wsName
 
-    def removeCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
-        return self.rootRange.removeCellRs(address)
-
-    def deleteRangeRs(self, rangeAddress: RangeAddress) -> Result[None, ErrorReport]:
-        return self.rootRange.deleteRangeRs(rangeAddress)
+    @property
+    def wbKey(self) -> WorkbookKey:
+        return self.rootRange.wbKey
 
     @property
     def size(self) -> int:
@@ -40,17 +57,8 @@ class RangeWrapper(Range,ABC):
     def lastCellAddress(self) -> CellAddress:
         return self.rootRange.lastCellAddress
 
-    def cell(self, address: Union[str, CellAddress, Tuple[int, int]]) -> Cell:
-        return self.rootRange.cell(address)
-
-    def addCell(self, cell: Cell):
-        self.rootRange.addCell(cell)
-
-    def removeCell(self, address: CellAddress):
-        self.rootRange.removeCell(address)
-
-    def getOrMakeCell(self, address: CellAddress) -> Cell:
-        return self.rootRange.getOrMakeCell(address)
+    def getCell(self, address: Union[str, CellAddress, Tuple[int, int]]) -> Cell:
+        return self.rootRange.getCell(address)
 
     def hasCellAt(self, address: CellAddress) -> bool:
         return self.rootRange.hasCellAt(address)
@@ -61,8 +69,8 @@ class RangeWrapper(Range,ABC):
     def containsAddressIndex(self, col: int, row: int) -> bool:
         return self.rootRange.containsAddressIndex(col, row)
 
-    def getCell(self, address: CellAddress) -> Optional[Cell]:
-        return self.rootRange.getCell(address)
+    def getCellAtAddress(self, address: CellAddress) -> Optional[Cell]:
+        return self.rootRange.getCellAtAddress(address)
 
     def isEmpty(self) -> bool:
         return self.rootRange.isEmpty()

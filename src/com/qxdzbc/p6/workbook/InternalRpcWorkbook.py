@@ -83,7 +83,7 @@ class InternalRpcWorkbook(Workbook):
         elif isinstance(indexOrName, str):
             return self.setActiveWorksheetByNameRs(indexOrName)
         else:
-            return Err(CommonErrors.WrongTypeReport("nameOrIndex", "str or int"))
+            return Err(CommonErrors.WrongTypeError("nameOrIndex", "str or int"))
 
     def setActiveWorksheetByNameRs(self, name: str) -> Result[None, ErrorReport]:
         request = WorksheetIdWithIndex(
@@ -137,7 +137,7 @@ class InternalRpcWorkbook(Workbook):
             if index:
                 return f"Worksheet at index \"{index}\" does not exist"
             else:
-                raise CommonErrors.WrongTypeReport("nameOrIndex", "str or int").toException()
+                raise CommonErrors.WrongTypeError("nameOrIndex", "str or int").toException()
 
         def f():
             outProto: GetWorksheetResponseProto = self._wbsv.getWorksheet(request = request.toProtoObj())
@@ -171,7 +171,7 @@ class InternalRpcWorkbook(Workbook):
         elif isinstance(nameOrIndex, int):
             return self.getWorksheetByIndexRs(nameOrIndex)
         else:
-            return Err(CommonErrors.WrongTypeReport("nameOrIndex", "str or int"))
+            return Err(CommonErrors.WrongTypeError("nameOrIndex", "str or int"))
 
     @property
     def sheetCount(self) -> int:

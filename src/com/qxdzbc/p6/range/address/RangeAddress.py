@@ -40,8 +40,8 @@ class RangeAddress(ToProto[RangeAddressProto],ABC):
                 lastRow=str(self.botRight.rowIndex)
             )
 
-        firstCellLabel = self.topLeft.rawLabel
-        lastCellLabel = self.botRight.rawLabel
+        firstCellLabel = self.topLeft.label
+        lastCellLabel = self.botRight.label
         return "{fa}:{la}".format(
             fa=firstCellLabel,
             la=lastCellLabel

@@ -22,7 +22,7 @@ class CellAddresses:
         return CellIndex(proto.col, proto.row)
 
     @staticmethod
-    def parse(address: CellAddress | Tuple[int, int] | str) -> CellAddress:
+    def parse(address: Union[CellAddress , Tuple[int, int] , str]) -> CellAddress:
         if isinstance(address, CellAddress):
             return address
         if isinstance(address, Tuple):

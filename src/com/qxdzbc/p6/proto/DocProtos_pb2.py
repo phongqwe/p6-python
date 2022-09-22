@@ -15,7 +15,7 @@ _sym_db = _symbol_database.Default()
 from com.qxdzbc.p6.proto import CommonProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n#com/qxdzbc/p6/proto/DocProtos.proto\x12\x13\x63om.qxdzbc.p6.proto\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\"X\n\x10WorksheetIdProto\x12\x34\n\x05wbKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x0e\n\x06wsName\x18\x02 \x01(\t\"\x83\x01\n\x0eWorksheetProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x34\n\x05wbKey\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12-\n\x05\x63\x65lls\x18\x03 \x03(\x0b\x32\x1e.com.qxdzbc.p6.proto.CellProto\"x\n\x11IndWorksheetProto\x12\x31\n\x02id\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorksheetIdProto\x12\x30\n\x05\x63\x65lls\x18\x02 \x03(\x0b\x32!.com.qxdzbc.p6.proto.IndCellProto\"\x84\x01\n\x11RangeAddressProto\x12\x36\n\x07topLeft\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\x12\x37\n\x08\x62otRight\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\"\x9f\x01\n\x0cRangeIdProto\x12<\n\x0crangeAddress\x18\x01 \x01(\x0b\x32&.com.qxdzbc.p6.proto.RangeAddressProto\x12:\n\x0bworkbookKey\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x03 \x01(\t\"^\n\tWsWbProto\x12:\n\x0bworkbookKey\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x03 \x01(\t\",\n\x10\x43\x65llAddressProto\x12\x0b\n\x03\x63ol\x18\x01 \x01(\x05\x12\x0b\n\x03row\x18\x02 \x01(\x05\"\x9e\x01\n\tCellProto\x12,\n\x02id\x18\x01 \x01(\x0b\x32 .com.qxdzbc.p6.proto.CellIdProto\x12\x37\n\x05value\x18\x02 \x01(\x0b\x32#.com.qxdzbc.p6.proto.CellValueProtoH\x00\x88\x01\x01\x12\x14\n\x07\x66ormula\x18\x03 \x01(\tH\x01\x88\x01\x01\x42\x08\n\x06_valueB\n\n\x08_formula\"\xab\x01\n\x0cIndCellProto\x12\x36\n\x07\x61\x64\x64ress\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\x12\x37\n\x05value\x18\x02 \x01(\x0b\x32#.com.qxdzbc.p6.proto.CellValueProtoH\x00\x88\x01\x01\x12\x14\n\x07\x66ormula\x18\x03 \x01(\tH\x01\x88\x01\x01\x42\x08\n\x06_valueB\n\n\x08_formula\"`\n\x0e\x43\x65llValueProto\x12\x10\n\x03str\x18\x01 \x01(\tH\x00\x88\x01\x01\x12\x10\n\x03num\x18\x02 \x01(\x01H\x01\x88\x01\x01\x12\x11\n\x04\x62ool\x18\x03 \x01(\x08H\x02\x88\x01\x01\x42\x06\n\x04_strB\x06\n\x04_numB\x07\n\x05_bool\"<\n\x10WorkbookKeyProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\x04path\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\x07\n\x05_path\"6\n\x16SimpleScriptEntryProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06script\x18\x02 \x01(\t\"\xbb\x01\n\rWorkbookProto\x12\x34\n\x05wbKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x36\n\tworksheet\x18\x02 \x03(\x0b\x32#.com.qxdzbc.p6.proto.WorksheetProto\x12<\n\x07scripts\x18\x03 \x03(\x0b\x32+.com.qxdzbc.p6.proto.SimpleScriptEntryProto\"\x8f\x01\n\x0b\x43\x65llIdProto\x12:\n\x0b\x63\x65llAddress\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\x12\x34\n\x05wbKey\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x0e\n\x06wsName\x18\x03 \x01(\tb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n#com/qxdzbc/p6/proto/DocProtos.proto\x12\x13\x63om.qxdzbc.p6.proto\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\"X\n\x10WorksheetIdProto\x12\x34\n\x05wbKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x0e\n\x06wsName\x18\x02 \x01(\t\"\x83\x01\n\x0eWorksheetProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x34\n\x05wbKey\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12-\n\x05\x63\x65lls\x18\x03 \x03(\x0b\x32\x1e.com.qxdzbc.p6.proto.CellProto\"x\n\x11IndWorksheetProto\x12\x31\n\x02id\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorksheetIdProto\x12\x30\n\x05\x63\x65lls\x18\x02 \x03(\x0b\x32!.com.qxdzbc.p6.proto.IndCellProto\"\x84\x01\n\x11RangeAddressProto\x12\x36\n\x07topLeft\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\x12\x37\n\x08\x62otRight\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\"\x92\x01\n\x0cRangeIdProto\x12<\n\x0crangeAddress\x18\x01 \x01(\x0b\x32&.com.qxdzbc.p6.proto.RangeAddressProto\x12\x34\n\x05wbKey\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x0e\n\x06wsName\x18\x03 \x01(\t\"^\n\tWsWbProto\x12:\n\x0bworkbookKey\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x03 \x01(\t\",\n\x10\x43\x65llAddressProto\x12\x0b\n\x03\x63ol\x18\x01 \x01(\x05\x12\x0b\n\x03row\x18\x02 \x01(\x05\"\x9e\x01\n\tCellProto\x12,\n\x02id\x18\x01 \x01(\x0b\x32 .com.qxdzbc.p6.proto.CellIdProto\x12\x37\n\x05value\x18\x02 \x01(\x0b\x32#.com.qxdzbc.p6.proto.CellValueProtoH\x00\x88\x01\x01\x12\x14\n\x07\x66ormula\x18\x03 \x01(\tH\x01\x88\x01\x01\x42\x08\n\x06_valueB\n\n\x08_formula\"l\n\x10\x43\x65llContentProto\x12\x36\n\tcellValue\x18\x01 \x01(\x0b\x32#.com.qxdzbc.p6.proto.CellValueProto\x12\x14\n\x07\x66ormula\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\n\n\x08_formula\"~\n\x0cIndCellProto\x12\x36\n\x07\x61\x64\x64ress\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\x12\x36\n\x07\x63ontent\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellContentProto\"`\n\x0e\x43\x65llValueProto\x12\x10\n\x03str\x18\x01 \x01(\tH\x00\x88\x01\x01\x12\x10\n\x03num\x18\x02 \x01(\x01H\x01\x88\x01\x01\x12\x11\n\x04\x62ool\x18\x03 \x01(\x08H\x02\x88\x01\x01\x42\x06\n\x04_strB\x06\n\x04_numB\x07\n\x05_bool\"<\n\x10WorkbookKeyProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\x04path\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\x07\n\x05_path\"6\n\x16SimpleScriptEntryProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06script\x18\x02 \x01(\t\"\xbb\x01\n\rWorkbookProto\x12\x34\n\x05wbKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x36\n\tworksheet\x18\x02 \x03(\x0b\x32#.com.qxdzbc.p6.proto.WorksheetProto\x12<\n\x07scripts\x18\x03 \x03(\x0b\x32+.com.qxdzbc.p6.proto.SimpleScriptEntryProto\"\x8f\x01\n\x0b\x43\x65llIdProto\x12:\n\x0b\x63\x65llAddress\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\x12\x34\n\x05wbKey\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x0e\n\x06wsName\x18\x03 \x01(\tb\x06proto3')
 
 
 
@@ -27,6 +27,7 @@ _RANGEIDPROTO = DESCRIPTOR.message_types_by_name['RangeIdProto']
 _WSWBPROTO = DESCRIPTOR.message_types_by_name['WsWbProto']
 _CELLADDRESSPROTO = DESCRIPTOR.message_types_by_name['CellAddressProto']
 _CELLPROTO = DESCRIPTOR.message_types_by_name['CellProto']
+_CELLCONTENTPROTO = DESCRIPTOR.message_types_by_name['CellContentProto']
 _INDCELLPROTO = DESCRIPTOR.message_types_by_name['IndCellProto']
 _CELLVALUEPROTO = DESCRIPTOR.message_types_by_name['CellValueProto']
 _WORKBOOKKEYPROTO = DESCRIPTOR.message_types_by_name['WorkbookKeyProto']
@@ -89,6 +90,13 @@ CellProto = _reflection.GeneratedProtocolMessageType('CellProto', (_message.Mess
   })
 _sym_db.RegisterMessage(CellProto)
 
+CellContentProto = _reflection.GeneratedProtocolMessageType('CellContentProto', (_message.Message,), {
+  'DESCRIPTOR' : _CELLCONTENTPROTO,
+  '__module__' : 'com.qxdzbc.p6.proto.DocProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.CellContentProto)
+  })
+_sym_db.RegisterMessage(CellContentProto)
+
 IndCellProto = _reflection.GeneratedProtocolMessageType('IndCellProto', (_message.Message,), {
   'DESCRIPTOR' : _INDCELLPROTO,
   '__module__' : 'com.qxdzbc.p6.proto.DocProtos_pb2'
@@ -143,23 +151,25 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _RANGEADDRESSPROTO._serialized_start=447
   _RANGEADDRESSPROTO._serialized_end=579
   _RANGEIDPROTO._serialized_start=582
-  _RANGEIDPROTO._serialized_end=741
-  _WSWBPROTO._serialized_start=743
-  _WSWBPROTO._serialized_end=837
-  _CELLADDRESSPROTO._serialized_start=839
-  _CELLADDRESSPROTO._serialized_end=883
-  _CELLPROTO._serialized_start=886
-  _CELLPROTO._serialized_end=1044
-  _INDCELLPROTO._serialized_start=1047
-  _INDCELLPROTO._serialized_end=1218
-  _CELLVALUEPROTO._serialized_start=1220
-  _CELLVALUEPROTO._serialized_end=1316
-  _WORKBOOKKEYPROTO._serialized_start=1318
-  _WORKBOOKKEYPROTO._serialized_end=1378
-  _SIMPLESCRIPTENTRYPROTO._serialized_start=1380
-  _SIMPLESCRIPTENTRYPROTO._serialized_end=1434
-  _WORKBOOKPROTO._serialized_start=1437
-  _WORKBOOKPROTO._serialized_end=1624
-  _CELLIDPROTO._serialized_start=1627
-  _CELLIDPROTO._serialized_end=1770
+  _RANGEIDPROTO._serialized_end=728
+  _WSWBPROTO._serialized_start=730
+  _WSWBPROTO._serialized_end=824
+  _CELLADDRESSPROTO._serialized_start=826
+  _CELLADDRESSPROTO._serialized_end=870
+  _CELLPROTO._serialized_start=873
+  _CELLPROTO._serialized_end=1031
+  _CELLCONTENTPROTO._serialized_start=1033
+  _CELLCONTENTPROTO._serialized_end=1141
+  _INDCELLPROTO._serialized_start=1143
+  _INDCELLPROTO._serialized_end=1269
+  _CELLVALUEPROTO._serialized_start=1271
+  _CELLVALUEPROTO._serialized_end=1367
+  _WORKBOOKKEYPROTO._serialized_start=1369
+  _WORKBOOKKEYPROTO._serialized_end=1429
+  _SIMPLESCRIPTENTRYPROTO._serialized_start=1431
+  _SIMPLESCRIPTENTRYPROTO._serialized_end=1485
+  _WORKBOOKPROTO._serialized_start=1488
+  _WORKBOOKPROTO._serialized_end=1675
+  _CELLIDPROTO._serialized_start=1678
+  _CELLIDPROTO._serialized_end=1821
 # @@protoc_insertion_point(module_scope)

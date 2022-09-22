@@ -40,12 +40,7 @@ class CellAddress(ToProto[CellAddressProto], ABC):
 
     @property
     def label(self) -> str:
-        """:return label of this cell address in correct format (eg: @A1), that can be used to refer to this address directly"""
-        raise NotImplementedError()
-
-    @property
-    def rawLabel(self) -> str:
-        """:return label of this cell address in raw format (eg: A1), that can NOT be used to refer to this address directly"""
+        """:return label of this cell address"""
         raise NotImplementedError()
 
     def __hash__(self) -> int:

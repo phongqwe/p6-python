@@ -89,7 +89,7 @@ def cell(address: Union[str, CellAddress, Tuple[int, int]]) -> Optional[Cell]:
     sheet = getActiveWorksheetRs()
     if sheet is None:
         return None
-    return sheet.cell(address)
+    return sheet.getCell(address)
 
 def getWorkbook(nameOrIndexOrKey: Union[str, int, WorkbookKey]) -> Optional[Workbook]:
     app: App = getApp()

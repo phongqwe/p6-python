@@ -1,9 +1,9 @@
 import unittest
 
 from com.qxdzbc.p6.cell.CellContent import CellContent
+from com.qxdzbc.p6.cell.IndCell import IndCell
 from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
 from com.qxdzbc.p6.workbook.key.WorkbookKeys import WorkbookKeys
-from com.qxdzbc.p6.worksheet.rpc_data_structure.CellUpdateEntry import CellUpdateEntry
 from com.qxdzbc.p6.worksheet.rpc_data_structure.MultiCellUpdateRequest import MultiCellUpdateRequest
 from com.qxdzbc.p6.worksheet.rpc_data_structure.WorksheetId import WorksheetId
 
@@ -13,12 +13,12 @@ class MultiCellUpdateRequest_test(unittest.TestCase):
         o = MultiCellUpdateRequest(
             wsId = WorksheetId(wbKey = WorkbookKeys.fromNameAndPath("wb1"),wsName = "s1"),
             updateEntries = [
-                CellUpdateEntry(
-                    cellAddress = CellAddresses.fromLabel("QT12"),
+                IndCell(
+                    address = CellAddresses.fromLabel("QT12"),
                     content = CellContent.fromAny(123)
                 ),
-                CellUpdateEntry(
-                    cellAddress = CellAddresses.fromLabel("MM11"),
+                IndCell(
+                    address = CellAddresses.fromLabel("MM11"),
                     content = CellContent.fromAny(123)
                 )
             ]

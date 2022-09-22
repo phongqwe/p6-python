@@ -1,6 +1,9 @@
 from dataclasses import dataclass
 from typing import Optional, Union, Any
 
+import numpy
+from numpy import long
+
 from com.qxdzbc.p6.util.CanCheckEmpty import CanCheckEmpty
 from com.qxdzbc.p6.util.ToProto import ToProto
 from com.qxdzbc.p6.proto.DocProtos_pb2 import CellValueProto
@@ -12,18 +15,28 @@ class CellValue(CanCheckEmpty, ToProto[CellValueProto]):
     vNum: Optional[float] = None
     vBool: Optional[bool] = None
 
+    numericTypeList = [int, float, numpy.number]
     @staticmethod
-    def fromAny(a:Optional[Any]):
+    def _isNumber(a: Optional[Any]) -> bool:
+        for tp in CellValue.numericTypeList:
+            if isinstance(a,tp):
+                return True
+        return False
+
+    @staticmethod
+    def fromAny(a: Optional[Any]):
+
         if a is None:
             return CellValue.empty()
-        if isinstance(a,int) or isinstance(a,float) :
+        if CellValue._isNumber(a):
             return CellValue(vNum = float(a))
-        elif isinstance(a,str):
+        elif isinstance(a, str):
             return CellValue(vStr = a)
-        elif isinstance(a,bool):
+        elif isinstance(a, bool):
             return CellValue(vBool = a)
         else:
-            raise TypeError(f"CellValue can only hold number, string, boolean, or nothing. The provided value is of type {type(a)}")
+            raise TypeError(
+                f"CellValue can only hold number, string, boolean, or nothing. The provided value is of type {type(a)}")
 
     @staticmethod
     def fromNum(i: float):
@@ -54,8 +67,8 @@ class CellValue(CanCheckEmpty, ToProto[CellValueProto]):
             vBool = b,
         )
 
-
     __empty = None
+
     @staticmethod
     def empty():
         if CellValue.__empty is None:

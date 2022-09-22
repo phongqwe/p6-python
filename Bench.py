@@ -7,6 +7,7 @@ from com.qxdzbc.p6.app.App import App
 from com.qxdzbc.p6.app.GlobalScope import setIPythonGlobals
 from com.qxdzbc.p6.app.RpcApp import RpcApp
 from com.qxdzbc.p6.app.TopLevel import getApp
+from com.qxdzbc.p6.cell.CellContent import CellContent
 from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
 from com.qxdzbc.p6.proto.WorksheetProtos_pb2 import LoadDataRequestProto
 from com.qxdzbc.p6.rpc.StubProvider import RpcStubProvider
@@ -53,17 +54,24 @@ class Bench(unittest.TestCase):
         awb = app.activeWorkbook
         aws = app.activeWorksheet
 
-        cell = aws.getCell(CellAddresses.fromLabel("B3"))
+        cell = aws.getCellAtAddress(CellAddresses.fromLabel("B3"))
 
-        for x in range(1000):
-            cell.value = x
+        # for x in range(10000):
+        #     aws.updateMultipleCellRs([
+        #         CellUpdateEntry(
+        #             CellAddresses.fromLabel("C1"),CellContent.fromAny(x)
+        #         ),
+        #         CellUpdateEntry(
+        #             CellAddresses.fromLabel("A1"), CellContent.fromAny(x)
+        #         )
+        #     ])
 
-        # rs = awb.removeAllWorksheetRs()
+        rs = awb.removeAllWorksheetRs()
         # self.assertTrue(rs.isOk())
 
-        # for x in range(1000):
-        #     print(f"ws: {x} ")
-        #     z=awb.removeAllWorksheet()
+        for x in range(1000):
+            print(f"ws: {x} ")
+            z=awb.createNewWorksheet()
 
         # ar1=[
         #     [1,2,3],

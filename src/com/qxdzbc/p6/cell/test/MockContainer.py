@@ -20,9 +20,9 @@ class MockCellContainer(MutableCellContainer):
         pass
 
     def hasCellAt(self, address: CellAddress) -> bool:
-        return self.getCell(address) is not None
+        return self.getCellAtAddress(address) is not None
 
-    def getCell(self, address: CellAddress) -> Optional[Cell]:
+    def getCellAtAddress(self, address: CellAddress) -> Optional[Cell]:
         try:
             z = self._l[address]
             return z
@@ -33,7 +33,7 @@ class MockCellContainer(MutableCellContainer):
         pass
 
     def containsAddress(self, address: CellAddress) -> bool:
-        return self.getCell(address) is not None
+        return self.getCellAtAddress(address) is not None
 
     @property
     def cells(self) -> list[Cell]:

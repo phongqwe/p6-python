@@ -16,12 +16,11 @@ from com.qxdzbc.p6.proto import CommonProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_pr
 from com.qxdzbc.p6.proto import DocProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n$com/qxdzbc/p6/proto/CellProtos.proto\x12\x13\x63om.qxdzbc.p6.proto\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\x1a#com/qxdzbc/p6/proto/DocProtos.proto\"\x86\x01\n\x16\x43\x65llUpdateRequestProto\x12\x30\n\x06\x63\x65llId\x18\x01 \x01(\x0b\x32 .com.qxdzbc.p6.proto.CellIdProto\x12:\n\x0b\x63\x65llContent\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellContentProto\"l\n\x10\x43\x65llContentProto\x12\x36\n\tcellValue\x18\x01 \x01(\x0b\x32#.com.qxdzbc.p6.proto.CellValueProto\x12\x14\n\x07\x66ormula\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\n\n\x08_formula\"|\n\x14\x43opyCellRequestProto\x12\x32\n\x08\x66romCell\x18\x01 \x01(\x0b\x32 .com.qxdzbc.p6.proto.CellIdProto\x12\x30\n\x06toCell\x18\x02 \x01(\x0b\x32 .com.qxdzbc.p6.proto.CellIdProtob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n$com/qxdzbc/p6/proto/CellProtos.proto\x12\x13\x63om.qxdzbc.p6.proto\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\x1a#com/qxdzbc/p6/proto/DocProtos.proto\"\x86\x01\n\x16\x43\x65llUpdateRequestProto\x12\x30\n\x06\x63\x65llId\x18\x01 \x01(\x0b\x32 .com.qxdzbc.p6.proto.CellIdProto\x12:\n\x0b\x63\x65llContent\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellContentProto\"|\n\x14\x43opyCellRequestProto\x12\x32\n\x08\x66romCell\x18\x01 \x01(\x0b\x32 .com.qxdzbc.p6.proto.CellIdProto\x12\x30\n\x06toCell\x18\x02 \x01(\x0b\x32 .com.qxdzbc.p6.proto.CellIdProtob\x06proto3')
 
 
 
 _CELLUPDATEREQUESTPROTO = DESCRIPTOR.message_types_by_name['CellUpdateRequestProto']
-_CELLCONTENTPROTO = DESCRIPTOR.message_types_by_name['CellContentProto']
 _COPYCELLREQUESTPROTO = DESCRIPTOR.message_types_by_name['CopyCellRequestProto']
 CellUpdateRequestProto = _reflection.GeneratedProtocolMessageType('CellUpdateRequestProto', (_message.Message,), {
   'DESCRIPTOR' : _CELLUPDATEREQUESTPROTO,
@@ -29,13 +28,6 @@ CellUpdateRequestProto = _reflection.GeneratedProtocolMessageType('CellUpdateReq
   # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.CellUpdateRequestProto)
   })
 _sym_db.RegisterMessage(CellUpdateRequestProto)
-
-CellContentProto = _reflection.GeneratedProtocolMessageType('CellContentProto', (_message.Message,), {
-  'DESCRIPTOR' : _CELLCONTENTPROTO,
-  '__module__' : 'com.qxdzbc.p6.proto.CellProtos_pb2'
-  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.CellContentProto)
-  })
-_sym_db.RegisterMessage(CellContentProto)
 
 CopyCellRequestProto = _reflection.GeneratedProtocolMessageType('CopyCellRequestProto', (_message.Message,), {
   'DESCRIPTOR' : _COPYCELLREQUESTPROTO,
@@ -49,8 +41,6 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
   _CELLUPDATEREQUESTPROTO._serialized_start=139
   _CELLUPDATEREQUESTPROTO._serialized_end=273
-  _CELLCONTENTPROTO._serialized_start=275
-  _CELLCONTENTPROTO._serialized_end=383
-  _COPYCELLREQUESTPROTO._serialized_start=385
-  _COPYCELLREQUESTPROTO._serialized_end=509
+  _COPYCELLREQUESTPROTO._serialized_start=275
+  _COPYCELLREQUESTPROTO._serialized_end=399
 # @@protoc_insertion_point(module_scope)

@@ -14,8 +14,8 @@ class RangeCopy_test(unittest.TestCase):
         o = RangeCopy(
             rangeId = RangeId(
                 rangeAddress = RangeAddresses.fromLabel("B2:H10"),
-                workbookKey = wbk,
-                worksheetName = "S1"
+                wbKey = wbk,
+                wsName = "S1"
             ),
             cells = [
                 TestDataCell(CellAddresses.fromLabel("B3"), wsName = "S1", wbKey = wbk),
@@ -34,8 +34,8 @@ class RangeCopy_test(unittest.TestCase):
         o = RangeCopy(
             rangeId = RangeId(
                 rangeAddress = RangeAddresses.fromLabel("B2:H10"),
-                workbookKey = wbk,
-                worksheetName = "S1"
+                wbKey = wbk,
+                wsName = "S1"
             ),
             cells = [
                 TestDataCell(CellAddresses.fromLabel("B3"), wsName = "S1", wbKey = wbk),

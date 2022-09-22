@@ -31,13 +31,10 @@ class CellIndex(CellAddress):
         return self.__colIndex
 
     def __str__(self):
-        return "C({col}:{row})".format(col = self.__colIndex, row = self.__rowIndex)
+        # return "C({col}:{row})".format(col = self.__colIndex, row = self.__rowIndex)
+        return self.label
 
     @property
     def label(self) -> str:
-        return "" + self.rawLabel
-
-    @property
-    def rawLabel(self) -> str:
         colLabel = AlphabetBaseNumberSystem.fromDecimal(self.colIndex)
         return "{cl}{rl}".format(cl = colLabel, rl = str(self.rowIndex))

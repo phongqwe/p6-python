@@ -4,13 +4,13 @@ from typing import Optional
 from com.qxdzbc.p6.cell.address.CellAddress import CellAddress
 from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
 from com.qxdzbc.p6.cell.rpc_data_structure.CellId import CellId
-from com.qxdzbc.p6.proto.DocProtos_pb2 import CellValueProto
+from com.qxdzbc.p6.proto.DocProtos_pb2 import CellValueProto, CellContentProto
 from com.qxdzbc.p6.util.CanCheckEmpty import CanCheckEmpty
 from com.qxdzbc.p6.util.ToProto import ToProto
 from com.qxdzbc.p6.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.workbook.key.WorkbookKeys import WorkbookKeys
 from com.qxdzbc.p6.rpc.data_structure.ToP6Msg import ToP6Msg
-from com.qxdzbc.p6.proto.CellProtos_pb2 import CellUpdateRequestProto, CellContentProto
+from com.qxdzbc.p6.proto.CellProtos_pb2 import CellUpdateRequestProto
 
 
 @dataclass

@@ -146,7 +146,7 @@ class RangeImp(Range):
 
     ### >> UserFriendlyCellContainer << ###
 
-    def cell(self, address: Union[str, CellAddress, Tuple[int, int]]) -> Cell:
+    def getCell(self, address: Union[str, CellAddress, Tuple[int, int]]) -> Cell:
         parsedAddress = AddressParser.parseCellAddress(address)
         return self.getOrMakeCell(parsedAddress)
 
@@ -164,9 +164,9 @@ class RangeImp(Range):
         else:
             return False
 
-    def getCell(self, address: CellAddress) -> Optional[Cell]:
+    def getCellAtAddress(self, address: CellAddress) -> Optional[Cell]:
         if self.containsAddress(address):
-            return self.__worksheet.getCell(address)
+            return self.__worksheet.getCellAtAddress(address)
         else:
             raise ValueError("cell {cd} is not in range {rd}".format(cd = str(address), rd = str(self.rangeAddress)))
 

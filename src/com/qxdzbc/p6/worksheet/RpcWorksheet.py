@@ -2,6 +2,7 @@ from functools import partial
 from typing import Optional, Tuple
 
 from com.qxdzbc.p6.cell.Cell import Cell
+from com.qxdzbc.p6.cell.IndCell import IndCell
 from com.qxdzbc.p6.cell.address.CellAddress import CellAddress
 from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
 from com.qxdzbc.p6.range.address.RangeAddress import RangeAddress
@@ -17,8 +18,6 @@ from com.qxdzbc.p6.rpc.StubProvider import RpcStubProvider
 from com.qxdzbc.p6.worksheet.WorksheetWrapper import WorksheetWrapper
 from com.qxdzbc.p6.proto.rpc.WorkbookService_pb2_grpc import WorkbookServiceStub
 from com.qxdzbc.p6.proto.rpc.WorksheetService_pb2_grpc import WorksheetServiceStub
-from com.qxdzbc.p6.worksheet.rpc_data_structure.CellUpdateEntry import CellUpdateEntry
-from com.qxdzbc.p6.worksheet.rpc_data_structure.MultiCellUpdateRequest import MultiCellUpdateRequest
 
 
 class RpcWorksheet(WorksheetWrapper):
@@ -30,13 +29,13 @@ class RpcWorksheet(WorksheetWrapper):
         super().__init__(InternalRpcWorksheet(name, wbKey, stubProvider))
         self._stubProvider = stubProvider
 
-    def updateMultipleCellRs(self, updateEntries: list[CellUpdateEntry]) -> Result[None, ErrorReport]:
+    def updateMultipleCellRs(self, updateEntries: list[IndCell]) -> Result[None, ErrorReport]:
         return self._onWsSvOkRs(partial(self.rootWorksheet.updateMultipleCellRs,updateEntries))
 
-    def load2DArrayRs(self, dataAray, anchorCell: CellAddress = CellAddresses.A1,
+    def load2DArrayRs(self, data2DArray, anchorCell: CellAddress = CellAddresses.A1,
                       loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> \
             Result['Worksheet', ErrorReport]:
-        return self._onWsSvOkRs(partial(self.rootWorksheet.load2DArrayRs, dataAray, anchorCell, loadType))
+        return self._onWsSvOkRs(partial(self.rootWorksheet.load2DArrayRs, data2DArray, anchorCell, loadType))
 
     def loadDataFrameRs(
             self, dataFrame,
@@ -58,8 +57,8 @@ class RpcWorksheet(WorksheetWrapper):
     def deleteRangeRs(self, rangeAddress: RangeAddress) -> Result[None, ErrorReport]:
         return self._onWsSvOkRs(partial(self.rootWorksheet.deleteRangeRs,rangeAddress))
 
-    def getCell(self, address: CellAddress) -> Optional[Cell]:
-        return self._onWsSvOk(partial(self.rootWorksheet.getCell,address))
+    def getCellAtAddress(self, address: CellAddress) -> Optional[Cell]:
+        return self._onWsSvOk(partial(self.rootWorksheet.getCellAtAddress, address))
 
     def containsAddress(self, address: CellAddress) -> bool:
         return self._onWsSvOk(partial(self.rootWorksheet.containsAddress,address))

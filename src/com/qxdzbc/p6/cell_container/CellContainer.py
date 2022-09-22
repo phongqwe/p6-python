@@ -9,7 +9,13 @@ from com.qxdzbc.p6.util.WithSize import WithSize
 
 class CellContainer(WithSize,ABC):
     """ an immutable cell container. A container support accessing Cells using CellAddress """
-    def cell(self, address: Union[str, CellAddress, Tuple[int, int]]) -> Cell:
+
+    def getCell(self, address: Union[str, CellAddress, Tuple[int, int]]) -> Optional[Cell]:
+        raise NotImplementedError()
+    def getCellAtAddress(self, address: CellAddress) -> Optional[Cell]:
+        """
+        :return the cell at the position, None of the cell does not exist
+        """
         raise NotImplementedError()
 
     def hasCellAt(self, address: CellAddress) -> bool:
@@ -24,12 +30,6 @@ class CellContainer(WithSize,ABC):
                 Important: while this does check for valid address/index, it does NOT return true simply an address/index is inside this container. This check the existence of an object instance inside this container.
                 :return true if this container has a cell OBJECT at the specified position
                 """
-        raise NotImplementedError()
-
-    def getCell(self, address: CellAddress) -> Optional[Cell]:
-        """
-        :return the cell at the position, None of the cell does not exist
-        """
         raise NotImplementedError()
 
     def containsAddress(self, address: CellAddress) -> bool:

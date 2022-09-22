@@ -3,6 +3,7 @@ from __future__ import annotations
 from abc import ABC
 from typing import TYPE_CHECKING, Union, Tuple
 
+from com.qxdzbc.p6.cell.IndCell import IndCell
 from com.qxdzbc.p6.cell.address.CellAddress import CellAddress
 from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
 from com.qxdzbc.p6.cell_container.MutableCellContainer import MutableCellContainer
@@ -14,7 +15,6 @@ from com.qxdzbc.p6.util.result.Result import Result
 from com.qxdzbc.p6.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.proto.DocProtos_pb2 import WorksheetProto
 from com.qxdzbc.p6.worksheet.LoadType import LoadType
-from com.qxdzbc.p6.worksheet.rpc_data_structure.CellUpdateEntry import CellUpdateEntry
 
 if TYPE_CHECKING:
     from com.qxdzbc.p6.range.Range import Range
@@ -24,10 +24,10 @@ class Worksheet(MutableCellContainer,
                 ToProto[WorksheetProto],
                 ABC):
 
-    def updateMultipleCellRs(self,updateEntries:list[CellUpdateEntry])->Result[None, ErrorReport]:
+    def updateMultipleCellRs(self,updateEntries:[IndCell])->Result[None, ErrorReport]:
         raise NotImplementedError()
 
-    def updateMultipleCell(self,updateEntries:list[CellUpdateEntry]):
+    def updateMultipleCell(self,updateEntries:list[IndCell]):
         raise NotImplementedError()
 
     @property
@@ -35,12 +35,12 @@ class Worksheet(MutableCellContainer,
         raise NotImplementedError()
 
     def load2DArrayRs(
-            self, dataAray,
+            self, data2DArray,
             anchorCell: CellAddress= CellAddresses.A1,
             loadType: LoadType=LoadType.KEEP_OLD_DATA_IF_COLLIDE
     ) -> Result['Worksheet', ErrorReport]:
         """
-        :param dataAray: a python array or anything that is array-like
+        :param data2DArray: a python array or anything that is array-like
         :param anchorCell: starting point to load the data into
         :param loadType: load type
         :return: a Result obj encasing a new worksheet with the loaded data, but in case or a rpc worksheet (which is stateless), that is just the old worksheet.

@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 
-from com.qxdzbc.p6.proto.DocProtos_pb2 import WorksheetIdProto
-from com.qxdzbc.p6.proto.WorksheetProtos_pb2 import MultiCellUpdateRequestProto, CellUpdateEntryProto
+from com.qxdzbc.p6.proto.DocProtos_pb2 import WorksheetIdProto, IndCellProto
+from com.qxdzbc.p6.proto.WorksheetProtos_pb2 import MultiCellUpdateRequestProto
 from com.qxdzbc.p6.util.ToProto import ToProto
 
 
@@ -9,7 +9,7 @@ from com.qxdzbc.p6.util.ToProto import ToProto
 class MultiCellUpdateRequest(ToProto[MultiCellUpdateRequestProto]):
 
     wsId: ToProto[WorksheetIdProto]
-    updateEntries: list[ToProto[CellUpdateEntryProto]] = field(default_factory = lambda: [])
+    updateEntries: list[ToProto[IndCellProto]] = field(default_factory = lambda: [])
 
     def toProtoObj(self) -> MultiCellUpdateRequestProto:
         return MultiCellUpdateRequestProto(

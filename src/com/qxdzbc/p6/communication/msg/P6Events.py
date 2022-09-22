@@ -19,8 +19,6 @@ from com.qxdzbc.p6.script.rpc_data_structure.new_script.NewScriptRequest import 
 from com.qxdzbc.p6.script.rpc_data_structure.new_script.NewScriptResponse import NewScriptResponse
 from com.qxdzbc.p6.workbook.rpc_data_structure.CreateNewWorksheetRequest import \
     CreateNewWorksheetRequest
-from com.qxdzbc.p6.workbook.rpc_data_structure.CreateNewWorksheetResponse import \
-    CreateNewWorksheetResponse
 from com.qxdzbc.p6.workbook.rpc_data_structure.DeleteWorksheetRequest import DeleteWorksheetRequest
 from com.qxdzbc.p6.workbook.rpc_data_structure.DeleteWorksheetResponse import DeleteWorksheetResponse
 from com.qxdzbc.p6.workbook.rpc_data_structure.RenameWorksheetRequest import RenameWorksheetRequest
@@ -147,7 +145,7 @@ class P6Events:
 
         class CreateNewWorksheet:
             event = P6Event(f"{WBE}3", "create new worksheet")
-            Response = CreateNewWorksheetResponse
+            Response = CreateNewWorksheetRequest # just for syntatic correctness
             Request = CreateNewWorksheetRequest
 
     class EventServer:

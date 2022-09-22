@@ -19,7 +19,6 @@ from com.qxdzbc.p6.worksheet.IndWorksheet import IndWorksheet
 from com.qxdzbc.p6.worksheet.LoadType import LoadType
 from com.qxdzbc.p6.worksheet.RpcWorksheet import RpcWorksheet
 from com.qxdzbc.p6.worksheet.rpc_data_structure.CellCountResponse import CellCountResponse
-from com.qxdzbc.p6.worksheet.rpc_data_structure.CellUpdateEntry import CellUpdateEntry
 from com.qxdzbc.p6.worksheet.rpc_data_structure.GetAllCellResponse import GetAllCellResponse
 from com.qxdzbc.p6.worksheet.rpc_data_structure.GetUsedRangeResponse import GetUsedRangeResponse
 import pandas as pd
@@ -48,12 +47,12 @@ class RpcWorksheet_test(unittest.TestCase):
     def test_updateMultiCell(self):
         self.mockWsService.updateMultiCellContent = MagicMock(return_value = SingleSignalResponse().toProtoObj())
         updateEntries = [
-            CellUpdateEntry(
-                cellAddress = CellAddresses.fromLabel("QT12"),
+            IndCell(
+                address = CellAddresses.fromLabel("QT12"),
                 content = CellContent.fromAny(123)
             ),
-            CellUpdateEntry(
-                cellAddress = CellAddresses.fromLabel("MM11"),
+            IndCell(
+                address = CellAddresses.fromLabel("MM11"),
                 content = CellContent.fromAny(123)
             )
         ]
@@ -130,7 +129,7 @@ class RpcWorksheet_test(unittest.TestCase):
                         address = CellAddresses.fromColRow(
                             ca.colIndex + c, ca.rowIndex + r
                         ),
-                        value = CellValue.fromAny(item)
+                        content = CellContent.fromAny(item)
                     ))
             expectedInput = LoadDataRequest(
                 loadType = lt,
@@ -180,7 +179,7 @@ class RpcWorksheet_test(unittest.TestCase):
                         address = CellAddresses.fromColRow(
                             ca.colIndex + ci, ca.rowIndex + i
                         ),
-                        value = CellValue.fromAny(item)
+                        content = CellContent.fromAny(item)
                     )
                     cpmList.append(cpm)
             expectedInput_WithoutHeader = LoadDataRequest(
@@ -206,7 +205,7 @@ class RpcWorksheet_test(unittest.TestCase):
                     address = CellAddresses.fromColRow(
                         ca.colIndex + i, ca.rowIndex
                     ),
-                    value = CellValue.fromStr(str(header))
+                    content = CellContent.fromAny(str(header))
                 )
                 headerCpmList.append(cpm)
 
@@ -217,7 +216,7 @@ class RpcWorksheet_test(unittest.TestCase):
                         address = CellAddresses.fromColRow(
                             ca.colIndex + ci, ca.rowIndex + i + 1
                         ),
-                        value = CellValue.fromAny(item)
+                        content = CellContent.fromAny(item)
                     )
                     cpmList.append(cpm)
 

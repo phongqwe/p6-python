@@ -4,6 +4,7 @@ import numpy
 import pandas
 
 from com.qxdzbc.p6.cell.Cell import Cell
+from com.qxdzbc.p6.cell.CellContent import CellContent
 from com.qxdzbc.p6.cell.IndCell import IndCell
 from com.qxdzbc.p6.cell.address.CellAddress import CellAddress
 from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
@@ -30,7 +31,6 @@ from com.qxdzbc.p6.rpc.data_structure.BoolMsg import \
 from com.qxdzbc.p6.cell.rpc_data_structure.CellId import CellId
 from com.qxdzbc.p6.rpc.data_structure.SingleSignalResponse import \
     SingleSignalResponse
-from com.qxdzbc.p6.worksheet.rpc_data_structure.CellUpdateEntry import CellUpdateEntry
 from com.qxdzbc.p6.worksheet.rpc_data_structure.LoadDataRequest import LoadDataRequest
 from com.qxdzbc.p6.worksheet.rpc_data_structure.MultiCellUpdateRequest import MultiCellUpdateRequest
 from com.qxdzbc.p6.worksheet.rpc_data_structure.WorksheetId import WorksheetId
@@ -58,7 +58,7 @@ class InternalRpcWorksheet(BaseWorksheet):
         self._wbk = wbKey
         self._stubProvider = stubProvider
 
-    def updateMultipleCellRs(self, updateEntries: list[CellUpdateEntry]) -> Result[None, ErrorReport]:
+    def updateMultipleCellRs(self, updateEntries: list[IndCell]) -> Result[None, ErrorReport]:
         request = MultiCellUpdateRequest(
             wsId = self.id,
             updateEntries = updateEntries
@@ -67,7 +67,7 @@ class InternalRpcWorksheet(BaseWorksheet):
         rt = SingleSignalResponse.fromProto(oProto).toRs()
         return rt
 
-    def _makeLoadDataRequestRs(self, cells: list[IndCell], anchorCell: CellAddress, loadType: LoadType) -> \
+    def _makeLoadDataRequestRs(self, cells: list[IndCell], loadType: LoadType) -> \
             Result['Worksheet', ErrorReport]:
         request = LoadDataRequest(
             loadType = loadType,
@@ -86,25 +86,25 @@ class InternalRpcWorksheet(BaseWorksheet):
         else:
             return Err(o.errorReport)
 
-    def load2DArrayRs(self, dataAray, anchorCell: CellAddress = CellAddresses.A1,
+    def load2DArrayRs(self, data2DArray, anchorCell: CellAddress = CellAddresses.A1,
                       loadType: LoadType = LoadType.KEEP_OLD_DATA_IF_COLLIDE) -> \
             Result['Worksheet', ErrorReport]:
-        is2D = len(numpy.shape(dataAray)) == 2
+        is2D = len(numpy.shape(data2DArray)) == 2
         anchorRow = anchorCell.rowIndex
         anchorCol = anchorCell.colIndex
         cpmList = []
         if is2D:
             # x: construct cpmList, each sub array is treated as a row
-            for (r, arrayRow) in enumerate(dataAray):
+            for (r, arrayRow) in enumerate(data2DArray):
                 for (c, item) in enumerate(arrayRow):
                     targetCellAddress: CellAddress = CellAddresses.fromColRow(anchorCol + c, anchorRow + r)
                     cpmList.append(IndCell(
                         address = targetCellAddress,
-                        value = CellValue.fromAny(item)
+                        content = CellContent.fromAny(item)
                     ))
-            return self._makeLoadDataRequestRs(cpmList, anchorCell, loadType)
+            return self._makeLoadDataRequestRs(cpmList, loadType)
         else:
-            return Err(CommonErrors.WrongTypeReport.report("data obj is not 2D"))
+            return Err(CommonErrors.WrongTypeError.report("data obj is not 2D"))
 
     def loadDataFrameRs(
             self, dataFrame,
@@ -130,7 +130,7 @@ class InternalRpcWorksheet(BaseWorksheet):
                             anchorCol + i,
                             anchorRow
                         ),
-                        value = CellValue.fromStr(str(header))
+                        content = CellContent.fromAny(str(header))
                     )
                     headerCpmList.append(cpm)
 
@@ -142,12 +142,12 @@ class InternalRpcWorksheet(BaseWorksheet):
                         address = CellAddresses.fromColRow(
                             anchorCol + colIndex,
                             anchorRow + rowIndex + rowOffset),
-                        value = CellValue.fromAny(item)
+                        content = CellContent.fromAny(item)
                     )
                     cpmList.append(cpm)
-            return self._makeLoadDataRequestRs(headerCpmList + cpmList, anchorCell, loadType)
+            return self._makeLoadDataRequestRs(headerCpmList + cpmList, loadType)
         else:
-            return Err(CommonErrors.WrongTypeReport.report("dataFrame obj is not a pandas DataFrame"))
+            return Err(CommonErrors.WrongTypeError.report("dataFrame obj is not a pandas DataFrame"))
 
     def toProtoObj(self) -> WorksheetProto:
         return WorksheetProto(
@@ -159,7 +159,7 @@ class InternalRpcWorksheet(BaseWorksheet):
     def wbKey(self) -> WorkbookKey:
         return self._wbk
 
-    def cell(self, address: Union[str, CellAddress, Tuple[int, int]]) -> Cell:
+    def getCell(self, address: Union[str, CellAddress, Tuple[int, int]]) -> Cell:
         a = CellAddresses.parse(address)
         return RpcCell(a, self._wbk, self._name, self._stubProvider)
 
@@ -202,7 +202,7 @@ class InternalRpcWorksheet(BaseWorksheet):
     def hasCellAtIndex(self, col: int, row: int) -> bool:
         return self.containsAddress(CellAddresses.fromColRow(col, row))
 
-    def getCell(self, address: CellAddress) -> Optional[Cell]:
+    def getCellAtAddress(self, address: CellAddress) -> Optional[Cell]:
         cellId = CellId(address, self._wbk, self._name)
         oProto = self._wssv.getCell(request = cellId.toProtoObj())
         o = SingleSignalResponse.fromProto(oProto)

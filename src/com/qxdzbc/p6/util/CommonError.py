@@ -8,13 +8,12 @@ from com.qxdzbc.p6.util.report.error.ErrorReport import ErrorReport
 CE = "BE_CommonErrors_"
 class CommonErrors:
 
-
-    class WrongTypeReport(ErrorReport):
+    class WrongTypeError(ErrorReport):
         header = ErrorHeader(f"{CE}0", "Incorrect type")
 
         @staticmethod
         def report(detail:Optional[str])->ErrorReport:
-            h = CommonErrors.WrongTypeReport.header
+            h = CommonErrors.WrongTypeError.header
             if detail:
                 h = h.setDescription(detail)
             return ErrorReport(header = h)
@@ -30,8 +29,8 @@ class CommonErrors:
             def toException(self) -> Exception:
                 return Exception(self.repStr())
         def __init__(self, varName:str,correctType:str):
-            data =CommonErrors.WrongTypeReport.Data(varName,correctType)
-            super().__init__(CommonErrors.WrongTypeReport.header, data)
+            data =CommonErrors.WrongTypeError.Data(varName, correctType)
+            super().__init__(CommonErrors.WrongTypeError.header, data)
 
     class ExceptionErrorReport(ErrorReport):
         """

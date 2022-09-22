@@ -24,12 +24,12 @@ class TestEnvImp:
         wb = WorkbookImp(name)
         s1 = wb.createNewWorksheet("Sheet1")
         s2 = wb.createNewWorksheet("Sheet2")
-        s1.cell((1, 1)).value = 11
-        s1.cell((2, 2)).value = 22
-        s1.cell((3, 3)).value = 33
-        s2.cell((1, 1)).value = 211
-        s2.cell((2, 2)).value = 222
-        s2.cell((3, 3)).value = 233
+        s1.getCell((1, 1)).value = 11
+        s1.getCell((2, 2)).value = 22
+        s1.getCell((3, 3)).value = 33
+        s2.getCell((1, 1)).value = 211
+        s2.getCell((2, 2)).value = 222
+        s2.getCell((3, 3)).value = 233
         return wb
 
     def startEnv(self):
