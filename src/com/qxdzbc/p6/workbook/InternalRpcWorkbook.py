@@ -124,7 +124,7 @@ class InternalRpcWorkbook(Workbook):
             return None
 
     def isEmpty(self) -> bool:
-        return self.sheetCount == 0
+        return self.wsCount == 0
 
     def _onWbsvOkRs(self, f):
         return RpcUtils.onServiceOkRs(self._wbsv,f)
@@ -174,9 +174,9 @@ class InternalRpcWorkbook(Workbook):
             return Err(CommonErrors.WrongTypeError("nameOrIndex", "str or int"))
 
     @property
-    def sheetCount(self) -> int:
+    def wsCount(self) -> int:
         if self._wbsv is not None:
-            out: RpcValues.Int64Value = self._wbsv.sheetCount(
+            out: RpcValues.Int64Value = self._wbsv.wsCount(
                 request = self.key.toProtoObj()
             )
             return out.value
@@ -240,7 +240,7 @@ class InternalRpcWorkbook(Workbook):
 
     def _deleteWorksheetRsRpc(self, request: WorksheetIdWithIndex) -> Result[None, ErrorReport]:
         req = request.toProtoObj()
-        outProto: SingleSignalResponseProto = self._wbsv.deleteWorksheet(request = req)
+        outProto: SingleSignalResponseProto = self._wbsv.removeWorksheet(request = req)
         out = SingleSignalResponse.fromProto(outProto)
         return out.toRs()
 

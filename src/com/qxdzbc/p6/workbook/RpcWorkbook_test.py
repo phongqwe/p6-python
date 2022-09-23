@@ -56,9 +56,9 @@ class RpcWorkbook_test(unittest.TestCase):
         errCase()
 
     def test_sheetCount(self):
-        self.mockWbService.sheetCount = MagicMock(return_value = RpcValues.int64(123))
+        self.mockWbService.wsCount = MagicMock(return_value = RpcValues.int64(123))
         wb = self.wb
-        self.assertEqual(123, wb.sheetCount)
+        self.assertEqual(123, wb.wsCount)
 
     def test_set_wbKey_ok(self):
         self.mockWbService.setWbKey = MagicMock(
@@ -226,7 +226,7 @@ class RpcWorkbook_test(unittest.TestCase):
             wb.createNewWorksheet("qwe")
 
     def test_deleteWorksheet(self):
-        self.mockWbService.deleteWorksheet = MagicMock(
+        self.mockWbService.removeWorksheet = MagicMock(
             return_value = SingleSignalResponse().toProtoObj()
         )
 
@@ -236,7 +236,7 @@ class RpcWorkbook_test(unittest.TestCase):
         o = wb.removeWorksheetByIndexRs(123)
         self.assertTrue(o.isOk())
 
-        self.mockWbService.deleteWorksheet = MagicMock(
+        self.mockWbService.removeWorksheet = MagicMock(
             return_value = SingleSignalResponse(
                 errorReport = TestUtils.TestErrorReport
             ).toProtoObj()

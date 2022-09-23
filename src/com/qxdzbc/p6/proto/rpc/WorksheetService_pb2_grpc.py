@@ -56,8 +56,8 @@ class WorksheetServiceStub(object):
                 request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.WorksheetIdProto.SerializeToString,
                 response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
                 )
-        self.deleteRange = channel.unary_unary(
-                '/com.qxdzbc.p6.proto.rpc.WorksheetService/deleteRange',
+        self.removeRange = channel.unary_unary(
+                '/com.qxdzbc.p6.proto.rpc.WorksheetService/removeRange',
                 request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.RangeIdProto.SerializeToString,
                 response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
                 )
@@ -129,7 +129,7 @@ class WorksheetServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def deleteRange(self, request, context):
+    def removeRange(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -196,8 +196,8 @@ def add_WorksheetServiceServicer_to_server(servicer, server):
                     request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.WorksheetIdProto.FromString,
                     response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.SerializeToString,
             ),
-            'deleteRange': grpc.unary_unary_rpc_method_handler(
-                    servicer.deleteRange,
+            'removeRange': grpc.unary_unary_rpc_method_handler(
+                    servicer.removeRange,
                     request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.RangeIdProto.FromString,
                     response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.SerializeToString,
             ),
@@ -363,7 +363,7 @@ class WorksheetService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def deleteRange(request,
+    def removeRange(request,
             target,
             options=(),
             channel_credentials=None,
@@ -373,7 +373,7 @@ class WorksheetService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.WorksheetService/deleteRange',
+        return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.WorksheetService/removeRange',
             com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.RangeIdProto.SerializeToString,
             com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
             options, channel_credentials,

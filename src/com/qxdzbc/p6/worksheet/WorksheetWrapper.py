@@ -83,8 +83,8 @@ class WorksheetWrapper(BaseWorksheet,ABC):
     def containsAddressIndex(self, col: int, row: int) -> bool:
         return self.rootWorksheet.containsAddressIndex(col, row)
 
-    def deleteRangeRs(self, rangeAddress: RangeAddress) -> Result[None, ErrorReport]:
-        return self.rootWorksheet.deleteRangeRs(rangeAddress)
+    def removeRangeRs(self, rangeAddress: RangeAddress) -> Result[None, ErrorReport]:
+        return self.rootWorksheet.removeRangeRs(rangeAddress)
 
     def removeCellRs(self, address: CellAddress | Tuple[int, int] | str) -> Result[None, ErrorReport]:
         return self.rootWorksheet.removeCellRs(address)

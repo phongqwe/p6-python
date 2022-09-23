@@ -18,8 +18,8 @@ class WorkbookServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.sheetCount = channel.unary_unary(
-                '/com.qxdzbc.p6.proto.rpc.WorkbookService/sheetCount',
+        self.wsCount = channel.unary_unary(
+                '/com.qxdzbc.p6.proto.rpc.WorkbookService/wsCount',
                 request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.WorkbookKeyProto.SerializeToString,
                 response_deserializer=google_dot_protobuf_dot_wrappers__pb2.Int64Value.FromString,
                 )
@@ -53,8 +53,8 @@ class WorkbookServiceStub(object):
                 request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorkbookProtos__pb2.CreateNewWorksheetRequestProto.SerializeToString,
                 response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorkbookProtos__pb2.WorksheetWithErrorReportMsgProto.FromString,
                 )
-        self.deleteWorksheet = channel.unary_unary(
-                '/com.qxdzbc.p6.proto.rpc.WorkbookService/deleteWorksheet',
+        self.removeWorksheet = channel.unary_unary(
+                '/com.qxdzbc.p6.proto.rpc.WorkbookService/removeWorksheet',
                 request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdWithIndexProto.SerializeToString,
                 response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
                 )
@@ -78,7 +78,7 @@ class WorkbookServiceStub(object):
 class WorkbookServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def sheetCount(self, request, context):
+    def wsCount(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -120,7 +120,7 @@ class WorkbookServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def deleteWorksheet(self, request, context):
+    def removeWorksheet(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -147,8 +147,8 @@ class WorkbookServiceServicer(object):
 
 def add_WorkbookServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'sheetCount': grpc.unary_unary_rpc_method_handler(
-                    servicer.sheetCount,
+            'wsCount': grpc.unary_unary_rpc_method_handler(
+                    servicer.wsCount,
                     request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.WorkbookKeyProto.FromString,
                     response_serializer=google_dot_protobuf_dot_wrappers__pb2.Int64Value.SerializeToString,
             ),
@@ -182,8 +182,8 @@ def add_WorkbookServiceServicer_to_server(servicer, server):
                     request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorkbookProtos__pb2.CreateNewWorksheetRequestProto.FromString,
                     response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorkbookProtos__pb2.WorksheetWithErrorReportMsgProto.SerializeToString,
             ),
-            'deleteWorksheet': grpc.unary_unary_rpc_method_handler(
-                    servicer.deleteWorksheet,
+            'removeWorksheet': grpc.unary_unary_rpc_method_handler(
+                    servicer.removeWorksheet,
                     request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdWithIndexProto.FromString,
                     response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.SerializeToString,
             ),
@@ -213,7 +213,7 @@ class WorkbookService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def sheetCount(request,
+    def wsCount(request,
             target,
             options=(),
             channel_credentials=None,
@@ -223,7 +223,7 @@ class WorkbookService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.WorkbookService/sheetCount',
+        return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.WorkbookService/wsCount',
             com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.WorkbookKeyProto.SerializeToString,
             google_dot_protobuf_dot_wrappers__pb2.Int64Value.FromString,
             options, channel_credentials,
@@ -332,7 +332,7 @@ class WorkbookService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def deleteWorksheet(request,
+    def removeWorksheet(request,
             target,
             options=(),
             channel_credentials=None,
@@ -342,7 +342,7 @@ class WorkbookService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.WorkbookService/deleteWorksheet',
+        return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.WorkbookService/removeWorksheet',
             com_dot_qxdzbc_dot_p6_dot_proto_dot_WorksheetProtos__pb2.WorksheetIdWithIndexProto.SerializeToString,
             com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.SingleSignalResponseProto.FromString,
             options, channel_credentials,

@@ -190,9 +190,9 @@ class InternalRpcWorksheet(BaseWorksheet):
     def getOrMakeCell(self, address: CellAddress) -> Cell:
         raise NotImplementedError()
 
-    def deleteRangeRs(self, rangeAddress: RangeAddress) -> Result[None, ErrorReport]:
+    def removeRangeRs(self, rangeAddress: RangeAddress) -> Result[None, ErrorReport]:
         rangeId = RangeId(rangeAddress, self._wbk, self._name)
-        oProto = self._wssv.deleteRange(request = rangeId.toProtoObj())
+        oProto = self._wssv.removeRange(request = rangeId.toProtoObj())
         o = SingleSignalResponse.fromProto(oProto)
         return o.toRs()
 

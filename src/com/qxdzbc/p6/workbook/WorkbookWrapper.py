@@ -84,8 +84,8 @@ class WorkbookWrapper(Workbook):
         return self.rootWorkbook.activeWorksheet
 
     @property
-    def sheetCount(self) -> int:
-        return self.rootWorkbook.sheetCount
+    def wsCount(self) -> int:
+        return self.rootWorkbook.wsCount
 
     @property
     def name(self) -> str:

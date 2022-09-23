@@ -41,9 +41,9 @@ class MutableCellContainer(CellContainer, ABC):
         """
         raise NotImplementedError()
 
-    def deleteRangeRs(self, rangeAddress:RangeAddress)->Result[None,ErrorReport]:
+    def removeRangeRs(self, rangeAddress:RangeAddress)->Result[None, ErrorReport]:
         raise NotImplementedError()
 
-    def deleteRange(self,rangeAddress:RangeAddress):
-        delRs = self.deleteRangeRs(rangeAddress)
+    def removeRange(self, rangeAddress:RangeAddress):
+        delRs = self.removeRangeRs(rangeAddress)
         return Results.extractOrRaise(delRs)

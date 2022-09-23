@@ -122,7 +122,7 @@ class RangeImp(Range):
         """take the intersection of this range and the target range, then delete all the cells in that intersection"""
         intersect: RangeAddress | None = self.rangeAddress.intersect(rangeAddress)
         if intersect:
-            rs= self.__worksheet.deleteRangeRs(intersect)
+            rs= self.__worksheet.removeRangeRs(intersect)
             self._updateExtremeColRow()
             return rs
         else:

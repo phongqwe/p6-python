@@ -88,9 +88,9 @@ class RpcWorkbook(WorkbookWrapper):
         return self._onWbsvOkRs(partial(self.rootWorkbook.getWorksheetRs, nameOrIndex))
 
     @property
-    def sheetCount(self) -> int:
+    def wsCount(self) -> int:
         def f():
-            return self.rootWorkbook.sheetCount
+            return self.rootWorkbook.wsCount
         return self._onWbsvOk(f)
 
     @property

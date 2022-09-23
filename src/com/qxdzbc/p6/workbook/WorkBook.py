@@ -184,7 +184,7 @@ class Workbook(CanCheckEmpty, ToProto[WorkbookProto], ABC):
         return Results.extractOrRaise(self.getWorksheetRs(nameOrIndex))
 
     @property
-    def sheetCount(self) -> int:
+    def wsCount(self) -> int:
         raise NotImplementedError()
 
     @property
