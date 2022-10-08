@@ -9,9 +9,11 @@ from com.qxdzbc.p6.proto.CellProtos_pb2 import CopyCellRequestProto
 class CopyCellRequest(ToProto[CopyCellRequestProto]):
     fromCell: CellId
     toCell: CellId
+    shiftRange:bool = True
 
     def toProtoObj(self) -> CopyCellRequestProto:
         return CopyCellRequestProto(
             fromCell = self.fromCell.toProtoObj(),
-            toCell = self.toCell.toProtoObj()
+            toCell = self.toCell.toProtoObj(),
+            shiftRange = self.shiftRange
         )

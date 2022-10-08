@@ -1,3 +1,4 @@
+import time
 import unittest
 from dataclasses import dataclass
 
@@ -52,9 +53,12 @@ class Bench(unittest.TestCase):
 
         # wb0:Workbook=app.getWorkbook(1)
         awb = app.activeWorkbook
+        # awb = app.getWorkbook("Book1")
         aws = app.activeWorksheet
 
         cell = aws.getCellAtAddress(CellAddresses.fromLabel("B3"))
+        for x in range(10000):
+            cell.value = x
 
         # for x in range(10000):
         #     aws.updateMultipleCellRs([
@@ -66,12 +70,17 @@ class Bench(unittest.TestCase):
         #         )
         #     ])
 
-        rs = awb.removeAllWorksheetRs()
+        # rs = awb.removeAllWorksheetRs()
         # self.assertTrue(rs.isOk())
 
-        for x in range(1000):
-            print(f"ws: {x} ")
-            z=awb.createNewWorksheet()
+        # for x in range (1100):
+        #     print(f"wb:{x}")
+        #     app.createNewWorkbook()
+
+        # for x in range(1000):
+        #     print(f"ws: {x} ")
+        #     z=awb.createNewWorksheet()
+        #     time.sleep(1)
 
         # ar1=[
         #     [1,2,3],
