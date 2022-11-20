@@ -4,7 +4,7 @@ from com.qxdzbc.p6.cell.Cells import Cells
 from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
 from com.qxdzbc.p6.cell.rpc_data_structure.CellId import CellId
 from com.qxdzbc.p6.workbook.key.WorkbookKeys import WorkbookKeys
-from com.qxdzbc.p6.proto.DocProtos_pb2 import CellValueProto, CellProto
+from com.qxdzbc.p6.proto.DocProtos_pb2 import CellValueProto, CellProto, CellContentProto
 
 
 class Cells_test(unittest.TestCase):
@@ -18,8 +18,10 @@ class Cells_test(unittest.TestCase):
                 wbKey = WorkbookKeys.fromNameAndPath("wb1"),
                 wsName = "S1"
             ).toProtoObj(),
-            value = CellValueProto(str="123qwe"),
-            formula = "formula z",
+            content = CellContentProto(
+                cellValue = CellValueProto(str = "123qwe"),
+                formula = "formula z",
+            )
         )
 
         cell = Cells.fromProto(proto)

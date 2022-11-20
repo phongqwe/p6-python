@@ -36,15 +36,15 @@ class DataCellTest(unittest.TestCase):
     def test_content(self):
         c1 = TestDataCell(address = CellIndex(1, 1), wsName = self.wsName, wbKey = self.wbk, value=None)
         ct1 = c1.content
-        self.assertEqual(None,ct1.value)
+        self.assertTrue(ct1.value.isEmpty())
         self.assertEqual(c1.formula, ct1.formula)
 
         c1 = TestDataCell(address = CellIndex(1, 1), wsName = self.wsName, wbKey = self.wbk, value=123)
         ct1 = c1.content
-        self.assertEqual(c1.value, ct1.value)
+        self.assertEqual(c1.value, ct1.value.vNum)
 
     def test_content_setter(self):
-        ct1 = CellContent("formula",CellValue.empty())
+        ct1 = CellContent(CellValue(vStr="formula"),CellValue.empty())
         c1 = TestDataCell(address = CellIndex(1, 1), wsName = self.wsName, wbKey = self.wbk, value= "v")
         c1.content = ct1
         self.assertEqual(ct1.value, c1.bareValue)
@@ -53,19 +53,17 @@ class DataCellTest(unittest.TestCase):
 
     def test_toProtoObj1(self):
         c1 = TestDataCell(address = CellIndex(1, 1), wsName = self.wsName, wbKey = self.wbk, value=123, formula = "formula")
-        o = c1.toProtoObj()
+        o:CellProto = c1.toProtoObj()
         self.assertEqual(c1.id.toProtoObj(), o.id)
-        self.assertEqual("formula", o.formula)
+        self.assertEqual("formula", o.content.formula)
 
     def test_toProtoObj2(self):
         c1 = TestDataCell(address = CellIndex(1, 1),
                           wsName = self.wsName,
                           wbKey = self.wbk,
                           value=None)
-        proto = c1.toProtoObj()
+        proto:CellProto = c1.toProtoObj()
         self.assertEqual(c1.id.toProtoObj(), proto.id)
-        self.assertFalse(proto.HasField("value"))
-        self.assertFalse(proto.HasField("formula"))
         bt1 = c1.toProtoBytes()
         c2 = CellProto()
         c2.ParseFromString(bt1)

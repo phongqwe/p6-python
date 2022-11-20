@@ -5,7 +5,7 @@ from com.qxdzbc.p6.cell.CellContent import CellContent
 from com.qxdzbc.p6.cell.TestDataCell import TestDataCell
 from com.qxdzbc.p6.cell.IndCell import IndCell
 from com.qxdzbc.p6.cell.address.CellAddresses import CellAddresses
-from com.qxdzbc.p6.proto.DocProtos_pb2 import CellProto
+from com.qxdzbc.p6.proto.DocProtos_pb2 import CellProto, CellContentProto
 from com.qxdzbc.p6.range.address.RangeAddresses import RangeAddresses
 from com.qxdzbc.p6.util.for_test import TestUtils
 from com.qxdzbc.p6.workbook.key.WorkbookKeys import WorkbookKeys
@@ -258,8 +258,10 @@ class RpcWorksheet_test(unittest.TestCase):
                 id = CellId(
                     cell.address, self.ws.wbKey, self.ws.name
                 ).toProtoObj(),
-                value = CellValue.fromNum(123).toProtoObj(),
-                formula = None
+                content=CellContentProto(
+                    cellValue = CellValue.fromNum(123).toProtoObj(),
+                    formula = None
+                )
             )
         )
 

@@ -169,13 +169,15 @@ class Cell(CanCheckEmpty, ToProto[CellProto], ABC):
         raise NotImplementedError()
 
     def toProtoObj(self) -> CellProto:
-        v = None
-        if self.cellValue:
-            if self.cellValue.isNotEmpty():
-                v = self.cellValue.toProtoObj()
-        f = self.formula
+        # v = None
+        # if self.cellValue:
+        #     if self.cellValue.isNotEmpty():
+        #         v = self.cellValue.toProtoObj()
+        # f = self.formula
+        c = self.content.toProtoObj()
         return CellProto(
             id = self.id.toProtoObj(),
-            value = v,
-            formula = f,
+            # value = v,
+            # formula = f,
+            content = c
         )

@@ -66,7 +66,7 @@ class TestDataCell(Cell):
     @property
     def content(self) -> CellContent:
         return CellContent(
-            value = self.value,
+            value = self.cellValue,
             formula = self.formula,
         )
 
