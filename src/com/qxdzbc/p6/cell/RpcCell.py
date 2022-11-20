@@ -51,9 +51,9 @@ class RpcCell(WrapperCell):
         )
 
     @property
-    def displayValue(self) -> str:
+    def displayText(self) -> str:
         def f():
-            return self._ic.displayValue
+            return self._ic.displayText
         return self._onCellSvOk(f)
 
     # @property

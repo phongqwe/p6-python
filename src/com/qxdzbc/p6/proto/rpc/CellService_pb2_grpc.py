@@ -16,8 +16,8 @@ class CellServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.getDisplayValue = channel.unary_unary(
-                '/com.qxdzbc.p6.proto.rpc.CellService/getDisplayValue',
+        self.getDisplayText = channel.unary_unary(
+                '/com.qxdzbc.p6.proto.rpc.CellService/getDisplayText',
                 request_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellIdProto.SerializeToString,
                 response_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.StrMsgProto.FromString,
                 )
@@ -51,7 +51,7 @@ class CellServiceStub(object):
 class CellServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def getDisplayValue(self, request, context):
+    def getDisplayText(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -90,8 +90,8 @@ class CellServiceServicer(object):
 
 def add_CellServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'getDisplayValue': grpc.unary_unary_rpc_method_handler(
-                    servicer.getDisplayValue,
+            'getDisplayText': grpc.unary_unary_rpc_method_handler(
+                    servicer.getDisplayText,
                     request_deserializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellIdProto.FromString,
                     response_serializer=com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.StrMsgProto.SerializeToString,
             ),
@@ -131,7 +131,7 @@ class CellService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def getDisplayValue(request,
+    def getDisplayText(request,
             target,
             options=(),
             channel_credentials=None,
@@ -141,7 +141,7 @@ class CellService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.CellService/getDisplayValue',
+        return grpc.experimental.unary_unary(request, target, '/com.qxdzbc.p6.proto.rpc.CellService/getDisplayText',
             com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2.CellIdProto.SerializeToString,
             com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2.StrMsgProto.FromString,
             options, channel_credentials,

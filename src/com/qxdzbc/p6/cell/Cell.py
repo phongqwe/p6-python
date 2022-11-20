@@ -49,7 +49,7 @@ class Cell(CanCheckEmpty, ToProto[CellProto], ABC):
             return False
 
     @property
-    def displayValue(self) -> str:
+    def displayText(self) -> str:
         raise NotImplementedError()
 
     @property
@@ -169,15 +169,8 @@ class Cell(CanCheckEmpty, ToProto[CellProto], ABC):
         raise NotImplementedError()
 
     def toProtoObj(self) -> CellProto:
-        # v = None
-        # if self.cellValue:
-        #     if self.cellValue.isNotEmpty():
-        #         v = self.cellValue.toProtoObj()
-        # f = self.formula
         c = self.content.toProtoObj()
         return CellProto(
             id = self.id.toProtoObj(),
-            # value = v,
-            # formula = f,
             content = c
         )

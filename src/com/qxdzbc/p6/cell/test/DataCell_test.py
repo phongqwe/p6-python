@@ -20,11 +20,11 @@ class DataCellTest(unittest.TestCase):
     def test_numeric_str_value(self):
         c1 = TestDataCell(address = CellIndex(1, 1), wsName = self.wsName, wbKey = self.wbk, value= "123", )
         self.assertEqual("123",c1.strValue)
-        self.assertEqual("123",c1.displayValue)
+        self.assertEqual("123", c1.displayText)
 
         c2 = TestDataCell(address = CellIndex(1, 1), wsName = self.wsName, wbKey = self.wbk, value= "\'abc")
         self.assertEqual("\'abc", c2.strValue)
-        self.assertEqual("\'abc", c2.displayValue)
+        self.assertEqual("\'abc", c2.displayText)
 
     def test_sourceValue(self):
         c1 = TestDataCell(address = CellIndex(1, 1), wsName = self.wsName, wbKey = self.wbk, value=123, formula = "formula")

@@ -19,7 +19,7 @@ from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n)com/qxdzbc/p6/proto/rpc/CellService.proto\x12\x17\x63om.qxdzbc.p6.proto.rpc\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\x1a$com/qxdzbc/p6/proto/CellProtos.proto\x1a#com/qxdzbc/p6/proto/DocProtos.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1bgoogle/protobuf/empty.proto2\xcd\x04\n\x0b\x43\x65llService\x12W\n\x0fgetDisplayValue\x12 .com.qxdzbc.p6.proto.CellIdProto\x1a .com.qxdzbc.p6.proto.StrMsgProto\"\x00\x12R\n\ngetFormula\x12 .com.qxdzbc.p6.proto.CellIdProto\x1a .com.qxdzbc.p6.proto.StrMsgProto\"\x00\x12W\n\x0cgetCellValue\x12 .com.qxdzbc.p6.proto.CellIdProto\x1a#.com.qxdzbc.p6.proto.CellValueProto\"\x00\x12[\n\x0egetCellContent\x12 .com.qxdzbc.p6.proto.CellIdProto\x1a%.com.qxdzbc.p6.proto.CellContentProto\"\x00\x12g\n\x08\x63opyFrom\x12).com.qxdzbc.p6.proto.CopyCellRequestProto\x1a..com.qxdzbc.p6.proto.SingleSignalResponseProto\"\x00\x12r\n\x11updateCellContent\x12+.com.qxdzbc.p6.proto.CellUpdateRequestProto\x1a..com.qxdzbc.p6.proto.SingleSignalResponseProto\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n)com/qxdzbc/p6/proto/rpc/CellService.proto\x12\x17\x63om.qxdzbc.p6.proto.rpc\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\x1a$com/qxdzbc/p6/proto/CellProtos.proto\x1a#com/qxdzbc/p6/proto/DocProtos.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1bgoogle/protobuf/empty.proto2\xcc\x04\n\x0b\x43\x65llService\x12V\n\x0egetDisplayText\x12 .com.qxdzbc.p6.proto.CellIdProto\x1a .com.qxdzbc.p6.proto.StrMsgProto\"\x00\x12R\n\ngetFormula\x12 .com.qxdzbc.p6.proto.CellIdProto\x1a .com.qxdzbc.p6.proto.StrMsgProto\"\x00\x12W\n\x0cgetCellValue\x12 .com.qxdzbc.p6.proto.CellIdProto\x1a#.com.qxdzbc.p6.proto.CellValueProto\"\x00\x12[\n\x0egetCellContent\x12 .com.qxdzbc.p6.proto.CellIdProto\x1a%.com.qxdzbc.p6.proto.CellContentProto\"\x00\x12g\n\x08\x63opyFrom\x12).com.qxdzbc.p6.proto.CopyCellRequestProto\x1a..com.qxdzbc.p6.proto.SingleSignalResponseProto\"\x00\x12r\n\x11updateCellContent\x12+.com.qxdzbc.p6.proto.CellUpdateRequestProto\x1a..com.qxdzbc.p6.proto.SingleSignalResponseProto\"\x00\x62\x06proto3')
 
 
 
@@ -28,5 +28,5 @@ if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   _CELLSERVICE._serialized_start=247
-  _CELLSERVICE._serialized_end=836
+  _CELLSERVICE._serialized_end=835
 # @@protoc_insertion_point(module_scope)

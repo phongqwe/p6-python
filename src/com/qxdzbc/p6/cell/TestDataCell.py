@@ -99,7 +99,7 @@ class TestDataCell(Cell):
         return self.__value
 
     @property
-    def displayValue(self) -> str:
+    def displayText(self) -> str:
         if isinstance(self.__value, Exception):
             return convertExceptionToStr(self.__value)
         else:

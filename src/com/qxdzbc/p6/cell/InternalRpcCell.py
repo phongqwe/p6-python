@@ -37,8 +37,8 @@ class InternalRpcCell(Cell):
         return self.copyFrom(anotherCell.id)
 
     @property
-    def displayValue(self) -> str:
-        oProto = self._cellSv.getDisplayValue(request = self.id.toProtoObj())
+    def displayText(self) -> str:
+        oProto = self._cellSv.getDisplayText(request = self.id.toProtoObj())
         o = StrMsg.fromProto(oProto)
         return o.v
 

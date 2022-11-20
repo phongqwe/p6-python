@@ -61,9 +61,9 @@ class RpcCell_test(unittest.TestCase):
 
     def test_displayValue(self):
         v = "Display value"
-        self.mockCellService.getDisplayValue = MagicMock(return_value = StrMsg(v).toProtoObj())
-        o = self.cell.displayValue
-        self.mockCellService.getDisplayValue.assert_called_with(request = self.cell.id.toProtoObj())
+        self.mockCellService.getDisplayText = MagicMock(return_value = StrMsg(v).toProtoObj())
+        o = self.cell.displayText
+        self.mockCellService.getDisplayText.assert_called_with(request = self.cell.id.toProtoObj())
         self.assertEqual(v, o)
 
     def test_getFormula(self):

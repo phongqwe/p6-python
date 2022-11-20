@@ -84,8 +84,8 @@ class WrapperCell(Cell):
         self.rootCell.formula = newFormula
 
     @property
-    def displayValue(self) -> str:
-        return self.rootCell.displayValue
+    def displayText(self) -> str:
+        return self.rootCell.displayText
 
     @property
     def value(self):
