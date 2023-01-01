@@ -3,7 +3,6 @@ from abc import ABC
 from pathlib import Path
 from typing import Optional, Union
 
-from com.qxdzbc.p6.script.ScriptContainer import ScriptContainer
 from com.qxdzbc.p6.util.CanCheckEmpty import CanCheckEmpty
 from com.qxdzbc.p6.util.ToProto import ToProto
 from com.qxdzbc.p6.util.report.error.ErrorReport import ErrorReport
@@ -11,57 +10,10 @@ from com.qxdzbc.p6.util.result.Result import Result
 from com.qxdzbc.p6.util.result.Results import Results
 from com.qxdzbc.p6.workbook.key.WorkbookKey import WorkbookKey
 from com.qxdzbc.p6.worksheet.Worksheet import Worksheet
-from com.qxdzbc.p6.script.ScriptEntry import ScriptEntry
-from com.qxdzbc.p6.script.SimpleScriptEntry import SimpleScriptEntry
 from com.qxdzbc.p6.proto.DocProtos_pb2 import WorkbookProto
 
 
 class Workbook(CanCheckEmpty, ToProto[WorkbookProto], ABC):
-
-    def addScript(self, name: str, script: str):
-        rs = self.addScriptRs(name, script)
-        rs.getOrRaise()
-
-    def addScriptRs(self, name: str, script: str) -> Result[None, ErrorReport]:
-        raise NotImplementedError()
-
-    def addAllScripts(self, scripts: list[SimpleScriptEntry]):
-        rs = self.addAllScriptsRs(scripts)
-        rs.getOrRaise()
-
-    def addAllScriptsRs(self, scripts: list[SimpleScriptEntry]) -> Result[None, ErrorReport]:
-        raise NotImplementedError()
-
-    def overwriteScriptRs(self, name: str, newScript: str) -> Result[None, ErrorReport]:
-        raise NotImplementedError()
-
-    def overwriteScript(self, name: str, newScript: str):
-        self.overwriteScript(name, newScript)
-
-    def getScript(self, name: str) -> Optional[str]:
-        raise NotImplementedError()
-
-    def removeScriptRs(self,name: str)->Result[None,ErrorReport]:
-        raise NotImplementedError()
-
-    def removeScript(self, name: str):
-        rs = self.removeScriptRs(name)
-        rs.getOrRaise()
-
-    def removeAllScript(self):
-        raise NotImplementedError()
-
-    @property
-    def allScripts(self) -> list[SimpleScriptEntry]:
-        raise NotImplementedError()
-
-    @property
-    def allAsScriptEntry(self) -> list[ScriptEntry]:
-        raise NotImplementedError()
-
-    @property
-    def scriptContainer(self) -> ScriptContainer:
-        raise NotImplementedError()
 
     def isSimilar(self, o: object) -> bool:
         if isinstance(o, Workbook):

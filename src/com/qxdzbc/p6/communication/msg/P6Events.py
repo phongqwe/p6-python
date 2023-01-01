@@ -15,8 +15,6 @@ from com.qxdzbc.p6.range.rpc_data_structure.range_to_clipboard import \
     RangeToClipboardRequest
 from com.qxdzbc.p6.range.rpc_data_structure.range_to_clipboard import \
     RangeToClipboardResponse
-from com.qxdzbc.p6.script.rpc_data_structure.new_script.NewScriptRequest import NewScriptRequest
-from com.qxdzbc.p6.script.rpc_data_structure.new_script.NewScriptResponse import NewScriptResponse
 from com.qxdzbc.p6.workbook.rpc_data_structure.CreateNewWorksheetRequest import \
     CreateNewWorksheetRequest
 from com.qxdzbc.p6.workbook.rpc_data_structure.DeleteWorksheetRequest import DeleteWorksheetRequest
@@ -51,17 +49,6 @@ class P6Events:
                     if inspect.isclass(event):
                         rt.append(event.event)
         return rt
-    
-    class Script:
-        @classmethod
-        def allEvents(clazz):
-            return P6Events.allEvents(clazz.__name__)
-
-        class NewScript:
-            event = P6Event(f"{SCRIPT_EVENT}1","new script event")
-            Request = NewScriptRequest
-            Response = NewScriptResponse
-            Other = []
 
     class Cell:
 

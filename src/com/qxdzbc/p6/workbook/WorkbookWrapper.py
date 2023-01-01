@@ -1,10 +1,6 @@
 from pathlib import Path
 from typing import Union, Optional
 
-from com.qxdzbc.p6.script import SimpleScriptEntry
-from com.qxdzbc.p6.script.ScriptContainer import ScriptContainer
-from com.qxdzbc.p6.script.ScriptEntry import ScriptEntry
-
 from com.qxdzbc.p6.util.report.error.ErrorReport import ErrorReport
 from com.qxdzbc.p6.util.result.Result import Result
 from com.qxdzbc.p6.workbook.WorkBook import Workbook
@@ -17,38 +13,8 @@ class WorkbookWrapper(Workbook):
     def __init__(self, innerWorkbook: Workbook):
         self._innerWorkbook = innerWorkbook
 
-    def addScriptRs(self, name: str, script: str) -> Result[None, ErrorReport]:
-        return self.rootWorkbook.addScriptRs(name, script)
-
     def renameWorksheetRs(self, oldName: str, ws: Worksheet) -> Result[None, ErrorReport]:
         return self.rootWorkbook.renameWorksheetRs(oldName, ws)
-
-    def addAllScriptsRs(self, scripts: list[SimpleScriptEntry]) -> Result[None, ErrorReport]:
-        return self.rootWorkbook.addAllScriptsRs(scripts)
-
-    def overwriteScriptRs(self, name: str, newScript: str) -> Result[None, ErrorReport]:
-        return self.rootWorkbook.overwriteScriptRs(name, newScript)
-
-    def getScript(self, name: str) -> Optional[str]:
-        return self.rootWorkbook.getScript(name)
-
-    def removeScriptRs(self,name: str)->Result[None,ErrorReport]:
-        return self.rootWorkbook.removeScriptRs(name)
-
-    def removeAllScript(self):
-        self.rootWorkbook.removeAllScript()
-
-    @property
-    def allScripts(self) -> list[SimpleScriptEntry]:
-        return self.rootWorkbook.allScripts
-
-    @property
-    def allAsScriptEntry(self) -> list[ScriptEntry]:
-        return self.rootWorkbook.allAsScriptEntry
-
-    @property
-    def scriptContainer(self) -> ScriptContainer:
-        return self.rootWorkbook.scriptContainer
 
     def makeSavableCopy(self) -> 'Workbook':
         return self.rootWorkbook.makeSavableCopy()

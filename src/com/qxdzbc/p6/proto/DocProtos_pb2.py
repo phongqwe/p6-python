@@ -15,7 +15,7 @@ _sym_db = _symbol_database.Default()
 from com.qxdzbc.p6.proto import CommonProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_CommonProtos__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n#com/qxdzbc/p6/proto/DocProtos.proto\x12\x13\x63om.qxdzbc.p6.proto\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\"X\n\x10WorksheetIdProto\x12\x34\n\x05wbKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x0e\n\x06wsName\x18\x02 \x01(\t\"\x83\x01\n\x0eWorksheetProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x34\n\x05wbKey\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12-\n\x05\x63\x65lls\x18\x03 \x03(\x0b\x32\x1e.com.qxdzbc.p6.proto.CellProto\"x\n\x11IndWorksheetProto\x12\x31\n\x02id\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorksheetIdProto\x12\x30\n\x05\x63\x65lls\x18\x02 \x03(\x0b\x32!.com.qxdzbc.p6.proto.IndCellProto\"\x84\x01\n\x11RangeAddressProto\x12\x36\n\x07topLeft\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\x12\x37\n\x08\x62otRight\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\"\x92\x01\n\x0cRangeIdProto\x12<\n\x0crangeAddress\x18\x01 \x01(\x0b\x32&.com.qxdzbc.p6.proto.RangeAddressProto\x12\x34\n\x05wbKey\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x0e\n\x06wsName\x18\x03 \x01(\t\"^\n\tWsWbProto\x12:\n\x0bworkbookKey\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x03 \x01(\t\",\n\x10\x43\x65llAddressProto\x12\x0b\n\x03\x63ol\x18\x01 \x01(\x05\x12\x0b\n\x03row\x18\x02 \x01(\x05\"q\n\tCellProto\x12,\n\x02id\x18\x01 \x01(\x0b\x32 .com.qxdzbc.p6.proto.CellIdProto\x12\x36\n\x07\x63ontent\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellContentProto\"\xab\x01\n\x10\x43\x65llContentProto\x12;\n\tcellValue\x18\x01 \x01(\x0b\x32#.com.qxdzbc.p6.proto.CellValueProtoH\x00\x88\x01\x01\x12\x14\n\x07\x66ormula\x18\x02 \x01(\tH\x01\x88\x01\x01\x12\x19\n\x0coriginalText\x18\x03 \x01(\tH\x02\x88\x01\x01\x42\x0c\n\n_cellValueB\n\n\x08_formulaB\x0f\n\r_originalText\"~\n\x0cIndCellProto\x12\x36\n\x07\x61\x64\x64ress\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\x12\x36\n\x07\x63ontent\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellContentProto\"`\n\x0e\x43\x65llValueProto\x12\x10\n\x03str\x18\x01 \x01(\tH\x00\x88\x01\x01\x12\x10\n\x03num\x18\x02 \x01(\x01H\x01\x88\x01\x01\x12\x11\n\x04\x62ool\x18\x03 \x01(\x08H\x02\x88\x01\x01\x42\x06\n\x04_strB\x06\n\x04_numB\x07\n\x05_bool\"<\n\x10WorkbookKeyProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\x04path\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\x07\n\x05_path\"6\n\x16SimpleScriptEntryProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06script\x18\x02 \x01(\t\"\xbb\x01\n\rWorkbookProto\x12\x34\n\x05wbKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x36\n\tworksheet\x18\x02 \x03(\x0b\x32#.com.qxdzbc.p6.proto.WorksheetProto\x12<\n\x07scripts\x18\x03 \x03(\x0b\x32+.com.qxdzbc.p6.proto.SimpleScriptEntryProto\"\x8f\x01\n\x0b\x43\x65llIdProto\x12:\n\x0b\x63\x65llAddress\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\x12\x34\n\x05wbKey\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x0e\n\x06wsName\x18\x03 \x01(\tb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n#com/qxdzbc/p6/proto/DocProtos.proto\x12\x13\x63om.qxdzbc.p6.proto\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\"X\n\x10WorksheetIdProto\x12\x34\n\x05wbKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x0e\n\x06wsName\x18\x02 \x01(\t\"\xe0\x01\n\x0eWorksheetProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x34\n\x05wbKey\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12-\n\x05\x63\x65lls\x18\x03 \x03(\x0b\x32\x1e.com.qxdzbc.p6.proto.CellProto\x12G\n\x0f\x63\x65llFormatTable\x18\x04 \x01(\x0b\x32).com.qxdzbc.p6.proto.CellFormatTableProtoH\x00\x88\x01\x01\x42\x12\n\x10_cellFormatTable\"x\n\x11IndWorksheetProto\x12\x31\n\x02id\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorksheetIdProto\x12\x30\n\x05\x63\x65lls\x18\x02 \x03(\x0b\x32!.com.qxdzbc.p6.proto.IndCellProto\"\x84\x01\n\x11RangeAddressProto\x12\x36\n\x07topLeft\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\x12\x37\n\x08\x62otRight\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\"\x92\x01\n\x0cRangeIdProto\x12<\n\x0crangeAddress\x18\x01 \x01(\x0b\x32&.com.qxdzbc.p6.proto.RangeAddressProto\x12\x34\n\x05wbKey\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x0e\n\x06wsName\x18\x03 \x01(\t\"^\n\tWsWbProto\x12:\n\x0bworkbookKey\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x15\n\rworksheetName\x18\x03 \x01(\t\",\n\x10\x43\x65llAddressProto\x12\x0b\n\x03\x63ol\x18\x01 \x01(\x05\x12\x0b\n\x03row\x18\x02 \x01(\x05\"q\n\tCellProto\x12,\n\x02id\x18\x01 \x01(\x0b\x32 .com.qxdzbc.p6.proto.CellIdProto\x12\x36\n\x07\x63ontent\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellContentProto\"\xab\x01\n\x10\x43\x65llContentProto\x12;\n\tcellValue\x18\x01 \x01(\x0b\x32#.com.qxdzbc.p6.proto.CellValueProtoH\x00\x88\x01\x01\x12\x14\n\x07\x66ormula\x18\x02 \x01(\tH\x01\x88\x01\x01\x12\x19\n\x0coriginalText\x18\x03 \x01(\tH\x02\x88\x01\x01\x42\x0c\n\n_cellValueB\n\n\x08_formulaB\x0f\n\r_originalText\"~\n\x0cIndCellProto\x12\x36\n\x07\x61\x64\x64ress\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\x12\x36\n\x07\x63ontent\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellContentProto\"`\n\x0e\x43\x65llValueProto\x12\x10\n\x03str\x18\x01 \x01(\tH\x00\x88\x01\x01\x12\x10\n\x03num\x18\x02 \x01(\x01H\x01\x88\x01\x01\x12\x11\n\x04\x62ool\x18\x03 \x01(\x08H\x02\x88\x01\x01\x42\x06\n\x04_strB\x06\n\x04_numB\x07\n\x05_bool\"<\n\x10WorkbookKeyProto\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\x04path\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\x07\n\x05_path\"}\n\rWorkbookProto\x12\x34\n\x05wbKey\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x36\n\tworksheet\x18\x02 \x03(\x0b\x32#.com.qxdzbc.p6.proto.WorksheetProto\"\x8f\x01\n\x0b\x43\x65llIdProto\x12:\n\x0b\x63\x65llAddress\x18\x01 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellAddressProto\x12\x34\n\x05wbKey\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.WorkbookKeyProto\x12\x0e\n\x06wsName\x18\x03 \x01(\t\"N\n\x14RangeAddressSetProto\x12\x36\n\x06ranges\x18\x01 \x03(\x0b\x32&.com.qxdzbc.p6.proto.RangeAddressProto\"\x85\x01\n\x15\x46loatFormatEntryProto\x12\x42\n\x0frangeAddressSet\x18\x01 \x01(\x0b\x32).com.qxdzbc.p6.proto.RangeAddressSetProto\x12\x18\n\x0b\x66ormatValue\x18\x02 \x01(\x02H\x00\x88\x01\x01\x42\x0e\n\x0c_formatValue\"\xa0\x01\n\x18\x46loatFormatEntrySetProto\x12@\n\x0cvalidEntries\x18\x01 \x03(\x0b\x32*.com.qxdzbc.p6.proto.FloatFormatEntryProto\x12\x42\n\x0einvalidEntries\x18\x02 \x03(\x0b\x32*.com.qxdzbc.p6.proto.FloatFormatEntryProto\"T\n\x15\x46loatFormatTableProto\x12;\n\x07\x65ntries\x18\x01 \x03(\x0b\x32*.com.qxdzbc.p6.proto.FloatFormatEntryProto\"\x84\x01\n\x14\x42oolFormatEntryProto\x12\x42\n\x0frangeAddressSet\x18\x01 \x01(\x0b\x32).com.qxdzbc.p6.proto.RangeAddressSetProto\x12\x18\n\x0b\x66ormatValue\x18\x02 \x01(\x08H\x00\x88\x01\x01\x42\x0e\n\x0c_formatValue\"\x9d\x01\n\x17\x42oolFormatEntrySetProto\x12?\n\x0cvalidEntries\x18\x01 \x03(\x0b\x32).com.qxdzbc.p6.proto.BoolFormatEntryProto\x12\x41\n\x0einvalidEntries\x18\x02 \x03(\x0b\x32).com.qxdzbc.p6.proto.BoolFormatEntryProto\"R\n\x14\x42oolFormatTableProto\x12:\n\x07\x65ntries\x18\x01 \x03(\x0b\x32).com.qxdzbc.p6.proto.BoolFormatEntryProto\"\x86\x01\n\x16UInt64FormatEntryProto\x12\x42\n\x0frangeAddressSet\x18\x01 \x01(\x0b\x32).com.qxdzbc.p6.proto.RangeAddressSetProto\x12\x18\n\x0b\x66ormatValue\x18\x02 \x01(\x04H\x00\x88\x01\x01\x42\x0e\n\x0c_formatValue\"\xa3\x01\n\x19UInt64FormatEntrySetProto\x12\x41\n\x0cvalidEntries\x18\x01 \x03(\x0b\x32+.com.qxdzbc.p6.proto.UInt64FormatEntryProto\x12\x43\n\x0einvalidEntries\x18\x02 \x03(\x0b\x32+.com.qxdzbc.p6.proto.UInt64FormatEntryProto\"V\n\x16UInt64FormatTableProto\x12<\n\x07\x65ntries\x18\x01 \x03(\x0b\x32+.com.qxdzbc.p6.proto.UInt64FormatEntryProto\"\x83\x01\n\x13IntFormatEntryProto\x12\x42\n\x0frangeAddressSet\x18\x01 \x01(\x0b\x32).com.qxdzbc.p6.proto.RangeAddressSetProto\x12\x18\n\x0b\x66ormatValue\x18\x02 \x01(\x05H\x00\x88\x01\x01\x42\x0e\n\x0c_formatValue\"\x9a\x01\n\x16IntFormatEntrySetProto\x12>\n\x0cvalidEntries\x18\x01 \x03(\x0b\x32(.com.qxdzbc.p6.proto.IntFormatEntryProto\x12@\n\x0einvalidEntries\x18\x02 \x03(\x0b\x32(.com.qxdzbc.p6.proto.IntFormatEntryProto\"P\n\x13IntFormatTableProto\x12\x39\n\x07\x65ntries\x18\x01 \x03(\x0b\x32(.com.qxdzbc.p6.proto.IntFormatEntryProto\"\xb2\x05\n\x11\x46ormatConfigProto\x12\x45\n\x0etextSizeConfig\x18\x01 \x01(\x0b\x32-.com.qxdzbc.p6.proto.FloatFormatEntrySetProto\x12G\n\x0ftextColorConfig\x18\x02 \x01(\x0b\x32..com.qxdzbc.p6.proto.UInt64FormatEntrySetProto\x12J\n\x14textUnderlinedConfig\x18\x03 \x01(\x0b\x32,.com.qxdzbc.p6.proto.BoolFormatEntrySetProto\x12G\n\x11textCrossedConfig\x18\x04 \x01(\x0b\x32,.com.qxdzbc.p6.proto.BoolFormatEntrySetProto\x12\x45\n\x10\x66ontWeightConfig\x18\x05 \x01(\x0b\x32+.com.qxdzbc.p6.proto.IntFormatEntrySetProto\x12\x44\n\x0f\x66ontStyleConfig\x18\x06 \x01(\x0b\x32+.com.qxdzbc.p6.proto.IntFormatEntrySetProto\x12N\n\x19horizontalAlignmentConfig\x18\x07 \x01(\x0b\x32+.com.qxdzbc.p6.proto.IntFormatEntrySetProto\x12L\n\x17verticalAlignmentConfig\x18\x08 \x01(\x0b\x32+.com.qxdzbc.p6.proto.IntFormatEntrySetProto\x12M\n\x15\x62\x61\x63kgroundColorConfig\x18\t \x01(\x0b\x32..com.qxdzbc.p6.proto.UInt64FormatEntrySetProto\"\x9d\x05\n\x14\x43\x65llFormatTableProto\x12\x41\n\rtextSizeTable\x18\x01 \x01(\x0b\x32*.com.qxdzbc.p6.proto.FloatFormatTableProto\x12\x43\n\x0etextColorTable\x18\x02 \x01(\x0b\x32+.com.qxdzbc.p6.proto.UInt64FormatTableProto\x12\x46\n\x13textUnderlinedTable\x18\x03 \x01(\x0b\x32).com.qxdzbc.p6.proto.BoolFormatTableProto\x12\x43\n\x10textCrossedTable\x18\x04 \x01(\x0b\x32).com.qxdzbc.p6.proto.BoolFormatTableProto\x12\x41\n\x0f\x66ontWeightTable\x18\x05 \x01(\x0b\x32(.com.qxdzbc.p6.proto.IntFormatTableProto\x12@\n\x0e\x66ontStyleTable\x18\x06 \x01(\x0b\x32(.com.qxdzbc.p6.proto.IntFormatTableProto\x12L\n\x1atextVerticalAlignmentTable\x18\x07 \x01(\x0b\x32(.com.qxdzbc.p6.proto.IntFormatTableProto\x12N\n\x1ctextHorizontalAlignmentTable\x18\x08 \x01(\x0b\x32(.com.qxdzbc.p6.proto.IntFormatTableProto\x12M\n\x18\x63\x65llBackgroundColorTable\x18\t \x01(\x0b\x32+.com.qxdzbc.p6.proto.UInt64FormatTableProtob\x06proto3')
 
 
 
@@ -31,9 +31,23 @@ _CELLCONTENTPROTO = DESCRIPTOR.message_types_by_name['CellContentProto']
 _INDCELLPROTO = DESCRIPTOR.message_types_by_name['IndCellProto']
 _CELLVALUEPROTO = DESCRIPTOR.message_types_by_name['CellValueProto']
 _WORKBOOKKEYPROTO = DESCRIPTOR.message_types_by_name['WorkbookKeyProto']
-_SIMPLESCRIPTENTRYPROTO = DESCRIPTOR.message_types_by_name['SimpleScriptEntryProto']
 _WORKBOOKPROTO = DESCRIPTOR.message_types_by_name['WorkbookProto']
 _CELLIDPROTO = DESCRIPTOR.message_types_by_name['CellIdProto']
+_RANGEADDRESSSETPROTO = DESCRIPTOR.message_types_by_name['RangeAddressSetProto']
+_FLOATFORMATENTRYPROTO = DESCRIPTOR.message_types_by_name['FloatFormatEntryProto']
+_FLOATFORMATENTRYSETPROTO = DESCRIPTOR.message_types_by_name['FloatFormatEntrySetProto']
+_FLOATFORMATTABLEPROTO = DESCRIPTOR.message_types_by_name['FloatFormatTableProto']
+_BOOLFORMATENTRYPROTO = DESCRIPTOR.message_types_by_name['BoolFormatEntryProto']
+_BOOLFORMATENTRYSETPROTO = DESCRIPTOR.message_types_by_name['BoolFormatEntrySetProto']
+_BOOLFORMATTABLEPROTO = DESCRIPTOR.message_types_by_name['BoolFormatTableProto']
+_UINT64FORMATENTRYPROTO = DESCRIPTOR.message_types_by_name['UInt64FormatEntryProto']
+_UINT64FORMATENTRYSETPROTO = DESCRIPTOR.message_types_by_name['UInt64FormatEntrySetProto']
+_UINT64FORMATTABLEPROTO = DESCRIPTOR.message_types_by_name['UInt64FormatTableProto']
+_INTFORMATENTRYPROTO = DESCRIPTOR.message_types_by_name['IntFormatEntryProto']
+_INTFORMATENTRYSETPROTO = DESCRIPTOR.message_types_by_name['IntFormatEntrySetProto']
+_INTFORMATTABLEPROTO = DESCRIPTOR.message_types_by_name['IntFormatTableProto']
+_FORMATCONFIGPROTO = DESCRIPTOR.message_types_by_name['FormatConfigProto']
+_CELLFORMATTABLEPROTO = DESCRIPTOR.message_types_by_name['CellFormatTableProto']
 WorksheetIdProto = _reflection.GeneratedProtocolMessageType('WorksheetIdProto', (_message.Message,), {
   'DESCRIPTOR' : _WORKSHEETIDPROTO,
   '__module__' : 'com.qxdzbc.p6.proto.DocProtos_pb2'
@@ -118,13 +132,6 @@ WorkbookKeyProto = _reflection.GeneratedProtocolMessageType('WorkbookKeyProto', 
   })
 _sym_db.RegisterMessage(WorkbookKeyProto)
 
-SimpleScriptEntryProto = _reflection.GeneratedProtocolMessageType('SimpleScriptEntryProto', (_message.Message,), {
-  'DESCRIPTOR' : _SIMPLESCRIPTENTRYPROTO,
-  '__module__' : 'com.qxdzbc.p6.proto.DocProtos_pb2'
-  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.SimpleScriptEntryProto)
-  })
-_sym_db.RegisterMessage(SimpleScriptEntryProto)
-
 WorkbookProto = _reflection.GeneratedProtocolMessageType('WorkbookProto', (_message.Message,), {
   'DESCRIPTOR' : _WORKBOOKPROTO,
   '__module__' : 'com.qxdzbc.p6.proto.DocProtos_pb2'
@@ -139,37 +146,170 @@ CellIdProto = _reflection.GeneratedProtocolMessageType('CellIdProto', (_message.
   })
 _sym_db.RegisterMessage(CellIdProto)
 
+RangeAddressSetProto = _reflection.GeneratedProtocolMessageType('RangeAddressSetProto', (_message.Message,), {
+  'DESCRIPTOR' : _RANGEADDRESSSETPROTO,
+  '__module__' : 'com.qxdzbc.p6.proto.DocProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.RangeAddressSetProto)
+  })
+_sym_db.RegisterMessage(RangeAddressSetProto)
+
+FloatFormatEntryProto = _reflection.GeneratedProtocolMessageType('FloatFormatEntryProto', (_message.Message,), {
+  'DESCRIPTOR' : _FLOATFORMATENTRYPROTO,
+  '__module__' : 'com.qxdzbc.p6.proto.DocProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.FloatFormatEntryProto)
+  })
+_sym_db.RegisterMessage(FloatFormatEntryProto)
+
+FloatFormatEntrySetProto = _reflection.GeneratedProtocolMessageType('FloatFormatEntrySetProto', (_message.Message,), {
+  'DESCRIPTOR' : _FLOATFORMATENTRYSETPROTO,
+  '__module__' : 'com.qxdzbc.p6.proto.DocProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.FloatFormatEntrySetProto)
+  })
+_sym_db.RegisterMessage(FloatFormatEntrySetProto)
+
+FloatFormatTableProto = _reflection.GeneratedProtocolMessageType('FloatFormatTableProto', (_message.Message,), {
+  'DESCRIPTOR' : _FLOATFORMATTABLEPROTO,
+  '__module__' : 'com.qxdzbc.p6.proto.DocProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.FloatFormatTableProto)
+  })
+_sym_db.RegisterMessage(FloatFormatTableProto)
+
+BoolFormatEntryProto = _reflection.GeneratedProtocolMessageType('BoolFormatEntryProto', (_message.Message,), {
+  'DESCRIPTOR' : _BOOLFORMATENTRYPROTO,
+  '__module__' : 'com.qxdzbc.p6.proto.DocProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.BoolFormatEntryProto)
+  })
+_sym_db.RegisterMessage(BoolFormatEntryProto)
+
+BoolFormatEntrySetProto = _reflection.GeneratedProtocolMessageType('BoolFormatEntrySetProto', (_message.Message,), {
+  'DESCRIPTOR' : _BOOLFORMATENTRYSETPROTO,
+  '__module__' : 'com.qxdzbc.p6.proto.DocProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.BoolFormatEntrySetProto)
+  })
+_sym_db.RegisterMessage(BoolFormatEntrySetProto)
+
+BoolFormatTableProto = _reflection.GeneratedProtocolMessageType('BoolFormatTableProto', (_message.Message,), {
+  'DESCRIPTOR' : _BOOLFORMATTABLEPROTO,
+  '__module__' : 'com.qxdzbc.p6.proto.DocProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.BoolFormatTableProto)
+  })
+_sym_db.RegisterMessage(BoolFormatTableProto)
+
+UInt64FormatEntryProto = _reflection.GeneratedProtocolMessageType('UInt64FormatEntryProto', (_message.Message,), {
+  'DESCRIPTOR' : _UINT64FORMATENTRYPROTO,
+  '__module__' : 'com.qxdzbc.p6.proto.DocProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.UInt64FormatEntryProto)
+  })
+_sym_db.RegisterMessage(UInt64FormatEntryProto)
+
+UInt64FormatEntrySetProto = _reflection.GeneratedProtocolMessageType('UInt64FormatEntrySetProto', (_message.Message,), {
+  'DESCRIPTOR' : _UINT64FORMATENTRYSETPROTO,
+  '__module__' : 'com.qxdzbc.p6.proto.DocProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.UInt64FormatEntrySetProto)
+  })
+_sym_db.RegisterMessage(UInt64FormatEntrySetProto)
+
+UInt64FormatTableProto = _reflection.GeneratedProtocolMessageType('UInt64FormatTableProto', (_message.Message,), {
+  'DESCRIPTOR' : _UINT64FORMATTABLEPROTO,
+  '__module__' : 'com.qxdzbc.p6.proto.DocProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.UInt64FormatTableProto)
+  })
+_sym_db.RegisterMessage(UInt64FormatTableProto)
+
+IntFormatEntryProto = _reflection.GeneratedProtocolMessageType('IntFormatEntryProto', (_message.Message,), {
+  'DESCRIPTOR' : _INTFORMATENTRYPROTO,
+  '__module__' : 'com.qxdzbc.p6.proto.DocProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.IntFormatEntryProto)
+  })
+_sym_db.RegisterMessage(IntFormatEntryProto)
+
+IntFormatEntrySetProto = _reflection.GeneratedProtocolMessageType('IntFormatEntrySetProto', (_message.Message,), {
+  'DESCRIPTOR' : _INTFORMATENTRYSETPROTO,
+  '__module__' : 'com.qxdzbc.p6.proto.DocProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.IntFormatEntrySetProto)
+  })
+_sym_db.RegisterMessage(IntFormatEntrySetProto)
+
+IntFormatTableProto = _reflection.GeneratedProtocolMessageType('IntFormatTableProto', (_message.Message,), {
+  'DESCRIPTOR' : _INTFORMATTABLEPROTO,
+  '__module__' : 'com.qxdzbc.p6.proto.DocProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.IntFormatTableProto)
+  })
+_sym_db.RegisterMessage(IntFormatTableProto)
+
+FormatConfigProto = _reflection.GeneratedProtocolMessageType('FormatConfigProto', (_message.Message,), {
+  'DESCRIPTOR' : _FORMATCONFIGPROTO,
+  '__module__' : 'com.qxdzbc.p6.proto.DocProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.FormatConfigProto)
+  })
+_sym_db.RegisterMessage(FormatConfigProto)
+
+CellFormatTableProto = _reflection.GeneratedProtocolMessageType('CellFormatTableProto', (_message.Message,), {
+  'DESCRIPTOR' : _CELLFORMATTABLEPROTO,
+  '__module__' : 'com.qxdzbc.p6.proto.DocProtos_pb2'
+  # @@protoc_insertion_point(class_scope:com.qxdzbc.p6.proto.CellFormatTableProto)
+  })
+_sym_db.RegisterMessage(CellFormatTableProto)
+
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   _WORKSHEETIDPROTO._serialized_start=100
   _WORKSHEETIDPROTO._serialized_end=188
   _WORKSHEETPROTO._serialized_start=191
-  _WORKSHEETPROTO._serialized_end=322
-  _INDWORKSHEETPROTO._serialized_start=324
-  _INDWORKSHEETPROTO._serialized_end=444
-  _RANGEADDRESSPROTO._serialized_start=447
-  _RANGEADDRESSPROTO._serialized_end=579
-  _RANGEIDPROTO._serialized_start=582
-  _RANGEIDPROTO._serialized_end=728
-  _WSWBPROTO._serialized_start=730
-  _WSWBPROTO._serialized_end=824
-  _CELLADDRESSPROTO._serialized_start=826
-  _CELLADDRESSPROTO._serialized_end=870
-  _CELLPROTO._serialized_start=872
-  _CELLPROTO._serialized_end=985
-  _CELLCONTENTPROTO._serialized_start=988
-  _CELLCONTENTPROTO._serialized_end=1159
-  _INDCELLPROTO._serialized_start=1161
-  _INDCELLPROTO._serialized_end=1287
-  _CELLVALUEPROTO._serialized_start=1289
-  _CELLVALUEPROTO._serialized_end=1385
-  _WORKBOOKKEYPROTO._serialized_start=1387
-  _WORKBOOKKEYPROTO._serialized_end=1447
-  _SIMPLESCRIPTENTRYPROTO._serialized_start=1449
-  _SIMPLESCRIPTENTRYPROTO._serialized_end=1503
-  _WORKBOOKPROTO._serialized_start=1506
-  _WORKBOOKPROTO._serialized_end=1693
-  _CELLIDPROTO._serialized_start=1696
-  _CELLIDPROTO._serialized_end=1839
+  _WORKSHEETPROTO._serialized_end=415
+  _INDWORKSHEETPROTO._serialized_start=417
+  _INDWORKSHEETPROTO._serialized_end=537
+  _RANGEADDRESSPROTO._serialized_start=540
+  _RANGEADDRESSPROTO._serialized_end=672
+  _RANGEIDPROTO._serialized_start=675
+  _RANGEIDPROTO._serialized_end=821
+  _WSWBPROTO._serialized_start=823
+  _WSWBPROTO._serialized_end=917
+  _CELLADDRESSPROTO._serialized_start=919
+  _CELLADDRESSPROTO._serialized_end=963
+  _CELLPROTO._serialized_start=965
+  _CELLPROTO._serialized_end=1078
+  _CELLCONTENTPROTO._serialized_start=1081
+  _CELLCONTENTPROTO._serialized_end=1252
+  _INDCELLPROTO._serialized_start=1254
+  _INDCELLPROTO._serialized_end=1380
+  _CELLVALUEPROTO._serialized_start=1382
+  _CELLVALUEPROTO._serialized_end=1478
+  _WORKBOOKKEYPROTO._serialized_start=1480
+  _WORKBOOKKEYPROTO._serialized_end=1540
+  _WORKBOOKPROTO._serialized_start=1542
+  _WORKBOOKPROTO._serialized_end=1667
+  _CELLIDPROTO._serialized_start=1670
+  _CELLIDPROTO._serialized_end=1813
+  _RANGEADDRESSSETPROTO._serialized_start=1815
+  _RANGEADDRESSSETPROTO._serialized_end=1893
+  _FLOATFORMATENTRYPROTO._serialized_start=1896
+  _FLOATFORMATENTRYPROTO._serialized_end=2029
+  _FLOATFORMATENTRYSETPROTO._serialized_start=2032
+  _FLOATFORMATENTRYSETPROTO._serialized_end=2192
+  _FLOATFORMATTABLEPROTO._serialized_start=2194
+  _FLOATFORMATTABLEPROTO._serialized_end=2278
+  _BOOLFORMATENTRYPROTO._serialized_start=2281
+  _BOOLFORMATENTRYPROTO._serialized_end=2413
+  _BOOLFORMATENTRYSETPROTO._serialized_start=2416
+  _BOOLFORMATENTRYSETPROTO._serialized_end=2573
+  _BOOLFORMATTABLEPROTO._serialized_start=2575
+  _BOOLFORMATTABLEPROTO._serialized_end=2657
+  _UINT64FORMATENTRYPROTO._serialized_start=2660
+  _UINT64FORMATENTRYPROTO._serialized_end=2794
+  _UINT64FORMATENTRYSETPROTO._serialized_start=2797
+  _UINT64FORMATENTRYSETPROTO._serialized_end=2960
+  _UINT64FORMATTABLEPROTO._serialized_start=2962
+  _UINT64FORMATTABLEPROTO._serialized_end=3048
+  _INTFORMATENTRYPROTO._serialized_start=3051
+  _INTFORMATENTRYPROTO._serialized_end=3182
+  _INTFORMATENTRYSETPROTO._serialized_start=3185
+  _INTFORMATENTRYSETPROTO._serialized_end=3339
+  _INTFORMATTABLEPROTO._serialized_start=3341
+  _INTFORMATTABLEPROTO._serialized_end=3421
+  _FORMATCONFIGPROTO._serialized_start=3424
+  _FORMATCONFIGPROTO._serialized_end=4114
+  _CELLFORMATTABLEPROTO._serialized_start=4117
+  _CELLFORMATTABLEPROTO._serialized_end=4786
 # @@protoc_insertion_point(module_scope)
