@@ -16,7 +16,7 @@ from com.qxdzbc.p6.proto import CommonProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_pr
 from com.qxdzbc.p6.proto import DocProtos_pb2 as com_dot_qxdzbc_dot_p6_dot_proto_dot_DocProtos__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n$com/qxdzbc/p6/proto/CellProtos.proto\x12\x13\x63om.qxdzbc.p6.proto\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\x1a#com/qxdzbc/p6/proto/DocProtos.proto\"\x86\x01\n\x16\x43\x65llUpdateRequestProto\x12\x30\n\x06\x63\x65llId\x18\x01 \x01(\x0b\x32 .com.qxdzbc.p6.proto.CellIdProto\x12:\n\x0b\x63\x65llContent\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellContentProto\"\x90\x01\n\x14\x43opyCellRequestProto\x12\x32\n\x08\x66romCell\x18\x01 \x01(\x0b\x32 .com.qxdzbc.p6.proto.CellIdProto\x12\x30\n\x06toCell\x18\x02 \x01(\x0b\x32 .com.qxdzbc.p6.proto.CellIdProto\x12\x12\n\nshiftRange\x18\x03 \x01(\x08\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n$com/qxdzbc/p6/proto/CellProtos.proto\x12\x13\x63om.qxdzbc.p6.proto\x1a&com/qxdzbc/p6/proto/CommonProtos.proto\x1a#com/qxdzbc/p6/proto/DocProtos.proto\"\x86\x01\n\x16\x43\x65llUpdateRequestProto\x12\x30\n\x06\x63\x65llId\x18\x01 \x01(\x0b\x32 .com.qxdzbc.p6.proto.CellIdProto\x12:\n\x0b\x63\x65llContent\x18\x02 \x01(\x0b\x32%.com.qxdzbc.p6.proto.CellContentProto\"\xa2\x01\n\x14\x43opyCellRequestProto\x12\x32\n\x08\x66romCell\x18\x01 \x01(\x0b\x32 .com.qxdzbc.p6.proto.CellIdProto\x12\x30\n\x06toCell\x18\x02 \x01(\x0b\x32 .com.qxdzbc.p6.proto.CellIdProto\x12\x12\n\nshiftRange\x18\x03 \x01(\x08\x12\x10\n\x08undoable\x18\x04 \x01(\x08\x62\x06proto3')
 
 
 
@@ -42,5 +42,5 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _CELLUPDATEREQUESTPROTO._serialized_start=139
   _CELLUPDATEREQUESTPROTO._serialized_end=273
   _COPYCELLREQUESTPROTO._serialized_start=276
-  _COPYCELLREQUESTPROTO._serialized_end=420
+  _COPYCELLREQUESTPROTO._serialized_end=438
 # @@protoc_insertion_point(module_scope)

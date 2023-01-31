@@ -99,7 +99,9 @@ class RpcCell_test(unittest.TestCase):
         self.mockCellService.copyFrom.assert_called_with(
             request = CopyCellRequest(
                 fromCell = anotherCell,
-                toCell = self.cell.id
+                toCell = self.cell.id,
+                shiftRange = True,
+                undoable = True
             ).toProtoObj()
         )
 

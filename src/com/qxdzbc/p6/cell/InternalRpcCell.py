@@ -75,7 +75,9 @@ class InternalRpcCell(Cell):
     def copyFromRs(self, anotherCell: CellId) -> Result[None, ErrorReport]:
         request = CopyCellRequest(
             fromCell = anotherCell,
-            toCell = self.id
+            toCell = self.id,
+            shiftRange = True,
+            undoable = True,
         )
         oProto = self._cellSv.copyFrom(request = request.toProtoObj())
         o = SingleSignalResponse.fromProto(oProto)

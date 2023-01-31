@@ -3,6 +3,8 @@ conda install -c conda-forge build
 
 python3 -m build
 
+// test command:
+
 python -m unittest discover -s src -p "*_test.py" -v
 python -m unittest discover -s src -p "*_test_integration.py" -v
 

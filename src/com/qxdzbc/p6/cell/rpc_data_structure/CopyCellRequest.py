@@ -10,10 +10,12 @@ class CopyCellRequest(ToProto[CopyCellRequestProto]):
     fromCell: CellId
     toCell: CellId
     shiftRange:bool = True
+    undoable:bool = True
 
     def toProtoObj(self) -> CopyCellRequestProto:
         return CopyCellRequestProto(
             fromCell = self.fromCell.toProtoObj(),
             toCell = self.toCell.toProtoObj(),
-            shiftRange = self.shiftRange
+            shiftRange = self.shiftRange,
+            undoable = self.undoable
         )
