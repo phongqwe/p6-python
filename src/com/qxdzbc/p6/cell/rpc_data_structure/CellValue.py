@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from typing import Optional, Union, Any
 
 import numpy
-from numpy import long
 
 from com.qxdzbc.p6.util.CanCheckEmpty import CanCheckEmpty
 from com.qxdzbc.p6.util.ToProto import ToProto

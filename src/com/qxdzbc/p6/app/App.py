@@ -17,36 +17,9 @@ class App(ABC):
     """
 
     @property
-    def workbooks(self)->list[Workbook]:
+    def workbooks(self) -> list[Workbook]:
         """return a list of all the currently opened workbooks"""
         raise NotImplementedError()
-
-    # def addScript(self, name:str, script:str):
-    #     raise NotImplementedError()
-    #
-    # def getScript(self, name:str) -> Optional[str]:
-    #     raise NotImplementedError()
-    #
-    # def removeScript(self, name:str):
-    #     raise NotImplementedError()
-    #
-    # def removeAllScript(self):
-    #     raise NotImplementedError()
-    #
-    # def addAllScripts(self, scripts:list[SimpleScriptEntry]):
-    #     raise NotImplementedError()
-    #
-    # @property
-    # def allScripts(self)->list[SimpleScriptEntry]:
-    #     raise NotImplementedError()
-    #
-    # @property
-    # def allAsScriptEntry(self) -> list[ScriptEntry]:
-    #     raise NotImplementedError()
-    #
-    # @property
-    # def scriptContainer(self) -> ScriptContainer:
-    #     raise NotImplementedError()
 
     def getRangeRs(self, rangeId: RangeId) -> Result[Range, ErrorReport]:
         raise NotImplementedError()
@@ -69,10 +42,10 @@ class App(ABC):
         """
         raise NotImplementedError()
 
-    def setActiveWorkbookRs(self, wbKey:  WorkbookKey) -> Result[Workbook, ErrorReport]:
+    def setActiveWorkbookRs(self, wbKey: WorkbookKey) -> Result[Workbook, ErrorReport]:
         """
         Set workbook at indexOrName the active workbook.
-        :return an Result object if there are error instead of raising an exception
+        :return a Result object if there are error instead of raising an exception
         """
         raise NotImplementedError()
 
