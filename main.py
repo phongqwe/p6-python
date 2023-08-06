@@ -1,5 +1,5 @@
-from com.emeraldblast.p6.document_structure.communication.event.P6Events import P6Events
-import inspect
+from com.qxdzbc.p6.communication import P6Events
+
 
 def main():
     for e in P6Events.Worksheet.allEvents():
